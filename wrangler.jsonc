@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // This site is 100% static output ("output: 'static'" in astro.config.mjs,
+  // no @astrojs/cloudflare adapter) — there is no server-side rendering and
+  // nothing here needs the Workers runtime. Deliberately omitting "main"
+  // (no Worker script) tells wrangler to deploy `dist/` as static assets
+  // only. Without this file present, `wrangler deploy` auto-runs
+  // `astro add cloudflare` on every build to scaffold a Worker, which
+  // switches the Astro build to the "hybrid" SSR adapter and then fails
+  // on any Node.js built-in import (e.g. "node:fs") used in page
+  // frontmatter, since those can't be bundled for the Workers runtime.
+  "name": "aimoviebase-astro",
+  "compatibility_date": "2026-10-23",
+  "assets": {
+    "directory": "dist"
+  }
+}
