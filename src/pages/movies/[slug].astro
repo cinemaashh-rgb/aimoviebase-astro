@@ -3,6 +3,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getToolMeta } from '../../data/toolMeta';
 import { widePoster } from '../../lib/images';
+import { resolveCreatorSlug, resolveStudioSlug } from '../../lib/links';
 
 export async function getStaticPaths() {
   const movies = await getCollection('movies');
@@ -35,6 +36,16 @@ interface Props {
 const { movie, related, inLists } = Astro.props;
 const m = movie.data;
 const isSeries = m.type === 'series';
+
+// `director.slug` / a studio catalog page aren't always hand-filled on the
+// movie record itself (24 of 37 movies have no director.slug even where a
+// matching creator page exists) — resolve by name against the creators/
+// studios collections so the sidebar links whenever a real page exists,
+// falling back to any explicit slug already set.
+const allCreators = await getCollection('creators');
+const allStudios = await getCollection('studios');
+const directorSlug = m.director?.slug ?? resolveCreatorSlug(m.director?.name, allCreators);
+const studioSlug = resolveStudioSlug(m.studio, allStudios);
 
 // The film-page mockup's ".details" line reads "2026 · 24 min · Sci-Fi ·
 // Drama" — year, runtime/season info, then every genre inline (not just a
@@ -210,8 +221,8 @@ detailsParts.push(...m.genres);
       {m.director && (
         <div class="sideSection">
           <h3>{isSeries ? 'Creator' : 'Director'}</h3>
-          {m.director.slug ? (
-            <a class="sideLink" href={`/name/${m.director.slug}`}><span class="person"><b>{m.director.name}</b></span><span class="arrow">›</span></a>
+          {directorSlug ? (
+            <a class="sideLink" href={`/name/${directorSlug}`}><span class="person"><b>{m.director.name}</b></span><span class="arrow">›</span></a>
           ) : (
             <div class="sideLink">{m.director.name}</div>
           )}
@@ -221,7 +232,11 @@ detailsParts.push(...m.genres);
       {m.studio && (
         <div class="sideSection">
           <h3>Studio</h3>
-          <div class="sideLink">{m.studio}</div>
+          {studioSlug ? (
+            <a class="sideLink" href={`/studios/${studioSlug}`}><span class="person"><b>{m.studio}</b></span><span class="arrow">›</span></a>
+          ) : (
+            <div class="sideLink">{m.studio}</div>
+          )}
         </div>
       )}
 
