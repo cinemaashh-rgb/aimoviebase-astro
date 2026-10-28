@@ -1,0 +1,19 @@
+{
+  "movie_id": "0fa521bb-163d-4dd3-a123-c84830b63708",
+  "title": "Total Pixel Space",
+  "year": 2025,
+  "type": "movie",
+  "genres": [
+    "Experimental"
+  ],
+  "synopsis": "Winner of the Runway AI Film Festival (AIFF) 2025 Grand Prix.",
+  "poster": "/images/posters/total-pixel-space.webp",
+  "youtubeId": "zpAeygE4d1A",
+  "director": {
+    "name": "Jacob Adler",
+    "slug": "jacob-adler"
+  },
+  "awards": [
+    "Runway AIFF 2025 Grand Prix"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "movie_id": "af37fcd8-eece-4821-81ea-3251247440f2",
+  "title": "Alucard",
+  "year": 2026,
+  "type": "series",
+  "genres": [
+    "Horror"
+  ],
+  "synopsis": "An 8-episode AI-generated horror series.",
+  "poster": "/images/posters/alucard.webp",
+  "youtubeId": "g1vPCmzRl7E",
+  "director": {
+    "name": "Andrea De Nittis"
+  },
+  "studio": "ZEROAISTUDIO"
+}

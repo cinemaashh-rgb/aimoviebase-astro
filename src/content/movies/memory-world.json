@@ -1,0 +1,15 @@
+{
+  "movie_id": "485175c1-5153-4c99-b29d-5c37a6df9a07",
+  "title": "MEMORY WORLD",
+  "year": 2026,
+  "type": "movie",
+  "duration": "16:14",
+  "genres": [
+    "Sci-Fi"
+  ],
+  "country": "South Korea",
+  "synopsis": "A Korean-language AI sci-fi short exploring a world built from memory.",
+  "poster": "/images/posters/memory-world.webp",
+  "youtubeId": "UOLZZqZ4lLc",
+  "studio": "Jeonjo INDEX"
+}

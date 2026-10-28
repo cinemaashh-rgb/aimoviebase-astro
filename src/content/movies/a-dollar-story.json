@@ -1,0 +1,17 @@
+{
+  "movie_id": "99588338-074f-4fa2-a623-af143fe970b3",
+  "title": "A Dollar Story",
+  "year": 2026,
+  "type": "movie",
+  "duration": "10:00",
+  "genres": [
+    "Action"
+  ],
+  "synopsis": "An AI-generated action short film.",
+  "poster": "/images/posters/a-dollar-story.webp",
+  "youtubeId": "t-7H61xgPlo",
+  "director": {
+    "name": "Qiu Sheng",
+    "slug": "qiu-sheng"
+  }
+}

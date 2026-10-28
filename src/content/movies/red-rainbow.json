@@ -1,0 +1,17 @@
+{
+  "movie_id": "f0aaa13b-409e-4eff-bd18-790457fd0e42",
+  "title": "Red Rainbow",
+  "year": 2026,
+  "type": "series",
+  "genres": [
+    "Sci-Fi"
+  ],
+  "synopsis": "A 4-episode sci-fi series from Phantom X, directed by Aze Alter, with episodes released from June through September 2026.",
+  "poster": "/images/posters/red-rainbow.webp",
+  "youtubeId": "p9aDrvq3qlU",
+  "director": {
+    "name": "Aze Alter",
+    "slug": "aze-alter"
+  },
+  "studio": "Phantom X"
+}

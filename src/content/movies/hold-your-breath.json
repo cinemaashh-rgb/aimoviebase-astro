@@ -1,0 +1,17 @@
+{
+  "movie_id": "9cda3b7a-e177-4552-96ef-a8c82beaa53b",
+  "title": "Hold Your Breath",
+  "year": 2026,
+  "type": "movie",
+  "duration": "10:31",
+  "genres": [
+    "Drama",
+    "Crime"
+  ],
+  "synopsis": "An AI-generated drama/crime short.",
+  "poster": "/images/posters/hold-your-breath.webp",
+  "youtubeId": "QJCI4vk3YGk",
+  "director": {
+    "name": "Alexandre Tissier"
+  }
+}

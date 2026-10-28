@@ -1,0 +1,19 @@
+{
+  "movie_id": "e71e38e1-f966-49b2-abae-56d4b300481b",
+  "title": "Charlie Boy",
+  "year": 2026,
+  "type": "movie",
+  "duration": "10:31",
+  "genres": [
+    "Sci-Fi"
+  ],
+  "synopsis": "An AI-generated sci-fi short film.",
+  "poster": "/images/posters/charlie-boy.webp",
+  "youtubeId": "qFF5kZKQLVI",
+  "director": {
+    "name": "Gabriel Bosisio"
+  },
+  "aiTools": [
+    "Higgsfield AI"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "studio_id": "54d156e1-c8c0-4938-8616-dd9a2b31159b",
+  "name": "The Reality Foundry",
+  "description": "A solo AI filmmaking project behind the sci-fi series The Sky-Fallen Legacy.",
+  "descriptionMore": "Releases a serialized sci-fi epic built frame by frame with generative video tools, including Dreamina and Pippit AI. The studio's only release so far is The Sky-Fallen Legacy, a 13-episode series following Ethan's crash-landing on an uncharted alien planet and the generations-spanning war he is drawn into.",
+  "films": [
+    "the-sky-fallen-legacy"
+  ]
+}

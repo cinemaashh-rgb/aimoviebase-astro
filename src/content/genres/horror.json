@@ -1,0 +1,5 @@
+{
+  "name": "Horror",
+  "description": "AI horror turns the \"uncanny valley\" of generative models into an artistic device rather than a flaw.",
+  "films": ["the-sage-homecoming", "alucard", "last-recall"]
+}

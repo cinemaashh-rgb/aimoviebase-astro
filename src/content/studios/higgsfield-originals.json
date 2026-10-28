@@ -1,0 +1,10 @@
+{
+  "studio_id": "22b2678b-7907-47fb-bc40-19071951a957",
+  "name": "Higgsfield Originals",
+  "description": "The in-house production arm of Higgsfield AI, producing original AI-generated shorts and features to showcase its video model.",
+  "descriptionMore": "Releases a mix of short films (like the generative sci-fi drama ONEIRIC) and feature-length work (the 95-minute action-fantasy Hell Grind), all produced entirely with Higgsfield AI tools.",
+  "films": [
+    "oneiric",
+    "hell-grind"
+  ]
+}

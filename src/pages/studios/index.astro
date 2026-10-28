@@ -1,0 +1,24 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const studios = await getCollection('studios');
+studios.sort((a, b) => a.data.name.localeCompare(b.data.name));
+---
+<BaseLayout title="AI Studios" description="AI filmmaking studios on AI Movie Base.">
+  <h1 style="margin-top:34px">AI Studios</h1>
+  <p class="lede" style="margin-bottom:28px">{studios.length} studios in the catalog so far.</p>
+
+  <h2 style="margin-top:0">Studios</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+    {studios.map((studio) => (
+      <a class="card" href={`/studios/${studio.id}`}>
+        <div class="body" style="padding:16px">
+          <div class="title-row"><strong>{studio.data.name}</strong></div>
+          <p class="meta" style="margin:6px 0 4px;line-height:1.4;white-space:normal">{studio.data.description}</p>
+          <div class="meta" style="color:var(--accent)">{studio.data.films.length} {studio.data.films.length === 1 ? 'film' : 'films'}</div>
+        </div>
+      </a>
+    ))}
+  </div>
+</BaseLayout>

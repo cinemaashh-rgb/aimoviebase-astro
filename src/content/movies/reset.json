@@ -1,0 +1,20 @@
+{
+  "movie_id": "d62abe18-e101-4405-afb9-aafd396146f0",
+  "title": "RESET",
+  "year": 2026,
+  "type": "movie",
+  "duration": "11:07",
+  "genres": [
+    "Sci-Fi"
+  ],
+  "synopsis": "A solo-made sci-fi short by Max Barskih, created with Higgsfield AI, selected for the Higgsfield Global Film Festival.",
+  "poster": "/images/posters/reset.webp",
+  "youtubeId": "BMLTQ0ouz1U",
+  "director": {
+    "name": "Max Barskih",
+    "slug": "max-barskih"
+  },
+  "awards": [
+    "Higgsfield Global Film Festival selection"
+  ]
+}

@@ -1,0 +1,6 @@
+---
+// "funny" and "comedy" are the same genre in the original site (two near-duplicate
+// pages with the same content). We keep one real /genre/comedy page and redirect
+// this legacy path to it instead of publishing a duplicate.
+return Astro.redirect('/genre/comedy', 301);
+---

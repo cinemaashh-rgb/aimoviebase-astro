@@ -1,0 +1,23 @@
+{
+  "movie_id": "0697e1da-b897-4a8e-8164-536796ee0e4c",
+  "title": "Last Recall",
+  "year": 2026,
+  "type": "movie",
+  "genres": [
+    "Horror",
+    "Sci-Fi"
+  ],
+  "synopsis": "An AI-generated horror sci-fi short.",
+  "poster": "/images/posters/last-recall.webp",
+  "youtubeId": "gnD2s5Yac9E",
+  "director": {
+    "name": "Kavan Cardoza"
+  },
+  "studio": "Wonder Studios",
+  "aiTools": [
+    "CapCut",
+    "ElevenLabs",
+    "OpenArt",
+    "invideo"
+  ]
+}

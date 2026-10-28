@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const movies = await getCollection('movies');
+const latest = [...movies].sort((a, b) => b.data.year - a.data.year).slice(0, 12);
+---
+<BaseLayout title="AI Movie Base" description="The catalog of AI-generated films, series, and shorts.">
+  <h1 style="font-size:2.5rem;">AI Movie Base</h1>
+  <p style="color:var(--muted); max-width:600px;">
+    Discover the best AI-generated movies, series, and short films — made with tools like Runway, Higgsfield AI, Kling, and Seedance.
+  </p>
+  <h2>Latest Releases</h2>
+  <div class="movieGrid">
+    {latest.map((movie) => (
+      <a class="movieCard" href={`/movies/${movie.id}`}>
+        <img src={movie.data.poster} alt={movie.data.title} loading="lazy" />
+        <div class="cardBody">
+          <h3>{movie.data.title}</h3>
+          <p class="meta">{movie.data.year} · {movie.data.genres[0] ?? ''}</p>
+        </div>
+      </a>
+    ))}
+  </div>
+</BaseLayout>

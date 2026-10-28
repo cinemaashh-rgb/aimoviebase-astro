@@ -1,0 +1,14 @@
+{
+  "movie_id": "fe2dc1bd-8406-4f26-bd36-f2016dbee869",
+  "title": "Jailbird",
+  "year": 2025,
+  "type": "movie",
+  "genres": [
+    "Documentary"
+  ],
+  "synopsis": "An AI-generated documentary short.",
+  "youtubeId": "-87zR06PkOc",
+  "director": {
+    "name": "Andrew Salter"
+  }
+}

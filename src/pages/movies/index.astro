@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const movies = await getCollection('movies');
+movies.sort((a, b) => b.data.year - a.data.year);
+---
+<BaseLayout title="Movies" description="Browse all AI-generated movies and series on AI Movie Base.">
+  <h1>All Movies</h1>
+  <div class="movieGrid">
+    {movies.map((movie) => (
+      <a class="movieCard" href={`/movies/${movie.id}`}>
+        {movie.data.poster ? (
+          <img src={movie.data.poster} alt={movie.data.title} loading="lazy" />
+        ) : (
+          <div class="posterFallback" style="aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-weight:600;font-size:.78rem;color:var(--muted);background:linear-gradient(135deg,#f0ebe0,#f7f3ee);">{movie.data.title}</div>
+        )}
+        <div class="cardBody">
+          <h3>{movie.data.title}</h3>
+          <p class="meta">{movie.data.year} · {movie.data.genres[0] ?? ''}</p>
+        </div>
+      </a>
+    ))}
+  </div>
+</BaseLayout>

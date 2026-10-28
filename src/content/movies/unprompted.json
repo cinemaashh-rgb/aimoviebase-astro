@@ -1,0 +1,16 @@
+{
+  "movie_id": "b10d3930-3cf3-44e2-a39a-3dab6aed3c04",
+  "title": "Unprompted",
+  "year": 2026,
+  "type": "movie",
+  "genres": [
+    "Experimental"
+  ],
+  "synopsis": "An experimental, plotless short made with obsolete AI image models and retired Suno music models, directed by Nikolay Shestak.",
+  "poster": "/images/posters/unprompted.webp",
+  "youtubeId": "ioNkDI9qGsA",
+  "director": {
+    "name": "Nikolay Shestak",
+    "slug": "shestak"
+  }
+}

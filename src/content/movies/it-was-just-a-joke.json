@@ -1,0 +1,20 @@
+{
+  "movie_id": "e31e3092-4521-429a-8c80-ed08799e8f83",
+  "title": "It Was Just a Joke",
+  "year": 2026,
+  "type": "movie",
+  "duration": "5:33",
+  "genres": [
+    "Comedy"
+  ],
+  "synopsis": "An AI-generated comedy short.",
+  "poster": "/images/posters/it-was-just-a-joke.webp",
+  "youtubeId": "Se2qycrdezE",
+  "director": {
+    "name": "Myrzakhan Zhumakhan"
+  },
+  "aiTools": [
+    "Seedance 2.5",
+    "Higgsfield AI"
+  ]
+}

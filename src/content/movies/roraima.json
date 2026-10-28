@@ -1,0 +1,20 @@
+{
+  "movie_id": "036c3a7e-3ab1-4778-9ec4-38129e49b125",
+  "title": "RORAIMA",
+  "year": 2026,
+  "type": "movie",
+  "duration": "11:12",
+  "genres": [
+    "Fantasy"
+  ],
+  "synopsis": "A Higgsfield Global Film Festival fantasy short directed by Ishan Devare Modi.",
+  "poster": "/images/posters/roraima.webp",
+  "youtubeId": "pvCG7Y44_kk",
+  "director": {
+    "name": "Ishan Devare Modi",
+    "slug": "ishan-devare-modi"
+  },
+  "awards": [
+    "Higgsfield Global Film Festival selection"
+  ]
+}

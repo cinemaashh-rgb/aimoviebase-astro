@@ -1,0 +1,5 @@
+{
+  "name": "Fantasy",
+  "description": "AI fantasy films turn generative tools toward myth, legend and the impossible — dragons, monsters and whole worlds built frame by frame.",
+  "films": ["the-mothers-monster", "roraima", "make-believe", "signet"]
+}

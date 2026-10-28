@@ -1,0 +1,17 @@
+{
+  "creator_id": "b8d4cfc1-7074-4946-af26-1e28daa6e4e1",
+  "name": "Mike J Mitch (Michael Mitchell)",
+  "role": "Director, Producer",
+  "studio": {
+    "name": "Phantom X",
+    "slug": "phantom-x"
+  },
+  "knownFor": [
+    "Horror"
+  ],
+  "bio": "AI Director at Phantom X.",
+  "bioMore": "Real name Michael Mitchell. Director and producer with more than a decade of experience in advertising production, winner of Cannes Lions, One Show, Clios, and Webby Awards; his work has been covered by Forbes, Variety, and AdWeek. At Phantom X, known for his strategic use of AI as a production tool — not for novelty, but to expand the possibilities of narrative storytelling. Directed the horror series The Sage, now seven episodes deep.",
+  "films": [
+    "the-sage-homecoming"
+  ]
+}

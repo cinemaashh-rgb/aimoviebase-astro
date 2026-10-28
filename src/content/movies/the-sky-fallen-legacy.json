@@ -1,0 +1,17 @@
+{
+  "movie_id": "6b377a0d-82d7-4c60-9303-f132b3c32ffd",
+  "title": "The Sky-Fallen Legacy",
+  "year": 2026,
+  "type": "series",
+  "genres": [
+    "Sci-Fi"
+  ],
+  "synopsis": "A 13-episode sci-fi series from The Reality Foundry, made with Dreamina and Pippit AI, released July through October 2026.",
+  "poster": "/images/posters/the-sky-fallen-legacy.webp",
+  "youtubeId": "lv-MnKawIt8",
+  "studio": "The Reality Foundry",
+  "aiTools": [
+    "Dreamina",
+    "Pippit AI"
+  ]
+}

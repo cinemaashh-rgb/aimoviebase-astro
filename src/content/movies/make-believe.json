@@ -1,0 +1,20 @@
+{
+  "movie_id": "ceac877c-81fb-43af-8e73-3f799c06b5db",
+  "title": "MAKE BELIEVE",
+  "year": 2026,
+  "type": "movie",
+  "duration": "13:21",
+  "genres": [
+    "Fantasy"
+  ],
+  "synopsis": "A Higgsfield Global Film Festival 2026 entry exploring the line between imagination and reality.",
+  "poster": "/images/posters/make-believe.webp",
+  "youtubeId": "_glVBsCNbMU",
+  "director": {
+    "name": "Montlouis Mane",
+    "slug": "montlouis-mane"
+  },
+  "awards": [
+    "Higgsfield Global Film Festival 2026 selection"
+  ]
+}

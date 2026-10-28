@@ -1,0 +1,21 @@
+{
+  "movie_id": "58792852-72a7-4a88-a118-5af02274a696",
+  "title": "9091",
+  "year": 2026,
+  "type": "movie",
+  "duration": "8:26",
+  "genres": [
+    "Sci-Fi",
+    "Action"
+  ],
+  "synopsis": "A short AI-generated sci-fi action film.",
+  "poster": "/images/posters/9091.webp",
+  "youtubeId": "P5fi-9ZyOLE",
+  "director": {
+    "name": "Filippo Di Primio"
+  },
+  "aiTools": [
+    "Higgsfield AI Cinema Studio 4",
+    "Suno 6"
+  ]
+}

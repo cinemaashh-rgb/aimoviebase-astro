@@ -1,0 +1,19 @@
+{
+  "movie_id": "f3ff1615-5a39-408f-a324-56fd414a92c7",
+  "title": "Do The Evolution",
+  "year": 2023,
+  "type": "movie",
+  "duration": "5:41",
+  "genres": [
+    "Experimental"
+  ],
+  "synopsis": "An early AI-generated experimental short film.",
+  "poster": "/images/posters/do-the-evolution.webp",
+  "youtubeId": "VdMgPgicvK4",
+  "director": {
+    "name": "Ricardo Villavicencio"
+  },
+  "aiTools": [
+    "Runway Studios"
+  ]
+}

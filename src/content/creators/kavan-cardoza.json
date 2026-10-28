@@ -1,0 +1,22 @@
+{
+  "creator_id": "c5cb303f-2b72-4338-9b7c-6d4afd5846ab",
+  "name": "Kavan Cardoza (Kavan the Kid)",
+  "role": "Director, Writer",
+  "studio": {
+    "name": "Phantom X (co-founder)",
+    "slug": "phantom-x"
+  },
+  "basedIn": "Los Angeles, California",
+  "knownFor": [
+    "Sci-Fi",
+    "Fantasy"
+  ],
+  "bio": "Director and AI filmmaker based in Los Angeles (originally from Boise, Idaho), co-founder of Phantom X.",
+  "bioMore": "Started with viral AI fan films, then directed Echo Hunter — the first AI film with an approved SAG-AFTRA cast. Creator of The Chronicles of Bone, his ongoing monthly fantasy series for Freepik. Also directed Last Recall for Wonder Studios' Beyond The Loop. According to FilmFreeway, also a photographer and writer.",
+  "photo": "/images/people/kavan-cardoza.webp",
+  "films": [
+    "echo-hunter",
+    "last-recall",
+    "the-chronicles-of-bone"
+  ]
+}

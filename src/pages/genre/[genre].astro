@@ -1,0 +1,54 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const genres = await getCollection('genres');
+  const movies = await getCollection('movies');
+  return genres.map((genre) => {
+    const films = genre.data.films
+      .map((slug) => movies.find((m) => m.id === slug))
+      .filter((m): m is CollectionEntry<'movies'> => Boolean(m));
+    return {
+      params: { genre: genre.id },
+      props: { genre, films },
+    };
+  });
+}
+
+interface Props {
+  genre: CollectionEntry<'genres'>;
+  films: CollectionEntry<'movies'>[];
+}
+const { genre, films } = Astro.props;
+const g = genre.data;
+---
+<BaseLayout title={g.name} description={g.description}>
+  <div class="genreHead" style="display:flex; align-items:baseline; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:22px;">
+    <div>
+      <h1 style="margin-top:34px;margin-bottom:.15em">{g.name}</h1>
+      <p class="lede" style="color:var(--muted); max-width:640px; line-height:1.5; margin-top:0">{g.description}</p>
+    </div>
+    <div class="genreCount" style="color:var(--muted); font-size:.85rem; font-weight:600; white-space:nowrap">{films.length} {films.length === 1 ? 'film' : 'films'}</div>
+  </div>
+
+  {films.length > 0 ? (
+    <div class="posterGrid" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:18px 14px; margin-top:6px;">
+      {films.map((f) => (
+        <a href={`/movies/${f.id}`} style="position:relative; display:block; border-radius:6px; overflow:hidden;">
+          <div style="position:relative; aspect-ratio:2/3; border-radius:6px; overflow:hidden; background:linear-gradient(135deg,#f0ebe0,#f7f3ee);">
+            {f.data.poster ? (
+              <img src={f.data.poster} alt={f.data.title} style="width:100%;height:100%;object-fit:cover;display:block;" />
+            ) : (
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-weight:600;font-size:.78rem;color:var(--muted);">{f.data.title}</div>
+            )}
+          </div>
+          <div style="margin-top:8px; font-size:.82rem; font-weight:600; color:var(--fg); line-height:1.25;">{f.data.title}</div>
+          <div style="font-size:.74rem; color:var(--muted); margin-top:2px;">{f.data.year} · {f.data.type === 'series' ? 'AI Series' : 'AI Movie'}</div>
+        </a>
+      ))}
+    </div>
+  ) : (
+    <p class="meta" style="margin-top:24px; color:var(--muted);">No films in this genre yet.</p>
+  )}
+</BaseLayout>

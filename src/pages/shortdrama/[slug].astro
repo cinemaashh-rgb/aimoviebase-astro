@@ -1,0 +1,81 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('shortdrama');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const d = entry.data;
+---
+<BaseLayout title={d.title} description={d.description ?? d.tagline}>
+  {d.status === 'coming-soon' ? (
+    <>
+      <span style="display:inline-block; font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; font-weight:700; color:#fff; background:var(--accent); border-radius:999px; padding:4px 12px; margin:30px 0 14px;">Coming Soon</span>
+      <h1 style="margin-top:4px">{d.title}</h1>
+      <p class="lede" style="color:var(--muted); max-width:640px; line-height:1.5">{d.tagline}</p>
+      <div style="border:1px dashed #262a31; border-radius:10px; padding:40px 24px; text-align:center; color:var(--muted); margin-top:18px;">
+        <strong style="display:block; color:var(--fg); font-size:1rem; margin-bottom:6px; font-family:Georgia,serif;">No titles yet</strong>
+        Nothing has been published in {d.title} yet — check back as new vertical-drama titles are added to the catalog.
+      </div>
+    </>
+  ) : (
+    <div style="display:grid; grid-template-columns:1fr; gap:16px; margin:30px 0 40px;" class="dramaHero">
+      <style>
+        @media(min-width:768px){.dramaHero{grid-template-columns:220px 1fr !important;gap:20px !important}}
+      </style>
+      <div style="aspect-ratio:2/3; border-radius:8px; overflow:hidden; background:var(--bg-elev);">
+        {d.poster && <img src={d.poster} alt={d.title} style="width:100%;height:100%;object-fit:cover;display:block;" loading="eager" />}
+      </div>
+      <div>
+        <h1 style="font-size:2.2rem; margin-bottom:8px;">{d.title}</h1>
+        <div style="color:var(--muted); font-size:.9rem; margin-bottom:10px;">
+          {d.year} · vertical short drama {d.episodes && <>&nbsp;·&nbsp; {d.episodes} episodes</>} {d.platform && <>&nbsp;·&nbsp; {d.platform}</>}
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin:14px 0;">
+          {d.badges.map((b) => (
+            <span style="display:inline-flex; align-items:center; gap:6px; background:var(--bg-elev); border:1px solid #262a31; border-radius:999px; padding:6px 14px; font-size:.78rem; color:var(--muted); font-weight:500;">{b}</span>
+          ))}
+        </div>
+        <p style="font-size:.9rem; margin:14px 0 18px; max-width:520px; line-height:1.6;">{d.description}</p>
+
+        {d.creatorName && (
+          <>
+            <h2 style="font-size:.9rem; margin:0 0 10px;">Creator</h2>
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+              <div style="flex:0 0 44px; width:44px; height:44px; border-radius:999px; display:flex; align-items:center; justify-content:center; font-size:.9rem; font-weight:700; color:#fff; background:var(--accent);">
+                {d.creatorName.split(' ').slice(0, 2).map((w) => w.charAt(0)).join('').toUpperCase()}
+              </div>
+              <div>
+                <div style="font-weight:600; font-size:.9rem;">{d.creatorName}</div>
+                {d.creatorRole && <div style="font-size:.74rem; color:var(--muted);">{d.creatorRole}</div>}
+              </div>
+            </div>
+          </>
+        )}
+
+        {d.watchUrl && (
+          <>
+            <h2 style="font-size:.9rem; margin:0 0 10px;">Watch</h2>
+            <a href={d.watchUrl} target="_blank" rel="noopener noreferrer" style="background:#fff; color:#000; font-weight:700; border-radius:999px; padding:13px 30px; display:inline-flex; align-items:center; gap:8px; font-size:.95rem;">▶ Watch</a>
+          </>
+        )}
+      </div>
+    </div>
+  )}
+
+  {d.status === 'published' && d.descriptionMore && (
+    <>
+      <h2 style="margin-top:2em">Full Description</h2>
+      <p style="line-height:1.6; max-width:680px;">{d.descriptionMore}</p>
+      <p style="font-size:.78rem; color:var(--muted); font-style:italic; margin-top:10px;">
+        {d.title} {d.watchUrl ? 'is published by' : 'streams on'} {d.platform ?? d.creatorName}. Cast, crew and per-episode details beyond what the platform publishes are still being documented as more information becomes publicly available.
+      </p>
+    </>
+  )}
+</BaseLayout>

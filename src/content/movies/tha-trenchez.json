@@ -1,0 +1,17 @@
+{
+  "movie_id": "bbb5aaba-18d0-4b94-ac3d-f55f0b60e9a0",
+  "title": "Tha Trenchez: Episode 01",
+  "year": 2026,
+  "type": "movie",
+  "duration": "15:04",
+  "genres": [
+    "Cyberpunk"
+  ],
+  "synopsis": "The first episode of the cyberpunk short series Tha Trenchez, directed by Ben Griffin.",
+  "poster": "/images/posters/tha-trenchez.webp",
+  "youtubeId": "U2m1UX8Nrwc",
+  "director": {
+    "name": "Ben Griffin",
+    "slug": "ben-griffin"
+  }
+}

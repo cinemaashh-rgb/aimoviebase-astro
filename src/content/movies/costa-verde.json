@@ -1,0 +1,26 @@
+{
+  "movie_id": "8091e2c1-b31a-49a5-a15a-55e16d7e29d0",
+  "title": "Costa Verde",
+  "year": 2025,
+  "type": "movie",
+  "duration": "11:35",
+  "genres": [
+    "Drama"
+  ],
+  "country": "France",
+  "synopsis": "An award-winning AI-generated drama short.",
+  "poster": "/images/posters/costa-verde.webp",
+  "director": {
+    "name": "Léo Cannone"
+  },
+  "aiTools": [
+    "Midjourney",
+    "Runway",
+    "Kling 3.0",
+    "Google Flow",
+    "Dreamina"
+  ],
+  "awards": [
+    "Multiple festival selections"
+  ]
+}

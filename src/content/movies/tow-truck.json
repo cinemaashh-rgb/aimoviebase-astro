@@ -1,0 +1,18 @@
+{
+  "movie_id": "65c754dd-3c0e-40d7-8dad-504dc29a0b88",
+  "title": "Tow Truck",
+  "year": 2026,
+  "type": "movie",
+  "duration": "10:53",
+  "genres": [
+    "Comedy",
+    "Sci-Fi"
+  ],
+  "synopsis": "A Higgsfield.ai AI Global Film Festival comedy-sci-fi short directed by Gregory Ivanets.",
+  "poster": "/images/posters/tow-truck.webp",
+  "youtubeId": "E1pouibQFwo",
+  "director": {
+    "name": "Gregory Ivanets",
+    "slug": "gregory-ivanets"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "creator_id": "41f6e21d-c11a-40d3-86d2-8e63a8592a35",
+  "name": "Robert Gaudette",
+  "role": "Director, Writer",
+  "studio": {
+    "name": "Nolia Studios (co-founder)"
+  },
+  "basedIn": "Toronto, Canada",
+  "knownFor": [
+    "Romance",
+    "Drama"
+  ],
+  "bio": "Toronto-based filmmaker and co-founder of Nolia Studios, an AI-native production company.",
+  "bioMore": "His short \"A Face Only A Mother Could Love\" won the $50,000 Grand Prix at Runway's AI Film Festival (AIFF) 2026 and the Reply AI Film Festival 2026 in Venice, made using Grok, Nano Banana, and Seedance.",
+  "photo": "/images/people/robert-gaudette.webp",
+  "films": [
+    "a-face-only-a-mother-could-love"
+  ]
+}

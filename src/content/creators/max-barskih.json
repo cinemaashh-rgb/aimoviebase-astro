@@ -1,0 +1,18 @@
+{
+  "creator_id": "7f6b2ab5-2198-4668-860a-e7f4657861c3",
+  "name": "Max Barskih",
+  "role": "Director, Editor",
+  "studio": {
+    "name": "Independent"
+  },
+  "basedIn": "Ukraine",
+  "knownFor": [
+    "Sci-Fi"
+  ],
+  "bio": "A Ukrainian AI filmmaker and content creator with a YouTube audience of more than 1 million subscribers.",
+  "bioMore": "Makes short sci-fi AI films solo, using generative tools (Higgsfield AI) as his crew — personally handling the story, shot list, editing rhythm, and color. Creator of the short film RESET, selected for the Higgsfield Global Film Festival.",
+  "photo": "/images/people/max-barskih.webp",
+  "films": [
+    "reset"
+  ]
+}

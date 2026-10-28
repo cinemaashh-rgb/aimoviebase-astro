@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const awards = await getCollection('awards');
+
+const otherFestivals = [
+  { emoji: '🎬', name: 'Reply AI Film Festival', sub: 'Venice, Italy · held alongside the Venice International Film Festival', years: '2025 — 2026', url: 'https://www.reply.com/en/', label: 'reply.com' },
+  { emoji: '🧪', name: 'Higgsfield Global Film Festival', sub: 'Online · the in-house festival of Higgsfield AI', years: '2026', url: 'https://higgsfield.ai/', label: 'higgsfield.ai' },
+  { emoji: '🎞️', name: 'BIFAN — Bucheon International Fantastic Film Festival', sub: 'Bucheon, South Korea · includes a Best Technical Achievement category for AI-assisted work', years: '2025', url: 'https://www.bifan.kr/', label: 'bifan.kr' },
+];
+---
+<BaseLayout title="Awards & Festivals" description="AI film awards and festivals: Astana AI Film Festival (AAIFF), Runway AI Film Festival (AIFF), Reply AI Film Festival, Higgsfield Global Film Festival, BIFAN and more.">
+  <h1 style="margin-top:34px">Awards & Festivals</h1>
+  <p style="color:var(--muted); max-width:640px; line-height:1.5; margin-bottom:28px;">The festivals and prizes that matter in AI filmmaking right now — from a $2,000,000 open call in Astana to Runway's annual showcase at Lincoln Center.</p>
+
+  <h2 style="margin-top:0">Covered on AI Movie Base</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-bottom:10px;">
+    {awards.map((award) => (
+      <a class="movieCard" href={`/awards/${award.id}`} style="padding:16px;">
+        <div style="font-weight:600; font-size:.95rem;">{award.data.name}</div>
+        <p style="color:var(--muted); font-size:.82rem; line-height:1.4; margin:6px 0 4px;">{award.data.description.slice(0, 140)}…</p>
+        <div style="color:var(--accent); font-size:.78rem;">{award.data.dates}</div>
+      </a>
+    ))}
+  </div>
+
+  <h2>Also recognizing AI cinema</h2>
+  <p style="color:var(--muted); margin-bottom:16px;">Pages for these are on the way — for now, here's where to find them.</p>
+
+  {otherFestivals.map((f) => (
+    <div style="display:flex; align-items:center; gap:16px; border:1px solid #262a31; border-radius:8px; padding:14px 16px; margin-bottom:10px;">
+      <div style="flex:0 0 46px; width:46px; height:46px; border-radius:10px; background:var(--bg-elev); display:flex; align-items:center; justify-content:center; font-size:1.3rem;">{f.emoji}</div>
+      <div style="flex:1; min-width:0;">
+        <strong style="font-size:.95rem; font-weight:700;">{f.name}</strong>
+        <div style="font-size:.78rem; color:var(--muted); margin-top:2px;">{f.sub}</div>
+      </div>
+      <div style="font-size:.78rem; color:var(--muted); flex-shrink:0;">{f.years}</div>
+      <a href={f.url} target="_blank" rel="noopener" style="font-size:.78rem; color:var(--accent); font-weight:600; flex-shrink:0;">{f.label} ↗</a>
+    </div>
+  ))}
+
+  <p style="color:var(--muted); font-size:.78rem; margin-top:22px; font-style:italic;">List will keep growing as more AI film festivals come online.</p>
+</BaseLayout>

@@ -1,0 +1,22 @@
+{
+  "movie_id": "352463f3-00da-4f06-aed0-b6b060f952b6",
+  "title": "Echo Hunter",
+  "year": 2025,
+  "type": "movie",
+  "duration": "24:00",
+  "genres": [
+    "Sci-Fi",
+    "Action"
+  ],
+  "synopsis": "An AI-generated sci-fi action short film.",
+  "poster": "/images/posters/echo-hunter.webp",
+  "youtubeId": "7feeEOWYkv4",
+  "director": {
+    "name": "Kavan Cardoza"
+  },
+  "studio": "Phantom X",
+  "aiTools": [
+    "Arcana AI",
+    "Runway"
+  ]
+}

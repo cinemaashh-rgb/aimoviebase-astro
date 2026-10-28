@@ -1,0 +1,77 @@
+{
+  "name": "Runway AI Film Festival (AIFF)",
+  "location": "New York & Los Angeles, USA (Alice Tully Hall at Lincoln Center; Eli and Edythe Broad Stage)",
+  "dates": "2023 — present, annually",
+  "siteUrl": "https://aiff.runwayml.com",
+  "description": "Established in 2022 and first held in 2023, AIFF is Runway's annual showcase for filmmakers and artists using AI tools in production. Ten finalists are selected from thousands of submissions each year and shown at gala screenings in New York and Los Angeles before partner festivals worldwide. The 2025 edition drew more than 6,000 submissions and was judged by Gaspar Noé, Harmony Korine, and Tribeca's Jane Rosenthal; prizes run from a $15,000 Grand Prix plus 1,000,000 Runway credits down to five Merit awards.",
+  "stats": [
+    { "label": "Organizer", "value": "Runway" },
+    { "label": "Runs", "value": "2023 — present, annually" }
+  ],
+  "sections": [
+    {
+      "label": "2026",
+      "winners": [
+        {
+          "place": "Grand Prix · $50,000",
+          "title": "A Face Only A Mother Could Love",
+          "movieSlug": "a-face-only-a-mother-could-love",
+          "director": "Robert Gaudette",
+          "directorSlug": "robert-gaudette",
+          "poster": "/images/posters/a-face-only-a-mother-could-love.webp",
+          "notes": []
+        }
+      ]
+    },
+    {
+      "label": "2025",
+      "winners": [
+        {
+          "place": "Grand Prix",
+          "title": "Total Pixel Space",
+          "movieSlug": "total-pixel-space",
+          "director": "Jacob Adler",
+          "directorSlug": "jacob-adler",
+          "poster": "/images/posters/total-pixel-space.webp",
+          "notes": [
+            { "category": "Gold", "title": "JAILBIRD", "movieSlug": "jailbird", "director": "Andrew Salter", "directorSlug": "andrew-salter" },
+            { "category": "Silver", "title": "ONE", "director": "Ricardo Villavicencio & Edward Saatchi", "directorSlug": "ricardo-villavicencio" },
+            { "category": "Honoree", "title": "More Tears Than Harm", "director": "Herinarivo Rakotomanana", "directorSlug": "herinarivo-rakotomanana" },
+            { "category": "Honoree", "title": "Distance Between Two Points Of Me", "director": "Illya Dutsyk, Bogdan Nesvit, Anatolii Kasianov" },
+            { "category": "Merit", "title": "Fragments Of Nowhere", "director": "Vallée Duhamel", "directorSlug": "vallee-duhamel" },
+            { "category": "Merit", "title": "RōHKI — A Million Trillion Pathways", "director": "Hachi and IO" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "2024",
+      "winners": [
+        {
+          "place": "Grand Prix",
+          "title": "Get Me Out / 囚われて",
+          "director": "Daniel Antebi",
+          "notes": [
+            { "category": "Selected finalist", "title": "Pounamu", "director": "Samuel Schrag" },
+            { "category": "Selected finalist", "title": "e^(iπ) + 1 = 0", "director": "Junie Lau" },
+            { "category": "Selected finalist", "title": "Where Do Grandmas Go When They Get Lost?", "director": "Léo Cannone", "directorSlug": "leo-cannone" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "2023",
+      "winners": [
+        {
+          "place": "Grand Prix",
+          "title": "Generation",
+          "director": "Riccardo Fusetti",
+          "notes": [
+            { "category": "Gold", "title": "Checkpoint", "director": "Áron Filkey & Joss Fong" },
+            { "category": "Silver", "title": "Given Again", "director": "Jake Oleson" }
+          ]
+        }
+      ]
+    }
+  ]
+}

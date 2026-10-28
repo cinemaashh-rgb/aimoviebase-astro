@@ -1,0 +1,23 @@
+{
+  "movie_id": "e768f3dc-9a5e-43f1-9888-123d4c24c515",
+  "title": "Hydrocide",
+  "year": 2026,
+  "type": "movie",
+  "duration": "23:00",
+  "genres": [
+    "Sci-Fi"
+  ],
+  "synopsis": "An AI-generated sci-fi short film.",
+  "poster": "/images/posters/hydrocide.webp",
+  "youtubeId": "KlZWNjrGwpE",
+  "director": {
+    "name": "Kévin Mendiboure"
+  },
+  "aiTools": [
+    "Seedance 2.5",
+    "Nano Banana Pro",
+    "GPT Image 2",
+    "Suno",
+    "Topaz Video AI"
+  ]
+}

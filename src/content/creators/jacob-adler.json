@@ -1,0 +1,16 @@
+{
+  "creator_id": "fb7cb2cc-16c7-4de9-b152-e27a8f274107",
+  "name": "Jacob Adler",
+  "role": "Director, Musician",
+  "studio": {
+    "name": "Independent"
+  },
+  "knownFor": [
+    "Experimental"
+  ],
+  "bio": "Filmmaker and musician behind \"Total Pixel Space,\" winner of the Grand Prix at Runway's AI Film Festival (AIFF) 2025.",
+  "bioMore": "The nine-minute-28-second essay film uses generative AI imagery and a chain of combinatorial math to ask how many possible digital images could ever exist.",
+  "films": [
+    "total-pixel-space"
+  ]
+}

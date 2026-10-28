@@ -1,0 +1,12 @@
+{
+  "studio_id": "090b8dbb-330b-4413-a59b-0e6e1d6baf47",
+  "name": "Phantom X",
+  "basedIn": "Los Angeles, California",
+  "description": "A director-led AI studio based in Los Angeles.",
+  "descriptionMore": "Founded, by its own account, by industry veterans with backgrounds in advertising production, game cinematics, and technology innovation. Positions itself as a studio that \"builds films, not demos,\" guided by the principles Craft Over Gimmick, Director-Led, and Speed Without Sacrifice. Releases both original IP (The Chronicles of Bone, Echo Hunter, Exile Protocol, Red Rainbow, Metamorphosis, The Sage, Last Recall) and commercial work for brands — Nike, Porsche, Booking.com, Sixt, Premier League, WTA Finals Riyadh, Kalshi, and others. The studio's directing roster includes Kavan the Kid, Mike J Mitch, S.A.V, Rafa, and Aze Alter. The studio has been covered by Forbes, The Guardian, Los Angeles Times, Deadline, and TechRadar.",
+  "films": [
+    "red-rainbow",
+    "the-sage-homecoming",
+    "echo-hunter"
+  ]
+}

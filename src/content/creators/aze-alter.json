@@ -1,0 +1,18 @@
+{
+  "creator_id": "8670160c-37be-45ed-8073-5a5064ff7511",
+  "name": "Aze Alter",
+  "role": "Director, Cinematographer",
+  "studio": {
+    "name": "Phantom X",
+    "slug": "phantom-x"
+  },
+  "knownFor": [
+    "Sci-Fi"
+  ],
+  "bio": "AI Director at Phantom X.",
+  "bioMore": "An award-winning director and cinematographer who has been making videos since age 6; ran a YouTube channel from 2011–2014 that grew to more than 250,000 subscribers. Worked in VFX, animation, advertising, and music videos for major artists before returning to cinematic sci-fi storytelling. Known for the retro-futuristic sci-fi universe Red Rainbow.",
+  "photo": "/images/people/aze-alter.webp",
+  "films": [
+    "red-rainbow"
+  ]
+}

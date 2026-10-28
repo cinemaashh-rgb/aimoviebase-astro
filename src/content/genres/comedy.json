@@ -1,0 +1,5 @@
+{
+  "name": "Comedy",
+  "description": "AI comedy films — playful, absurd and sharply timed shorts that put generative video's quirks to good use.",
+  "films": ["tow-truck", "it-was-just-a-joke"]
+}

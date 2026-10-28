@@ -1,0 +1,20 @@
+{
+  "movie_id": "87d184f2-1249-434f-83b6-743937edcf63",
+  "title": "ODA",
+  "year": 2026,
+  "type": "movie",
+  "duration": "11:34",
+  "genres": [
+    "Sci-Fi"
+  ],
+  "synopsis": "A Higgsfield Global Film Festival 2026 sci-fi short by Shal Ngo.",
+  "poster": "/images/posters/oda.webp",
+  "youtubeId": "zQdiOMkyjKc",
+  "director": {
+    "name": "Shal Ngo",
+    "slug": "shal-ngo"
+  },
+  "awards": [
+    "Higgsfield Global Film Festival 2026 selection"
+  ]
+}

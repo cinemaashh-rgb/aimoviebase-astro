@@ -1,0 +1,20 @@
+{
+  "movie_id": "e952af04-0e3a-4248-a0d5-cb66154d18ed",
+  "title": "Cupid",
+  "year": 2026,
+  "type": "movie",
+  "duration": "4:27",
+  "genres": [
+    "Action",
+    "Sci-Fi"
+  ],
+  "synopsis": "An AI-generated action sci-fi short.",
+  "poster": "/images/posters/cupid.webp",
+  "youtubeId": "ZoqzD_NMa4w",
+  "director": {
+    "name": "Shestak"
+  },
+  "aiTools": [
+    "Higgsfield AI"
+  ]
+}

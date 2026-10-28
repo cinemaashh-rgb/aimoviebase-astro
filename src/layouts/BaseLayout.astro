@@ -1,0 +1,187 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description = 'AI Movie Base — catalog of AI-generated films.' } = Astro.props;
+
+// Canonical URL, derived automatically for every page that renders this layout.
+// Astro.site comes from astro.config.mjs ("https://aimoviebase.com", non-www —
+// this is the single canonical domain form for the whole site; see README for
+// the GA4 www discrepancy that needs aligning separately in Vercel/DNS/GA4).
+// Astro.url.pathname always has no trailing slash here because
+// trailingSlash:false is set in both vercel.json and this site's routing, so
+// every internal link and every canonical tag agree on the same format.
+const canonicalPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const canonicalURL = new URL(canonicalPath, Astro.site).href;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title} | AI Movie Base</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalURL} />
+  <link rel="icon" href="/favicon.ico" />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P7NMTTEBQ6"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-P7NMTTEBQ6');
+  </script>
+  <!-- Yandex Metrika -->
+  <script is:inline>
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();
+    for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+    ym(113765836, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true });
+  </script>
+  <style>
+    :root {
+      --bg: #000;
+      --bg-elev: #07080a;
+      --fg: #f2f3f5;
+      --muted: #9aa0a6;
+      --accent: #4fa8ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: linear-gradient(180deg,#000 0%,#07080a 10%,#0a0b0d 100%);
+      color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    h1, h2, h3 { font-family: Georgia, 'Times New Roman', serif; }
+    a { color: var(--accent); text-decoration: none; }
+    .darkHeader {
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    .darkHeader nav { display: flex; align-items: center; gap: 1.5rem; }
+    .darkHeader nav a { color: var(--fg); font-size: 0.95rem; }
+    .darkHeader nav a:hover { color: var(--accent); }
+    .siteSearch { position: relative; width: 220px; }
+    .searchInput { width: 100%; font-size: .85rem; border-radius: 6px; padding: 8px 12px; outline: none; background: #1f242b; border: 1px solid #2c323b; color: var(--fg); }
+    .searchInput::placeholder { color: var(--muted); }
+    .searchResults { display: none; position: absolute; right: 0; left: auto; width: 340px; margin-top: 8px; border-radius: 10px; overflow: hidden; z-index: 60; max-height: 420px; overflow-y: auto; background: #1a1d22; border: 1px solid #2c323b; box-shadow: 0 16px 40px rgba(0,0,0,.5); }
+    .searchItem { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-top: 1px solid #23262c; }
+    .searchItem:first-child { border-top: none; }
+    .searchItem:hover { background: #22262d; }
+    .searchThumb { flex: 0 0 42px; width: 42px; height: 58px; border-radius: 5px; overflow: hidden; background: linear-gradient(135deg,#2a2e36,#1f2228); display: flex; align-items: center; justify-content: center; font-size: .74rem; font-weight: 700; color: #9aa1ad; border: 1px solid #2c323b; }
+    .searchThumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .searchInfo { min-width: 0; flex: 1; }
+    .searchTitle { font-weight: 600; font-size: .85rem; color: #eceef1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .searchSub { font-size: .72rem; color: #767b85; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .searchEmpty { padding: 14px 12px; font-size: .85rem; color: #767b85; }
+    main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    footer { padding: 2rem; text-align: center; color: var(--muted); border-top: 1px solid #1a1a1a; }
+    .movieGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1.25rem; }
+    .movieCard { background: var(--bg-elev); border-radius: 10px; overflow: hidden; transition: transform .15s; }
+    .movieCard:hover { transform: translateY(-4px); }
+    .movieCard img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
+    .movieCard .cardBody { padding: 0.6rem 0.7rem; }
+    .movieCard h3 { font-size: 0.95rem; margin: 0 0 0.2rem; color: var(--fg); }
+    .movieCard .meta { color: var(--muted); font-size: 0.8rem; }
+    #videoModalOverlay {
+      display: none;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+      z-index: 100; align-items: center; justify-content: center;
+    }
+    #videoModalOverlay.open { display: flex; }
+    #videoModalOverlay .modalInner { width: min(900px, 90vw); aspect-ratio: 16/9; }
+    #videoModalOverlay iframe { width: 100%; height: 100%; border: 0; }
+  </style>
+</head>
+<body>
+  <header class="darkHeader">
+    <a href="/" style="font-family: Georgia, serif; font-size: 1.3rem; color: var(--fg);">AI Movie Base</a>
+    <nav>
+      <a href="/movies">Movies</a>
+      <a href="/shortformdrama">Short Drama</a>
+      <a href="/lists">Lists</a>
+      <a href="/news">News</a>
+      <div class="siteSearch">
+        <input class="searchInput" type="text" placeholder="Search films and studios…" />
+        <div class="searchResults"></div>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <slot />
+  </main>
+  <footer>
+    <nav style="display:flex; gap:1.5rem; justify-content:center; margin-bottom:0.75rem;">
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </nav>
+    <p>&copy; {new Date().getFullYear()} AI Movie Base</p>
+  </footer>
+
+  <div id="videoModalOverlay">
+    <div class="modalInner" id="modalInner"></div>
+  </div>
+  <script src="/search-data.js" is:inline></script>
+  <script is:inline>
+    (function () {
+      function initials(t) {
+        var w = t.replace(/[^\p{L}\p{N} ]/gu, '').trim().split(/\s+/);
+        return ((w[0] || '').charAt(0) + (w[1] || '').charAt(0)).toUpperCase();
+      }
+      function init(root) {
+        var input = root.querySelector('.searchInput');
+        var box = root.querySelector('.searchResults');
+        if (!input || !box) return;
+        function render() {
+          var q = input.value.trim().toLowerCase();
+          box.innerHTML = '';
+          if (q.length < 2 || typeof DATA === 'undefined') { box.style.display = 'none'; return; }
+          var res = DATA.filter(function (d) { return d.title.toLowerCase().indexOf(q) >= 0; }).slice(0, 12);
+          if (res.length === 0) {
+            box.innerHTML = '<div class="searchEmpty">No results found</div>';
+          } else {
+            box.innerHTML = res.map(function (d) {
+              var thumb = d.img ? '<img src="' + d.img + '" alt="">' : initials(d.title);
+              return '<a class="searchItem" href="' + d.href + '"><div class="searchThumb">' + thumb + '</div><div class="searchInfo"><div class="searchTitle">' + d.title + '</div><div class="searchSub">' + d.sub + '</div></div></a>';
+            }).join('');
+          }
+          box.style.display = 'block';
+        }
+        input.addEventListener('input', render);
+        input.addEventListener('focus', render);
+        input.addEventListener('blur', function () { setTimeout(function () { box.style.display = 'none'; }, 150); });
+      }
+      document.querySelectorAll('.siteSearch').forEach(init);
+    })();
+  </script>
+  <script is:inline>
+    function openTrailer(id) {
+      var inner = document.getElementById('modalInner');
+      inner.innerHTML = '<iframe src="https://www.youtube.com/embed/' + id + '?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+      document.getElementById('videoModalOverlay').classList.add('open');
+    }
+    function closeTrailer() {
+      document.getElementById('videoModalOverlay').classList.remove('open');
+      document.getElementById('modalInner').innerHTML = '';
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      document.getElementById('videoModalOverlay').addEventListener('click', function (e) {
+        if (e.target.id === 'videoModalOverlay') closeTrailer();
+      });
+    });
+  </script>
+</body>
+</html>

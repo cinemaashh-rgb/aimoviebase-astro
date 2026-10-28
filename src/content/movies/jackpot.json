@@ -1,0 +1,17 @@
+{
+  "movie_id": "9c657490-a993-4629-a2a2-b9e79b0c9e9e",
+  "title": "Jackpot",
+  "year": 2026,
+  "type": "movie",
+  "duration": "12:56",
+  "genres": [
+    "Sci-Fi",
+    "Comedy"
+  ],
+  "synopsis": "An AI-generated sci-fi comedy short.",
+  "poster": "/images/posters/jackpot.webp",
+  "youtubeId": "q98WM0Gta0A",
+  "director": {
+    "name": "Dair Karakeev"
+  }
+}

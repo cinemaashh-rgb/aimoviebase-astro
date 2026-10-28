@@ -1,0 +1,25 @@
+{
+  "movie_id": "594c8402-c5be-4459-a5db-544594b2baf6",
+  "title": "A Face Only a Mother Could Love",
+  "year": 2026,
+  "type": "movie",
+  "duration": "7:50",
+  "genres": [
+    "Romance"
+  ],
+  "synopsis": "An award-winning AI-generated romance short.",
+  "poster": "/images/posters/a-face-only-a-mother-could-love.webp",
+  "youtubeId": "wytfCS-N8Sk",
+  "director": {
+    "name": "Robert Gaudette"
+  },
+  "aiTools": [
+    "Grok",
+    "Nano Banana",
+    "Seedance"
+  ],
+  "awards": [
+    "Grand Prix AIFF 2026",
+    "Reply AIFF 2026"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "movie_id": "4af54cb6-f788-4ebb-a2ea-0dbf722acadd",
+  "title": "The Sage: Homecoming",
+  "year": 2026,
+  "type": "series",
+  "genres": [
+    "Horror"
+  ],
+  "synopsis": "A 7-episode horror series from Phantom X, directed by Mike J Mitch, made with Invideo AI, released March through September 2026.",
+  "poster": "/images/posters/the-sage-homecoming.webp",
+  "youtubeId": "R2mwBtuuKsA",
+  "director": {
+    "name": "Mike J Mitch",
+    "slug": "mike-j-mitch"
+  },
+  "studio": "Phantom X",
+  "aiTools": [
+    "Invideo AI"
+  ]
+}

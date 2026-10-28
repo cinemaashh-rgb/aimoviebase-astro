@@ -1,0 +1,23 @@
+{
+  "movie_id": "d1713a17-513e-466a-a838-1d6332ade3fa",
+  "title": "The Chronicles of Bone",
+  "year": 2026,
+  "type": "series",
+  "genres": [
+    "Fantasy",
+    "Action"
+  ],
+  "synopsis": "A monthly fantasy-action series with 40+ characters across 5 planned seasons, created by Kavan Cardoza using Freepik and Magnific.",
+  "poster": "/images/posters/the-chronicles-of-bone.webp",
+  "youtubeId": "y7gIoHq-YDo",
+  "director": {
+    "name": "Kavan Cardoza",
+    "slug": "kavan-cardoza"
+  },
+  "studio": "Freepik + Magnific",
+  "episodes": [
+    {
+      "title": "Chapter One: A Vengeful Fairy"
+    }
+  ]
+}

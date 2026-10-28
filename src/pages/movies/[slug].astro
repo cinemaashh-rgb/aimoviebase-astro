@@ -1,0 +1,87 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const movies = await getCollection('movies');
+  return movies.map((movie) => ({
+    params: { slug: movie.id },
+    props: { movie },
+  }));
+}
+
+interface Props {
+  movie: CollectionEntry<'movies'>;
+}
+const { movie } = Astro.props;
+const m = movie.data;
+---
+<BaseLayout title={m.title} description={m.synopsis}>
+  <div class="heroGrid" style="display:grid; grid-template-columns: 300px 1fr; gap: 2rem;">
+    {m.poster ? (
+      <img class="posterMain" src={m.poster} alt={m.title} style="width:100%; border-radius:10px;" />
+    ) : (
+      <div class="posterMain" style="width:100%; aspect-ratio:2/3; border-radius:10px; display:flex; align-items:center; justify-content:center; text-align:center; padding:10px; font-weight:600; font-size:.85rem; color:var(--muted); background:linear-gradient(135deg,#f0ebe0,#f7f3ee);">{m.title}</div>
+    )}
+    <div>
+      <h1>{m.title}</h1>
+      <p class="meta" style="color:var(--muted);">
+        {m.year} · {m.type === 'series' ? 'Series' : 'Movie'}{m.duration ? ` · ${m.duration}` : ''}{m.country ? ` · ${m.country}` : ''}
+      </p>
+      <p class="meta" style="color:var(--muted);">{m.genres.join(', ')}</p>
+      <p>{m.synopsis}</p>
+
+      {m.youtubeId && (
+        <button class="btnPlay" onclick={`openTrailer('${m.youtubeId}')`} style="background:var(--accent); color:#000; border:0; padding:0.6rem 1.2rem; border-radius:6px; cursor:pointer; font-weight:600;">
+          ▶ Watch Trailer
+        </button>
+      )}
+
+      {m.director && (
+        <div class="creatorCard" style="margin-top:1.5rem;">
+          <p class="meta" style="color:var(--muted); margin-bottom:0.25rem;">Director</p>
+          {m.director.slug ? (
+            <a href={`/name/${m.director.slug}`}>{m.director.name}</a>
+          ) : (
+            <span>{m.director.name}</span>
+          )}
+        </div>
+      )}
+
+      {m.studio && <p class="meta" style="color:var(--muted); margin-top:0.75rem;">Studio: {m.studio}</p>}
+
+      {m.aiTools.length > 0 && (
+        <div class="toolsGrid" style="margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+          {m.aiTools.map((tool) => (
+            <span class="toolCard" style="background:var(--bg-elev); padding:0.3rem 0.7rem; border-radius:6px; font-size:0.85rem;">{tool}</span>
+          ))}
+        </div>
+      )}
+
+      {m.awards.length > 0 && (
+        <div style="margin-top:1rem;">
+          <p class="meta" style="color:var(--muted); margin-bottom:0.25rem;">Awards</p>
+          <ul>
+            {m.awards.map((award) => <li>{award}</li>)}
+          </ul>
+        </div>
+      )}
+    </div>
+  </div>
+
+  {m.episodes && m.episodes.length > 0 && (
+    <section style="margin-top:2rem;">
+      <h2>Episodes</h2>
+      <ul>
+        {m.episodes.map((ep) => (
+          <li>
+            {ep.title}
+            {ep.youtubeId && (
+              <button onclick={`openTrailer('${ep.youtubeId}')`} style="margin-left:0.5rem; background:none; border:1px solid var(--accent); color:var(--accent); border-radius:4px; cursor:pointer; padding:0.1rem 0.5rem;">▶</button>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</BaseLayout>

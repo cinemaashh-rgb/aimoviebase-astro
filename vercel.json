@@ -1,0 +1,732 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/images/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/about.html",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/contact.html",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/privacy.html",
+      "destination": "/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/terms.html",
+      "destination": "/terms",
+      "permanent": true
+    },
+    {
+      "source": "/lists.html",
+      "destination": "/lists",
+      "permanent": true
+    },
+    {
+      "source": "/news.html",
+      "destination": "/news",
+      "permanent": true
+    },
+    {
+      "source": "/movies.html",
+      "destination": "/movies",
+      "permanent": true
+    },
+    {
+      "source": "/shortformdrama.html",
+      "destination": "/shortformdrama",
+      "permanent": true
+    },
+    {
+      "source": "/studios/index.html",
+      "destination": "/studios",
+      "permanent": true
+    },
+    {
+      "source": "/studios.html",
+      "destination": "/studios",
+      "permanent": true
+    },
+    {
+      "source": "/awards/index.html",
+      "destination": "/awards",
+      "permanent": true
+    },
+    {
+      "source": "/awards.html",
+      "destination": "/awards",
+      "permanent": true
+    },
+    {
+      "source": "/genre/index.html",
+      "destination": "/genre",
+      "permanent": true
+    },
+    {
+      "source": "/name/index.html",
+      "destination": "/name",
+      "permanent": true
+    },
+    {
+      "source": "/shortdrama/index.html",
+      "destination": "/shortdrama",
+      "permanent": true
+    },
+    {
+      "source": "/movies/9091.html",
+      "destination": "/movies/9091",
+      "permanent": true
+    },
+    {
+      "source": "/movies/a-dollar-story.html",
+      "destination": "/movies/a-dollar-story",
+      "permanent": true
+    },
+    {
+      "source": "/movies/a-face-only-a-mother-could-love.html",
+      "destination": "/movies/a-face-only-a-mother-could-love",
+      "permanent": true
+    },
+    {
+      "source": "/movies/alien-invasion-ep3-total-war-begins.html",
+      "destination": "/movies/alien-invasion-ep3-total-war-begins",
+      "permanent": true
+    },
+    {
+      "source": "/movies/alucard.html",
+      "destination": "/movies/alucard",
+      "permanent": true
+    },
+    {
+      "source": "/movies/annunaki-the-nibiru-legacy.html",
+      "destination": "/movies/annunaki-the-nibiru-legacy",
+      "permanent": true
+    },
+    {
+      "source": "/movies/charlie-boy.html",
+      "destination": "/movies/charlie-boy",
+      "permanent": true
+    },
+    {
+      "source": "/movies/costa-verde.html",
+      "destination": "/movies/costa-verde",
+      "permanent": true
+    },
+    {
+      "source": "/movies/cupid.html",
+      "destination": "/movies/cupid",
+      "permanent": true
+    },
+    {
+      "source": "/movies/do-the-evolution.html",
+      "destination": "/movies/do-the-evolution",
+      "permanent": true
+    },
+    {
+      "source": "/movies/echo-hunter.html",
+      "destination": "/movies/echo-hunter",
+      "permanent": true
+    },
+    {
+      "source": "/movies/hell-grind.html",
+      "destination": "/movies/hell-grind",
+      "permanent": true
+    },
+    {
+      "source": "/movies/hold-your-breath.html",
+      "destination": "/movies/hold-your-breath",
+      "permanent": true
+    },
+    {
+      "source": "/movies/hydrocide.html",
+      "destination": "/movies/hydrocide",
+      "permanent": true
+    },
+    {
+      "source": "/movies/it-was-just-a-joke.html",
+      "destination": "/movies/it-was-just-a-joke",
+      "permanent": true
+    },
+    {
+      "source": "/movies/jackpot.html",
+      "destination": "/movies/jackpot",
+      "permanent": true
+    },
+    {
+      "source": "/movies/jailbird.html",
+      "destination": "/movies/jailbird",
+      "permanent": true
+    },
+    {
+      "source": "/movies/kade-voss.html",
+      "destination": "/movies/kade-voss",
+      "permanent": true
+    },
+    {
+      "source": "/movies/last-recall.html",
+      "destination": "/movies/last-recall",
+      "permanent": true
+    },
+    {
+      "source": "/movies/make-believe.html",
+      "destination": "/movies/make-believe",
+      "permanent": true
+    },
+    {
+      "source": "/movies/memory-world.html",
+      "destination": "/movies/memory-world",
+      "permanent": true
+    },
+    {
+      "source": "/movies/oda.html",
+      "destination": "/movies/oda",
+      "permanent": true
+    },
+    {
+      "source": "/movies/oneiric.html",
+      "destination": "/movies/oneiric",
+      "permanent": true
+    },
+    {
+      "source": "/movies/red-rainbow.html",
+      "destination": "/movies/red-rainbow",
+      "permanent": true
+    },
+    {
+      "source": "/movies/reset.html",
+      "destination": "/movies/reset",
+      "permanent": true
+    },
+    {
+      "source": "/movies/roraima.html",
+      "destination": "/movies/roraima",
+      "permanent": true
+    },
+    {
+      "source": "/movies/signet.html",
+      "destination": "/movies/signet",
+      "permanent": true
+    },
+    {
+      "source": "/movies/still.html",
+      "destination": "/movies/still",
+      "permanent": true
+    },
+    {
+      "source": "/movies/tha-trenchez.html",
+      "destination": "/movies/tha-trenchez",
+      "permanent": true
+    },
+    {
+      "source": "/movies/the-chronicles-of-bone.html",
+      "destination": "/movies/the-chronicles-of-bone",
+      "permanent": true
+    },
+    {
+      "source": "/movies/the-first-honest-day.html",
+      "destination": "/movies/the-first-honest-day",
+      "permanent": true
+    },
+    {
+      "source": "/movies/the-mothers-monster.html",
+      "destination": "/movies/the-mothers-monster",
+      "permanent": true
+    },
+    {
+      "source": "/movies/the-sage-homecoming.html",
+      "destination": "/movies/the-sage-homecoming",
+      "permanent": true
+    },
+    {
+      "source": "/movies/the-sky-fallen-legacy.html",
+      "destination": "/movies/the-sky-fallen-legacy",
+      "permanent": true
+    },
+    {
+      "source": "/movies/total-pixel-space.html",
+      "destination": "/movies/total-pixel-space",
+      "permanent": true
+    },
+    {
+      "source": "/movies/tow-truck.html",
+      "destination": "/movies/tow-truck",
+      "permanent": true
+    },
+    {
+      "source": "/movies/unprompted.html",
+      "destination": "/movies/unprompted",
+      "permanent": true
+    },
+    {
+      "source": "/name/alexandre-tissier.html",
+      "destination": "/name/alexandre-tissier",
+      "permanent": true
+    },
+    {
+      "source": "/name/andrea-de-nittis.html",
+      "destination": "/name/andrea-de-nittis",
+      "permanent": true
+    },
+    {
+      "source": "/name/andrew-salter.html",
+      "destination": "/name/andrew-salter",
+      "permanent": true
+    },
+    {
+      "source": "/name/aze-alter.html",
+      "destination": "/name/aze-alter",
+      "permanent": true
+    },
+    {
+      "source": "/name/ben-griffin.html",
+      "destination": "/name/ben-griffin",
+      "permanent": true
+    },
+    {
+      "source": "/name/dair-karakeev.html",
+      "destination": "/name/dair-karakeev",
+      "permanent": true
+    },
+    {
+      "source": "/name/edward-saatchi.html",
+      "destination": "/name/edward-saatchi",
+      "permanent": true
+    },
+    {
+      "source": "/name/gabriel-bosisio.html",
+      "destination": "/name/gabriel-bosisio",
+      "permanent": true
+    },
+    {
+      "source": "/name/gregory-ivanets.html",
+      "destination": "/name/gregory-ivanets",
+      "permanent": true
+    },
+    {
+      "source": "/name/herinarivo-rakotomanana.html",
+      "destination": "/name/herinarivo-rakotomanana",
+      "permanent": true
+    },
+    {
+      "source": "/name/ishan-devare-modi.html",
+      "destination": "/name/ishan-devare-modi",
+      "permanent": true
+    },
+    {
+      "source": "/name/jacob-adler.html",
+      "destination": "/name/jacob-adler",
+      "permanent": true
+    },
+    {
+      "source": "/name/kavan-cardoza.html",
+      "destination": "/name/kavan-cardoza",
+      "permanent": true
+    },
+    {
+      "source": "/name/kevin-mendiboure.html",
+      "destination": "/name/kevin-mendiboure",
+      "permanent": true
+    },
+    {
+      "source": "/name/leo-cannone.html",
+      "destination": "/name/leo-cannone",
+      "permanent": true
+    },
+    {
+      "source": "/name/max-barskih.html",
+      "destination": "/name/max-barskih",
+      "permanent": true
+    },
+    {
+      "source": "/name/mike-j-mitch.html",
+      "destination": "/name/mike-j-mitch",
+      "permanent": true
+    },
+    {
+      "source": "/name/montlouis-mane.html",
+      "destination": "/name/montlouis-mane",
+      "permanent": true
+    },
+    {
+      "source": "/name/myrzakhan-zhumakhan.html",
+      "destination": "/name/myrzakhan-zhumakhan",
+      "permanent": true
+    },
+    {
+      "source": "/name/qiu-sheng.html",
+      "destination": "/name/qiu-sheng",
+      "permanent": true
+    },
+    {
+      "source": "/name/rafa-pedroso.html",
+      "destination": "/name/rafa-pedroso",
+      "permanent": true
+    },
+    {
+      "source": "/name/ricardo-villavicencio.html",
+      "destination": "/name/ricardo-villavicencio",
+      "permanent": true
+    },
+    {
+      "source": "/name/robert-gaudette.html",
+      "destination": "/name/robert-gaudette",
+      "permanent": true
+    },
+    {
+      "source": "/name/sav.html",
+      "destination": "/name/sav",
+      "permanent": true
+    },
+    {
+      "source": "/name/shal-ngo.html",
+      "destination": "/name/shal-ngo",
+      "permanent": true
+    },
+    {
+      "source": "/name/shestak.html",
+      "destination": "/name/shestak",
+      "permanent": true
+    },
+    {
+      "source": "/name/vallee-duhamel.html",
+      "destination": "/name/vallee-duhamel",
+      "permanent": true
+    },
+    {
+      "source": "/studios/630-motion.html",
+      "destination": "/studios/630-motion",
+      "permanent": true
+    },
+    {
+      "source": "/studios/higgsfield-originals.html",
+      "destination": "/studios/higgsfield-originals",
+      "permanent": true
+    },
+    {
+      "source": "/studios/history-reforged.html",
+      "destination": "/studios/history-reforged",
+      "permanent": true
+    },
+    {
+      "source": "/studios/jeonjo-index.html",
+      "destination": "/studios/jeonjo-index",
+      "permanent": true
+    },
+    {
+      "source": "/studios/mythra.html",
+      "destination": "/studios/mythra",
+      "permanent": true
+    },
+    {
+      "source": "/studios/neon-ridge-media.html",
+      "destination": "/studios/neon-ridge-media",
+      "permanent": true
+    },
+    {
+      "source": "/studios/penalver-universe.html",
+      "destination": "/studios/penalver-universe",
+      "permanent": true
+    },
+    {
+      "source": "/studios/phantom-x.html",
+      "destination": "/studios/phantom-x",
+      "permanent": true
+    },
+    {
+      "source": "/studios/reality-foundry.html",
+      "destination": "/studios/reality-foundry",
+      "permanent": true
+    },
+    {
+      "source": "/studios/the-blue-horizon-ai.html",
+      "destination": "/studios/the-blue-horizon-ai",
+      "permanent": true
+    },
+    {
+      "source": "/shortdrama/billionaire-romance.html",
+      "destination": "/shortdrama/billionaire-romance",
+      "permanent": true
+    },
+    {
+      "source": "/shortdrama/ceo-romance.html",
+      "destination": "/shortdrama/ceo-romance",
+      "permanent": true
+    },
+    {
+      "source": "/shortdrama/family-drama.html",
+      "destination": "/shortdrama/family-drama",
+      "permanent": true
+    },
+    {
+      "source": "/shortdrama/fate-returns-our-destined-love.html",
+      "destination": "/shortdrama/fate-returns-our-destined-love",
+      "permanent": true
+    },
+    {
+      "source": "/shortdrama/mafia-romance.html",
+      "destination": "/shortdrama/mafia-romance",
+      "permanent": true
+    },
+    {
+      "source": "/shortdrama/rebirth.html",
+      "destination": "/shortdrama/rebirth",
+      "permanent": true
+    },
+    {
+      "source": "/shortdrama/revenge.html",
+      "destination": "/shortdrama/revenge",
+      "permanent": true
+    },
+    {
+      "source": "/shortdrama/secret-heir.html",
+      "destination": "/shortdrama/secret-heir",
+      "permanent": true
+    },
+    {
+      "source": "/shortdrama/the-mechanic-prince.html",
+      "destination": "/shortdrama/the-mechanic-prince",
+      "permanent": true
+    },
+    {
+      "source": "/shortdrama/werewolf.html",
+      "destination": "/shortdrama/werewolf",
+      "permanent": true
+    },
+    {
+      "source": "/genre/action.html",
+      "destination": "/genre/action",
+      "permanent": true
+    },
+    {
+      "source": "/genre/animation.html",
+      "destination": "/genre/animation",
+      "permanent": true
+    },
+    {
+      "source": "/genre/comedy.html",
+      "destination": "/genre/comedy",
+      "permanent": true
+    },
+    {
+      "source": "/genre/cyberpunk.html",
+      "destination": "/genre/cyberpunk",
+      "permanent": true
+    },
+    {
+      "source": "/genre/documentary.html",
+      "destination": "/genre/documentary",
+      "permanent": true
+    },
+    {
+      "source": "/genre/drama.html",
+      "destination": "/genre/drama",
+      "permanent": true
+    },
+    {
+      "source": "/genre/experimental.html",
+      "destination": "/genre/experimental",
+      "permanent": true
+    },
+    {
+      "source": "/genre/fantasy.html",
+      "destination": "/genre/fantasy",
+      "permanent": true
+    },
+    {
+      "source": "/genre/funny.html",
+      "destination": "/genre/funny",
+      "permanent": true
+    },
+    {
+      "source": "/genre/horror.html",
+      "destination": "/genre/horror",
+      "permanent": true
+    },
+    {
+      "source": "/genre/romance.html",
+      "destination": "/genre/romance",
+      "permanent": true
+    },
+    {
+      "source": "/genre/scifi.html",
+      "destination": "/genre/scifi",
+      "permanent": true
+    },
+    {
+      "source": "/genre/trailer.html",
+      "destination": "/genre/trailer",
+      "permanent": true
+    },
+    {
+      "source": "/awards/aaiff.html",
+      "destination": "/awards/aaiff",
+      "permanent": true
+    },
+    {
+      "source": "/awards/runway-aiff.html",
+      "destination": "/awards/runway-aiff",
+      "permanent": true
+    },
+    {
+      "source": "/studios/andrea-de-nittis",
+      "destination": "/name/andrea-de-nittis",
+      "permanent": true
+    },
+    {
+      "source": "/studios/andrea-de-nittis.html",
+      "destination": "/name/andrea-de-nittis",
+      "permanent": true
+    },
+    {
+      "source": "/studios/andrew-salter",
+      "destination": "/name/andrew-salter",
+      "permanent": true
+    },
+    {
+      "source": "/studios/andrew-salter.html",
+      "destination": "/name/andrew-salter",
+      "permanent": true
+    },
+    {
+      "source": "/studios/aze-alter",
+      "destination": "/name/aze-alter",
+      "permanent": true
+    },
+    {
+      "source": "/studios/aze-alter.html",
+      "destination": "/name/aze-alter",
+      "permanent": true
+    },
+    {
+      "source": "/studios/edward-saatchi",
+      "destination": "/name/edward-saatchi",
+      "permanent": true
+    },
+    {
+      "source": "/studios/edward-saatchi.html",
+      "destination": "/name/edward-saatchi",
+      "permanent": true
+    },
+    {
+      "source": "/studios/herinarivo-rakotomanana",
+      "destination": "/name/herinarivo-rakotomanana",
+      "permanent": true
+    },
+    {
+      "source": "/studios/herinarivo-rakotomanana.html",
+      "destination": "/name/herinarivo-rakotomanana",
+      "permanent": true
+    },
+    {
+      "source": "/studios/jacob-adler",
+      "destination": "/name/jacob-adler",
+      "permanent": true
+    },
+    {
+      "source": "/studios/jacob-adler.html",
+      "destination": "/name/jacob-adler",
+      "permanent": true
+    },
+    {
+      "source": "/studios/kavan-cardoza",
+      "destination": "/name/kavan-cardoza",
+      "permanent": true
+    },
+    {
+      "source": "/studios/kavan-cardoza.html",
+      "destination": "/name/kavan-cardoza",
+      "permanent": true
+    },
+    {
+      "source": "/studios/max-barskih",
+      "destination": "/name/max-barskih",
+      "permanent": true
+    },
+    {
+      "source": "/studios/max-barskih.html",
+      "destination": "/name/max-barskih",
+      "permanent": true
+    },
+    {
+      "source": "/studios/mike-j-mitch",
+      "destination": "/name/mike-j-mitch",
+      "permanent": true
+    },
+    {
+      "source": "/studios/mike-j-mitch.html",
+      "destination": "/name/mike-j-mitch",
+      "permanent": true
+    },
+    {
+      "source": "/studios/rafa-pedroso",
+      "destination": "/name/rafa-pedroso",
+      "permanent": true
+    },
+    {
+      "source": "/studios/rafa-pedroso.html",
+      "destination": "/name/rafa-pedroso",
+      "permanent": true
+    },
+    {
+      "source": "/studios/ricardo-villavicencio",
+      "destination": "/name/ricardo-villavicencio",
+      "permanent": true
+    },
+    {
+      "source": "/studios/ricardo-villavicencio.html",
+      "destination": "/name/ricardo-villavicencio",
+      "permanent": true
+    },
+    {
+      "source": "/studios/robert-gaudette",
+      "destination": "/name/robert-gaudette",
+      "permanent": true
+    },
+    {
+      "source": "/studios/robert-gaudette.html",
+      "destination": "/name/robert-gaudette",
+      "permanent": true
+    },
+    {
+      "source": "/studios/sav",
+      "destination": "/name/sav",
+      "permanent": true
+    },
+    {
+      "source": "/studios/sav.html",
+      "destination": "/name/sav",
+      "permanent": true
+    },
+    {
+      "source": "/studios/vallee-duhamel",
+      "destination": "/name/vallee-duhamel",
+      "permanent": true
+    },
+    {
+      "source": "/studios/vallee-duhamel.html",
+      "destination": "/name/vallee-duhamel",
+      "permanent": true
+    }
+  ]
+}

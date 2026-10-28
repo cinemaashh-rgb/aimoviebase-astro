@@ -1,0 +1,79 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('awards');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const a = entry.data;
+---
+<BaseLayout title={a.name} description={a.description}>
+  <p style="font-size:.82rem; color:var(--muted); margin:18px 0 10px;"><a href="/awards" style="color:var(--muted)">Awards & Festivals</a> / <span>{a.name}</span></p>
+  <h1 style="font-size:2.2rem; margin:.1em 0 .3em;">{a.name}</h1>
+
+  <dl style="display:grid; grid-template-columns:140px 1fr; row-gap:8px; font-size:.9rem; margin:18px 0 28px; max-width:640px;">
+    {a.location && <><dt style="color:var(--muted)">location</dt><dd style="margin:0">{a.location}</dd></>}
+    {a.dates && <><dt style="color:var(--muted)">dates</dt><dd style="margin:0">{a.dates}</dd></>}
+    {a.siteUrl && <><dt style="color:var(--muted)">site</dt><dd style="margin:0"><a href={a.siteUrl} target="_blank" rel="noopener" style="color:var(--accent)">{a.siteUrl.replace('https://', '')} ↗</a></dd></>}
+  </dl>
+
+  <p style="color:var(--muted); max-width:700px; line-height:1.55;">{a.description}</p>
+
+  {a.stats.length > 0 && (
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin:18px 0 10px;">
+      {a.stats.map((s) => (
+        <div style="border:1px solid #262a31; border-radius:8px; padding:16px; text-align:center;">
+          <div style="font-size:1.1rem; font-weight:800; font-family:Georgia,serif;">{s.value}</div>
+          <div style="font-size:.74rem; color:var(--muted); margin-top:4px;">{s.label}</div>
+        </div>
+      ))}
+    </div>
+  )}
+
+  {a.sections.map((section) => (
+    <>
+      <div style="font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:700; margin:26px 0 10px;">{section.label}</div>
+      {section.winners.map((w) => (
+        <div style="border:1px solid #262a31; border-radius:8px; padding:16px; margin-bottom:12px;">
+          <div style={w.poster ? "display:flex; align-items:center; gap:16px;" : ""}>
+            {w.poster && (
+              <a href={`/movies/${w.movieSlug}`} style="display:block; width:64px; height:96px; flex:0 0 auto;">
+                <img src={w.poster} alt={`${w.title} poster`} style="width:100%;height:100%;object-fit:cover;border-radius:6px;display:block;" />
+              </a>
+            )}
+            <div>
+              <div style="font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--accent); font-weight:700;">{w.place}</div>
+              <div style="font-size:1.05rem; font-weight:700; margin-top:4px;">
+                {w.movieSlug ? <a href={`/movies/${w.movieSlug}`} style="color:inherit">{w.title}</a> : w.title}
+              </div>
+              {w.director && (
+                <div style="font-size:.84rem; color:var(--muted); margin-top:2px;">
+                  {w.directorSlug ? <a href={`/name/${w.directorSlug}`} style="color:var(--accent); font-weight:600;">{w.director}</a> : w.director}
+                </div>
+              )}
+            </div>
+          </div>
+          {w.notes.length > 0 && (
+            <div style="margin-top:10px; font-size:.82rem;">
+              {w.notes.map((n) => (
+                <div style="padding:4px 0; border-top:1px dashed #262a31;">
+                  <span style="color:var(--muted); display:inline-block; min-width:150px;">{n.category}</span>
+                  {n.movieSlug ? <a href={`/movies/${n.movieSlug}`} style="color:inherit">{n.title}</a> : n.title}
+                  {n.director && <> — {n.directorSlug ? <a href={`/name/${n.directorSlug}`} style="color:var(--accent);">{n.director}</a> : n.director}</>}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+    </>
+  ))}
+
+  <p style="color:var(--muted); font-size:.74rem; margin-top:30px; font-style:italic;">Source: {a.siteUrl ? a.siteUrl.replace('https://', '') : a.name}, as published by the festival.</p>
+</BaseLayout>
