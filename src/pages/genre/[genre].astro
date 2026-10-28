@@ -33,10 +33,17 @@ const seriesFilms = films.filter((f) => f.data.type === 'series');
        gradient layer on top — so the image gets a true background-size:
        cover of its own portion instead of being stretched/cropped together
        with the gradient as a single flattened background. */
-    .genreHero { margin: -2rem -2rem 28px; padding: 0 2rem; background: var(--black); color: #fff; position: relative; overflow: hidden; min-height: 280px; }
+    /* The mockup's .hero sits outside its .shell content column entirely
+       (full browser width), while only the text inside it is constrained
+       back to the shared 1200px column — our <main> wraps everything in
+       that max-width, so a plain negative margin can't break out of it on
+       a wide viewport (it only cancels main's own padding). The
+       100vw/50vw trick breaks the hero out to the true viewport edge
+       regardless of main's max-width or how wide the screen is. */
+    .genreHero { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; margin-top: -2rem; margin-bottom: 28px; background: var(--black); color: #fff; overflow: hidden; min-height: 280px; }
     .genreHero .heroArt { position: absolute; inset: 0 0 0 33%; background-size: cover; background-position: center; }
     .genreHero .heroOverlay { position: absolute; inset: 0; background: linear-gradient(90deg, var(--black) 0%, var(--black) 17%, rgba(8,11,13,.96) 31%, rgba(8,11,13,.65) 53%, rgba(8,11,13,.06) 100%); }
-    .genreHero .heroInner { position: relative; z-index: 2; min-height: 280px; display: flex; flex-direction: column; justify-content: center; padding: 32px 0; }
+    .genreHero .heroInner { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; min-height: 280px; display: flex; flex-direction: column; justify-content: center; padding: 32px 2rem; }
     .genreHero .eyebrow { color: #d8dce1; }
     .genreHero h1 { font-size: clamp(36px,5vw,58px); margin: 10px 0 14px; color: #fff; }
     .genreHero p { max-width: 430px; color: #e0e3e6; font-size: .95rem; line-height: 1.6; }
