@@ -120,15 +120,22 @@ function isActive(prefix: string) {
     .searchInput { width: 100%; font-size: .78rem; border-radius: 6px; padding: 8px 12px; outline: none; background: #20252d; border: 1px solid #343b45; color: #fff; }
     .searchInput::placeholder { color: #9aa0ad; }
     .searchResults { display: none; position: absolute; right: 0; left: auto; width: 320px; margin-top: 8px; border-radius: 10px; overflow: hidden; z-index: 60; max-height: 420px; overflow-y: auto; background: #fff; border: 1px solid var(--line); box-shadow: 0 16px 40px rgba(20,25,35,.18); }
-    .searchItem { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-top: 1px solid var(--line); }
-    .searchItem:first-child { border-top: none; }
-    .searchItem:hover { background: var(--soft); }
-    .searchThumb { flex: 0 0 42px; width: 42px; height: 58px; border-radius: 5px; overflow: hidden; background: var(--soft); display: flex; align-items: center; justify-content: center; font-size: .74rem; font-weight: 700; color: var(--muted); border: 1px solid var(--line); }
-    .searchThumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .searchInfo { min-width: 0; flex: 1; }
-    .searchTitle { font-weight: 600; font-size: .85rem; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .searchSub { font-size: .72rem; color: var(--muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .searchEmpty { padding: 14px 12px; font-size: .85rem; color: var(--muted); }
+    /* :global() required: these nodes are injected into .searchResults via
+       innerHTML at runtime (see the search script below), so they never
+       carry Astro's build-time style-scoping attribute — unscoped rules
+       silently never matched them, letting the thumbnail <img> render at
+       native size with no layout at all. Same root cause as the movie-card
+       fix above, different trigger (client-side JS instead of a child
+       page's <slot /> content). */
+    :global(.searchItem) { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-top: 1px solid var(--line); }
+    :global(.searchItem:first-child) { border-top: none; }
+    :global(.searchItem:hover) { background: var(--soft); }
+    :global(.searchThumb) { flex: 0 0 42px; width: 42px; height: 58px; border-radius: 5px; overflow: hidden; background: var(--soft); display: flex; align-items: center; justify-content: center; font-size: .74rem; font-weight: 700; color: var(--muted); border: 1px solid var(--line); }
+    :global(.searchThumb img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+    :global(.searchInfo) { min-width: 0; flex: 1; }
+    :global(.searchTitle) { font-weight: 600; font-size: .85rem; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    :global(.searchSub) { font-size: .72rem; color: var(--muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    :global(.searchEmpty) { padding: 14px 12px; font-size: .85rem; color: var(--muted); }
 
     main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
 
@@ -168,7 +175,10 @@ function isActive(prefix: string) {
     }
     #videoModalOverlay.open { display: flex; }
     #videoModalOverlay .modalInner { width: min(900px, 90vw); aspect-ratio: 16/9; }
-    #videoModalOverlay iframe { width: 100%; height: 100%; border: 0; }
+    /* :global(): openTrailer() injects this <iframe> via innerHTML at
+       runtime, so — same reasoning as the search dropdown above — it
+       never carries the scoping attribute an unscoped rule would need. */
+    :global(#videoModalOverlay iframe) { width: 100%; height: 100%; border: 0; }
 
     @media (max-width: 900px) {
       .footGrid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
