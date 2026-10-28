@@ -22,43 +22,121 @@ interface Props {
 }
 const { studio, films } = Astro.props;
 const s = studio.data;
+
+// Collect every distinct AI tool used across this studio's films, for the
+// "Creative stack" section. (The mockup used a horizontally-scrolling
+// carousel here; we use a simple static grid for v1 — see README.)
+const toolCounts = new Map<string, number>();
+for (const f of films) {
+  for (const tool of f.data.aiTools) {
+    toolCounts.set(tool, (toolCounts.get(tool) ?? 0) + 1);
+  }
+}
+const tools = [...toolCounts.entries()].sort((a, b) => b[1] - a[1]);
 ---
 <BaseLayout title={s.name} description={s.description}>
-  <div class="personHero" style="display:flex; gap:22px; align-items:flex-start; margin:30px 0 8px; flex-wrap:wrap;">
-    <div class="personPhoto" style="flex:0 0 150px; width:150px; aspect-ratio:3/4; border-radius:14px; overflow:hidden; background:linear-gradient(135deg,#4f46e5,#8b7bf0); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:2.3rem; font-family:Georgia,serif;">
-      {s.name.split(' ').slice(0, 2).map((w) => w.charAt(0)).join('').toUpperCase()}
+  <style>
+    .studioHero { display: grid; grid-template-columns: 180px 1fr 220px; gap: 26px; margin: 24px 0 10px; align-items: start; }
+    .studioLogo { width: 100%; aspect-ratio: 1; border-radius: 12px; background: var(--black); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.6rem; font-family: var(--serif); }
+    .eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .08em; color: var(--muted2); text-transform: uppercase; }
+    h1.sname { font-size: clamp(26px,3.2vw,38px); margin: 8px 0 2px; }
+    .subtitle { color: var(--muted); font-size: .95rem; margin-bottom: 10px; }
+    .facts { display: flex; gap: 18px; flex-wrap: wrap; color: var(--muted); font-size: .86rem; margin: 10px 0; }
+    .teamCol { border-left: 1px solid var(--line); padding-left: 20px; }
+    .teamCol h2 { font-size: 1rem; margin: 0 0 12px; }
+    .member { font-size: .82rem; margin-bottom: 10px; }
+    .member .role { color: var(--muted); font-size: .76rem; }
+    .section { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--line); }
+    .section h2 { font-size: 1.2rem; margin: 0 0 14px; }
+    .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+    .pill { border: 1px solid var(--line); background: #fff; border-radius: 20px; padding: 6px 14px; font-size: .8rem; font-weight: 600; color: var(--muted); cursor: pointer; }
+    .pill[aria-pressed="true"] { background: var(--black); color: #fff; border-color: var(--black); }
+    .sortSelect { height: 34px; border: 1px solid var(--line); background: #fff; border-radius: 6px; color: var(--ink); font-size: .8rem; padding: 0 10px; }
+    .grid6 { display: grid; grid-template-columns: repeat(auto-fill,minmax(160px,1fr)); gap: 14px; }
+    .grid6 a[hidden] { display: none; }
+    .thumb { aspect-ratio: 16/9; background: var(--soft); border-radius: 6px; overflow: hidden; }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .toolGrid { display: grid; grid-template-columns: repeat(auto-fill,minmax(170px,1fr)); gap: 12px; }
+    .toolCard { border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+    .toolCard strong { display: block; font-size: .84rem; }
+    .toolCard span { font-size: .74rem; color: var(--muted); }
+    @media (max-width: 860px) {
+      .studioHero { grid-template-columns: 1fr; }
+      .studioLogo { width: 90px; }
+      .teamCol { border-left: 0; padding-left: 0; }
+    }
+  </style>
+
+  <div class="studioHero">
+    <div class="studioLogo">{s.name.split(' ').slice(0, 2).map((w) => w.charAt(0)).join('').toUpperCase()}</div>
+    <div>
+      <div class="eyebrow">Studio</div>
+      <h1 class="sname">{s.name}</h1>
+      {s.subtitle && <div class="subtitle">{s.subtitle}</div>}
+      <p class="pageLede" style="max-width:600px;">{s.description}</p>
+      {s.descriptionMore && <p style="color:var(--ink); font-size:.92rem; line-height:1.6; max-width:600px; margin-top:8px;">{s.descriptionMore}</p>}
+      <div class="facts">
+        {s.basedIn && <span>📍 {s.basedIn}</span>}
+        {s.founded && <span>Founded {s.founded}</span>}
+        <span>{films.length} film{films.length === 1 ? '' : 's'}</span>
+      </div>
     </div>
-    <div class="personInfo" style="flex:1; min-width:220px;">
-      <h1 class="personName">{s.name}</h1>
-      <div class="personRole" style="color:var(--fg); font-size:.92rem; font-weight:600; margin-bottom:2px;">Studio</div>
-      {s.basedIn && <div class="personStudio" style="color:var(--muted); font-size:.85rem; margin-bottom:14px;">{s.basedIn}</div>}
-      <p class="personBioShort">{s.description}</p>
-      {s.descriptionMore && <p style="color:var(--fg); font-size:.88rem; line-height:1.55; max-width:600px; margin-top:10px;">{s.descriptionMore}</p>}
-    </div>
+    {s.team && s.team.length > 0 && (
+      <div class="teamCol">
+        <h2>Core team</h2>
+        {s.team.map((m) => <div class="member"><div>{m.name}</div><div class="role">{m.role}</div></div>)}
+      </div>
+    )}
   </div>
 
   {films.length > 0 && (
-    <>
-      <div class="filmsHeadRow" style="display:flex; align-items:baseline; justify-content:space-between; margin:34px 0 10px;">
-        <h2 style="margin:0">Films</h2>
+    <section class="section">
+      <h2>Movies</h2>
+      <div class="controls">
+        <select class="sortSelect" id="sortSelect">
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="title">A–Z</option>
+        </select>
       </div>
-      <div class="rowScroll" style="display:flex; gap:14px; overflow-x:auto; padding-bottom:8px;">
+      <div class="grid6" id="filmsGrid">
         {films.map((f) => (
-          <a class="card" href={`/movies/${f.id}`} style="flex:0 0 220px; display:block; border:1px solid var(--border); border-radius:8px; overflow:hidden;">
-            <div class="thumb" style="aspect-ratio:16/9; background:linear-gradient(135deg,#f0ebe0,#f7f3ee); overflow:hidden; display:flex; align-items:center; justify-content:center;">
-              {f.data.poster ? (
-                <img src={f.data.poster} alt={f.data.title} style="width:100%;height:100%;object-fit:cover;display:block;" />
-              ) : (
-                <span style="text-align:center; padding:6px; font-weight:600; font-size:.74rem; color:var(--muted);">{f.data.title}</span>
-              )}
-            </div>
-            <div class="body" style="padding:12px;">
-              <div class="title-row"><strong>{f.data.title}</strong></div>
-              <div class="meta" style="color:var(--muted); font-size:.74rem;">{f.data.year} · {f.data.type === 'series' ? 'Series' : 'Movie'}</div>
-            </div>
+          <a href={`/movies/${f.id}`} data-year={f.data.year} data-title={f.data.title}>
+            <div class="thumb">{f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" /> : <div class="posterFallback" style="width:100%;height:100%;">{f.data.title}</div>}</div>
+            <div style="font-size:.86rem;font-weight:600;margin-top:8px;">{f.data.title}</div>
+            <div style="font-size:.76rem;color:var(--muted);">{f.data.year} · {f.data.type === 'series' ? 'Series' : 'Movie'}</div>
           </a>
         ))}
       </div>
-    </>
+    </section>
   )}
+
+  {tools.length > 0 && (
+    <section class="section">
+      <h2>Creative stack</h2>
+      <div class="toolGrid">
+        {tools.map(([tool, count]) => (
+          <div class="toolCard"><strong>{tool}</strong><span>{count} film{count === 1 ? '' : 's'}</span></div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <script is:inline>
+    (function () {
+      var grid = document.getElementById('filmsGrid');
+      if (!grid) return;
+      var cards = [].slice.call(grid.children);
+      var select = document.getElementById('sortSelect');
+      select.addEventListener('change', function () {
+        var mode = select.value;
+        var sorted = cards.slice().sort(function (a, b) {
+          if (mode === 'oldest') return Number(a.dataset.year) - Number(b.dataset.year);
+          if (mode === 'title') return a.dataset.title.localeCompare(b.dataset.title);
+          return Number(b.dataset.year) - Number(a.dataset.year);
+        });
+        grid.replaceChildren.apply(grid, sorted);
+      });
+    })();
+  </script>
 </BaseLayout>

@@ -22,33 +22,112 @@ interface Props {
 }
 const { genre, films } = Astro.props;
 const g = genre.data;
+const movieFilms = films.filter((f) => f.data.type !== 'series');
+const seriesFilms = films.filter((f) => f.data.type === 'series');
 ---
 <BaseLayout title={g.name} description={g.description}>
-  <div class="genreHead" style="display:flex; align-items:baseline; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:22px;">
-    <div>
-      <h1 style="margin-top:34px;margin-bottom:.15em">{g.name}</h1>
-      <p class="lede" style="color:var(--muted); max-width:640px; line-height:1.5; margin-top:0">{g.description}</p>
-    </div>
-    <div class="genreCount" style="color:var(--muted); font-size:.85rem; font-weight:600; white-space:nowrap">{films.length} {films.length === 1 ? 'film' : 'films'}</div>
+  <style>
+    .genreHero { margin: -2rem -2rem 28px; padding: 54px 2rem 46px; background: var(--black); color: #fff; position: relative; overflow: hidden; }
+    .genreHero .eyebrow { color: #cfd5df; }
+    .genreHero h1 { font-size: clamp(36px,5vw,58px); margin: 10px 0 14px; color: #fff; }
+    .genreHero p { max-width: 620px; color: #dde1e7; font-size: .98rem; line-height: 1.6; }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+    .tabs { display: flex; gap: 8px; }
+    .tab { border: 1px solid var(--line); background: #fff; border-radius: 20px; padding: 7px 16px; font-size: .82rem; font-weight: 600; cursor: pointer; color: var(--muted); }
+    .tab[aria-pressed="true"] { background: var(--black); color: #fff; border-color: var(--black); }
+    .sortSelect { height: 36px; border: 1px solid var(--line); background: #fff; border-radius: 6px; color: var(--ink); font-size: .82rem; padding: 0 10px; }
+    .movie-card { display: block; }
+    .movie-card[hidden] { display: none; }
+    .movie-card img, .movie-card .posterFallback { aspect-ratio: 2/3; width: 100%; object-fit: cover; border-radius: 6px; background: var(--soft); }
+    .movie-card h3 { font-size: .9rem; margin: 8px 0 2px; }
+    .movie-card .year { color: var(--muted); font-size: .78rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); gap: 18px 14px; }
+    .load-wrap { text-align: center; padding: 28px 0 8px; }
+    .load { background: var(--soft); border: 1px solid var(--line); color: var(--ink); border-radius: 6px; font-size: .85rem; font-weight: 600; padding: 11px 40px; cursor: pointer; }
+    .load[hidden] { display: none; }
+  </style>
+
+  <div class="genreHero">
+    <div class="eyebrow">GENRE</div>
+    <h1>{g.name}</h1>
+    <p>{g.description}</p>
   </div>
 
   {films.length > 0 ? (
-    <div class="posterGrid" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:18px 14px; margin-top:6px;">
-      {films.map((f) => (
-        <a href={`/movies/${f.id}`} style="position:relative; display:block; border-radius:6px; overflow:hidden;">
-          <div style="position:relative; aspect-ratio:2/3; border-radius:6px; overflow:hidden; background:linear-gradient(135deg,#f0ebe0,#f7f3ee);">
-            {f.data.poster ? (
-              <img src={f.data.poster} alt={f.data.title} style="width:100%;height:100%;object-fit:cover;display:block;" />
-            ) : (
-              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-weight:600;font-size:.78rem;color:var(--muted);">{f.data.title}</div>
-            )}
-          </div>
-          <div style="margin-top:8px; font-size:.82rem; font-weight:600; color:var(--fg); line-height:1.25;">{f.data.title}</div>
-          <div style="font-size:.74rem; color:var(--muted); margin-top:2px;">{f.data.year} · {f.data.type === 'series' ? 'AI Series' : 'AI Movie'}</div>
-        </a>
-      ))}
-    </div>
+    <>
+      <div class="toolbar">
+        <div class="tabs" role="group" aria-label="Filter by type">
+          <button type="button" class="tab" id="tabAll" aria-pressed="true">All ({films.length})</button>
+          <button type="button" class="tab" id="tabMovies" aria-pressed="false">Movies ({movieFilms.length})</button>
+          <button type="button" class="tab" id="tabSeries" aria-pressed="false">Series ({seriesFilms.length})</button>
+        </div>
+        <select class="sortSelect" id="sortSelect">
+          <option value="default">Catalog order</option>
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="title">Title A–Z</option>
+        </select>
+      </div>
+
+      <div class="grid" id="filmGrid">
+        {films.map((f) => (
+          <a class="movie-card" href={`/movies/${f.id}`} data-kind={f.data.type} data-year={f.data.year} data-title={f.data.title}>
+            {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" /> : <div class="posterFallback">{f.data.title}</div>}
+            <h3>{f.data.title}</h3>
+            <div class="year">{f.data.year}</div>
+          </a>
+        ))}
+      </div>
+      <div class="load-wrap">
+        <button class="load" id="loadMore" type="button">Load more ↓</button>
+        <p id="liveStatus" aria-live="polite" style="font-size:.76rem;color:var(--muted);margin-top:10px;"></p>
+      </div>
+    </>
   ) : (
-    <p class="meta" style="margin-top:24px; color:var(--muted);">No films in this genre yet.</p>
+    <p class="pageLede">No films in this genre yet.</p>
   )}
+
+  <script is:inline>
+    (function () {
+      var grid = document.getElementById('filmGrid');
+      if (!grid) return;
+      var allCards = [].slice.call(grid.children);
+      var loadBtn = document.getElementById('loadMore');
+      var status = document.getElementById('liveStatus');
+      var sortSelect = document.getElementById('sortSelect');
+      var tabs = { all: document.getElementById('tabAll'), movie: document.getElementById('tabMovies'), series: document.getElementById('tabSeries') };
+      var kind = 'all';
+      var shown = 8;
+
+      function filtered() {
+        return allCards.filter(function (c) { return kind === 'all' || c.dataset.kind === kind; });
+      }
+      function sorted(list) {
+        var mode = sortSelect.value;
+        var copy = list.slice();
+        if (mode === 'newest') copy.sort(function (a, b) { return Number(b.dataset.year) - Number(a.dataset.year); });
+        else if (mode === 'oldest') copy.sort(function (a, b) { return Number(a.dataset.year) - Number(b.dataset.year); });
+        else if (mode === 'title') copy.sort(function (a, b) { return a.dataset.title.localeCompare(b.dataset.title); });
+        return copy;
+      }
+      function render() {
+        var list = sorted(filtered());
+        grid.replaceChildren.apply(grid, list.slice(0, shown));
+        loadBtn.hidden = shown >= list.length;
+        if (status) status.textContent = 'Showing ' + Math.min(shown, list.length) + ' of ' + list.length;
+      }
+      function setTab(next) {
+        kind = next;
+        shown = 8;
+        Object.keys(tabs).forEach(function (k) { tabs[k].setAttribute('aria-pressed', String(k === next)); });
+        render();
+      }
+      tabs.all.addEventListener('click', function () { setTab('all'); });
+      tabs.movie.addEventListener('click', function () { setTab('movie'); });
+      tabs.series.addEventListener('click', function () { setTab('series'); });
+      sortSelect.addEventListener('change', render);
+      loadBtn.addEventListener('click', function () { shown += 8; render(); });
+      render();
+    })();
+  </script>
 </BaseLayout>

@@ -1,25 +1,186 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const movies = await getCollection('movies');
-movies.sort((a, b) => b.data.year - a.data.year);
+const genres = await getCollection('genres');
+
+// Real per-genre groupings (not the mockup's hand-picked 4-per-genre preview —
+// this is the actual catalog, so every genre section lists every matching
+// film currently in the collection).
+const sections = genres
+  .map((genre) => {
+    const films = genre.data.films
+      .map((slug) => movies.find((m) => m.id === slug))
+      .filter((m): m is CollectionEntry<'movies'> => Boolean(m));
+    return { id: genre.id, name: genre.data.name, description: genre.data.description, films };
+  })
+  .filter((s) => s.films.length > 0)
+  .sort((a, b) => b.films.length - a.films.length);
 ---
-<BaseLayout title="Movies" description="Browse all AI-generated movies and series on AI Movie Base.">
-  <h1>All Movies</h1>
-  <div class="movieGrid">
-    {movies.map((movie) => (
-      <a class="movieCard" href={`/movies/${movie.id}`}>
-        {movie.data.poster ? (
-          <img src={movie.data.poster} alt={movie.data.title} loading="lazy" />
-        ) : (
-          <div class="posterFallback" style="aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-weight:600;font-size:.78rem;color:var(--muted);background:linear-gradient(135deg,#f0ebe0,#f7f3ee);">{movie.data.title}</div>
-        )}
-        <div class="cardBody">
-          <h3>{movie.data.title}</h3>
-          <p class="meta">{movie.data.year} · {movie.data.genres[0] ?? ''}</p>
-        </div>
-      </a>
-    ))}
+<BaseLayout title="AI Movies & Series" description="Browse all AI-generated movies and series on AI Movie Base, by genre, with sort by Newest or A-Z.">
+  <style>
+    .moviesHero { margin: 10px 0 30px; }
+    .layout { display: grid; grid-template-columns: 200px minmax(0,1fr); gap: 34px; }
+    aside.genreNav { border-right: 1px solid var(--line); padding-right: 18px; }
+    aside.genreNav h2 { font-size: 1.4rem; margin: 2px 0 14px; }
+    .genre-link { display: flex; justify-content: space-between; align-items: center; padding: 8px 9px; margin: 0 -7px; border-radius: 4px; color: var(--ink); font-size: .85rem; }
+    .genre-link:hover { background: var(--soft); color: var(--ink); }
+    .genre-link.is-active { background: var(--soft); font-weight: 700; }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+    .toolbar label { font-size: .78rem; color: var(--muted); margin-right: 6px; }
+    .sortSelect { height: 36px; border: 1px solid var(--line); background: #fff; border-radius: 6px; color: var(--ink); font-size: .82rem; padding: 0 10px; }
+    .sortNote { font-size: .72rem; color: var(--muted2); }
+    .genre-section { padding: 22px 0 28px; border-bottom: 1px solid var(--line); scroll-margin-top: 20px; }
+    .genre-section[hidden] { display: none !important; }
+    .genre-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 14px; flex-wrap: wrap; }
+    .genre-heading h2 { font-size: 1.7rem; margin: 0 0 4px; }
+    .genre-heading p { margin: 0; color: var(--muted); font-size: .84rem; max-width: 560px; }
+    .genre-count { font-size: .78rem; color: var(--muted2); white-space: nowrap; padding-top: 6px; }
+    .film-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px; }
+    .film-card { display: block; min-width: 0; }
+    .film-card img, .film-card .posterFallback { aspect-ratio: 1.5; width: 100%; object-fit: cover; border-radius: 5px; display: block; background: var(--soft); }
+    .film-card h3 { font-size: .92rem; margin: 8px 0 4px; }
+    .film-meta { font-size: .76rem; color: var(--muted); }
+    .more-area { text-align: center; padding: 24px 0 8px; }
+    .more-btn { border: 1px solid #cfd4dd; background: #fff; border-radius: 22px; padding: 11px 32px; font-weight: 600; font-size: .85rem; cursor: pointer; }
+    .more-btn[hidden] { display: none; }
+    .more-btn:hover { background: var(--soft); }
+    @media (max-width: 760px) {
+      .layout { display: block; }
+      aside.genreNav { border-right: 0; border-bottom: 1px solid var(--line); padding-right: 0; padding-bottom: 12px; margin-bottom: 20px; }
+      .genreLinks { display: flex; overflow-x: auto; gap: 6px; }
+      .genre-link { flex: none; background: var(--soft); margin: 0; }
+      .film-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+    }
+  </style>
+
+  <div class="moviesHero">
+    <div class="pageEyebrow">AI Movies &amp; Series</div>
+    <h1 style="margin:8px 0 10px;">Explore AI Movies by Genre</h1>
+    <p class="pageLede">A curated guide to AI-generated and AI-assisted films. Discover titles in sci-fi, drama, animation and more — sort any section by newest or A–Z as you browse.</p>
   </div>
+
+  <div class="toolbar">
+    <div>
+      <label for="sortSelect">Sort by</label>
+      <select class="sortSelect" id="sortSelect">
+        <option value="default">Catalog order</option>
+        <option value="newest">Newest first</option>
+        <option value="title">Title A–Z</option>
+        <option value="popular" disabled>Popular (coming soon)</option>
+        <option value="rating" disabled>Highest rated (coming soon)</option>
+      </select>
+    </div>
+    <span class="sortNote">Popular and Highest Rated need real audience data (pending Supabase) — not available yet.</span>
+  </div>
+
+  <div class="layout">
+    <aside class="genreNav">
+      <h2>Genres</h2>
+      <nav class="genreLinks" aria-label="Jump to a genre">
+        {sections.map((s) => (
+          <a class="genre-link" data-genre={s.id} href={`#${s.id}`}>{s.name}<span style="color:var(--muted2);">{s.films.length}</span></a>
+        ))}
+      </nav>
+    </aside>
+
+    <div id="genre-sections">
+      {sections.map((s) => (
+        <section class="genre-section" id={s.id} aria-labelledby={`heading-${s.id}`}>
+          <div class="genre-heading">
+            <div>
+              <h2 id={`heading-${s.id}`}>{s.name}</h2>
+              <p>{s.description}</p>
+            </div>
+            <div class="genre-count">{s.films.length} {s.films.length === 1 ? 'film' : 'films'} · <a href={`/genre/${s.id}`} style="color:var(--blue);font-weight:700;">Open full genre page ↗</a></div>
+          </div>
+          <div class="film-grid">
+            {s.films.map((f) => (
+              <a class="film-card" href={`/movies/${f.id}`} data-title={f.data.title} data-year={f.data.year}>
+                {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" /> : <div class="posterFallback">{f.data.title}</div>}
+                <h3>{f.data.title}</h3>
+                <div class="film-meta">{f.data.year} · {f.data.genres.slice(0, 2).join(' · ')}</div>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+      <div class="more-area">
+        <button class="more-btn" id="more-btn" type="button">Load more genres</button>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    (function () {
+      var sections = [].slice.call(document.querySelectorAll('#genre-sections .genre-section'));
+      var button = document.getElementById('more-btn');
+      var links = [].slice.call(document.querySelectorAll('.genre-link'));
+      var sortSelect = document.getElementById('sortSelect');
+      var batchSize = 4;
+      var visible = 4;
+
+      function setActive(slug) {
+        links.forEach(function (link) {
+          link.classList.toggle('is-active', link.dataset.genre === slug);
+        });
+      }
+
+      function reveal(targetCount) {
+        visible = Math.min(sections.length, Math.max(visible, targetCount));
+        sections.forEach(function (section, index) { section.hidden = index >= visible; });
+        button.hidden = visible >= sections.length;
+        if (!button.hidden) button.textContent = 'Load more genres (' + (sections.length - visible) + ' remaining)';
+      }
+
+      button.addEventListener('click', function () {
+        reveal(visible + batchSize);
+      });
+
+      links.forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          var slug = link.dataset.genre;
+          var index = sections.findIndex(function (s) { return s.id === slug; });
+          if (index < 0) return;
+          reveal(index + 1);
+          setActive(slug);
+          history.replaceState(null, '', '#' + slug);
+          requestAnimationFrame(function () {
+            sections[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+        });
+      });
+
+      // Sort: reorders the real, already-rendered cards inside each
+      // .film-grid in place (DOM reorder via replaceChildren, not a
+      // client-side data rebuild) — keeps every title/link server-rendered
+      // for SEO; JS only changes display order.
+      function applySort() {
+        var mode = sortSelect.value;
+        sections.forEach(function (section) {
+          var grid = section.querySelector('.film-grid');
+          if (!grid) return;
+          var cards = [].slice.call(grid.children);
+          if (mode === 'newest') {
+            cards.sort(function (a, b) { return Number(b.dataset.year) - Number(a.dataset.year); });
+          } else if (mode === 'title') {
+            cards.sort(function (a, b) { return a.dataset.title.localeCompare(b.dataset.title); });
+          }
+          // 'default', 'popular', 'rating' (disabled options) leave catalog order.
+          grid.replaceChildren.apply(grid, cards);
+        });
+      }
+      sortSelect.addEventListener('change', applySort);
+
+      reveal(visible);
+      var startingGenre = decodeURIComponent(location.hash.slice(1));
+      if (startingGenre && sections.some(function (s) { return s.id === startingGenre; })) {
+        var idx = sections.findIndex(function (s) { return s.id === startingGenre; });
+        reveal(idx + 1);
+        setActive(startingGenre);
+      }
+    })();
+  </script>
 </BaseLayout>

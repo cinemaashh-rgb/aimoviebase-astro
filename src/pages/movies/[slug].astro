@@ -4,84 +4,247 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
   const movies = await getCollection('movies');
-  return movies.map((movie) => ({
-    params: { slug: movie.id },
-    props: { movie },
-  }));
+  const lists = await getCollection('lists');
+
+  return movies.map((movie) => {
+    // "More like this" / "Related" — picked at build time from other
+    // movies sharing a genre, per the brief ("automatically picked random
+    // movies of the same genre, computed at build time, not stored data").
+    const sameGenre = movies.filter(
+      (other) => other.id !== movie.id && other.data.genres.some((g) => movie.data.genres.includes(g))
+    );
+    const pool = sameGenre.length > 0 ? sameGenre : movies.filter((other) => other.id !== movie.id);
+    const related = [...pool].sort(() => Math.random() - 0.5).slice(0, 4);
+
+    const inLists = lists.filter((l) => l.data.movies.includes(movie.id));
+
+    return {
+      params: { slug: movie.id },
+      props: { movie, related, inLists },
+    };
+  });
 }
 
 interface Props {
   movie: CollectionEntry<'movies'>;
+  related: CollectionEntry<'movies'>[];
+  inLists: CollectionEntry<'lists'>[];
 }
-const { movie } = Astro.props;
+const { movie, related, inLists } = Astro.props;
 const m = movie.data;
+const isSeries = m.type === 'series';
+
+const factsParts: string[] = [m.type === 'series' ? 'AI Series' : 'AI Movie', String(m.year)];
+if (m.country) factsParts.push(m.country);
+if (isSeries) {
+  const seasonLabel = m.seasons ? `${m.seasons} Season${m.seasons > 1 ? 's' : ''}` : '1 Season';
+  factsParts.push(m.episodes && m.episodes.length > 0 ? `${seasonLabel} (${m.episodes.length} episodes)` : seasonLabel);
+} else if (m.duration) {
+  factsParts.push(m.duration);
+}
 ---
 <BaseLayout title={m.title} description={m.synopsis}>
-  <div class="heroGrid" style="display:grid; grid-template-columns: 300px 1fr; gap: 2rem;">
-    {m.poster ? (
-      <img class="posterMain" src={m.poster} alt={m.title} style="width:100%; border-radius:10px;" />
-    ) : (
-      <div class="posterMain" style="width:100%; aspect-ratio:2/3; border-radius:10px; display:flex; align-items:center; justify-content:center; text-align:center; padding:10px; font-weight:600; font-size:.85rem; color:var(--muted); background:linear-gradient(135deg,#f0ebe0,#f7f3ee);">{m.title}</div>
-    )}
-    <div>
-      <h1>{m.title}</h1>
-      <p class="meta" style="color:var(--muted);">
-        {m.year} · {m.type === 'series' ? 'Series' : 'Movie'}{m.duration ? ` · ${m.duration}` : ''}{m.country ? ` · ${m.country}` : ''}
-      </p>
-      <p class="meta" style="color:var(--muted);">{m.genres.join(', ')}</p>
-      <p>{m.synopsis}</p>
+  <style>
+    .crumb { font-size: .78rem; color: var(--muted); margin: 0 0 20px; }
+    .crumb a:hover { color: var(--blue); }
+    .columns { display: grid; grid-template-columns: minmax(0,1fr) 260px; gap: 36px; align-items: start; }
+    .hero { display: flex; gap: 24px; margin-bottom: 8px; }
+    .heroPoster { flex: 0 0 200px; width: 200px; aspect-ratio: 2/3; border-radius: 8px; overflow: hidden; background: var(--soft); }
+    .heroPoster img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .08em; color: var(--muted2); text-transform: uppercase; }
+    h1.title { font-size: clamp(28px,3.4vw,42px); margin: 8px 0 10px; letter-spacing: -0.02em; }
+    .factsLine { color: var(--muted); font-size: .88rem; margin-bottom: 12px; }
+    .synopsis { color: var(--ink); max-width: 560px; }
+    .tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0; }
+    .tag { background: var(--soft); color: var(--muted); border-radius: 3px; font-size: .74rem; padding: 3px 8px; }
+    .actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; font-size: .8rem; font-weight: 700; padding: 10px 18px; border-radius: 4px; border: 1px solid #cdd3dc; cursor: pointer; background: #fff; color: var(--ink); }
+    .btn.primary { background: var(--black); color: #fff; border-color: var(--black); }
+    .btn.primary:hover { opacity: .85; color: #fff; }
+    .block { padding: 28px 0; border-top: 1px solid var(--line); margin-top: 28px; }
+    .block h2 { font-size: 1.4rem; margin: 0 0 14px; }
+    .reactions { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 16px; }
+    .reaction { border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .reaction .quote { font-size: .92rem; color: var(--ink); margin: 0 0 10px; line-height: 1.5; }
+    .reaction .author { font-size: .78rem; color: var(--muted); font-weight: 600; }
+    .review p { color: var(--ink); line-height: 1.65; max-width: 680px; }
+    .verdict { border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; margin-top: 14px; max-width: 680px; background: var(--soft); font-weight: 600; }
+    .related { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px; }
+    .sidebar { display: flex; flex-direction: column; gap: 24px; }
+    .sideBlock { border-top: 1px solid var(--line); padding-top: 16px; }
+    .sideBlock:first-child { border-top: 0; padding-top: 0; }
+    .sideLabel { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted2); font-weight: 700; margin-bottom: 8px; }
+    .sideLink { display: flex; align-items: center; justify-content: space-between; color: var(--ink); font-weight: 600; font-size: .92rem; }
+    .crewRow { font-size: .85rem; padding: 6px 0; border-top: 1px dashed var(--line); }
+    .crewRow:first-child { border-top: 0; }
+    .crewRow .role { color: var(--muted); font-size: .76rem; }
+    .toolChip { display: block; font-size: .82rem; padding: 6px 0; color: var(--ink); }
+    .listRow { display: block; font-size: .82rem; padding: 6px 0; color: var(--ink); }
+    @media (max-width: 860px) {
+      .columns { grid-template-columns: 1fr; }
+      .hero { flex-direction: column; }
+      .heroPoster { width: 160px; }
+      .related { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    }
+  </style>
 
-      {m.youtubeId && (
-        <button class="btnPlay" onclick={`openTrailer('${m.youtubeId}')`} style="background:var(--accent); color:#000; border:0; padding:0.6rem 1.2rem; border-radius:6px; cursor:pointer; font-weight:600;">
-          ▶ Watch Trailer
-        </button>
+  <p class="crumb"><a href="/movies">AI Movies &amp; Series</a> › {m.title}</p>
+
+  <div class="columns">
+    <div>
+      <div class="hero">
+        <div class="heroPoster">
+          {m.poster ? <img src={m.poster} alt={m.title} /> : <div class="posterFallback">{m.title}</div>}
+        </div>
+        <div>
+          <div class="eyebrow">{isSeries ? 'AI Series' : 'AI Movie'}</div>
+          <h1 class="title">{m.title}</h1>
+          <div class="factsLine">{factsParts.join(' · ')}</div>
+          <p class="synopsis">{m.synopsis}</p>
+          {m.genres.length > 0 && (
+            <div class="tags">{m.genres.map((g) => <span class="tag">{g}</span>)}</div>
+          )}
+          <div class="actions">
+            {m.youtubeId ? (
+              <button class="btn primary" onclick={`openTrailer('${m.youtubeId}')`}>▶ Watch Trailer</button>
+            ) : (
+              <button class="btn primary" disabled title="No trailer linked yet" style="opacity:.5;cursor:default;">▶ Watch</button>
+            )}
+            <button class="btn" data-share data-title={m.title}>⇪ Share</button>
+          </div>
+          <p id="shareStatus" role="status" style="font-size:.78rem;color:var(--muted);margin-top:8px;min-height:1em;"></p>
+        </div>
+      </div>
+
+      {m.audienceReactions && m.audienceReactions.length > 0 && (
+        <section class="block">
+          <h2>Audience reactions</h2>
+          <div class="reactions">
+            {m.audienceReactions.map((r) => (
+              <div class="reaction">
+                <p class="quote">“{r.quote}”</p>
+                <div class="author">{r.author}</div>
+              </div>
+            ))}
+          </div>
+        </section>
       )}
 
+      {m.editorialReview && (
+        <section class="block review">
+          <h2>AIMB editorial review</h2>
+          {m.editorialReview.paragraphs.map((p) => <p>{p}</p>)}
+          <div class="verdict">{m.editorialReview.verdict}</div>
+        </section>
+      )}
+
+      {related.length > 0 && (
+        <section class="block">
+          <h2>{isSeries ? 'Related' : 'More like this'}</h2>
+          <div class="related">
+            {related.map((f) => (
+              <a href={`/movies/${f.id}`} style="display:block;">
+                {f.data.poster ? (
+                  <img src={f.data.poster} alt={f.data.title} style="width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:5px;display:block;background:var(--soft);" />
+                ) : (
+                  <div class="posterFallback" style="aspect-ratio:2/3;border-radius:5px;">{f.data.title}</div>
+                )}
+                <div style="font-size:.85rem;font-weight:600;margin-top:6px;color:var(--ink);">{f.data.title}</div>
+                <div style="font-size:.74rem;color:var(--muted);">{f.data.year}</div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+
+    <aside class="sidebar">
       {m.director && (
-        <div class="creatorCard" style="margin-top:1.5rem;">
-          <p class="meta" style="color:var(--muted); margin-bottom:0.25rem;">Director</p>
+        <div class="sideBlock">
+          <div class="sideLabel">{isSeries ? 'Creator' : 'Director'}</div>
           {m.director.slug ? (
-            <a href={`/name/${m.director.slug}`}>{m.director.name}</a>
+            <a class="sideLink" href={`/name/${m.director.slug}`}>{m.director.name} <span>›</span></a>
           ) : (
-            <span>{m.director.name}</span>
+            <div class="sideLink">{m.director.name}</div>
           )}
         </div>
       )}
 
-      {m.studio && <p class="meta" style="color:var(--muted); margin-top:0.75rem;">Studio: {m.studio}</p>}
+      {m.studio && (
+        <div class="sideBlock">
+          <div class="sideLabel">Studio</div>
+          <div class="sideLink">{m.studio}</div>
+        </div>
+      )}
 
-      {m.aiTools.length > 0 && (
-        <div class="toolsGrid" style="margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
-          {m.aiTools.map((tool) => (
-            <span class="toolCard" style="background:var(--bg-elev); padding:0.3rem 0.7rem; border-radius:6px; font-size:0.85rem;">{tool}</span>
+      {m.crew && m.crew.length > 0 && (
+        <div class="sideBlock">
+          <div class="sideLabel">{isSeries ? 'Team' : 'Crew'}</div>
+          {m.crew.map((c) => (
+            <div class="crewRow">
+              <div>{c.slug ? <a href={`/name/${c.slug}`} style="color:var(--ink);">{c.name}</a> : c.name}</div>
+              <div class="role">{c.role}</div>
+            </div>
           ))}
         </div>
       )}
 
-      {m.awards.length > 0 && (
-        <div style="margin-top:1rem;">
-          <p class="meta" style="color:var(--muted); margin-bottom:0.25rem;">Awards</p>
-          <ul>
-            {m.awards.map((award) => <li>{award}</li>)}
-          </ul>
+      {m.aiTools.length > 0 && (
+        <div class="sideBlock">
+          <div class="sideLabel">Production tools</div>
+          {m.aiTools.map((t) => <span class="toolChip">{t}</span>)}
         </div>
       )}
-    </div>
+
+      {m.awards.length > 0 && (
+        <div class="sideBlock">
+          <div class="sideLabel">Awards</div>
+          {m.awards.map((a) => <span class="toolChip">{a}</span>)}
+        </div>
+      )}
+
+      {inLists.length > 0 && (
+        <div class="sideBlock">
+          <div class="sideLabel">Lists</div>
+          {inLists.map((l) => (
+            <a class="listRow" href={`/lists/${l.id}`}>{l.data.name} <span style="color:var(--muted);">({l.data.movies.length})</span></a>
+          ))}
+        </div>
+      )}
+    </aside>
   </div>
 
-  {m.episodes && m.episodes.length > 0 && (
-    <section style="margin-top:2rem;">
+  {isSeries && m.episodes && m.episodes.length > 0 && (
+    <section class="block">
       <h2>Episodes</h2>
-      <ul>
+      <ul style="padding-left:1.1rem;">
         {m.episodes.map((ep) => (
-          <li>
+          <li style="margin-bottom:6px;">
             {ep.title}
             {ep.youtubeId && (
-              <button onclick={`openTrailer('${ep.youtubeId}')`} style="margin-left:0.5rem; background:none; border:1px solid var(--accent); color:var(--accent); border-radius:4px; cursor:pointer; padding:0.1rem 0.5rem;">▶</button>
+              <button onclick={`openTrailer('${ep.youtubeId}')`} style="margin-left:8px;background:none;border:1px solid var(--blue);color:var(--blue);border-radius:4px;cursor:pointer;padding:1px 8px;font-size:.78rem;">▶</button>
             )}
           </li>
         ))}
       </ul>
     </section>
   )}
+
+  <script is:inline define:vars={{ title: m.title }}>
+    document.addEventListener('DOMContentLoaded', function () {
+      var btn = document.querySelector('[data-share]');
+      var status = document.getElementById('shareStatus');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        var url = window.location.href;
+        if (navigator.share) {
+          navigator.share({ title: title, url: url }).catch(function () {});
+        } else if (navigator.clipboard) {
+          navigator.clipboard.writeText(url).then(function () {
+            if (status) status.textContent = 'Link copied to clipboard';
+          });
+        }
+      });
+    });
+  </script>
 </BaseLayout>
