@@ -5,7 +5,7 @@
 // laurel from the creator mockup's award rows) rather than invented, so
 // icon style stays consistent with the rest of the redesign.
 interface Props {
-  name: 'menu' | 'pin' | 'calendar' | 'laurel' | 'chevron' | 'external';
+  name: 'menu' | 'pin' | 'calendar' | 'laurel' | 'chevron' | 'external' | 'studio' | 'genre';
   size?: number;
 }
 const { name, size = 18 } = Astro.props;
@@ -24,6 +24,12 @@ const { name, size = 18 } = Astro.props;
 )}
 {name === 'external' && (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 5h6v6m0-6-9 9" /><path d="M18 13v6H5V6h6" /></svg>
+)}
+{name === 'studio' && (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 10 12 4l9 6M5 10v10m5-10v10m4-10v10m5-10v10M3 20h18" /></svg>
+)}
+{name === 'genre' && (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="2" /><circle cx="9" cy="7" r="1" /><circle cx="16" cy="10" r="1" /><circle cx="9" cy="17" r="1" /></svg>
 )}
 {name === 'laurel' && (
   <svg width={size * 1.5} height={size} viewBox="0 0 120 80" fill="currentColor" aria-hidden="true">
