@@ -12,7 +12,8 @@
   "poster": "/images/posters/9091.webp",
   "youtubeId": "P5fi-9ZyOLE",
   "director": {
-    "name": "Filippo Di Primio"
+    "name": "Filippo Di Primio",
+    "slug": "filippo-di-primio"
   },
   "aiTools": [
     "Higgsfield AI Cinema Studio 4",

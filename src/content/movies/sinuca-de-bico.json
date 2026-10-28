@@ -9,7 +9,8 @@
   "synopsis": "Based on real life events. Bruno drifts through São Paulo, swallowed by work, noise, and a pressure he still cannot name. As the city accelerates and AI promises to make everything faster, something inside him begins to fracture. Between everyday collapses and strange visions, Bruno moves toward a rupture that may also become the beginning of another way to exist.",
   "poster": "/images/posters/sinuca-de-bico.webp",
   "director": {
-    "name": "Odair Faléco"
+    "name": "Odair Faléco",
+    "slug": "odair-faleco"
   },
   "crew": [
     { "name": "Davi Moori", "role": "Co-Director" },
