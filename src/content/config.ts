@@ -98,6 +98,7 @@ const studios = defineCollection({
     films: z.array(z.string()).default([]),
     // --- Redesign-phase additions (optional) ---
     subtitle: z.string().optional(), // e.g. "Independent AI film studio"
+    logo: z.string().optional(), // square studio logo/mark, matches the mockup's .studio-logo
     founded: z.number().optional(),
     team: z.array(z.object({
       name: z.string(),

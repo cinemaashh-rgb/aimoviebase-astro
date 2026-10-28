@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getToolMeta } from '../../data/toolMeta';
 
 export async function getStaticPaths() {
   const studios = await getCollection('studios');
@@ -22,101 +23,154 @@ interface Props {
 }
 const { studio, films } = Astro.props;
 const s = studio.data;
+const movieCount = films.filter((f) => f.data.type !== 'series').length;
+const seriesCount = films.filter((f) => f.data.type === 'series').length;
 
 // Collect every distinct AI tool used across this studio's films, for the
-// "Creative stack" section. (The mockup used a horizontally-scrolling
-// carousel here; we use a simple static grid for v1 — see README.)
+// "Creative Stack" tab — aggregated from real per-film credits rather than
+// the mockup's hand-picked list.
 const toolCounts = new Map<string, number>();
 for (const f of films) {
   for (const tool of f.data.aiTools) {
     toolCounts.set(tool, (toolCounts.get(tool) ?? 0) + 1);
   }
 }
-const tools = [...toolCounts.entries()].sort((a, b) => b[1] - a[1]);
+const tools = [...toolCounts.entries()]
+  .sort((a, b) => b[1] - a[1])
+  .map(([name, count]) => ({ name, count, meta: getToolMeta(name) }));
 ---
 <BaseLayout title={s.name} description={s.description}>
   <style>
-    .studioHero { display: grid; grid-template-columns: 180px 1fr 220px; gap: 26px; margin: 24px 0 10px; align-items: start; }
-    .studioLogo { width: 100%; aspect-ratio: 1; border-radius: 12px; background: var(--black); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.6rem; font-family: var(--serif); }
+    .studioHero { display: grid; grid-template-columns: 180px 1fr 220px; gap: 26px; margin: 24px 0 0; align-items: start; }
+    .studioLogo { width: 100%; aspect-ratio: 1; border-radius: 6px; background: var(--black); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.6rem; font-family: var(--serif); object-fit: cover; }
     .eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .08em; color: var(--muted2); text-transform: uppercase; }
-    h1.sname { font-size: clamp(26px,3.2vw,38px); margin: 8px 0 2px; }
-    .subtitle { color: var(--muted); font-size: .95rem; margin-bottom: 10px; }
-    .facts { display: flex; gap: 18px; flex-wrap: wrap; color: var(--muted); font-size: .86rem; margin: 10px 0; }
+    h1.sname { font-size: clamp(30px,3.6vw,44px); margin: 6px 0 2px; letter-spacing: -0.03em; }
+    .subtitle { color: var(--muted); font-size: 1rem; margin-bottom: 12px; }
+    .facts { display: flex; align-items: center; gap: 20px; color: var(--muted); font-size: .88rem; margin: 14px 0 0; }
+    .fact { display: flex; gap: 10px; align-items: flex-start; }
+    .fact + .fact { border-left: 1px solid var(--line); padding-left: 20px; }
     .teamCol { border-left: 1px solid var(--line); padding-left: 20px; }
-    .teamCol h2 { font-size: 1rem; margin: 0 0 12px; }
-    .member { font-size: .82rem; margin-bottom: 10px; }
-    .member .role { color: var(--muted); font-size: .76rem; }
-    .section { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--line); }
-    .section h2 { font-size: 1.2rem; margin: 0 0 14px; }
-    .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
-    .pill { border: 1px solid var(--line); background: #fff; border-radius: 20px; padding: 6px 14px; font-size: .8rem; font-weight: 600; color: var(--muted); cursor: pointer; }
+    .teamCol h2 { font-size: .86rem; font-weight: 400; color: var(--muted); margin: 0 0 16px; }
+    .member { margin-bottom: 14px; }
+    .member strong { font-family: var(--serif); font-size: .95rem; display: block; }
+    .member .role { color: var(--muted2); font-size: .78rem; display: block; margin-top: 3px; }
+
+    .tabs { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; gap: 24px; margin-top: 24px; }
+    .tab { appearance: none; border: 0; background: none; padding: 12px 4px 11px; color: var(--muted); font-size: .88rem; position: relative; font-weight: 600; cursor: pointer; }
+    .tab[aria-selected="true"] { color: var(--ink); }
+    .tab[aria-selected="true"]::after { content: ""; position: absolute; height: 2px; background: var(--ink); bottom: -1px; left: 0; right: 0; }
+    .pane[hidden] { display: none !important; }
+
+    .sectionbar { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 20px 0 14px; flex-wrap: wrap; }
+    .sectionbar h2 { font-size: 1.4rem; margin: 0; }
+    .sectionbar .count { color: var(--muted); font-size: .8rem; margin-left: 8px; font-weight: 400; }
+    .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .pill { border: 1px solid var(--line); background: #fff; border-radius: 6px; padding: 8px 13px; font-size: .78rem; font-weight: 600; color: var(--muted); cursor: pointer; }
     .pill[aria-pressed="true"] { background: var(--black); color: #fff; border-color: var(--black); }
-    .sortSelect { height: 34px; border: 1px solid var(--line); background: #fff; border-radius: 6px; color: var(--ink); font-size: .8rem; padding: 0 10px; }
-    .grid6 { display: grid; grid-template-columns: repeat(auto-fill,minmax(160px,1fr)); gap: 14px; }
+    .sortSelect { height: 34px; border: 1px solid var(--line); background: #fff; border-radius: 6px; color: var(--ink); font-size: .78rem; padding: 0 10px; }
+
+    .grid6 { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 20px 15px; }
     .grid6 a[hidden] { display: none; }
-    .thumb { aspect-ratio: 16/9; background: var(--soft); border-radius: 6px; overflow: hidden; }
-    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .toolGrid { display: grid; grid-template-columns: repeat(auto-fill,minmax(170px,1fr)); gap: 12px; }
-    .toolCard { border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
-    .toolCard strong { display: block; font-size: .84rem; }
-    .toolCard span { font-size: .74rem; color: var(--muted); }
+    .thumb { position: relative; aspect-ratio: 1.42; border-radius: 5px; overflow: hidden; background: var(--soft); }
+    .thumb img, .thumb .posterFallback { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .durationBadge { position: absolute; bottom: 6px; left: 6px; background: rgba(12,17,23,.86); color: #fff; font-size: .7rem; border-radius: 4px; padding: 3px 7px; }
+    .filmCard h3 { font-family: var(--serif); font-size: .92rem; margin: 9px 0 5px; font-weight: 700; color: var(--ink); }
+    .filmMeta { font-size: .76rem; color: var(--muted); margin: 0 0 8px; }
+    .filmMeta span { padding: 0 7px; }
+    .filmTags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .filmTags span { background: var(--soft); border-radius: 4px; color: var(--muted); font-size: .7rem; padding: 4px 9px; }
+
+    .stackIntro { color: var(--muted); font-size: .88rem; margin: 0 0 20px; }
+    .toolGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
+    .toolCard { border: 1px solid var(--line); border-radius: 8px; padding: 16px; display: flex; align-items: center; gap: 12px; }
+    .toolIcon { border-radius: 8px; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; font-weight: 800; font-size: 1.1rem; flex-shrink: 0; }
+    .toolCard strong { font-size: .88rem; display: block; }
+    .toolCard small { color: var(--muted2); display: block; margin-top: 3px; font-size: .76rem; }
+
     @media (max-width: 860px) {
-      .studioHero { grid-template-columns: 1fr; }
-      .studioLogo { width: 90px; }
-      .teamCol { border-left: 0; padding-left: 0; }
+      .studioHero { grid-template-columns: 110px 1fr; gap: 18px; }
+      .studioLogo { width: 110px; }
+      .teamCol { grid-column: 1/-1; border-left: 0; border-top: 1px solid var(--line); padding: 16px 0 0; }
+      .grid6 { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .toolGrid { grid-template-columns: 1fr; }
     }
   </style>
 
-  <div class="studioHero">
-    <div class="studioLogo">{s.name.split(' ').slice(0, 2).map((w) => w.charAt(0)).join('').toUpperCase()}</div>
+  <section class="studioHero" aria-labelledby="studio-name">
+    {s.logo ? <img class="studioLogo" src={s.logo} alt={`${s.name} logo`} /> : <div class="studioLogo">{s.name.split(' ').slice(0, 2).map((w) => w.charAt(0)).join('').toUpperCase()}</div>}
     <div>
       <div class="eyebrow">Studio</div>
-      <h1 class="sname">{s.name}</h1>
+      <h1 class="sname" id="studio-name">{s.name}</h1>
       {s.subtitle && <div class="subtitle">{s.subtitle}</div>}
       <p class="pageLede" style="max-width:600px;">{s.description}</p>
       {s.descriptionMore && <p style="color:var(--ink); font-size:.92rem; line-height:1.6; max-width:600px; margin-top:8px;">{s.descriptionMore}</p>}
       <div class="facts">
-        {s.basedIn && <span>📍 {s.basedIn}</span>}
-        {s.founded && <span>Founded {s.founded}</span>}
-        <span>{films.length} film{films.length === 1 ? '' : 's'}</span>
+        {s.basedIn && <div class="fact">📍 <span>{s.basedIn}</span></div>}
+        {s.founded && <div class="fact">🗓 <span>Founded<br />{s.founded}</span></div>}
       </div>
     </div>
     {s.team && s.team.length > 0 && (
-      <div class="teamCol">
+      <aside class="teamCol" aria-label="Core team">
         <h2>Core team</h2>
-        {s.team.map((m) => <div class="member"><div>{m.name}</div><div class="role">{m.role}</div></div>)}
-      </div>
+        {s.team.map((m) => <div class="member"><strong>{m.name}</strong><span class="role">{m.role}</span></div>)}
+      </aside>
+    )}
+  </section>
+
+  <div class="tabs" role="tablist" aria-label="Studio details">
+    <button class="tab" role="tab" id="tab-movies" aria-selected="true" aria-controls="panel-movies" data-tab="movies" type="button">Movies</button>
+    {tools.length > 0 && (
+      <button class="tab" role="tab" id="tab-stack" aria-selected="false" aria-controls="panel-stack" data-tab="stack" type="button">Creative Stack</button>
     )}
   </div>
 
-  {films.length > 0 && (
-    <section class="section">
-      <h2>Movies</h2>
-      <div class="controls">
-        <select class="sortSelect" id="sortSelect">
-          <option value="newest">Newest</option>
-          <option value="oldest">Oldest</option>
-          <option value="title">A–Z</option>
-        </select>
-      </div>
-      <div class="grid6" id="filmsGrid">
-        {films.map((f) => (
-          <a href={`/movies/${f.id}`} data-year={f.data.year} data-title={f.data.title}>
-            <div class="thumb">{f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" /> : <div class="posterFallback" style="width:100%;height:100%;">{f.data.title}</div>}</div>
-            <div style="font-size:.86rem;font-weight:600;margin-top:8px;">{f.data.title}</div>
-            <div style="font-size:.76rem;color:var(--muted);">{f.data.year} · {f.data.type === 'series' ? 'Series' : 'Movie'}</div>
-          </a>
-        ))}
-      </div>
-    </section>
-  )}
+  <section class="pane" id="panel-movies" role="tabpanel" aria-labelledby="tab-movies">
+    {films.length > 0 ? (
+      <>
+        <div class="sectionbar">
+          <h2>Filmography <span class="count" id="filmCount">{films.length} title{films.length === 1 ? '' : 's'}</span></h2>
+          <div class="controls" role="group" aria-label="Filter filmography">
+            <button class="pill" data-kind="all" aria-pressed="true">All ({films.length})</button>
+            <button class="pill" data-kind="movie" aria-pressed="false">Movies ({movieCount})</button>
+            <button class="pill" data-kind="series" aria-pressed="false">Series ({seriesCount})</button>
+            <select class="sortSelect" id="filmSort">
+              <option value="newest">Newest first</option>
+              <option value="oldest">Oldest first</option>
+              <option value="title">A–Z</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid6" id="filmsGrid">
+          {films.map((f) => (
+            <a class="filmCard" href={`/movies/${f.id}`} data-kind={f.data.type} data-year={f.data.year} data-title={f.data.title}>
+              <div class="thumb">
+                {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" /> : <div class="posterFallback">{f.data.title}</div>}
+                {f.data.duration && <span class="durationBadge">▶ {f.data.duration}</span>}
+              </div>
+              <h3>{f.data.title}</h3>
+              <p class="filmMeta">{f.data.year}<span>·</span>{f.data.type === 'series' ? 'Series' : 'Movie'}</p>
+              {f.data.genres.length > 0 && (
+                <div class="filmTags">{f.data.genres.slice(0, 2).map((g) => <span>{g}</span>)}</div>
+              )}
+            </a>
+          ))}
+        </div>
+      </>
+    ) : (
+      <p class="pageLede">No films in this studio's catalog yet.</p>
+    )}
+  </section>
 
   {tools.length > 0 && (
-    <section class="section">
-      <h2>Creative stack</h2>
+    <section class="pane" id="panel-stack" role="tabpanel" aria-labelledby="tab-stack" hidden>
+      <div class="sectionbar"><h2>Creative Stack</h2></div>
+      <p class="stackIntro">Production tools associated with the studio's filmography, based on project credits.</p>
       <div class="toolGrid">
-        {tools.map(([tool, count]) => (
-          <div class="toolCard"><strong>{tool}</strong><span>{count} film{count === 1 ? '' : 's'}</span></div>
+        {tools.map((t) => (
+          <div class="toolCard">
+            <span class="toolIcon" style={`background:${t.meta.bg};color:${t.meta.fg};${t.meta.border ? `border:1px solid ${t.meta.border};` : ''}`}>{t.meta.icon}</span>
+            <span><strong>{t.name}</strong><small>{t.meta.category}</small></span>
+          </div>
         ))}
       </div>
     </section>
@@ -124,19 +178,48 @@ const tools = [...toolCounts.entries()].sort((a, b) => b[1] - a[1]);
 
   <script is:inline>
     (function () {
+      var tabs = [].slice.call(document.querySelectorAll('[data-tab]'));
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          tabs.forEach(function (t) {
+            var selected = t === tab;
+            t.setAttribute('aria-selected', String(selected));
+            var panel = document.getElementById('panel-' + t.dataset.tab);
+            if (panel) panel.hidden = !selected;
+          });
+        });
+      });
+
       var grid = document.getElementById('filmsGrid');
       if (!grid) return;
       var cards = [].slice.call(grid.children);
-      var select = document.getElementById('sortSelect');
-      select.addEventListener('change', function () {
-        var mode = select.value;
-        var sorted = cards.slice().sort(function (a, b) {
+      var pills = [].slice.call(document.querySelectorAll('.pill'));
+      var sortSelect = document.getElementById('filmSort');
+      var countEl = document.getElementById('filmCount');
+      var kind = 'all';
+
+      function render() {
+        var list = cards.filter(function (c) { return kind === 'all' || c.dataset.kind === kind; });
+        var mode = sortSelect.value;
+        list.sort(function (a, b) {
           if (mode === 'oldest') return Number(a.dataset.year) - Number(b.dataset.year);
           if (mode === 'title') return a.dataset.title.localeCompare(b.dataset.title);
           return Number(b.dataset.year) - Number(a.dataset.year);
         });
-        grid.replaceChildren.apply(grid, sorted);
+        cards.forEach(function (c) { c.hidden = true; });
+        list.forEach(function (c) { c.hidden = false; });
+        grid.replaceChildren.apply(grid, list.concat(cards.filter(function (c) { return list.indexOf(c) === -1; })));
+        if (countEl) countEl.textContent = list.length + ' title' + (list.length === 1 ? '' : 's');
+      }
+      pills.forEach(function (pill) {
+        pill.addEventListener('click', function () {
+          kind = pill.dataset.kind;
+          pills.forEach(function (p) { p.setAttribute('aria-pressed', String(p === pill)); });
+          render();
+        });
       });
+      sortSelect.addEventListener('change', render);
+      render();
     })();
   </script>
 </BaseLayout>

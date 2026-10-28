@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getToolMeta } from '../../data/toolMeta';
 
 export async function getStaticPaths() {
   const creators = await getCollection('creators');
@@ -23,6 +24,19 @@ const films = c.films
 const movieCount = films.filter((f) => f.data.type !== 'series').length;
 const seriesCount = films.filter((f) => f.data.type === 'series').length;
 const shortCount = 0; // no "short" sub-type in the schema yet — kept for parity with the mockup's filter pills
+
+// "Creative stack" — the creator-page mockup's tool carousel, but counted
+// from real per-film aiTools credits instead of hand-curated placeholder
+// data. Aggregated across this creator's filmography, most-used first.
+const toolCounts = new Map<string, number>();
+for (const f of films) {
+  for (const t of f.data.aiTools) {
+    toolCounts.set(t, (toolCounts.get(t) || 0) + 1);
+  }
+}
+const creativeStack = [...toolCounts.entries()]
+  .sort((a, b) => b[1] - a[1])
+  .map(([name, count]) => ({ name, count, meta: getToolMeta(name) }));
 ---
 <BaseLayout title={c.name} description={c.bio}>
   <style>
@@ -52,14 +66,24 @@ const shortCount = 0; // no "short" sub-type in the schema yet — kept for pari
     .films-grid img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .films-grid h3 { font-size: .86rem; margin: 8px 0 2px; }
     .films-grid .meta { font-size: .76rem; color: var(--muted); }
-    .creativeStack { display: grid; grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); gap: 12px; margin-top: 14px; }
-    .toolmark { display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 8px; background: var(--black); color: #fff; font-weight: 800; font-size: .8rem; margin-bottom: 8px; }
-    .toolCard { border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
-    .toolCard strong { font-size: .84rem; display: block; }
-    .toolCard span { font-size: .74rem; color: var(--muted); }
+    .stackSection { border-top: 1px solid var(--line); margin-top: 36px; padding-top: 24px; }
+    .stackSection h2 { font-size: 1.5rem; margin: 0; }
+    .stackSection .stackLede { font-size: .84rem; color: var(--muted); margin: 5px 0 14px; }
+    .stackWrap { position: relative; }
+    .toolScroll { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 2px 1px 15px; scrollbar-width: thin; scrollbar-color: #cfd3d9 transparent; }
+    .toolCard { scroll-snap-align: start; flex: 0 0 148px; border: 1px solid var(--line); min-height: 118px; border-radius: 8px; padding: 12px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px; text-align: center; }
+    .toolCard:hover { border-color: #b3beca; }
+    .toolCard strong { font-size: .78rem; }
+    .toolCard small { font-size: .7rem; color: var(--muted); }
+    .toolmark { width: 36px; height: 36px; border-radius: 8px; display: grid; place-items: center; font-size: 1.15rem; font-weight: 800; margin-bottom: 4px; }
+    .carouselBtn { position: absolute; top: 36px; width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--line); background: #fff; border-radius: 50%; z-index: 1; }
+    .carouselBtn.left { left: -16px; }
+    .carouselBtn.right { right: -16px; }
     @media (max-width: 760px) {
       .personHero { grid-template-columns: 1fr; }
       .personPhoto { width: 150px; }
+      .carouselBtn.left { left: 0; }
+      .carouselBtn.right { right: 0; }
     }
   </style>
 
@@ -125,6 +149,26 @@ const shortCount = 0; // no "short" sub-type in the schema yet — kept for pari
     </>
   )}
 
+  {creativeStack.length > 0 && (
+    <section class="stackSection" aria-labelledby="stack-heading">
+      <h2 id="stack-heading">Creative stack</h2>
+      <p class="stackLede">Tools used across {c.name}'s films, aggregated from AIMB catalog credits.</p>
+      <div class="stackWrap">
+        <button class="carouselBtn left" id="prevTool" aria-label="Scroll tools left" type="button">←</button>
+        <div class="toolScroll" id="toolScroll">
+          {creativeStack.map((t) => (
+            <div class="toolCard">
+              <span class="toolmark" style={`background:${t.meta.bg};color:${t.meta.fg};${t.meta.border ? `border:1px solid ${t.meta.border};` : ''}`}>{t.meta.icon}</span>
+              <strong>{t.name}</strong>
+              <small>{t.count} film{t.count === 1 ? '' : 's'}</small>
+            </div>
+          ))}
+        </div>
+        <button class="carouselBtn right" id="nextTool" aria-label="Scroll tools right" type="button">→</button>
+      </div>
+    </section>
+  )}
+
   <script is:inline>
     (function () {
       var grid = document.getElementById('filmsGrid');
@@ -155,6 +199,17 @@ const shortCount = 0; // no "short" sub-type in the schema yet — kept for pari
       });
       sortSelect.addEventListener('change', render);
       render();
+    })();
+  </script>
+
+  <script is:inline>
+    (function () {
+      var scroll = document.getElementById('toolScroll');
+      if (!scroll) return;
+      var prev = document.getElementById('prevTool');
+      var next = document.getElementById('nextTool');
+      prev.addEventListener('click', function () { scroll.scrollBy({ left: -340, behavior: 'smooth' }); });
+      next.addEventListener('click', function () { scroll.scrollBy({ left: 340, behavior: 'smooth' }); });
     })();
   </script>
 </BaseLayout>
