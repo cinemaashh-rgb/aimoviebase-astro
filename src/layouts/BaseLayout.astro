@@ -95,10 +95,10 @@ import Icon from '../components/Icon.astro';
       font-family: var(--sans);
       -webkit-font-smoothing: antialiased;
     }
-    h1, h2, h3 { font-family: var(--serif); line-height: 1.12; letter-spacing: -0.02em; }
-    a { color: inherit; text-decoration: none; }
-    a:hover { color: var(--blue); }
-    p { line-height: 1.55; }
+    :global(h1), :global(h2), :global(h3) { font-family: var(--serif); line-height: 1.12; letter-spacing: -0.02em; }
+    :global(a) { color: inherit; text-decoration: none; }
+    :global(a:hover) { color: var(--blue); }
+    :global(p) { line-height: 1.55; }
 
     .darkHeader {
       background: var(--black);
