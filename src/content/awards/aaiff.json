@@ -13,18 +13,18 @@
     {
       "label": "2026 winners — Thematic Competition",
       "winners": [
-        { "place": "First place", "title": "The First Honest Day", "movieSlug": "the-first-honest-day", "director": "Nikolay Shestak", "directorSlug": "shestak", "poster": "/images/posters/the-first-honest-day.webp", "notes": [] },
-        { "place": "Second place", "title": "SITARA", "director": "Abhik Banerjee", "notes": [] },
-        { "place": "Third place", "title": "Looking for Perseida", "director": "Ernest Desumbila", "notes": [] }
+        { "place": "First place", "title": "The First Honest Day", "movieSlug": "the-first-honest-day", "director": "Nikolay Shestak", "directorSlug": "shestak", "poster": "/images/posters/the-first-honest-day.webp", "prize": "$450,000", "notes": [] },
+        { "place": "Second place", "title": "SITARA", "director": "Abhik Banerjee", "prize": "$200,000", "notes": [] },
+        { "place": "Third place", "title": "Looking for Perseida", "director": "Ernest Desumbila", "prize": "$100,000", "notes": [] }
       ]
     },
     {
       "label": "2026 winners — Open Competition",
       "winners": [
         { "place": "Best Character", "title": "IT WAS JUST A JOKE", "movieSlug": "it-was-just-a-joke", "director": "Myrzakhan Zhumakhan", "directorSlug": "myrzakhan-zhumakhan", "poster": "/images/posters/it-was-just-a-joke.webp", "notes": [] },
-        { "place": "Best Story", "title": "The Last Span", "director": "Junchao Tian", "notes": [] },
+        { "place": "Best Story", "title": "The Last Span", "director": "2xLabs", "notes": [] },
         { "place": "Best Concept", "title": "Pomegranate", "director": "Zachary London", "notes": [] },
-        { "place": "Best Visual", "title": "What's the Job", "director": "Jacopo Zanetti", "notes": [] },
+        { "place": "Best Visual", "title": "What's the Job?", "director": "Jacopo Zanetti", "notes": [] },
         { "place": "Best Direction", "title": "The Fracture", "director": "Jacopo Reale", "notes": [] }
       ]
     }
