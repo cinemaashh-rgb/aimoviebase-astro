@@ -13,7 +13,11 @@ const movies = defineCollection({
     duration: z.string().optional(),
     genres: z.array(z.string()).default([]),
     country: z.string().optional(),
-    synopsis: z.string(),
+    // Optional: a couple of records only ever had an award line to go on,
+    // which used to get stuffed in here as a fake "synopsis" — duplicating
+    // the real Awards box and reading like a plot summary when it isn't
+    // one. Leave it unset rather than invent real plot text we don't have.
+    synopsis: z.string().optional(),
     poster: z.string().optional(),
     youtubeId: z.string().optional(),
     director: z.object({

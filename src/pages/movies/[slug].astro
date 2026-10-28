@@ -157,7 +157,7 @@ detailsParts.push(...m.genres);
           <div class="eyebrow">{isSeries ? 'AI Series' : 'AI Movie'}</div>
           <h1 class="title">{m.title}</h1>
           <div class="factsLine">{detailsParts.map((part, i) => <>{i > 0 && <span>·</span>}{part}</>)}</div>
-          <p class="synopsis">{m.synopsis}</p>
+          {m.synopsis && <p class="synopsis">{m.synopsis}</p>}
           {m.genres.length > 0 && (
             <div class="tags">{m.genres.map((g) => <span class="tag">{g}</span>)}</div>
           )}

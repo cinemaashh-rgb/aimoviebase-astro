@@ -6,13 +6,12 @@
   "genres": [
     "Drama"
   ],
-  "synopsis": "Winner of the AAIFF (Astana AI Film Festival) 2026 Thematic Competition, first place.",
   "poster": "/images/posters/the-first-honest-day.webp",
   "director": {
     "name": "Nikolay Shestak",
     "slug": "shestak"
   },
   "awards": [
-    "Winner, AAIFF 2026 Thematic Competition (1st place)"
+    "Grand Prix, Astana AI Film Festival (AAIFF) 2026"
   ]
 }
