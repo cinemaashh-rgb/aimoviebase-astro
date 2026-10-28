@@ -103,7 +103,10 @@ detailsParts.push(...m.genres);
     .verdict p { color: var(--ink); margin: 0; font-size: .92rem; }
 
     .related { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 14px; }
-    .related img, .related .posterFallback { width: 100%; aspect-ratio: 2/1; object-fit: cover; border-radius: 5px; margin-bottom: 8px; display: block; background: var(--soft); }
+    /* 16/9 matches the real -wide.webp crops on disk (960x540/1200x675);
+       the previous 2/1 ratio forced them into a shape they aren't, cropping
+       off real image content on every poster that has a wide version. */
+    .related img, .related .posterFallback { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 5px; margin-bottom: 8px; display: block; background: var(--soft); }
     .related strong { display: block; font-family: var(--serif); font-size: .95rem; line-height: 1.28; color: var(--ink); font-weight: 700; }
     .related small { color: var(--muted2); display: block; margin-top: 4px; font-size: .78rem; }
 

@@ -1,8 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { widePoster } from '../lib/images';
-
 const movies = await getCollection('movies');
 const notable = [...movies].sort((a, b) => b.data.year - a.data.year).slice(0, 6);
 
@@ -84,7 +82,10 @@ const journal = [
     /* ---- Notable movies ---- */
     .filmGrid { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 15px; }
     .filmGrid a { display: flex; flex-direction: column; min-width: 0; color: inherit; }
-    .filmGrid img, .filmGrid .posterFallback { width: 100%; aspect-ratio: 1.07/1; object-fit: cover; border-radius: 4px; background: var(--soft); display: block; }
+    /* Vertical poster cards — the poster's own 2/3 ratio, never cropped to
+       a different shape (see README note on the earlier wide-crop version
+       of this grid, which forced real 16:9 art into a near-square box). */
+    .filmGrid img, .filmGrid .posterFallback { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 4px; background: var(--soft); display: block; }
     .filmGrid strong { font-family: var(--serif); font-size: .92rem; margin-top: 9px; line-height: 1.22; font-weight: 700; }
     .filmGrid .muted { color: var(--muted2); font-size: .74rem; margin-top: 3px; }
     .filmGrid .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
@@ -165,7 +166,7 @@ const journal = [
       {notable.map((movie) => (
         <a href={`/movies/${movie.id}`} aria-label={`Read about ${movie.data.title}`}>
           {movie.data.poster ? (
-            <img src={widePoster(movie.data.poster)} alt={movie.data.title} loading="lazy" />
+            <img src={movie.data.poster} alt={movie.data.title} loading="lazy" />
           ) : (
             <div class="posterFallback">{movie.data.title}</div>
           )}
