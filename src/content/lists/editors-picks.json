@@ -1,0 +1,15 @@
+{
+  "name": "AIMB Editor's Picks",
+  "description": "Our handpicked selection of standout AI films that everyone should see — spanning genres, studios and production tools.",
+  "placeholder": false,
+  "movies": [
+    "9091",
+    "a-face-only-a-mother-could-love",
+    "hold-your-breath",
+    "it-was-just-a-joke",
+    "alucard",
+    "the-chronicles-of-bone",
+    "tha-trenchez",
+    "total-pixel-space"
+  ]
+}

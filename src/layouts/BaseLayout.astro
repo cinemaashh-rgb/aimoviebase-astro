@@ -14,12 +14,18 @@ const { title, description = 'AI Movie Base — catalog of AI-generated films.' 
 // every internal link and every canonical tag agree on the same format.
 const canonicalPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const canonicalURL = new URL(canonicalPath, Astro.site).href;
+
+const currentPath = canonicalPath;
+function isActive(prefix: string) {
+  return currentPath === prefix || currentPath.startsWith(prefix + '/');
+}
 ---
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
   <title>{title} | AI Movie Base</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonicalURL} />
@@ -42,93 +48,188 @@ const canonicalURL = new URL(canonicalPath, Astro.site).href;
     ym(113765836, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true });
   </script>
   <style>
+    /*
+      Canonical design tokens for the whole site, consolidated from the 12
+      HTML mockups supplied for the redesign (each file defined a slightly
+      different :root — different variable names, different near-black
+      header hex values, different blue-accent hex). This set follows the
+      About-page mockup's own tokens, since that file was explicitly called
+      out as the global theme source; every other page's design is mapped
+      onto these names rather than keeping each mockup's local variables.
+      See README "Design tokens" section for the full reconciliation notes.
+    */
     :root {
-      --bg: #000;
-      --bg-elev: #07080a;
-      --fg: #f2f3f5;
-      --muted: #9aa0a6;
-      --accent: #4fa8ff;
+      --ink: #17191d;      /* body text */
+      --muted: #5d6776;    /* secondary text */
+      --muted2: #727d8e;   /* tertiary / lighter secondary text */
+      --line: #e5e7eb;     /* borders, rules */
+      --black: #080b0d;    /* header / footer background */
+      --blue: #245bb9;     /* accent / links */
+      --bg: #fff;          /* page background */
+      --soft: #f6f7f9;     /* light panel / card background */
+      --serif: Georgia, 'Times New Roman', serif;
+      --sans: Arial, Helvetica, sans-serif;
+
+      /* Back-compat aliases: most page templates (and the browser-side
+         search box below) were written against this variable naming from
+         the pre-redesign dark theme. Keeping the names and repointing the
+         values is far less error-prone than rewriting every inline style
+         in the same pass as the rest of this task. */
+      --fg: var(--ink);
+      --accent: var(--blue);
+      --bg-elev: var(--soft);
+      --border: var(--line);
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      background: linear-gradient(180deg,#000 0%,#07080a 10%,#0a0b0d 100%);
-      color: var(--fg);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
     }
-    h1, h2, h3 { font-family: Georgia, 'Times New Roman', serif; }
-    a { color: var(--accent); text-decoration: none; }
+    h1, h2, h3 { font-family: var(--serif); line-height: 1.12; letter-spacing: -0.02em; }
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: var(--blue); }
+    p { line-height: 1.55; }
+
     .darkHeader {
-      background: #000;
+      background: var(--black);
+      color: #fff;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 1rem 2rem;
+      gap: 24px;
+      padding: 0 2rem;
+      height: 62px;
       position: sticky;
       top: 0;
-      z-index: 10;
-      border-bottom: 1px solid #1a1a1a;
+      z-index: 50;
     }
-    .darkHeader nav { display: flex; align-items: center; gap: 1.5rem; }
-    .darkHeader nav a { color: var(--fg); font-size: 0.95rem; }
-    .darkHeader nav a:hover { color: var(--accent); }
-    .siteSearch { position: relative; width: 220px; }
-    .searchInput { width: 100%; font-size: .85rem; border-radius: 6px; padding: 8px 12px; outline: none; background: #1f242b; border: 1px solid #2c323b; color: var(--fg); }
-    .searchInput::placeholder { color: var(--muted); }
-    .searchResults { display: none; position: absolute; right: 0; left: auto; width: 340px; margin-top: 8px; border-radius: 10px; overflow: hidden; z-index: 60; max-height: 420px; overflow-y: auto; background: #1a1d22; border: 1px solid #2c323b; box-shadow: 0 16px 40px rgba(0,0,0,.5); }
-    .searchItem { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-top: 1px solid #23262c; }
+    .darkHeader .brand { font-family: var(--serif); font-size: 1.5rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+    .darkHeader nav { display: flex; align-items: center; gap: 1.6rem; flex: 1; justify-content: center; flex-wrap: wrap; }
+    .darkHeader nav a { color: #d7dae0; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; }
+    .darkHeader nav a:hover, .darkHeader nav a.active { color: #fff; }
+    .darkHeader .headerRight { display: flex; align-items: center; gap: 14px; }
+    .submitBtn { background: #fff; color: #111; font-size: 0.72rem; font-weight: 700; padding: 9px 14px; border-radius: 4px; white-space: nowrap; }
+    .submitBtn:hover { opacity: .85; color: #111; }
+    .menuToggle { display: none; background: none; border: 0; color: #fff; font-size: 1.4rem; cursor: pointer; }
+
+    .siteSearch { position: relative; width: 210px; flex: none; }
+    .searchInput { width: 100%; font-size: .78rem; border-radius: 6px; padding: 8px 12px; outline: none; background: #20252d; border: 1px solid #343b45; color: #fff; }
+    .searchInput::placeholder { color: #9aa0ad; }
+    .searchResults { display: none; position: absolute; right: 0; left: auto; width: 320px; margin-top: 8px; border-radius: 10px; overflow: hidden; z-index: 60; max-height: 420px; overflow-y: auto; background: #fff; border: 1px solid var(--line); box-shadow: 0 16px 40px rgba(20,25,35,.18); }
+    .searchItem { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-top: 1px solid var(--line); }
     .searchItem:first-child { border-top: none; }
-    .searchItem:hover { background: #22262d; }
-    .searchThumb { flex: 0 0 42px; width: 42px; height: 58px; border-radius: 5px; overflow: hidden; background: linear-gradient(135deg,#2a2e36,#1f2228); display: flex; align-items: center; justify-content: center; font-size: .74rem; font-weight: 700; color: #9aa1ad; border: 1px solid #2c323b; }
+    .searchItem:hover { background: var(--soft); }
+    .searchThumb { flex: 0 0 42px; width: 42px; height: 58px; border-radius: 5px; overflow: hidden; background: var(--soft); display: flex; align-items: center; justify-content: center; font-size: .74rem; font-weight: 700; color: var(--muted); border: 1px solid var(--line); }
     .searchThumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .searchInfo { min-width: 0; flex: 1; }
-    .searchTitle { font-weight: 600; font-size: .85rem; color: #eceef1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .searchSub { font-size: .72rem; color: #767b85; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .searchEmpty { padding: 14px 12px; font-size: .85rem; color: #767b85; }
+    .searchTitle { font-weight: 600; font-size: .85rem; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .searchSub { font-size: .72rem; color: var(--muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .searchEmpty { padding: 14px 12px; font-size: .85rem; color: var(--muted); }
+
     main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-    footer { padding: 2rem; text-align: center; color: var(--muted); border-top: 1px solid #1a1a1a; }
-    .movieGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1.25rem; }
-    .movieCard { background: var(--bg-elev); border-radius: 10px; overflow: hidden; transition: transform .15s; }
-    .movieCard:hover { transform: translateY(-4px); }
-    .movieCard img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
-    .movieCard .cardBody { padding: 0.6rem 0.7rem; }
-    .movieCard h3 { font-size: 0.95rem; margin: 0 0 0.2rem; color: var(--fg); }
-    .movieCard .meta { color: var(--muted); font-size: 0.8rem; }
+
+    .siteFooter { background: var(--black); color: #d2d5d9; padding: 40px 0 24px; margin-top: 2rem; }
+    .footInner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .footGrid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; }
+    .footGrid .footBrand { font-family: var(--serif); font-size: 1.4rem; font-weight: 800; color: #fff; }
+    .footGrid p { color: #a3aab5; font-size: .82rem; max-width: 230px; line-height: 1.55; }
+    .footGrid h4 { font-size: .74rem; letter-spacing: .05em; text-transform: uppercase; color: #fff; margin: 0 0 10px; font-family: var(--sans); }
+    .footGrid a { display: block; font-size: .82rem; margin: 6px 0; color: #bec3ca; }
+    .footGrid a:hover { color: #fff; }
+    .copyrightBar { color: #9ca2ab; font-size: .74rem; margin-top: 26px; border-top: 1px solid #262a2e; padding-top: 16px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+    /* Shared catalog card styles reused across homepage, movies index, genre
+       and studio pages — ported from the mockups' `.film-card` pattern. */
+    .movieGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 1.1rem 1rem; }
+    .movieCard { display: block; min-width: 0; }
+    .movieCard img, .movieCard .posterFallback { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; border-radius: 5px; background: var(--soft); }
+    .posterFallback { display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px; font-weight: 600; font-size: .78rem; color: var(--muted); font-family: var(--serif); }
+    .movieCard .cardBody { padding-top: .5rem; }
+    .movieCard h3 { font-size: .95rem; font-family: var(--sans); font-weight: 700; margin: 0 0 .2rem; color: var(--ink); letter-spacing: 0; }
+    .movieCard .meta { color: var(--muted); font-size: .78rem; }
+
+    .pageEyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .09em; color: var(--muted2); text-transform: uppercase; }
+    .pageLede { color: var(--muted); max-width: 680px; line-height: 1.6; font-size: 1.02rem; }
+
     #videoModalOverlay {
       display: none;
-      position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+      position: fixed; inset: 0; background: rgba(10,12,16,0.82);
       z-index: 100; align-items: center; justify-content: center;
     }
     #videoModalOverlay.open { display: flex; }
     #videoModalOverlay .modalInner { width: min(900px, 90vw); aspect-ratio: 16/9; }
     #videoModalOverlay iframe { width: 100%; height: 100%; border: 0; }
+
+    @media (max-width: 900px) {
+      .footGrid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    }
+    @media (max-width: 760px) {
+      .darkHeader { padding: 0 1rem; }
+      .darkHeader nav { display: none; }
+      .darkHeader nav.open { display: flex; position: absolute; top: 62px; left: 0; right: 0; background: var(--black); flex-direction: column; align-items: flex-start; padding: 14px 18px; z-index: 40; }
+      .darkHeader nav.open a { padding: 10px 0; }
+      .menuToggle { display: block; }
+      .siteSearch { width: 140px; }
+      main { padding: 1.25rem; }
+    }
   </style>
 </head>
 <body>
   <header class="darkHeader">
-    <a href="/" style="font-family: Georgia, serif; font-size: 1.3rem; color: var(--fg);">AI Movie Base</a>
-    <nav>
-      <a href="/movies">Movies</a>
-      <a href="/shortformdrama">Short Drama</a>
-      <a href="/lists">Lists</a>
-      <a href="/news">News</a>
+    <a href="/" class="brand" aria-label="AIMB home">AIMB</a>
+    <button class="menuToggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <nav id="mainNav" aria-label="Main navigation">
+      <a href="/movies" class={isActive('/movies') ? 'active' : ''}>AI Movies &amp; Series</a>
+      <a href="/short-drama" class={isActive('/short-drama') || isActive('/shortdrama') ? 'active' : ''}>AI Short Drama</a>
+      <a href="/lists" class={isActive('/lists') ? 'active' : ''}>Lists</a>
+      <a href="/news" class={isActive('/news') ? 'active' : ''}>Journal</a>
+      <a href="/awards" class={isActive('/awards') ? 'active' : ''}>Awards</a>
+    </nav>
+    <div class="headerRight">
       <div class="siteSearch">
-        <input class="searchInput" type="text" placeholder="Search films and studios…" />
+        <input class="searchInput" type="text" placeholder="Search films, creators…" />
         <div class="searchResults"></div>
       </div>
-    </nav>
+      <a class="submitBtn" href="/contact">Submit a Film</a>
+    </div>
   </header>
   <main>
     <slot />
   </main>
-  <footer>
-    <nav style="display:flex; gap:1.5rem; justify-content:center; margin-bottom:0.75rem;">
-      <a href="/about">About</a>
-      <a href="/contact">Contact</a>
-      <a href="/privacy">Privacy</a>
-      <a href="/terms">Terms</a>
-    </nav>
-    <p>&copy; {new Date().getFullYear()} AI Movie Base</p>
+  <footer class="siteFooter">
+    <div class="footInner footGrid">
+      <div>
+        <a class="footBrand" href="/">AIMB</a>
+        <p>AI Movie Base — an independent platform to discover AI-generated movies, AI series and the people behind them.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <a href="/movies">AI Movies &amp; Series</a>
+        <a href="/short-drama">AI Short Drama</a>
+        <a href="/lists">Lists</a>
+        <a href="/news">Journal</a>
+      </div>
+      <div>
+        <h4>Community</h4>
+        <a href="/awards">Festivals &amp; Awards</a>
+        <a href="/about">About AIMB</a>
+        <a href="/contact">Submit a Film</a>
+      </div>
+      <div>
+        <h4>Information</h4>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+    <div class="footInner copyrightBar">
+      <span>© {new Date().getFullYear()} AIMB. All rights reserved.</span>
+      <span>Independent discovery and editorial platform.</span>
+    </div>
   </footer>
 
   <div id="videoModalOverlay">
@@ -181,6 +282,14 @@ const canonicalURL = new URL(canonicalPath, Astro.site).href;
       document.getElementById('videoModalOverlay').addEventListener('click', function (e) {
         if (e.target.id === 'videoModalOverlay') closeTrailer();
       });
+      var toggle = document.getElementById('navToggle');
+      var nav = document.getElementById('mainNav');
+      if (toggle && nav) {
+        toggle.addEventListener('click', function () {
+          var open = nav.classList.toggle('open');
+          toggle.setAttribute('aria-expanded', String(open));
+        });
+      }
     });
   </script>
 </body>

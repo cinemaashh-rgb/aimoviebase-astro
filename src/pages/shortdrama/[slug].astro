@@ -19,7 +19,7 @@ const d = entry.data;
       <span style="display:inline-block; font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; font-weight:700; color:#fff; background:var(--accent); border-radius:999px; padding:4px 12px; margin:30px 0 14px;">Coming Soon</span>
       <h1 style="margin-top:4px">{d.title}</h1>
       <p class="lede" style="color:var(--muted); max-width:640px; line-height:1.5">{d.tagline}</p>
-      <div style="border:1px dashed #262a31; border-radius:10px; padding:40px 24px; text-align:center; color:var(--muted); margin-top:18px;">
+      <div style="border:1px dashed var(--line); border-radius:10px; padding:40px 24px; text-align:center; color:var(--muted); margin-top:18px;">
         <strong style="display:block; color:var(--fg); font-size:1rem; margin-bottom:6px; font-family:Georgia,serif;">No titles yet</strong>
         Nothing has been published in {d.title} yet — check back as new vertical-drama titles are added to the catalog.
       </div>
@@ -39,7 +39,7 @@ const d = entry.data;
         </div>
         <div style="display:flex; gap:8px; flex-wrap:wrap; margin:14px 0;">
           {d.badges.map((b) => (
-            <span style="display:inline-flex; align-items:center; gap:6px; background:var(--bg-elev); border:1px solid #262a31; border-radius:999px; padding:6px 14px; font-size:.78rem; color:var(--muted); font-weight:500;">{b}</span>
+            <span style="display:inline-flex; align-items:center; gap:6px; background:var(--bg-elev); border:1px solid var(--line); border-radius:999px; padding:6px 14px; font-size:.78rem; color:var(--muted); font-weight:500;">{b}</span>
           ))}
         </div>
         <p style="font-size:.9rem; margin:14px 0 18px; max-width:520px; line-height:1.6;">{d.description}</p>

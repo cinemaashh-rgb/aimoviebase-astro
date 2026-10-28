@@ -1,0 +1,10 @@
+{
+  "name": "Experimental & No-Camera Filmmaking",
+  "description": "Form-breaking AI films made entirely without a camera — every frame generated rather than shot.",
+  "placeholder": true,
+  "movies": [
+    "do-the-evolution",
+    "total-pixel-space",
+    "unprompted"
+  ]
+}

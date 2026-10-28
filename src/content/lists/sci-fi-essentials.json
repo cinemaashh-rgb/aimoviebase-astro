@@ -1,0 +1,24 @@
+{
+  "name": "Sci-Fi Essentials",
+  "description": "Every AI-made sci-fi title currently in the catalog, gathered in one place.",
+  "placeholder": true,
+  "movies": [
+    "9091",
+    "alien-invasion-ep3-total-war-begins",
+    "annunaki-the-nibiru-legacy",
+    "charlie-boy",
+    "cupid",
+    "echo-hunter",
+    "hydrocide",
+    "jackpot",
+    "kade-voss",
+    "last-recall",
+    "memory-world",
+    "oda",
+    "oneiric",
+    "red-rainbow",
+    "reset",
+    "the-sky-fallen-legacy",
+    "tow-truck"
+  ]
+}

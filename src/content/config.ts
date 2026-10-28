@@ -27,6 +27,31 @@ const movies = defineCollection({
       title: z.string(),
       youtubeId: z.string().optional(),
     })).optional(),
+    // --- Redesign-phase additions (all optional — no existing record needs
+    // to supply these, and pages must render fine without them) ---
+    // Manually curated by an editor; empty/absent by default. Not
+    // user-submitted, not aggregated from any rating system.
+    audienceReactions: z.array(z.object({
+      quote: z.string(),
+      author: z.string(),
+    })).optional(),
+    // The "AIMB editorial review" block from the movie-page mockup: a short
+    // multi-paragraph write-up plus a one-line verdict.
+    editorialReview: z.object({
+      paragraphs: z.array(z.string()),
+      verdict: z.string(),
+    }).optional(),
+    // Named crew credits beyond the single `director` field (e.g. editor,
+    // composer, VFX lead) — shown in the movie-page sidebar when present.
+    crew: z.array(z.object({
+      name: z.string(),
+      role: z.string(),
+      slug: z.string().optional(),
+    })).optional(),
+    // Season count for `type: 'series'` entries, used in the facts line
+    // ("1 Season (6 episodes)"). Purely descriptive; `episodes` above
+    // still holds the actual per-episode data.
+    seasons: z.number().optional(),
   }),
 });
 
@@ -48,6 +73,16 @@ const creators = defineCollection({
     bioMore: z.string().optional(),
     photo: z.string().optional(),
     films: z.array(z.string()).default([]),
+    // --- Redesign-phase additions (optional) ---
+    alias: z.string().optional(), // e.g. "Kavan the Kid"
+    socialLinks: z.object({
+      youtube: z.string().optional(),
+      x: z.string().optional(),
+    }).optional(),
+    awards: z.array(z.object({
+      title: z.string(),
+      note: z.string().optional(), // e.g. "Grand Prix — Film Title"
+    })).optional(),
   }),
 });
 
@@ -61,6 +96,13 @@ const studios = defineCollection({
     description: z.string(),
     descriptionMore: z.string().optional(),
     films: z.array(z.string()).default([]),
+    // --- Redesign-phase additions (optional) ---
+    subtitle: z.string().optional(), // e.g. "Independent AI film studio"
+    founded: z.number().optional(),
+    team: z.array(z.object({
+      name: z.string(),
+      role: z.string(),
+    })).optional(),
   }),
 });
 
@@ -125,6 +167,11 @@ const awards = defineCollection({
         director: z.string().optional(),
         directorSlug: z.string().optional(),
         poster: z.string().optional(),
+        // Structured prize amount (e.g. "$450,000"), kept separate from the
+        // free-text `place` field so it can be displayed in its own box as
+        // in the festival-detail mockup. Optional — most winners have no
+        // verified amount.
+        prize: z.string().optional(),
         notes: z.array(z.object({
           category: z.string(),
           title: z.string(),
@@ -137,4 +184,21 @@ const awards = defineCollection({
   }),
 });
 
-export const collections = { movies, creators, genres, studios, shortdrama, awards };
+// New collection for the /lists and /lists/[slug] pages. A "list" is a named,
+// described grouping of existing movies. For this first pass, every list is
+// either hand-picked or mechanically grouped by genre from existing data —
+// there is no curated list-building tool yet, so several of these are
+// explicitly placeholder groupings (see README for which ones and why).
+const lists = defineCollection({
+  type: 'data',
+  schema: z.object({
+    name: z.string(),
+    description: z.string(),
+    // Flags a list as a temporary, mechanically-generated stand-in (e.g.
+    // "every movie in genre X") rather than real editorial curation.
+    placeholder: z.boolean().default(false),
+    movies: z.array(z.string()).default([]), // movie slugs (content ids)
+  }),
+});
+
+export const collections = { movies, creators, genres, studios, shortdrama, awards, lists };

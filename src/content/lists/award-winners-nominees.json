@@ -1,0 +1,16 @@
+{
+  "name": "Award Winners & Nominees",
+  "description": "AI films that have won or been nominated for a prize at an AI film festival in the catalog.",
+  "placeholder": false,
+  "movies": [
+    "a-face-only-a-mother-could-love",
+    "costa-verde",
+    "make-believe",
+    "oda",
+    "reset",
+    "roraima",
+    "still",
+    "the-first-honest-day",
+    "total-pixel-space"
+  ]
+}
