@@ -113,6 +113,9 @@ const genres = defineCollection({
     name: z.string(),
     description: z.string(),
     films: z.array(z.string()).default([]),
+    // Optional hero banner background for the genre page; most genres have
+    // none and fall back to the plain dark hero.
+    heroImage: z.string().optional(),
   }),
 });
 
