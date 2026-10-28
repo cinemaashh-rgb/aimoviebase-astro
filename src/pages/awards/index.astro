@@ -12,6 +12,9 @@ const movies = await getCollection('movies');
 function movieExists(slug: string | undefined) {
   return slug ? movies.some((m) => m.id === slug) : false;
 }
+function moviePoster(slug: string | undefined) {
+  return slug ? movies.find((m) => m.id === slug)?.data.poster : undefined;
+}
 
 const byId = (id: string) => awards.find((a) => a.id === id);
 const aaiff = byId('aaiff');
@@ -161,6 +164,8 @@ const initialCount = 6;
     .format.online { background: #e6f4ec; color: #287754; }
     .fund { display: inline-block; background: #d9f1df; color: #23583b; border-radius: 50px; padding: 3px 10px; font-size: .76rem; font-weight: 700; white-space: nowrap; }
     .fund.empty { background: var(--soft); color: var(--muted2); }
+    .winner { display: flex; align-items: center; gap: 9px; }
+    .winner-thumb { flex: none; width: 28px; height: 42px; object-fit: cover; border-radius: 4px; background: var(--soft); }
     .winner strong { display: block; font-size: .8rem; color: var(--ink); }
     .winner a { color: var(--ink); }
     .winner a:hover { color: var(--blue); }
@@ -227,13 +232,23 @@ const initialCount = 6;
             <td>{f.fund ? <span class="fund">{f.fund}</span> : <span class="fund empty">—</span>}</td>
             <td class="winner">
               {f.winner.movieSlug && movieExists(f.winner.movieSlug) ? (
-                <a href={`/movies/${f.winner.movieSlug}`}><strong>{f.winner.title}</strong></a>
+                <>
+                  {moviePoster(f.winner.movieSlug) && (
+                    <img class="winner-thumb" src={moviePoster(f.winner.movieSlug)} alt={f.winner.title} loading="lazy" />
+                  )}
+                  <div>
+                    <a href={`/movies/${f.winner.movieSlug}`}><strong>{f.winner.title}</strong></a>
+                    <small>{f.winner.year} winner</small>
+                  </div>
+                </>
               ) : f.winner.year ? (
-                <strong>{f.winner.title}</strong>
+                <div>
+                  <strong>{f.winner.title}</strong>
+                  <small>{f.winner.year} winner</small>
+                </div>
               ) : (
                 <span class="pending">{f.winner.title}</span>
               )}
-              {f.winner.year && <small>{f.winner.year} winner</small>}
             </td>
           </tr>
         ))}
@@ -245,7 +260,7 @@ const initialCount = 6;
     <div class="count" id="count">Showing {initialCount} of {directory.length} festivals</div>
   </div>
 
-  <p style="color:var(--muted); font-size:.76rem; margin-top:22px;">Festivals without a dedicated page here link out to their own site. Award-winning films without a catalog entry are shown by name only, without a poster or link, rather than guessed at.</p>
+  <p style="color:var(--muted); font-size:.76rem; margin-top:22px;">Festivals without a dedicated page here link out to their own site. Award-winning films already in our catalog link to their page with a poster; films not yet catalogued are shown by name only, rather than guessed at.</p>
 
   <script is:inline define:vars={{ total: directory.length, initialCount }}>
     (function () {
