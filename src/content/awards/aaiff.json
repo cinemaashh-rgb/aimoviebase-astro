@@ -17,9 +17,9 @@
       "eyebrow": "Main competition",
       "lede": "The award-winning films of the Astana AI Film Festival 2026, selected by the international jury.",
       "winners": [
-        { "place": "First place", "title": "The First Honest Day", "movieSlug": "the-first-honest-day", "director": "Nikolay Shestak", "directorSlug": "shestak", "poster": "/images/posters/the-first-honest-day.webp", "prize": "$450,000", "notes": [] },
-        { "place": "Second place", "title": "SITARA", "director": "Abhik Banerjee", "prize": "$200,000", "notes": [] },
-        { "place": "Third place", "title": "Looking for Perseida", "director": "Ernest Desumbila", "poster": "/images/awards/looking-for-perseida.webp", "prize": "$100,000", "notes": [] }
+        { "place": "Grand Prix", "title": "The First Honest Day", "movieSlug": "the-first-honest-day", "director": "Nikolay Shestak", "directorSlug": "shestak", "poster": "/images/posters/the-first-honest-day.webp", "prize": "$450,000", "notes": [] },
+        { "place": "Second Prize", "title": "SITARA", "director": "Abhik Banerjee", "prize": "$200,000", "notes": [] },
+        { "place": "Third Prize", "title": "Looking for Perseida", "director": "Ernest Desumbila", "poster": "/images/awards/looking-for-perseida.webp", "prize": "$100,000", "notes": [] }
       ]
     },
     {
