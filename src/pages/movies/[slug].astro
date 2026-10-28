@@ -1,9 +1,8 @@
 ---
-import fs from 'node:fs';
-import path from 'node:path';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getToolMeta } from '../../data/toolMeta';
+import { widePoster } from '../../lib/images';
 
 export async function getStaticPaths() {
   const movies = await getCollection('movies');
@@ -51,16 +50,6 @@ if (isSeries) {
 }
 if (m.country) detailsParts.push(m.country);
 detailsParts.push(...m.genres);
-
-// Wide (landscape) poster crop for the "More like this" strip, matching the
-// mockup's 2:1 thumbnails. Falls back to the regular poster, then to the
-// text fallback box, since not every title has a "-wide" asset yet.
-function widePoster(poster: string | undefined): string | undefined {
-  if (!poster) return undefined;
-  const wide = poster.replace(/\.webp$/, '-wide.webp');
-  const onDisk = path.join(process.cwd(), 'public', wide.replace(/^\//, ''));
-  return fs.existsSync(onDisk) ? wide : poster;
-}
 ---
 <BaseLayout title={m.title} description={m.synopsis}>
   <style>

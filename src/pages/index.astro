@@ -1,112 +1,255 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { widePoster } from '../lib/images';
 
 const movies = await getCollection('movies');
 const notable = [...movies].sort((a, b) => b.data.year - a.data.year).slice(0, 6);
 
-const shortdrama = (await getCollection('shortdrama')).filter((e) => e.data.status === 'published').slice(0, 3);
+const shortdramaAll = await getCollection('shortdrama');
+const shortdramaPublished = shortdramaAll.filter((e) => e.data.status === 'published').slice(0, 3);
 
 const awards = await getCollection('awards');
+
+// Real journal content — the same three articles published in full on
+// /news (src/pages/news.astro). There's no per-article route yet (news.astro
+// is a single static page, not a content collection), so every card here
+// links to /news rather than a slug that doesn't exist. Reusing the actual
+// published text rather than inventing homepage-only copy.
+const journal = [
+  {
+    label: 'Editorial',
+    title: 'RESET makes the case for the one-person AI film crew',
+    excerpt: "Max Barskih's RESET — written, directed, and entirely produced solo using Higgsfield AI — is the clearest sign yet that a single filmmaker can now credibly deliver a multi-location sci-fi short without a crew.",
+    date: 'Sep 22, 2026',
+    datetime: '2026-09-22',
+    image: '/images/posters/reset-wide.webp',
+  },
+  {
+    label: 'News',
+    title: "What Echo Hunter's SAG-AFTRA sign-off actually means",
+    excerpt: "Echo Hunter was produced with explicit performer consent and guild sign-off for re-rendering a live performance with Arcana AI's video model.",
+    date: 'Jun 2, 2025',
+    datetime: '2025-06-02',
+    image: '/images/posters/echo-hunter-wide.webp',
+  },
+  {
+    label: 'News',
+    title: 'Toys "R" Us and the first wave of AI brand films',
+    excerpt: "The Sora-produced Toys “R” Us spot was one of the first major brand commercials built with a text-to-video model.",
+    date: 'May 10, 2024',
+    datetime: '2024-05-10',
+    image: undefined,
+  },
+];
 ---
 <BaseLayout title="AI Movie Base" description="Discover AI-generated movies, AI films and series from filmmakers worldwide. Explore notable works, creator stories, AI short dramas and film festivals.">
   <style>
-    .hero { margin: -2rem -2rem 10px; padding: 56px 2rem 48px; background: var(--black); color: #fff; }
-    .hero .eyebrow { color: #cfd5df; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
-    .hero h1 { color: #fff; font-size: clamp(38px,5.2vw,62px); line-height: 1.04; margin: 12px 0 16px; max-width: 560px; }
-    .hero p { color: #dde1e7; max-width: 480px; font-size: .98rem; line-height: 1.6; margin: 0 0 22px; }
+    /* ---- Hero ---- */
+    .hero { margin: -2rem -2rem 0; min-height: 390px; position: relative; overflow: hidden; background: var(--soft); }
+    /* No real hero illustration exists yet — this is a deliberate abstract
+       placeholder (soft radial blobs fading to white), standing in for the
+       mockup's photographic artwork + gradient fade, not pretending to be a
+       specific image. */
+    .hero::before {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 90% 20%, rgba(36,91,185,.14), transparent 60%),
+        radial-gradient(ellipse 50% 70% at 100% 90%, rgba(8,11,13,.10), transparent 60%);
+    }
+    .hero::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, var(--bg) 0%, var(--bg) 24%, rgba(255,255,255,.9) 42%, rgba(255,255,255,.2) 68%, rgba(255,255,255,0) 100%);
+    }
+    .heroIn { position: relative; z-index: 1; min-height: 390px; display: flex; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .heroCopy { max-width: 480px; padding: 40px 0; }
+    .hero .eyebrow { font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted2); }
+    .hero h1 { font-size: clamp(42px,5.2vw,68px); line-height: .99; letter-spacing: -0.03em; margin: 14px 0 18px; }
+    .hero p { color: var(--muted); font-size: .96rem; line-height: 1.6; margin: 0 0 22px; max-width: 460px; }
     .heroActions { display: flex; gap: 10px; flex-wrap: wrap; }
-    .btn { display: inline-flex; align-items: center; gap: 6px; font-size: .8rem; font-weight: 700; padding: 11px 18px; border-radius: 4px; border: 1px solid #39404a; }
-    .btn.primary { background: #fff; color: #0a0d11; border-color: #fff; }
-    .btn.ghost { color: #fff; }
-    .section { padding: 28px 0; border-top: 1px solid var(--line); }
-    .sectionHead { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 14px; }
-    .sectionHead h2 { font-size: clamp(24px,3vw,32px); margin: 0; }
-    .sectionHead .more { font-size: .82rem; color: var(--ink); font-weight: 600; white-space: nowrap; }
-    .homeGrid { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 14px; }
-    .festivalGrid { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 10px; }
-    .festivalRow { display: flex; align-items: center; gap: 10px; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
-    .festivalRow:hover { border-color: var(--blue); }
-    .fmark { width: 38px; height: 38px; flex: none; border-radius: 6px; background: var(--black); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: .9rem; }
-    .newsletter { background: var(--soft); border-radius: 10px; padding: 26px 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center; margin-top: 10px; }
-    .newsletter h2 { font-size: 1.5rem; margin: 4px 0; }
-    .newsletter p { color: var(--muted); font-size: .84rem; margin: 0; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 42px; font-size: .78rem; font-weight: 700; padding: 11px 18px; border-radius: 3px; border: 1px solid var(--line); background: #fff; color: var(--ink); }
+    .btn.primary { background: var(--black); color: #fff; border-color: var(--black); }
+    .btn:hover { opacity: .85; color: inherit; }
+
+    /* ---- Shared section chrome ---- */
+    .section { padding: 28px 0 29px; border-top: 1px solid var(--line); }
+    .sectionHead { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 14px; }
+    .sectionHead h2 { font-size: clamp(26px,3vw,32px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 4px; }
+    .sectionHead .intro { color: var(--muted); font-size: .8rem; margin: 0; }
+    .sectionHead .more { white-space: nowrap; font-size: .78rem; color: var(--ink); font-weight: 600; }
+    .sectionHead .more:hover { text-decoration: underline; }
+
+    /* ---- Notable movies ---- */
+    .filmGrid { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 15px; }
+    .filmGrid a { display: flex; flex-direction: column; min-width: 0; color: inherit; }
+    .filmGrid img, .filmGrid .posterFallback { width: 100%; aspect-ratio: 1.07/1; object-fit: cover; border-radius: 4px; background: var(--soft); display: block; }
+    .filmGrid strong { font-family: var(--serif); font-size: .92rem; margin-top: 9px; line-height: 1.22; font-weight: 700; }
+    .filmGrid .muted { color: var(--muted2); font-size: .74rem; margin-top: 3px; }
+    .filmGrid .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
+    .filmGrid .tags span { background: var(--soft); color: var(--muted); border-radius: 3px; font-size: .64rem; padding: 3px 7px; }
+
+    /* ---- Journal ---- */
+    .journalGrid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 22px; }
+    .story img, .story .storyFallback { width: 100%; aspect-ratio: 1.75/1; object-fit: cover; border-radius: 4px; background: var(--soft); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .8rem; font-weight: 700; text-align: center; padding: 10px; }
+    .story small { display: block; margin-top: 9px; font-size: .62rem; text-decoration: underline; letter-spacing: .06em; color: var(--muted2); text-transform: uppercase; }
+    .story strong { display: block; font-family: var(--serif); font-size: 1.12rem; line-height: 1.15; margin: 5px 0 8px; color: var(--ink); font-weight: 700; }
+    .story p { color: var(--muted); font-size: .76rem; line-height: 1.5; margin: 0 0 9px; }
+    .story time { font-size: .7rem; color: var(--muted2); }
+
+    /* ---- Short drama ---- */
+    .shortLayout { display: grid; grid-template-columns: 1.05fr 1.45fr; gap: 38px; align-items: center; }
+    .shortLayout h2 { font-size: 2.1rem; margin: 10px 0 12px; }
+    .shortLayout p { color: var(--muted); font-size: .88rem; line-height: 1.55; margin: 0 0 14px; }
+    .shortImages { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
+    .shortImages a { display: block; }
+    .shortImages img, .shortImages .dramaFallback { width: 100%; aspect-ratio: .66; object-fit: cover; border-radius: 4px; background: var(--soft); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .72rem; font-weight: 700; text-align: center; padding: 8px; }
+
+    /* ---- Festivals ---- */
+    .festivalGrid { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 10px; }
+    .festivalCard { display: flex; align-items: center; gap: 10px; min-height: 77px; border: 1px solid var(--line); border-radius: 5px; padding: 12px; background: #fff; }
+    .festivalCard:hover { border-color: #aab8c6; }
+    .fmark { width: 41px; flex: none; text-align: center; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.1em; color: var(--ink); }
+    .festivalCard strong { display: block; font-family: var(--serif); font-size: .76rem; line-height: 1.15; font-weight: 700; }
+    .festivalCard span { display: block; color: var(--muted2); font-size: .64rem; margin-top: 4px; }
+
+    /* ---- Newsletter (full-bleed dark, matching the footer) ---- */
+    .newsletter { background: var(--black); color: #fff; margin: 0 -2rem; }
+    .newsletterIn { max-width: 1200px; margin: 0 auto; padding: 28px 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center; }
+    .newsletter .eyebrow { font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #9aa4b2; }
+    .newsletter h2 { font-size: 1.7rem; line-height: 1.12; margin: 6px 0; }
+    .newsletter p { font-size: .8rem; color: #b8c1cc; margin: 0; }
     .newsletter form { display: flex; }
-    .newsletter input { flex: 1; min-width: 0; border: 1px solid var(--line); border-radius: 4px 0 0 4px; padding: 11px 12px; font-size: .85rem; }
-    .newsletter button { border: 0; border-radius: 0 4px 4px 0; padding: 0 18px; background: var(--black); color: #fff; font-weight: 700; cursor: pointer; }
-    @media (max-width: 900px) { .homeGrid { grid-template-columns: repeat(3,minmax(0,1fr)); } .newsletter { grid-template-columns: 1fr; } }
+    .newsletter input { flex: 1; min-width: 0; background: #232a32; border: 1px solid #3b444e; border-radius: 4px 0 0 4px; color: #fff; padding: 12px; font-size: .86rem; }
+    .newsletter button { border: 0; border-radius: 0 4px 4px 0; padding: 0 21px; background: #fff; color: #111; font-weight: 700; cursor: pointer; }
+    .newsletter .fineprint { font-size: .68rem; color: #8b94a1; margin-top: 7px; }
+    .newsletter #subscribeNotice { font-size: .76rem; color: #9ec2ff; min-height: 1.1em; margin-top: 5px; }
+
+    @media (max-width: 900px) {
+      .filmGrid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+      .journalGrid { grid-template-columns: 1fr; }
+      .shortLayout { grid-template-columns: 1fr; }
+      .festivalGrid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+      .newsletterIn { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 650px) {
+      .festivalGrid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    }
   </style>
 
   <section class="hero">
-    <div class="eyebrow">Discover AI movies, series &amp; the people behind them</div>
-    <h1>A new era of cinema is already here.</h1>
-    <p>AIMB is an independent platform for AI-generated movies, AI-assisted films and series. Discover remarkable works, the creators behind them, festival recognition and the emerging tools shaping a new cinematic language.</p>
-    <div class="heroActions">
-      <a class="btn primary" href="/movies">Explore AI Movies &amp; Series →</a>
-      <a class="btn ghost" href="/short-drama">Explore AI Short Drama</a>
+    <div class="heroIn">
+      <div class="heroCopy">
+        <div class="eyebrow">Discover AI movies, series &amp; the people behind them</div>
+        <h1>A new era<br />of cinema is<br />already here.</h1>
+        <p>AIMB is an independent platform for AI-generated movies, AI-assisted films and series. Discover remarkable works, the creators behind them, festival recognition and the emerging tools shaping a new cinematic language.</p>
+        <div class="heroActions">
+          <a class="btn primary" href="/movies">Explore AI Movies &amp; Series →</a>
+          <a class="btn" href="/short-drama">Explore AI Short Drama</a>
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="section">
     <div class="sectionHead">
-      <h2>Notable AI Movies &amp; Series</h2>
+      <div>
+        <h2>Notable AI Movies &amp; Series</h2>
+        <p class="intro">Discover noteworthy AI-generated movies, films and series from our growing database.</p>
+      </div>
       <a class="more" href="/movies">Explore all titles →</a>
     </div>
-    <div class="homeGrid movieGrid">
+    <div class="filmGrid">
       {notable.map((movie) => (
-        <a class="movieCard" href={`/movies/${movie.id}`}>
-          {movie.data.poster ? <img src={movie.data.poster} alt={movie.data.title} loading="lazy" /> : <div class="posterFallback">{movie.data.title}</div>}
-          <div class="cardBody">
-            <h3>{movie.data.title}</h3>
-            <p class="meta">{movie.data.year} · {movie.data.genres[0] ?? ''}</p>
-          </div>
+        <a href={`/movies/${movie.id}`} aria-label={`Read about ${movie.data.title}`}>
+          {movie.data.poster ? (
+            <img src={widePoster(movie.data.poster)} alt={movie.data.title} loading="lazy" />
+          ) : (
+            <div class="posterFallback">{movie.data.title}</div>
+          )}
+          <strong>{movie.data.title}</strong>
+          <span class="muted">{movie.data.year}</span>
+          {movie.data.genres.length > 0 && (
+            <span class="tags">{movie.data.genres.slice(0, 2).map((g) => <span>{g}</span>)}</span>
+          )}
         </a>
       ))}
     </div>
   </section>
 
-  {shortdrama.length > 0 && (
-    <section class="section">
-      <div class="sectionHead">
+  <section class="section">
+    <div class="sectionHead">
+      <div>
+        <h2>From the Journal</h2>
+        <p class="intro">Articles, interviews and practical guides exploring the people and ideas shaping AI films.</p>
+      </div>
+      <a class="more" href="/news">View all articles →</a>
+    </div>
+    <div class="journalGrid">
+      {journal.map((j) => (
+        <a class="story" href="/news">
+          {j.image ? <img src={j.image} alt={j.title} loading="lazy" /> : <div class="storyFallback">{j.title}</div>}
+          <small>{j.label}</small>
+          <strong>{j.title}</strong>
+          <p>{j.excerpt}</p>
+          <time datetime={j.datetime}>{j.date}</time>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shortLayout">
+      <div>
+        <div class="eyebrow">Vertical stories · Global audience</div>
         <h2>Discover AI Short Dramas</h2>
+        <p>Explore a new form of vertical, episodic storytelling. AI short dramas combine compact stories, new production techniques and emerging creative voices.</p>
         <a class="more" href="/short-drama">Explore AI Short Drama →</a>
       </div>
-      <div class="homeGrid movieGrid">
-        {shortdrama.map((d) => (
-          <a class="movieCard" href={`/shortdrama/${d.id}`}>
-            {d.data.poster ? <img src={d.data.poster} alt={d.data.title} loading="lazy" /> : <div class="posterFallback">{d.data.title}</div>}
-            <div class="cardBody"><h3>{d.data.title}</h3></div>
-          </a>
-        ))}
+      <div class="shortImages">
+        {Array.from({ length: 3 }).map((_, i) => {
+          const d = shortdramaPublished[i];
+          return d ? (
+            <a href={`/shortdrama/${d.id}`}>
+              {d.data.poster ? <img src={d.data.poster} alt={d.data.title} loading="lazy" /> : <div class="dramaFallback">{d.data.title}</div>}
+            </a>
+          ) : (
+            <a href="/short-drama"><div class="dramaFallback">Coming soon</div></a>
+          );
+        })}
       </div>
-    </section>
-  )}
+    </div>
+  </section>
 
   {awards.length > 0 && (
     <section class="section">
       <div class="sectionHead">
-        <h2>AI Film Festivals</h2>
+        <div>
+          <h2>AI Film Festivals</h2>
+          <p class="intro">Explore international festivals recognizing AI-generated movies and AI-assisted films.</p>
+        </div>
         <a class="more" href="/awards">View all festivals →</a>
       </div>
       <div class="festivalGrid">
         {awards.map((a) => (
-          <a class="festivalRow" href={`/awards/${a.id}`}>
-            <div class="fmark">{a.data.name.charAt(0)}</div>
-            <div><strong style="font-size:.86rem;">{a.data.name}</strong><div style="font-size:.76rem; color:var(--muted);">{a.data.location ?? ''}</div></div>
+          <a class="festivalCard" href={`/awards/${a.id}`}>
+            <b class="fmark">{a.data.name.charAt(0)}</b>
+            <div><strong>{a.data.name}</strong><span>{a.data.location ?? ''}</span></div>
           </a>
         ))}
-        <a class="festivalRow" href="/awards">
-          <div class="fmark">+</div>
-          <div><strong style="font-size:.86rem;">More festivals</strong><div style="font-size:.76rem; color:var(--muted);">View the full directory</div></div>
+        <a class="festivalCard" href="/awards">
+          <b class="fmark">+</b>
+          <div><strong>More festivals</strong><span>View the full directory</span></div>
         </a>
       </div>
     </section>
   )}
 
-  <section class="section" style="border-top:0;">
-    <div class="newsletter">
+  <section class="newsletter">
+    <div class="newsletterIn">
       <div>
-        <div class="pageEyebrow">Stay updated</div>
+        <div class="eyebrow">Stay updated</div>
         <h2>Stay in the Loop</h2>
         <p>A monthly edit of AI movies, creator stories and film festival news.</p>
       </div>
@@ -115,8 +258,8 @@ const awards = await getCollection('awards');
           <input type="email" aria-label="Email address" placeholder="Your email address" required />
           <button type="submit">Subscribe</button>
         </form>
-        <p style="font-size:.74rem; color:var(--muted); margin-top:6px;">Unsubscribe anytime. Newsletter service is not connected yet.</p>
-        <p id="subscribeNotice" aria-live="polite" style="font-size:.78rem; color:var(--blue); min-height:1em; margin-top:4px;"></p>
+        <p class="fineprint">Unsubscribe anytime. Newsletter service is not connected yet.</p>
+        <p id="subscribeNotice" aria-live="polite"></p>
       </div>
     </div>
   </section>
@@ -125,7 +268,7 @@ const awards = await getCollection('awards');
     document.getElementById('newsletterForm')?.addEventListener('submit', function (e) {
       e.preventDefault();
       var notice = document.getElementById('subscribeNotice');
-      if (notice) notice.textContent = 'Thanks — newsletter delivery isn\'t connected yet, so nothing was sent.';
+      if (notice) notice.textContent = "Thanks — newsletter delivery isn't connected yet, so nothing was sent.";
     });
   </script>
 </BaseLayout>
