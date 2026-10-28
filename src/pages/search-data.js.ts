@@ -68,7 +68,7 @@ export const GET: APIRoute = async () => {
   // Static guide/catalog pages that have no content collection of their own.
   items.push(
     { title: 'AI Movies', href: '/movies', sub: 'Catalog' },
-    { title: 'AI Short Drama', href: '/shortformdrama', sub: 'Catalog' },
+    { title: 'AI Short Drama', href: '/short-drama', sub: 'Catalog' },
     { title: 'Studios', href: '/studios', sub: 'Catalog' },
     { title: 'Awards & Festivals', href: '/awards', sub: 'Guide' },
     { title: 'News & Editorial', href: '/news', sub: 'Guide' },

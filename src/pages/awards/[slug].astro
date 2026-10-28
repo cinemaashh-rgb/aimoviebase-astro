@@ -14,66 +14,113 @@ const { entry } = Astro.props;
 const a = entry.data;
 ---
 <BaseLayout title={a.name} description={a.description}>
-  <p style="font-size:.82rem; color:var(--muted); margin:18px 0 10px;"><a href="/awards" style="color:var(--muted)">Awards & Festivals</a> / <span>{a.name}</span></p>
-  <h1 style="font-size:2.2rem; margin:.1em 0 .3em;">{a.name}</h1>
+  <style>
+    .crumb { font-size: .78rem; color: var(--muted); margin: 18px 0 20px; }
+    .intro { display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 32px; align-items: start; margin-bottom: 10px; }
+    .intro h1 { font-size: clamp(30px,3.6vw,44px); margin: 0 0 12px; }
+    .intro .lead { color: var(--muted); font-size: 1rem; line-height: 1.6; max-width: 620px; }
+    .detailsBox { border: 1px solid var(--line); border-radius: 10px; padding: 18px; font-size: .86rem; }
+    .detailsBox .row { padding: 8px 0; border-top: 1px dashed var(--line); }
+    .detailsBox .row:first-child { border-top: 0; }
+    .detailsBox .label { color: var(--muted2); font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 3px; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap: 14px; margin: 24px 0; }
+    .statCard { border: 1px solid var(--line); border-radius: 8px; padding: 16px; text-align: center; }
+    .statCard .value { font-size: 1.15rem; font-weight: 800; font-family: var(--serif); }
+    .statCard .label { font-size: .74rem; color: var(--muted); margin-top: 4px; }
+    .section { margin-top: 34px; padding-top: 26px; border-top: 1px solid var(--line); }
+    .section h2 { font-size: 1.35rem; margin: 0 0 16px; }
+    .winnerGrid { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 16px; }
+    .winnerCard { border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+    .chip { display: inline-block; font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: 3px 10px; border-radius: 999px; background: var(--soft); color: var(--muted2); margin-bottom: 8px; }
+    .chip.grand { background: #fdeccb; color: #8a5a00; }
+    .chip.second { background: #e6ecf5; color: #2b4a7d; }
+    .chip.third { background: #f1e6d9; color: #7a5333; }
+    .winnerCard .wtitle { font-size: 1rem; font-weight: 700; margin: 4px 0 2px; }
+    .winnerCard .director { font-size: .82rem; color: var(--muted); }
+    .prize { margin-top: 12px; border-top: 1px dashed var(--line); padding-top: 10px; }
+    .prize .amount { font-size: 1.2rem; font-weight: 800; font-family: var(--serif); }
+    .prize .label { font-size: .72rem; color: var(--muted2); text-transform: uppercase; letter-spacing: .05em; }
+    .notesGrid { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 14px; }
+    .noteRow { display: flex; gap: 14px; border: 1px solid var(--line); border-radius: 8px; padding: 12px; align-items: center; }
+    .noteRow .poster { flex: 0 0 48px; width: 48px; height: 72px; border-radius: 5px; overflow: hidden; background: var(--soft); }
+    .noteRow .poster img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .noteRow .cat { font-size: .68rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted2); }
+    .noteRow strong { display: block; font-size: .88rem; margin: 2px 0; }
+    .noteRow .by { font-size: .78rem; color: var(--muted); }
+    @media (max-width: 760px) { .intro { grid-template-columns: 1fr; } }
+  </style>
 
-  <dl style="display:grid; grid-template-columns:140px 1fr; row-gap:8px; font-size:.9rem; margin:18px 0 28px; max-width:640px;">
-    {a.location && <><dt style="color:var(--muted)">location</dt><dd style="margin:0">{a.location}</dd></>}
-    {a.dates && <><dt style="color:var(--muted)">dates</dt><dd style="margin:0">{a.dates}</dd></>}
-    {a.siteUrl && <><dt style="color:var(--muted)">site</dt><dd style="margin:0"><a href={a.siteUrl} target="_blank" rel="noopener" style="color:var(--accent)">{a.siteUrl.replace('https://', '')} ↗</a></dd></>}
-  </dl>
+  <p class="crumb"><a href="/awards">Festivals &amp; Awards</a> › {a.name}</p>
 
-  <p style="color:var(--muted); max-width:700px; line-height:1.55;">{a.description}</p>
+  <div class="intro">
+    <div>
+      <h1>{a.name}</h1>
+      <p class="lead">{a.description}</p>
+    </div>
+    <div class="detailsBox">
+      {a.dates && <div class="row"><div class="label">Dates</div>{a.dates}</div>}
+      {a.location && <div class="row"><div class="label">Location</div>{a.location}</div>}
+      {a.siteUrl && <div class="row"><div class="label">Official website</div><a href={a.siteUrl} target="_blank" rel="noopener noreferrer" style="color:var(--blue); font-weight:600;">{a.siteUrl.replace('https://', '')} ↗</a></div>}
+    </div>
+  </div>
 
   {a.stats.length > 0 && (
-    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin:18px 0 10px;">
-      {a.stats.map((s) => (
-        <div style="border:1px solid #262a31; border-radius:8px; padding:16px; text-align:center;">
-          <div style="font-size:1.1rem; font-weight:800; font-family:Georgia,serif;">{s.value}</div>
-          <div style="font-size:.74rem; color:var(--muted); margin-top:4px;">{s.label}</div>
-        </div>
-      ))}
+    <div class="stats">
+      {a.stats.map((s) => <div class="statCard"><div class="value">{s.value}</div><div class="label">{s.label}</div></div>)}
     </div>
   )}
 
-  {a.sections.map((section) => (
-    <>
-      <div style="font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:700; margin:26px 0 10px;">{section.label}</div>
-      {section.winners.map((w) => (
-        <div style="border:1px solid #262a31; border-radius:8px; padding:16px; margin-bottom:12px;">
-          <div style={w.poster ? "display:flex; align-items:center; gap:16px;" : ""}>
-            {w.poster && (
-              <a href={`/movies/${w.movieSlug}`} style="display:block; width:64px; height:96px; flex:0 0 auto;">
-                <img src={w.poster} alt={`${w.title} poster`} style="width:100%;height:100%;object-fit:cover;border-radius:6px;display:block;" />
-              </a>
-            )}
-            <div>
-              <div style="font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--accent); font-weight:700;">{w.place}</div>
-              <div style="font-size:1.05rem; font-weight:700; margin-top:4px;">
-                {w.movieSlug ? <a href={`/movies/${w.movieSlug}`} style="color:inherit">{w.title}</a> : w.title}
-              </div>
-              {w.director && (
-                <div style="font-size:.84rem; color:var(--muted); margin-top:2px;">
-                  {w.directorSlug ? <a href={`/name/${w.directorSlug}`} style="color:var(--accent); font-weight:600;">{w.director}</a> : w.director}
+  {a.sections.map((section, sIndex) => {
+    const chipClass = (place: string) => {
+      const p = place.toLowerCase();
+      if (p.includes('first') || p.includes('grand')) return 'grand';
+      if (p.includes('second')) return 'second';
+      if (p.includes('third')) return 'third';
+      return '';
+    };
+    return (
+      <section class="section">
+        <h2>{section.label}</h2>
+        <div class="winnerGrid">
+          {section.winners.map((w) => (
+            <div class="winnerCard">
+              <span class={`chip ${chipClass(w.place)}`}>{w.place}</span>
+              <div class="wtitle">{w.movieSlug ? <a href={`/movies/${w.movieSlug}`} style="color:inherit;">{w.title}</a> : w.title}</div>
+              {w.director && <div class="director">By {w.directorSlug ? <a href={`/name/${w.directorSlug}`} style="color:var(--blue); font-weight:600;">{w.director}</a> : w.director}</div>}
+              {w.prize && (
+                <div class="prize">
+                  <div class="amount">{w.prize}</div>
+                  <div class="label">Prize</div>
                 </div>
               )}
             </div>
-          </div>
-          {w.notes.length > 0 && (
-            <div style="margin-top:10px; font-size:.82rem;">
-              {w.notes.map((n) => (
-                <div style="padding:4px 0; border-top:1px dashed #262a31;">
-                  <span style="color:var(--muted); display:inline-block; min-width:150px;">{n.category}</span>
-                  {n.movieSlug ? <a href={`/movies/${n.movieSlug}`} style="color:inherit">{n.title}</a> : n.title}
-                  {n.director && <> — {n.directorSlug ? <a href={`/name/${n.directorSlug}`} style="color:var(--accent);">{n.director}</a> : n.director}</>}
-                </div>
-              ))}
-            </div>
-          )}
+          ))}
         </div>
-      ))}
-    </>
-  ))}
 
-  <p style="color:var(--muted); font-size:.74rem; margin-top:30px; font-style:italic;">Source: {a.siteUrl ? a.siteUrl.replace('https://', '') : a.name}, as published by the festival.</p>
+        {section.winners.some((w) => w.notes.length > 0) && (
+          <div class="notesGrid" style="margin-top:16px;">
+            {section.winners.flatMap((w) => w.notes).map((n) => (
+              <div class="noteRow">
+                {n.movieSlug && <a class="poster" href={`/movies/${n.movieSlug}`}><div style="width:100%;height:100%;background:var(--soft);"></div></a>}
+                <div>
+                  <div class="cat">{n.category}</div>
+                  <strong>{n.movieSlug ? <a href={`/movies/${n.movieSlug}`} style="color:inherit;">{n.title}</a> : n.title}</strong>
+                  {n.director && <div class="by">By {n.directorSlug ? <a href={`/name/${n.directorSlug}`} style="color:var(--blue);">{n.director}</a> : n.director}</div>}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+    );
+  })}
+
+  <section class="section">
+    <h2>About {a.name}</h2>
+    <p style="color:var(--ink); line-height:1.65; max-width:720px;">{a.description}</p>
+  </section>
+
+  <p style="color:var(--muted); font-size:.76rem; margin-top:30px; font-style:italic;">
+    Source: {a.siteUrl ? a.siteUrl.replace('https://', '') : a.name}, as published by the festival. A "Finalists" section appeared in the original design mockup for this page but is omitted here — the mockup's finalist entries had no real titles or names behind them (self-disclaimed as placeholder content), so we're not fabricating that section rather than publishing unverified data.
+  </p>
 </BaseLayout>

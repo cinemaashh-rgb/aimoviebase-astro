@@ -1,0 +1,47 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const lists = await getCollection('lists');
+const movies = await getCollection('movies');
+
+function cover(list: CollectionEntry<'lists'>) {
+  const first = list.data.movies.map((slug) => movies.find((m) => m.id === slug)).find((m) => m?.data.poster);
+  return first?.data.poster;
+}
+---
+<BaseLayout title="Lists" description="Curated lists of AI-made films — by theme, by model, by festival selection.">
+  <style>
+    .listGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px 36px; margin-top: 10px; }
+    .listCard { display: block; }
+    .posterStrip { aspect-ratio: 370/206; border-radius: 4px; overflow: hidden; background: var(--soft); }
+    .posterStrip img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .listCard h2 { font-size: 1.15rem; margin: 10px 0 2px; }
+    .listCard:hover h2 { color: var(--blue); }
+    .count { font-size: .76rem; color: var(--muted2); margin: 0 0 4px; }
+    .summary { font-size: .82rem; color: var(--muted); line-height: 1.5; margin: 0; }
+    .placeholderTag { display: inline-block; font-size: .64rem; text-transform: uppercase; letter-spacing: .04em; background: var(--soft); color: var(--muted2); border-radius: 4px; padding: 2px 7px; margin-left: 6px; vertical-align: middle; }
+    @media (max-width: 760px) { .listGrid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; } }
+    @media (max-width: 460px) { .listGrid { grid-template-columns: 1fr; } }
+  </style>
+
+  <h1 style="margin-top:0">Lists</h1>
+  <p class="pageLede" style="margin-bottom:28px">Curated lists of AI-made films — by theme, by model, by festival selection. Track what's essential, popular and award-winning through each one.</p>
+
+  <section class="listGrid" aria-label="Curated AI film lists">
+    {lists.map((list) => (
+      <article>
+        <a class="listCard" href={`/lists/${list.id}`}>
+          <div class="posterStrip">
+            {cover(list) ? <img src={cover(list)} alt={`Cover artwork for ${list.data.name}`} loading="lazy" /> : <div class="posterFallback" style="width:100%;height:100%;">{list.data.name}</div>}
+          </div>
+          <h2>{list.data.name}{list.data.placeholder && <span class="placeholderTag">starter list</span>}</h2>
+        </a>
+        <p class="count">{list.data.movies.length} films</p>
+        <p class="summary">{list.data.description}</p>
+      </article>
+    ))}
+  </section>
+
+  <p class="pageLede" style="margin-top:28px; font-size:.82rem;">More lists are on the way. Lists marked "starter list" are mechanically grouped by genre for now rather than hand-curated — see the README for details.</p>
+</BaseLayout>

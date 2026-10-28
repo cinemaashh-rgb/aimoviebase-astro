@@ -1,0 +1,107 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const lists = await getCollection('lists');
+  const movies = await getCollection('movies');
+  return lists.map((list) => {
+    const films = list.data.movies
+      .map((slug) => movies.find((m) => m.id === slug))
+      .filter((m): m is CollectionEntry<'movies'> => Boolean(m));
+    return {
+      params: { slug: list.id },
+      props: { list, films },
+    };
+  });
+}
+
+interface Props {
+  list: CollectionEntry<'lists'>;
+  films: CollectionEntry<'movies'>[];
+}
+const { list, films } = Astro.props;
+const l = list.data;
+---
+<BaseLayout title={l.name} description={l.description}>
+  <style>
+    .crumb { font-size: .78rem; color: var(--muted); margin: 0 0 16px; }
+    h1 { font-size: clamp(30px,4vw,44px); margin: 0 0 8px; }
+    .byline { font-size: .84rem; color: var(--muted); margin-bottom: 14px; }
+    .lead { color: var(--muted); max-width: 680px; line-height: 1.55; margin-bottom: 20px; }
+    .criteria { border-top: 1px solid var(--line); padding: 18px 0; }
+    .criteria h2 { font-size: 1rem; font-style: italic; }
+    .criteria p { color: var(--muted); font-size: .88rem; max-width: 700px; line-height: 1.6; }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 16px 0; }
+    .sortSelect { height: 36px; border: 1px solid var(--line); background: #fff; border-radius: 6px; color: var(--ink); font-size: .82rem; padding: 0 10px; }
+    .grid { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 16px 12px; }
+    .film { min-width: 0; }
+    .film[hidden] { display: none; }
+    .posterLink { display: block; position: relative; border-radius: 5px; overflow: hidden; background: var(--soft); aspect-ratio: 142/209; }
+    .posterLink img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .rank { position: absolute; top: 7px; left: 7px; color: #fff; background: rgba(8,11,13,.86); font-size: .7rem; padding: 3px 7px; border-radius: 4px; }
+    .film h3 { font-size: .8rem; margin: 7px 0 2px; }
+    .film .year { font-size: .72rem; color: var(--muted); }
+    @media (max-width: 900px) { .grid { grid-template-columns: repeat(4,minmax(0,1fr)); } }
+    @media (max-width: 600px) { .grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; } }
+  </style>
+
+  <p class="crumb"><a href="/lists">Lists</a> › {l.name}</p>
+  <h1>{l.name}</h1>
+  <div class="byline">By AIMB · {films.length} film{films.length === 1 ? '' : 's'} · {l.placeholder ? 'Starter collection' : 'Editorial collection'}</div>
+  <p class="lead">{l.description}</p>
+
+  {l.placeholder && (
+    <section class="criteria">
+      <h2>About this list</h2>
+      <p>This is a starter list, grouped mechanically from existing catalog data (not yet hand-curated by an editor) — flagged here so it's clear which lists are placeholders and which are real editorial picks. See the README for the full rundown.</p>
+    </section>
+  )}
+
+  {films.length > 0 ? (
+    <>
+      <div class="toolbar">
+        <span style="font-size:.82rem; color:var(--muted);" id="resultCount">{films.length} films</span>
+        <select class="sortSelect" id="sortSelect">
+          <option value="rank">List order</option>
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="title">Title A–Z</option>
+        </select>
+      </div>
+      <div class="grid" id="filmGrid">
+        {films.map((f, i) => (
+          <div class="film" data-year={f.data.year} data-title={f.data.title} data-rank={i + 1}>
+            <a class="posterLink" href={`/movies/${f.id}`}>
+              {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading={i < 6 ? 'eager' : 'lazy'} /> : <div class="posterFallback" style="width:100%;height:100%;">{f.data.title}</div>}
+              <span class="rank">{i + 1}</span>
+            </a>
+            <h3><a href={`/movies/${f.id}`} style="color:var(--ink);">{f.data.title}</a></h3>
+            <div class="year">{f.data.year}</div>
+          </div>
+        ))}
+      </div>
+    </>
+  ) : (
+    <p class="pageLede">No films in this list yet.</p>
+  )}
+
+  <script is:inline>
+    (function () {
+      var grid = document.getElementById('filmGrid');
+      if (!grid) return;
+      var cards = [].slice.call(grid.children);
+      var select = document.getElementById('sortSelect');
+      select.addEventListener('change', function () {
+        var mode = select.value;
+        var sorted = cards.slice().sort(function (a, b) {
+          if (mode === 'newest') return Number(b.dataset.year) - Number(a.dataset.year) || Number(a.dataset.rank) - Number(b.dataset.rank);
+          if (mode === 'oldest') return Number(a.dataset.year) - Number(b.dataset.year) || Number(a.dataset.rank) - Number(b.dataset.rank);
+          if (mode === 'title') return a.dataset.title.localeCompare(b.dataset.title);
+          return Number(a.dataset.rank) - Number(b.dataset.rank);
+        });
+        grid.replaceChildren.apply(grid, sorted);
+      });
+    })();
+  </script>
+</BaseLayout>

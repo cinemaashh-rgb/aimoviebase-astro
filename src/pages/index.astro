@@ -3,23 +3,129 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const movies = await getCollection('movies');
-const latest = [...movies].sort((a, b) => b.data.year - a.data.year).slice(0, 12);
+const notable = [...movies].sort((a, b) => b.data.year - a.data.year).slice(0, 6);
+
+const shortdrama = (await getCollection('shortdrama')).filter((e) => e.data.status === 'published').slice(0, 3);
+
+const awards = await getCollection('awards');
 ---
-<BaseLayout title="AI Movie Base" description="The catalog of AI-generated films, series, and shorts.">
-  <h1 style="font-size:2.5rem;">AI Movie Base</h1>
-  <p style="color:var(--muted); max-width:600px;">
-    Discover the best AI-generated movies, series, and short films — made with tools like Runway, Higgsfield AI, Kling, and Seedance.
-  </p>
-  <h2>Latest Releases</h2>
-  <div class="movieGrid">
-    {latest.map((movie) => (
-      <a class="movieCard" href={`/movies/${movie.id}`}>
-        <img src={movie.data.poster} alt={movie.data.title} loading="lazy" />
-        <div class="cardBody">
-          <h3>{movie.data.title}</h3>
-          <p class="meta">{movie.data.year} · {movie.data.genres[0] ?? ''}</p>
-        </div>
-      </a>
-    ))}
-  </div>
+<BaseLayout title="AI Movie Base" description="Discover AI-generated movies, AI films and series from filmmakers worldwide. Explore notable works, creator stories, AI short dramas and film festivals.">
+  <style>
+    .hero { margin: -2rem -2rem 10px; padding: 56px 2rem 48px; background: var(--black); color: #fff; }
+    .hero .eyebrow { color: #cfd5df; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .hero h1 { color: #fff; font-size: clamp(38px,5.2vw,62px); line-height: 1.04; margin: 12px 0 16px; max-width: 560px; }
+    .hero p { color: #dde1e7; max-width: 480px; font-size: .98rem; line-height: 1.6; margin: 0 0 22px; }
+    .heroActions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; font-size: .8rem; font-weight: 700; padding: 11px 18px; border-radius: 4px; border: 1px solid #39404a; }
+    .btn.primary { background: #fff; color: #0a0d11; border-color: #fff; }
+    .btn.ghost { color: #fff; }
+    .section { padding: 28px 0; border-top: 1px solid var(--line); }
+    .sectionHead { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 14px; }
+    .sectionHead h2 { font-size: clamp(24px,3vw,32px); margin: 0; }
+    .sectionHead .more { font-size: .82rem; color: var(--ink); font-weight: 600; white-space: nowrap; }
+    .homeGrid { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 14px; }
+    .festivalGrid { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 10px; }
+    .festivalRow { display: flex; align-items: center; gap: 10px; border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    .festivalRow:hover { border-color: var(--blue); }
+    .fmark { width: 38px; height: 38px; flex: none; border-radius: 6px; background: var(--black); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: .9rem; }
+    .newsletter { background: var(--soft); border-radius: 10px; padding: 26px 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center; margin-top: 10px; }
+    .newsletter h2 { font-size: 1.5rem; margin: 4px 0; }
+    .newsletter p { color: var(--muted); font-size: .84rem; margin: 0; }
+    .newsletter form { display: flex; }
+    .newsletter input { flex: 1; min-width: 0; border: 1px solid var(--line); border-radius: 4px 0 0 4px; padding: 11px 12px; font-size: .85rem; }
+    .newsletter button { border: 0; border-radius: 0 4px 4px 0; padding: 0 18px; background: var(--black); color: #fff; font-weight: 700; cursor: pointer; }
+    @media (max-width: 900px) { .homeGrid { grid-template-columns: repeat(3,minmax(0,1fr)); } .newsletter { grid-template-columns: 1fr; } }
+  </style>
+
+  <section class="hero">
+    <div class="eyebrow">Discover AI movies, series &amp; the people behind them</div>
+    <h1>A new era of cinema is already here.</h1>
+    <p>AIMB is an independent platform for AI-generated movies, AI-assisted films and series. Discover remarkable works, the creators behind them, festival recognition and the emerging tools shaping a new cinematic language.</p>
+    <div class="heroActions">
+      <a class="btn primary" href="/movies">Explore AI Movies &amp; Series →</a>
+      <a class="btn ghost" href="/short-drama">Explore AI Short Drama</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sectionHead">
+      <h2>Notable AI Movies &amp; Series</h2>
+      <a class="more" href="/movies">Explore all titles →</a>
+    </div>
+    <div class="homeGrid movieGrid">
+      {notable.map((movie) => (
+        <a class="movieCard" href={`/movies/${movie.id}`}>
+          {movie.data.poster ? <img src={movie.data.poster} alt={movie.data.title} loading="lazy" /> : <div class="posterFallback">{movie.data.title}</div>}
+          <div class="cardBody">
+            <h3>{movie.data.title}</h3>
+            <p class="meta">{movie.data.year} · {movie.data.genres[0] ?? ''}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  {shortdrama.length > 0 && (
+    <section class="section">
+      <div class="sectionHead">
+        <h2>Discover AI Short Dramas</h2>
+        <a class="more" href="/short-drama">Explore AI Short Drama →</a>
+      </div>
+      <div class="homeGrid movieGrid">
+        {shortdrama.map((d) => (
+          <a class="movieCard" href={`/shortdrama/${d.id}`}>
+            {d.data.poster ? <img src={d.data.poster} alt={d.data.title} loading="lazy" /> : <div class="posterFallback">{d.data.title}</div>}
+            <div class="cardBody"><h3>{d.data.title}</h3></div>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {awards.length > 0 && (
+    <section class="section">
+      <div class="sectionHead">
+        <h2>AI Film Festivals</h2>
+        <a class="more" href="/awards">View all festivals →</a>
+      </div>
+      <div class="festivalGrid">
+        {awards.map((a) => (
+          <a class="festivalRow" href={`/awards/${a.id}`}>
+            <div class="fmark">{a.data.name.charAt(0)}</div>
+            <div><strong style="font-size:.86rem;">{a.data.name}</strong><div style="font-size:.76rem; color:var(--muted);">{a.data.location ?? ''}</div></div>
+          </a>
+        ))}
+        <a class="festivalRow" href="/awards">
+          <div class="fmark">+</div>
+          <div><strong style="font-size:.86rem;">More festivals</strong><div style="font-size:.76rem; color:var(--muted);">View the full directory</div></div>
+        </a>
+      </div>
+    </section>
+  )}
+
+  <section class="section" style="border-top:0;">
+    <div class="newsletter">
+      <div>
+        <div class="pageEyebrow">Stay updated</div>
+        <h2>Stay in the Loop</h2>
+        <p>A monthly edit of AI movies, creator stories and film festival news.</p>
+      </div>
+      <div>
+        <form id="newsletterForm">
+          <input type="email" aria-label="Email address" placeholder="Your email address" required />
+          <button type="submit">Subscribe</button>
+        </form>
+        <p style="font-size:.74rem; color:var(--muted); margin-top:6px;">Unsubscribe anytime. Newsletter service is not connected yet.</p>
+        <p id="subscribeNotice" aria-live="polite" style="font-size:.78rem; color:var(--blue); min-height:1em; margin-top:4px;"></p>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    document.getElementById('newsletterForm')?.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var notice = document.getElementById('subscribeNotice');
+      if (notice) notice.textContent = 'Thanks — newsletter delivery isn\'t connected yet, so nothing was sent.';
+    });
+  </script>
 </BaseLayout>

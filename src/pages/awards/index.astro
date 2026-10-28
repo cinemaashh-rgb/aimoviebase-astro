@@ -4,41 +4,93 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const awards = await getCollection('awards');
 
-const otherFestivals = [
-  { emoji: '🎬', name: 'Reply AI Film Festival', sub: 'Venice, Italy · held alongside the Venice International Film Festival', years: '2025 — 2026', url: 'https://www.reply.com/en/', label: 'reply.com' },
-  { emoji: '🧪', name: 'Higgsfield Global Film Festival', sub: 'Online · the in-house festival of Higgsfield AI', years: '2026', url: 'https://higgsfield.ai/', label: 'higgsfield.ai' },
-  { emoji: '🎞️', name: 'BIFAN — Bucheon International Fantastic Film Festival', sub: 'Bucheon, South Korea · includes a Best Technical Achievement category for AI-assisted work', years: '2025', url: 'https://www.bifan.kr/', label: 'bifan.kr' },
+// Festivals with a real detail page in this catalog (AAIFF, Runway AIFF).
+const covered = awards.map((a) => ({
+  id: a.id,
+  name: a.data.name,
+  location: a.data.location ?? '—',
+  dates: a.data.dates ?? '—',
+  fund: a.data.stats.find((s) => /fund|prize/i.test(s.label))?.value ?? null,
+}));
+
+// Festivals mentioned in the mockup / previously on the Awards index that
+// don't have a dedicated detail page yet — shown in the same directory
+// table, linking out to the festival's own site rather than a 404 on
+// /awards/<slug>.
+const other = [
+  { name: 'Reply AI Film Festival', location: 'Venice, Italy', dates: '2025 edition', fund: null, url: 'https://www.reply.com/' },
+  { name: 'Higgsfield Global Film Festival', location: 'Online', dates: '2026 edition', fund: '$1,000,000', url: 'https://higgsfield.ai/' },
+  { name: 'BIFAN — Bucheon International Fantastic Film Festival', location: 'Bucheon, South Korea', dates: '2025 edition', fund: null, url: 'https://www.bifan.kr/' },
 ];
 ---
 <BaseLayout title="Awards & Festivals" description="AI film awards and festivals: Astana AI Film Festival (AAIFF), Runway AI Film Festival (AIFF), Reply AI Film Festival, Higgsfield Global Film Festival, BIFAN and more.">
-  <h1 style="margin-top:34px">Awards & Festivals</h1>
-  <p style="color:var(--muted); max-width:640px; line-height:1.5; margin-bottom:28px;">The festivals and prizes that matter in AI filmmaking right now — from a $2,000,000 open call in Astana to Runway's annual showcase at Lincoln Center.</p>
+  <style>
+    .awardsHero { margin: -2rem -2rem 30px; padding: 48px 2rem; background: var(--black); color: #fff; }
+    .awardsHero .eyebrow { color: #cfd5df; }
+    .awardsHero h1 { color: #fff; font-size: clamp(30px,4vw,46px); margin: 10px 0 12px; }
+    .awardsHero p { color: #dde1e7; max-width: 560px; line-height: 1.55; }
+    table { width: 100%; border-collapse: collapse; }
+    thead th { text-align: left; font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted2); background: var(--soft); padding: 11px 13px; }
+    tbody td { padding: 11px 13px; border-top: 1px solid var(--line); font-size: .84rem; color: var(--ink); vertical-align: middle; }
+    tbody tr.extra[hidden] { display: none; }
+    .tableFrame { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; overflow-x: auto; }
+    .fname a { font-weight: 700; color: var(--ink); }
+    .fname a:hover { color: var(--blue); }
+    .fund { display: inline-block; background: #d9f1df; color: #23583b; border-radius: 50px; padding: 3px 10px; font-size: .78rem; font-weight: 700; }
+    .fund.empty { background: var(--soft); color: var(--muted2); }
+    .loadWrap { text-align: center; padding: 20px 0 6px; }
+    .load { border: 1px solid var(--line); background: #fff; border-radius: 8px; padding: 10px 28px; font-weight: 600; font-size: .85rem; cursor: pointer; }
+    .load[hidden] { display: none; }
+    .count { font-size: .76rem; color: var(--muted); margin-top: 8px; }
+  </style>
 
-  <h2 style="margin-top:0">Covered on AI Movie Base</h2>
-  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-bottom:10px;">
-    {awards.map((award) => (
-      <a class="movieCard" href={`/awards/${award.id}`} style="padding:16px;">
-        <div style="font-weight:600; font-size:.95rem;">{award.data.name}</div>
-        <p style="color:var(--muted); font-size:.82rem; line-height:1.4; margin:6px 0 4px;">{award.data.description.slice(0, 140)}…</p>
-        <div style="color:var(--accent); font-size:.78rem;">{award.data.dates}</div>
-      </a>
-    ))}
+  <div class="awardsHero">
+    <div class="eyebrow">FESTIVALS &amp; AWARDS</div>
+    <h1>Celebrating the Next Era of Cinema</h1>
+    <p>From international competitions to online showcases, discover the events shaping AI filmmaking and the creators and films gaining recognition around the world.</p>
   </div>
 
-  <h2>Also recognizing AI cinema</h2>
-  <p style="color:var(--muted); margin-bottom:16px;">Pages for these are on the way — for now, here's where to find them.</p>
+  <div class="tableFrame">
+    <table>
+      <thead><tr><th>Festival</th><th>Location</th><th>Latest edition</th><th>Prize fund</th></tr></thead>
+      <tbody id="festivalTable">
+        {covered.map((f) => (
+          <tr>
+            <td class="fname"><a href={`/awards/${f.id}`}>{f.name}</a></td>
+            <td>{f.location}</td>
+            <td>{f.dates}</td>
+            <td>{f.fund ? <span class="fund">{f.fund}</span> : <span class="fund empty">—</span>}</td>
+          </tr>
+        ))}
+        {other.map((f, i) => (
+          <tr class={i >= 1 ? 'extra' : ''} hidden={i >= 1}>
+            <td class="fname"><a href={f.url} target="_blank" rel="noopener">{f.name} ↗</a></td>
+            <td>{f.location}</td>
+            <td>{f.dates}</td>
+            <td>{f.fund ? <span class="fund">{f.fund}</span> : <span class="fund empty">—</span>}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <div class="loadWrap">
+    <button class="load" id="loadMore" type="button">Load more ↓</button>
+    <div class="count" id="count">Showing {covered.length + 1} of {covered.length + other.length} festivals</div>
+  </div>
 
-  {otherFestivals.map((f) => (
-    <div style="display:flex; align-items:center; gap:16px; border:1px solid #262a31; border-radius:8px; padding:14px 16px; margin-bottom:10px;">
-      <div style="flex:0 0 46px; width:46px; height:46px; border-radius:10px; background:var(--bg-elev); display:flex; align-items:center; justify-content:center; font-size:1.3rem;">{f.emoji}</div>
-      <div style="flex:1; min-width:0;">
-        <strong style="font-size:.95rem; font-weight:700;">{f.name}</strong>
-        <div style="font-size:.78rem; color:var(--muted); margin-top:2px;">{f.sub}</div>
-      </div>
-      <div style="font-size:.78rem; color:var(--muted); flex-shrink:0;">{f.years}</div>
-      <a href={f.url} target="_blank" rel="noopener" style="font-size:.78rem; color:var(--accent); font-weight:600; flex-shrink:0;">{f.label} ↗</a>
-    </div>
-  ))}
+  <p style="color:var(--muted); font-size:.76rem; margin-top:22px;">Festivals without a dedicated page here link out to their own site. List will keep growing as more AI film festivals come online.</p>
 
-  <p style="color:var(--muted); font-size:.78rem; margin-top:22px; font-style:italic;">List will keep growing as more AI film festivals come online.</p>
+  <script is:inline define:vars={{ total: covered.length + other.length, shownInitially: covered.length + 1 }}>
+    (function () {
+      var btn = document.getElementById('loadMore');
+      var count = document.getElementById('count');
+      var extras = [].slice.call(document.querySelectorAll('tr.extra'));
+      if (extras.length === 0) { btn.hidden = true; return; }
+      btn.addEventListener('click', function () {
+        extras.forEach(function (row) { row.hidden = false; });
+        btn.hidden = true;
+        count.textContent = 'Showing ' + total + ' of ' + total + ' festivals';
+      });
+    })();
+  </script>
 </BaseLayout>
