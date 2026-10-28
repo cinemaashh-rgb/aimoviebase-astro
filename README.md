@@ -236,6 +236,34 @@ missing, rather than relying on a broken `<img>` tag's alt text.
 - Real watchlist/bookmark sync — blocked on Supabase, by design; no UI for
   it was added since no mockup included one.
 
+## Deployment
+
+The user decided to deploy on **Cloudflare Pages** instead of Vercel.
+
+- **Build command:** `npm run build`
+- **Output directory:** `dist`
+- **Framework preset:** Astro — Cloudflare Pages auto-detects this from
+  `package.json`/`astro.config.mjs`, so it's usually enough to just point it
+  at the repo and let it pick "Astro" itself; set it manually to the above
+  two values if it doesn't.
+- **No `@astrojs/cloudflare` adapter is needed.** That adapter is only for
+  Astro's SSR/edge-functions mode; this site uses `output: 'static'` in
+  `astro.config.mjs`, and Cloudflare Pages serves a plain static `dist/`
+  directory natively with no adapter at all. (SSR — needed later for
+  reviews — would be a separate, later migration of its own.)
+  `astro.config.mjs` otherwise has nothing Vercel-specific in it (no
+  `@astrojs/vercel`, no Vercel-only config keys) that would need changing
+  for Cloudflare.
+- **Legacy `.html` redirects (143 of them):** Cloudflare Pages doesn't read
+  `vercel.json`, so these are also generated as `public/_redirects` in
+  Cloudflare's own plain-text format (`source  destination  status`, one
+  per line), converted straight from the same rules in `vercel.json` —
+  same source → destination mapping, same 301 status, nothing
+  re-derived or reinvented. `vercel.json` is kept as-is (not deleted) so a
+  return to Vercel stays a drop-in option; `public/_redirects` is copied
+  into `dist/_redirects` by the plain Astro static build, verified after
+  each build.
+
 ## Build
 
 ```
