@@ -2,7 +2,9 @@
   "name": "AAIFF — Astana AI Film Festival",
   "location": "Astana, Kazakhstan",
   "dates": "1–3 October 2026",
+  "organizer": "Astana AI Film Festival",
   "siteUrl": "https://aaiff.ai",
+  "lead": "The Astana AI Film Festival (AAIFF) is an international festival celebrating AI-generated and AI-assisted films and series, with a focus on creative innovation, visual storytelling and new voices from around the world.",
   "description": "AAIFF describes itself as a festival, a community, and a distribution channel for AI-native cinema — built around the people making the films, not only the films themselves. Submissions ran from 25 May to 7 September 2026; the open call closed with 8,067 films from more than 8,000 filmmakers across 125 countries and regions, judged by an independent international jury. The festival itself runs 1–3 October 2026 in Astana, with screenings, filmmaker and jury conversations, an awards ceremony, and a gala dinner.",
   "stats": [
     { "label": "Edition", "value": "2026 (first edition)" },
@@ -11,7 +13,9 @@
   ],
   "sections": [
     {
-      "label": "2026 winners — Thematic Competition",
+      "label": "The Future Worth Living In",
+      "eyebrow": "Main competition",
+      "lede": "The award-winning films of the Astana AI Film Festival 2026, selected by the international jury.",
       "winners": [
         { "place": "First place", "title": "The First Honest Day", "movieSlug": "the-first-honest-day", "director": "Nikolay Shestak", "directorSlug": "shestak", "poster": "/images/posters/the-first-honest-day.webp", "prize": "$450,000", "notes": [] },
         { "place": "Second place", "title": "SITARA", "director": "Abhik Banerjee", "prize": "$200,000", "notes": [] },
@@ -19,7 +23,8 @@
       ]
     },
     {
-      "label": "2026 winners — Open Competition",
+      "label": "Additional Awards",
+      "lede": "Other awards from the Astana AI Film Festival 2026.",
       "winners": [
         { "place": "Best Character", "title": "IT WAS JUST A JOKE", "movieSlug": "it-was-just-a-joke", "director": "Myrzakhan Zhumakhan", "directorSlug": "myrzakhan-zhumakhan", "poster": "/images/posters/it-was-just-a-joke.webp", "notes": [] },
         { "place": "Best Story", "title": "The Last Span", "director": "2xLabs", "notes": [] },

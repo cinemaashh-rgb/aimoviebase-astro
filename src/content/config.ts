@@ -159,11 +159,20 @@ const awards = defineCollection({
     name: z.string(),
     location: z.string().optional(),
     dates: z.string().optional(),
+    organizer: z.string().optional(),
     siteUrl: z.string().optional(),
+    // Short one-sentence intro shown next to the h1. Falls back to
+    // `description` when not set, so festivals we haven't given a dedicated
+    // lead line for still render the same as before.
+    lead: z.string().optional(),
     description: z.string(),
     stats: z.array(z.object({ label: z.string(), value: z.string() })).default([]),
     sections: z.array(z.object({
       label: z.string(),
+      // Small uppercase category tag shown above the label (e.g. "Main
+      // competition"), and an optional one-line sub-heading shown below it.
+      eyebrow: z.string().optional(),
+      lede: z.string().optional(),
       winners: z.array(z.object({
         place: z.string(),
         title: z.string(),
