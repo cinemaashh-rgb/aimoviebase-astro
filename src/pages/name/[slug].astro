@@ -2,6 +2,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getToolMeta } from '../../data/toolMeta';
+import Icon from '../../components/Icon.astro';
 
 export async function getStaticPaths() {
   const creators = await getCollection('creators');
@@ -105,7 +106,7 @@ const creativeStack = [...toolCounts.entries()]
       <p class="pageLede" style="max-width:640px;">{c.bio}</p>
       {c.bioMore && <p style="color:var(--ink); font-size:.92rem; line-height:1.6; max-width:620px; margin-top:8px;">{c.bioMore}</p>}
       <div class="facts">
-        {c.basedIn && <span>📍 {c.basedIn}</span>}
+        {c.basedIn && <span style="display:inline-flex; align-items:center; gap:5px;"><Icon name="pin" size={14} /> {c.basedIn}</span>}
         {c.studio && <span>Studio: {c.studio.slug ? <a href={`/studios/${c.studio.slug}`} style="color:var(--blue); font-weight:600;">{c.studio.name}</a> : c.studio.name}</span>}
         {c.knownFor.length > 0 && <span>Known for: {c.knownFor.join(', ')}</span>}
         <span>{films.length} film{films.length === 1 ? '' : 's'} in catalog</span>
@@ -117,7 +118,7 @@ const creativeStack = [...toolCounts.entries()]
     <div class="awardsCol" style="border-left:0; padding-left:0; margin-top:24px; max-width:620px;">
       <h2>Awards</h2>
       {c.awards.map((a) => (
-        <div class="awardRow"><span class="ico">🏆</span><div><strong>{a.title}</strong>{a.note && <span>{a.note}</span>}</div></div>
+        <div class="awardRow"><span class="ico"><Icon name="laurel" size={16} /></span><div><strong>{a.title}</strong>{a.note && <span>{a.note}</span>}</div></div>
       ))}
     </div>
   )}

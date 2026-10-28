@@ -19,6 +19,7 @@ const currentPath = canonicalPath;
 function isActive(prefix: string) {
   return currentPath === prefix || currentPath.startsWith(prefix + '/');
 }
+import Icon from '../components/Icon.astro';
 ---
 <!doctype html>
 <html lang="en">
@@ -30,6 +31,11 @@ function isActive(prefix: string) {
   <meta name="description" content={description} />
   <link rel="canonical" href={canonicalURL} />
   <link rel="icon" href="/favicon.ico" />
+  <!-- Inter: the sans-serif the real mockups themselves specify in their own
+       --sans token, swapped in for the Arial/Helvetica fallback stack. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-P7NMTTEBQ6"></script>
   <script is:inline>
@@ -68,7 +74,7 @@ function isActive(prefix: string) {
       --bg: #fff;          /* page background */
       --soft: #f6f7f9;     /* light panel / card background */
       --serif: Georgia, 'Times New Roman', serif;
-      --sans: Arial, Helvetica, sans-serif;
+      --sans: 'Inter', Arial, Helvetica, sans-serif;
 
       /* Back-compat aliases: most page templates (and the browser-side
          search box below) were written against this variable naming from
@@ -197,7 +203,7 @@ function isActive(prefix: string) {
 <body>
   <header class="darkHeader">
     <a href="/" class="brand" aria-label="AIMB home">AIMB</a>
-    <button class="menuToggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <button class="menuToggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false"><Icon name="menu" size={20} /></button>
     <nav id="mainNav" aria-label="Main navigation">
       <a href="/movies" class={isActive('/movies') ? 'active' : ''}>AI Movies &amp; Series</a>
       <a href="/short-drama" class={isActive('/short-drama') || isActive('/shortdrama') ? 'active' : ''}>AI Short Drama</a>

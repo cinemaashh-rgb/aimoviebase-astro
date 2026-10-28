@@ -2,6 +2,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getToolMeta } from '../../data/toolMeta';
+import Icon from '../../components/Icon.astro';
 
 export async function getStaticPaths() {
   const studios = await getCollection('studios');
@@ -47,7 +48,8 @@ const tools = [...toolCounts.entries()]
     h1.sname { font-size: clamp(30px,3.6vw,44px); margin: 6px 0 2px; letter-spacing: -0.03em; }
     .subtitle { color: var(--muted); font-size: 1rem; margin-bottom: 12px; }
     .facts { display: flex; align-items: center; gap: 20px; color: var(--muted); font-size: .88rem; margin: 14px 0 0; }
-    .fact { display: flex; gap: 10px; align-items: flex-start; }
+    .fact { display: flex; gap: 8px; align-items: flex-start; }
+    .fact svg { flex: none; margin-top: 2px; }
     .fact + .fact { border-left: 1px solid var(--line); padding-left: 20px; }
     .teamCol { border-left: 1px solid var(--line); padding-left: 20px; }
     .teamCol h2 { font-size: .86rem; font-weight: 400; color: var(--muted); margin: 0 0 16px; }
@@ -105,8 +107,8 @@ const tools = [...toolCounts.entries()]
       <p class="pageLede" style="max-width:600px;">{s.description}</p>
       {s.descriptionMore && <p style="color:var(--ink); font-size:.92rem; line-height:1.6; max-width:600px; margin-top:8px;">{s.descriptionMore}</p>}
       <div class="facts">
-        {s.basedIn && <div class="fact">📍 <span>{s.basedIn}</span></div>}
-        {s.founded && <div class="fact">🗓 <span>Founded<br />{s.founded}</span></div>}
+        {s.basedIn && <div class="fact"><Icon name="pin" size={15} /> <span>{s.basedIn}</span></div>}
+        {s.founded && <div class="fact"><Icon name="calendar" size={15} /> <span>Founded<br />{s.founded}</span></div>}
       </div>
     </div>
     {s.team && s.team.length > 0 && (
