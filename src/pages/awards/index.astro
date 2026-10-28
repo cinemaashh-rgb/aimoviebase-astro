@@ -3,71 +3,238 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const awards = await getCollection('awards');
+const movies = await getCollection('movies');
 
-// Festivals with a real detail page in this catalog (AAIFF, Runway AIFF).
-const covered = awards.map((a) => ({
-  id: a.id,
-  name: a.data.name,
-  location: a.data.location ?? '—',
-  dates: a.data.dates ?? '—',
-  fund: a.data.stats.find((s) => /fund|prize/i.test(s.label))?.value ?? null,
-}));
+// Only link a winner to a movie page when it's actually in the catalog —
+// several winners below (BIFAN, Cinema Shift, Bochnia) are real-world
+// festival winners this catalog hasn't ingested, so they render as plain
+// text rather than a fabricated link.
+function movieExists(slug: string | undefined) {
+  return slug ? movies.some((m) => m.id === slug) : false;
+}
 
-// Festivals mentioned in the mockup / previously on the Awards index that
-// don't have a dedicated detail page yet — shown in the same directory
-// table, linking out to the festival's own site rather than a 404 on
-// /awards/<slug>.
-const other = [
-  { name: 'Reply AI Film Festival', location: 'Venice, Italy', dates: '2025 edition', fund: null, url: 'https://www.reply.com/' },
-  { name: 'Higgsfield Global Film Festival', location: 'Online', dates: '2026 edition', fund: '$1,000,000', url: 'https://higgsfield.ai/' },
-  { name: 'BIFAN — Bucheon International Fantastic Film Festival', location: 'Bucheon, South Korea', dates: '2025 edition', fund: null, url: 'https://www.bifan.kr/' },
+const byId = (id: string) => awards.find((a) => a.id === id);
+const aaiff = byId('aaiff');
+const runway = byId('runway-aiff');
+
+// Directory data for every festival shown on this page. The two with a
+// full detail page (AAIFF, Runway) pull their name/location/dates from
+// their own collection entry so the two stay in sync; the rest are
+// directory-only entries (no /awards/<slug> page yet) that link out to
+// the festival's own site instead of a 404.
+const directory = [
+  {
+    name: aaiff!.data.name,
+    slug: 'aaiff',
+    logo: 'AAIFF',
+    location: aaiff!.data.location,
+    edition: '1–3 Oct 2026',
+    format: 'In-Person',
+    fund: '$2,000,000',
+    winner: { title: 'The First Honest Day', year: '2026', movieSlug: 'the-first-honest-day' },
+  },
+  {
+    name: 'Runway AI Film Festival',
+    slug: 'runway-aiff',
+    logo: 'Runway',
+    location: 'New York / Los Angeles',
+    edition: '2026',
+    format: 'In-Person',
+    fund: null,
+    winner: { title: 'A Face Only A Mother Could Love', year: '2026', movieSlug: 'a-face-only-a-mother-could-love' },
+  },
+  {
+    name: 'Reply AI Film Festival',
+    url: 'https://www.reply.com/',
+    logo: 'Reply',
+    location: 'Venice, Italy',
+    edition: '6 Sep 2026',
+    format: 'In-Person',
+    fund: null,
+    winner: { title: 'A Face Only A Mother Could Love', year: '2026', movieSlug: 'a-face-only-a-mother-could-love' },
+  },
+  {
+    name: 'Higgsfield Global Film Festival',
+    url: 'https://higgsfield.ai/',
+    logo: 'H',
+    location: 'Online',
+    edition: '2026',
+    format: 'Online',
+    fund: '$1,000,000',
+    winner: { title: 'Not yet confirmed' },
+  },
+  {
+    name: 'BIFAN — AI Film Competition',
+    url: 'https://www.bifan.kr/',
+    logo: 'BIFAN',
+    location: 'Bucheon, South Korea',
+    edition: '2025 (confirmed edition)',
+    format: 'In-Person',
+    fund: null,
+    winner: { title: 'Last Dream', year: '2025' },
+  },
+  {
+    name: 'Busan International AI Film Festival',
+    url: 'https://www.biaif.com/',
+    logo: 'BIAIF',
+    location: 'Busan, South Korea',
+    edition: '3–5 Dec 2026 (planned)',
+    format: 'In-Person',
+    fund: null,
+    winner: { title: 'Not yet announced' },
+  },
+  {
+    name: 'Artificial Intelligence Media Festival',
+    url: 'https://aimf.us/',
+    logo: 'AIMF',
+    location: 'Los Angeles, USA',
+    edition: '2–4 Oct 2026',
+    format: 'In-Person',
+    fund: null,
+    winner: { title: 'Not verified' },
+  },
+  {
+    name: 'Cinema Shift Festival',
+    url: 'https://cinemashiftfestival.com/',
+    logo: 'SHIFT',
+    location: 'Toronto, Canada',
+    edition: '5 Jun 2026',
+    format: 'In-Person',
+    fund: null,
+    winner: { title: 'Sinuca de Bico', year: '2026' },
+  },
+  {
+    name: 'Bochnia International AI Film Festival',
+    url: 'https://yingtu.art/en/opportunities/',
+    logo: 'BIAIFF',
+    location: 'Bochnia, Poland',
+    edition: '17 Sep 2026',
+    format: 'In-Person',
+    fund: '$2,500',
+    winner: { title: 'Far Away Home', year: '2026' },
+  },
 ];
+
+const initialCount = 6;
 ---
-<BaseLayout title="Awards & Festivals" description="AI film awards and festivals: Astana AI Film Festival (AAIFF), Runway AI Film Festival (AIFF), Reply AI Film Festival, Higgsfield Global Film Festival, BIFAN and more.">
+<BaseLayout title="Awards & Festivals" description="AI film awards and festivals: Astana AI Film Festival (AAIFF), Runway AI Film Festival, Reply AI Film Festival, Higgsfield Global Film Festival, BIFAN and more.">
   <style>
-    .awardsHero { margin: -2rem -2rem 30px; padding: 48px 2rem; background: var(--black); color: #fff; }
+    /* Full-bleed hero — same 100vw/-50vw break-out as the homepage and
+       genre heroes, so it reaches the true viewport edge regardless of
+       <main>'s own 1200px max-width. */
+    .awardsHero { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; margin-top: -2rem; margin-bottom: 30px; min-height: 270px; overflow: hidden; background: var(--black) url(/images/awards-hero.webp) center / cover no-repeat; color: #fff; }
+    .awardsHero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--black) 0%, var(--black) 22%, rgba(8,11,13,.78) 42%, rgba(8,11,13,.2) 68%, rgba(8,11,13,.05) 100%); }
+    .awardsHeroIn { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; min-height: 270px; display: flex; align-items: center; padding: 36px 2rem; }
     .awardsHero .eyebrow { color: #cfd5df; }
-    .awardsHero h1 { color: #fff; font-size: clamp(30px,4vw,46px); margin: 10px 0 12px; }
-    .awardsHero p { color: #dde1e7; max-width: 560px; line-height: 1.55; }
-    table { width: 100%; border-collapse: collapse; }
-    thead th { text-align: left; font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted2); background: var(--soft); padding: 11px 13px; }
-    tbody td { padding: 11px 13px; border-top: 1px solid var(--line); font-size: .84rem; color: var(--ink); vertical-align: middle; }
+    .awardsHero h1 { color: #fff; font-size: clamp(30px,4vw,46px); margin: 10px 0 14px; max-width: 520px; }
+    .awardsHero p { color: #dde1e7; max-width: 540px; line-height: 1.55; font-size: .96rem; }
+
+    .sectionHead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 13px; }
+    .sectionHead h2 { font-size: 1.4rem; margin: 0; }
+
+    /* Featured Festivals — text-only dark cards. The mockup's own featured
+       cards use a photo background per festival; the only images shipped
+       with the source mockup for these cards were composite screenshot
+       thumbnails with "FEATURED" and the location pin already baked into
+       the pixels (not a clean photo), so reusing them here would double
+       up with this template's own badge/text. Kept as the mockup's dark
+       card style without a photo rather than ship a visibly broken one. */
+    .featuredGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; margin-bottom: 36px; }
+    .featureCard { background: var(--black); border-radius: 8px; padding: 20px 18px; color: #fff; display: flex; flex-direction: column; justify-content: flex-end; min-height: 170px; position: relative; }
+    .featureCard .tag { align-self: flex-start; background: #ffe6a8; color: #1a1710; font-weight: 700; border-radius: 6px; padding: 4px 9px; font-size: .62rem; letter-spacing: .02em; margin-bottom: auto; }
+    .featureCard h3 { font-family: var(--serif); font-size: 1.25rem; margin: 10px 0 5px; }
+    .featureCard p { margin: 0 0 7px; font-size: .78rem; color: #cfd3da; line-height: 1.4; }
+    .featureCard small { font-size: .72rem; color: #e8eaed; }
+    .featureCard:hover h3 { color: #fff; text-decoration: underline; }
+
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    thead th { text-align: left; font-size: .64rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted2); background: var(--soft); padding: 11px 13px; }
+    thead th:nth-child(1) { width: 27%; } thead th:nth-child(4) { width: 11%; }
+    tbody td { padding: 10px 13px; border-top: 1px solid var(--line); font-size: .8rem; color: var(--ink); vertical-align: middle; }
     tbody tr.extra[hidden] { display: none; }
     .tableFrame { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; overflow-x: auto; }
-    .fname a { font-weight: 700; color: var(--ink); }
+    .fname { display: flex; align-items: center; gap: 11px; min-width: 0; }
+    .flogo { flex: none; display: grid; place-items: center; width: 38px; height: 38px; background: var(--black); color: #fff; border-radius: 6px; font-size: .6rem; font-weight: 800; text-align: center; line-height: 1.1; padding: 2px; }
+    .fname a { font-weight: 700; color: var(--ink); font-size: .82rem; display: block; }
     .fname a:hover { color: var(--blue); }
-    .fund { display: inline-block; background: #d9f1df; color: #23583b; border-radius: 50px; padding: 3px 10px; font-size: .78rem; font-weight: 700; }
+    .format { font-size: .72rem; white-space: nowrap; color: #3a58bf; background: #e9edff; padding: 4px 9px; border-radius: 6px; }
+    .format.online { background: #e6f4ec; color: #287754; }
+    .fund { display: inline-block; background: #d9f1df; color: #23583b; border-radius: 50px; padding: 3px 10px; font-size: .76rem; font-weight: 700; white-space: nowrap; }
     .fund.empty { background: var(--soft); color: var(--muted2); }
+    .winner strong { display: block; font-size: .8rem; color: var(--ink); }
+    .winner a { color: var(--ink); }
+    .winner a:hover { color: var(--blue); }
+    .winner small { color: var(--muted2); font-size: .72rem; }
+    .winner .pending { color: var(--muted2); font-style: italic; }
     .loadWrap { text-align: center; padding: 20px 0 6px; }
     .load { border: 1px solid var(--line); background: #fff; border-radius: 8px; padding: 10px 28px; font-weight: 600; font-size: .85rem; cursor: pointer; }
     .load[hidden] { display: none; }
     .count { font-size: .76rem; color: var(--muted); margin-top: 8px; }
+
+    @media (max-width: 760px) {
+      .featuredGrid { grid-template-columns: 1fr; }
+    }
   </style>
 
   <div class="awardsHero">
-    <div class="eyebrow">FESTIVALS &amp; AWARDS</div>
-    <h1>Celebrating the Next Era of Cinema</h1>
-    <p>From international competitions to online showcases, discover the events shaping AI filmmaking and the creators and films gaining recognition around the world.</p>
+    <div class="awardsHeroIn">
+      <div>
+        <div class="eyebrow">FESTIVALS &amp; AWARDS</div>
+        <h1>Celebrating the Next Era of Cinema</h1>
+        <p>From international competitions to online showcases, discover the events shaping AI filmmaking and the creators and films gaining recognition around the world.</p>
+      </div>
+    </div>
   </div>
 
+  <div class="sectionHead"><h2>Featured Festivals</h2></div>
+  <div class="featuredGrid">
+    <a class="featureCard" href="/awards/aaiff">
+      <span class="tag">FEATURED</span>
+      <h3>AAIFF — Astana AI Film Festival</h3>
+      <p>An international AI film festival with competition prizes and a fund for new productions.</p>
+      <small>1–3 October 2026</small>
+    </a>
+    <a class="featureCard" href="/awards/runway-aiff">
+      <span class="tag">FEATURED</span>
+      <h3>Runway AI Film Festival</h3>
+      <p>A global showcase of AI-driven films organized by Runway.</p>
+      <small>2026 edition</small>
+    </a>
+    <a class="featureCard" href="https://www.reply.com/" target="_blank" rel="noopener">
+      <span class="tag">FEATURED</span>
+      <h3>Reply AI Film Festival</h3>
+      <p>An international competition spotlighting AI-assisted storytelling.</p>
+      <small>6 Sep 2026</small>
+    </a>
+  </div>
+
+  <div class="sectionHead"><h2>All Festivals</h2></div>
   <div class="tableFrame">
     <table>
-      <thead><tr><th>Festival</th><th>Location</th><th>Latest edition</th><th>Prize fund</th></tr></thead>
-      <tbody id="festivalTable">
-        {covered.map((f) => (
-          <tr>
-            <td class="fname"><a href={`/awards/${f.id}`}>{f.name}</a></td>
+      <thead><tr><th>Festival</th><th>Location</th><th>Latest edition</th><th>Format</th><th>Prize fund</th><th>Award-winning film</th></tr></thead>
+      <tbody>
+        {directory.map((f, i) => (
+          <tr class={i >= initialCount ? 'extra' : ''} hidden={i >= initialCount}>
+            <td>
+              <div class="fname">
+                <span class="flogo">{f.logo}</span>
+                {f.slug ? <a href={`/awards/${f.slug}`}>{f.name}</a> : <a href={f.url} target="_blank" rel="noopener">{f.name} ↗</a>}
+              </div>
+            </td>
             <td>{f.location}</td>
-            <td>{f.dates}</td>
+            <td>{f.edition}</td>
+            <td><span class={`format ${f.format === 'Online' ? 'online' : ''}`}>{f.format}</span></td>
             <td>{f.fund ? <span class="fund">{f.fund}</span> : <span class="fund empty">—</span>}</td>
-          </tr>
-        ))}
-        {other.map((f, i) => (
-          <tr class={i >= 1 ? 'extra' : ''} hidden={i >= 1}>
-            <td class="fname"><a href={f.url} target="_blank" rel="noopener">{f.name} ↗</a></td>
-            <td>{f.location}</td>
-            <td>{f.dates}</td>
-            <td>{f.fund ? <span class="fund">{f.fund}</span> : <span class="fund empty">—</span>}</td>
+            <td class="winner">
+              {f.winner.movieSlug && movieExists(f.winner.movieSlug) ? (
+                <a href={`/movies/${f.winner.movieSlug}`}><strong>{f.winner.title}</strong></a>
+              ) : f.winner.year ? (
+                <strong>{f.winner.title}</strong>
+              ) : (
+                <span class="pending">{f.winner.title}</span>
+              )}
+              {f.winner.year && <small>{f.winner.year} winner</small>}
+            </td>
           </tr>
         ))}
       </tbody>
@@ -75,12 +242,12 @@ const other = [
   </div>
   <div class="loadWrap">
     <button class="load" id="loadMore" type="button">Load more ↓</button>
-    <div class="count" id="count">Showing {covered.length + 1} of {covered.length + other.length} festivals</div>
+    <div class="count" id="count">Showing {initialCount} of {directory.length} festivals</div>
   </div>
 
-  <p style="color:var(--muted); font-size:.76rem; margin-top:22px;">Festivals without a dedicated page here link out to their own site. List will keep growing as more AI film festivals come online.</p>
+  <p style="color:var(--muted); font-size:.76rem; margin-top:22px;">Festivals without a dedicated page here link out to their own site. Award-winning films without a catalog entry are shown by name only, without a poster or link, rather than guessed at.</p>
 
-  <script is:inline define:vars={{ total: covered.length + other.length, shownInitially: covered.length + 1 }}>
+  <script is:inline define:vars={{ total: directory.length, initialCount }}>
     (function () {
       var btn = document.getElementById('loadMore');
       var count = document.getElementById('count');
