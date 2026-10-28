@@ -27,11 +27,19 @@ const seriesFilms = films.filter((f) => f.data.type === 'series');
 ---
 <BaseLayout title={g.name} description={g.description}>
   <style>
-    .genreHero { margin: -2rem -2rem 28px; padding: 54px 2rem 46px; background: var(--black); color: #fff; position: relative; overflow: hidden; }
-    .genreHero.hasImage { background-size: cover; background-position: center; }
-    .genreHero .eyebrow { color: #cfd5df; position: relative; }
-    .genreHero h1 { font-size: clamp(36px,5vw,58px); margin: 10px 0 14px; color: #fff; position: relative; }
-    .genreHero p { max-width: 620px; color: #dde1e7; font-size: .98rem; line-height: 1.6; position: relative; }
+    /* Ported from the real mockup (aimb_action_genre_final.html): the art
+       is its own absolutely-positioned layer starting at 33% from the left
+       (not squeezed into one combined background), with a separate
+       gradient layer on top — so the image gets a true background-size:
+       cover of its own portion instead of being stretched/cropped together
+       with the gradient as a single flattened background. */
+    .genreHero { margin: -2rem -2rem 28px; padding: 0 2rem; background: var(--black); color: #fff; position: relative; overflow: hidden; min-height: 280px; }
+    .genreHero .heroArt { position: absolute; inset: 0 0 0 33%; background-size: cover; background-position: center; }
+    .genreHero .heroOverlay { position: absolute; inset: 0; background: linear-gradient(90deg, var(--black) 0%, var(--black) 17%, rgba(8,11,13,.96) 31%, rgba(8,11,13,.65) 53%, rgba(8,11,13,.06) 100%); }
+    .genreHero .heroInner { position: relative; z-index: 2; min-height: 280px; display: flex; flex-direction: column; justify-content: center; padding: 32px 0; }
+    .genreHero .eyebrow { color: #d8dce1; }
+    .genreHero h1 { font-size: clamp(36px,5vw,58px); margin: 10px 0 14px; color: #fff; }
+    .genreHero p { max-width: 430px; color: #e0e3e6; font-size: .95rem; line-height: 1.6; }
     .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
     .tabs { display: flex; gap: 8px; }
     .tab { border: 1px solid var(--line); background: #fff; border-radius: 20px; padding: 7px 16px; font-size: .82rem; font-weight: 600; cursor: pointer; color: var(--muted); }
@@ -48,10 +56,14 @@ const seriesFilms = films.filter((f) => f.data.type === 'series');
     .load[hidden] { display: none; }
   </style>
 
-  <div class={`genreHero${g.heroImage ? ' hasImage' : ''}`} style={g.heroImage ? `background-image:linear-gradient(90deg, rgba(8,11,13,.92), rgba(8,11,13,.55) 60%, rgba(8,11,13,.25)), url(${g.heroImage})` : undefined}>
-    <div class="eyebrow">GENRE</div>
-    <h1>{g.name}</h1>
-    <p>{g.description}</p>
+  <div class="genreHero">
+    {g.heroImage && <div class="heroArt" style={`background-image:url(${g.heroImage})`}></div>}
+    {g.heroImage && <div class="heroOverlay"></div>}
+    <div class="heroInner">
+      <div class="eyebrow">GENRE</div>
+      <h1>{g.name}</h1>
+      <p>{g.description}</p>
+    </div>
   </div>
 
   {films.length > 0 ? (
