@@ -262,7 +262,7 @@ detailsParts.push(...m.genres);
             const meta = getToolMeta(t);
             return (
               <div class="toolRow">
-                <span class="toolIcon" style={`background:${meta.bg};color:${meta.fg};${meta.border ? `border:1px solid ${meta.border};` : ''}`}>{meta.icon}</span>
+                <span class="toolIcon" style={`background:${meta.bg};color:${meta.fg};${meta.border ? `border:1px solid ${meta.border};` : ''}`}>{meta.image ? <img src={meta.image} alt="" width="20" height="20" style="border-radius:5px;" /> : meta.icon}</span>
                 <span><strong>{t}</strong><small>{meta.category}</small></span>
               </div>
             );

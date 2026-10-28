@@ -21,6 +21,10 @@ export interface ToolMeta {
   bg: string;
   fg: string;
   border?: string;
+  // Real brand mark, when we have one saved locally (e.g. from the tool's
+  // own app icon) — rendered instead of the plain letter glyph, which
+  // stays as the fallback for every tool we haven't sourced a logo for.
+  image?: string;
 }
 
 const FALLBACK: ToolMeta = { icon: '◆', category: 'AI tool', bg: '#101319', fg: '#fff' };
@@ -39,7 +43,7 @@ const TOOL_META: [string, ToolMeta][] = [
   ['invideo', { icon: '▶', category: 'Video Editing', bg: '#101319', fg: '#fff' }],
   ['openart', { icon: 'O', category: 'Image Generation', bg: '#101319', fg: '#fff' }],
   ['arcana', { icon: 'A', category: 'Video Generation', bg: '#101319', fg: '#fff' }],
-  ['dreamina', { icon: 'D', category: 'Image & Video Generation', bg: '#101319', fg: '#fff' }],
+  ['dreamina', { icon: 'D', category: 'Image & Video Generation', bg: '#101319', fg: '#fff', image: '/images/tools/dreamina.webp' }],
   ['gpt image', { icon: 'G', category: 'Image Generation', bg: '#101319', fg: '#fff' }],
   ['grok', { icon: 'G', category: 'AI Generation', bg: '#101319', fg: '#fff' }],
   ['nano banana', { icon: 'N', category: 'Image Generation', bg: '#101319', fg: '#fff' }],

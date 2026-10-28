@@ -183,7 +183,7 @@ const awardsList = [
         <div class="toolScroll" id="toolScroll">
           {creativeStack.map((t) => (
             <div class="toolCard">
-              <span class="toolmark" style={`background:${t.meta.bg};color:${t.meta.fg};${t.meta.border ? `border:1px solid ${t.meta.border};` : ''}`}>{t.meta.icon}</span>
+              <span class="toolmark" style={`background:${t.meta.bg};color:${t.meta.fg};${t.meta.border ? `border:1px solid ${t.meta.border};` : ''}`}>{t.meta.image ? <img src={t.meta.image} alt="" width="22" height="22" style="border-radius:6px;" /> : t.meta.icon}</span>
               <strong>{t.name}</strong>
               <small>{t.count} film{t.count === 1 ? '' : 's'}</small>
             </div>

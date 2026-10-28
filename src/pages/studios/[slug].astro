@@ -170,7 +170,7 @@ const tools = [...toolCounts.entries()]
       <div class="toolGrid">
         {tools.map((t) => (
           <div class="toolCard">
-            <span class="toolIcon" style={`background:${t.meta.bg};color:${t.meta.fg};${t.meta.border ? `border:1px solid ${t.meta.border};` : ''}`}>{t.meta.icon}</span>
+            <span class="toolIcon" style={`background:${t.meta.bg};color:${t.meta.fg};${t.meta.border ? `border:1px solid ${t.meta.border};` : ''}`}>{t.meta.image ? <img src={t.meta.image} alt="" width="24" height="24" style="border-radius:6px;" /> : t.meta.icon}</span>
             <span><strong>{t.name}</strong><small>{t.meta.category}</small></span>
           </div>
         ))}
