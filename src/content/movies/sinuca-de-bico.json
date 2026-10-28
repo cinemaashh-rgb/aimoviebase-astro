@@ -1,0 +1,36 @@
+{
+  "movie_id": "a91bddba-bcae-495a-9200-c1d53b8d99d3",
+  "title": "Sinuca de Bico",
+  "year": 2026,
+  "type": "movie",
+  "duration": "Short Film",
+  "genres": ["Drama"],
+  "country": "Brazil",
+  "synopsis": "Based on real life events. Bruno drifts through São Paulo, swallowed by work, noise, and a pressure he still cannot name. As the city accelerates and AI promises to make everything faster, something inside him begins to fracture. Between everyday collapses and strange visions, Bruno moves toward a rupture that may also become the beginning of another way to exist.",
+  "poster": "/images/posters/sinuca-de-bico.webp",
+  "director": {
+    "name": "Odair Faléco"
+  },
+  "crew": [
+    { "name": "Davi Moori", "role": "Co-Director" },
+    { "name": "Rodrigo Ribeiro", "role": "AI Cinematography" },
+    { "name": "Davi Moori", "role": "Edit & Sound Design" },
+    { "name": "Odair Faléco", "role": "Voice Acting" },
+    { "name": "Bruno Piva", "role": "Motion Design" },
+    { "name": "Bruno Corrente — Pixo Reto", "role": "Typography" }
+  ],
+  "studio": "zero1cine originals",
+  "awards": [
+    "Winner, Audience Choice — Cinema Shift Festival 2026",
+    "Winner, Best Narrative — Cinema Shift Festival 2026",
+    "Winner, Best Feature — BIFAN 2026",
+    "Winner, Long Form — OMNI 1.5 Australia 2026",
+    "Winner, Bangkok Movie Awards 2026",
+    "Official Selection, Lift-Off Global Network Sessions 2026",
+    "Official Selection, SIFF 2026",
+    "Official Selection, Bucharest AI Film Festival (BAIFF) 2026",
+    "Official Selection, Warsaw Glitch 2026",
+    "Official Selection, Torino Underground Cinefest 13",
+    "Special Mention, SticksIT Festival 2026"
+  ]
+}
