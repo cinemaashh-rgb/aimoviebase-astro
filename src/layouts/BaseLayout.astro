@@ -143,17 +143,23 @@ function isActive(prefix: string) {
     .copyrightBar { color: #9ca2ab; font-size: .74rem; margin-top: 26px; border-top: 1px solid #262a2e; padding-top: 16px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 
     /* Shared catalog card styles reused across homepage, movies index, genre
-       and studio pages — ported from the mockups' `.film-card` pattern. */
-    .movieGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 1.1rem 1rem; }
-    .movieCard { display: block; min-width: 0; }
-    .movieCard img, .movieCard .posterFallback { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; border-radius: 5px; background: var(--soft); }
-    .posterFallback { display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px; font-weight: 600; font-size: .78rem; color: var(--muted); font-family: var(--serif); }
-    .movieCard .cardBody { padding-top: .5rem; }
-    .movieCard h3 { font-size: .95rem; font-family: var(--sans); font-weight: 700; margin: 0 0 .2rem; color: var(--ink); letter-spacing: 0; }
-    .movieCard .meta { color: var(--muted); font-size: .78rem; }
+       and studio pages — ported from the mockups' `.film-card` pattern.
+       :global() is required here: this markup is rendered by child pages
+       through <slot />, and Astro scopes each component's <style> block to
+       elements it renders itself — without :global these rules silently
+       never matched the slotted cards (harmless while posters were missing
+       placeholders, but it meant real poster images rendered at native
+       pixel size with no object-fit once added — see README). */
+    :global(.movieGrid) { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 1.1rem 1rem; }
+    :global(.movieCard) { display: block; min-width: 0; }
+    :global(.movieCard img), :global(.movieCard .posterFallback) { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; border-radius: 5px; background: var(--soft); }
+    :global(.posterFallback) { display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px; font-weight: 600; font-size: .78rem; color: var(--muted); font-family: var(--serif); }
+    :global(.movieCard .cardBody) { padding-top: .5rem; }
+    :global(.movieCard h3) { font-size: .95rem; font-family: var(--sans); font-weight: 700; margin: 0 0 .2rem; color: var(--ink); letter-spacing: 0; }
+    :global(.movieCard .meta) { color: var(--muted); font-size: .78rem; }
 
-    .pageEyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .09em; color: var(--muted2); text-transform: uppercase; }
-    .pageLede { color: var(--muted); max-width: 680px; line-height: 1.6; font-size: 1.02rem; }
+    :global(.pageEyebrow) { font-size: .72rem; font-weight: 700; letter-spacing: .09em; color: var(--muted2); text-transform: uppercase; }
+    :global(.pageLede) { color: var(--muted); max-width: 680px; line-height: 1.6; font-size: 1.02rem; }
 
     #videoModalOverlay {
       display: none;
