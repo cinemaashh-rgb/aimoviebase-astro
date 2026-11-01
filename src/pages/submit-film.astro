@@ -1,0 +1,272 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Submit a Film" description="Submit your AI film, AI-assisted movie or short drama to the independent AI Movie Base catalog.">
+  <style>
+    /* Submit a Film — editorial AIMB styling, from the submit-page reference. */
+    .submitPage { width: min(900px, 100%); max-width: 900px; margin: 0 auto; color: var(--ink); font-family: var(--sans); }
+    .submitPage * { box-sizing: border-box; }
+
+    .submitIntro { padding: 10px 0 32px; border-bottom: 1px solid var(--line); margin-bottom: 36px; }
+    .submitIntro .kicker { font-weight: 800; letter-spacing: .14em; font-size: 11px; color: #cf6246; text-transform: uppercase; }
+    .submitIntro h1 { font: 400 clamp(44px,7vw,78px)/1.04 var(--serif); letter-spacing: -.045em; margin: 17px 0 14px; }
+    .submitIntro h1 em { font-style: normal; color: #cf6246; }
+    .submitIntro > p { max-width: 670px; font: 19px/1.6 var(--serif); color: var(--muted); margin: 0; }
+
+    .submissionPaper { border-bottom: 1px solid var(--line); padding: 0 0 39px; margin-bottom: 36px; }
+    .partHeading { display: flex; gap: 18px; align-items: flex-start; margin-bottom: 26px; }
+    .partHeading > span { font-size: 12px; color: #cf6246; font-weight: 800; letter-spacing: .14em; padding-top: 9px; }
+    .partHeading h2 { font: 400 32px/1.15 var(--serif); letter-spacing: -.025em; margin: 0 0 7px; }
+    .partHeading p { font: 13px/1.6 var(--sans); color: var(--muted2); margin: 0; }
+
+    .fieldsGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .fieldsGrid .full { grid-column: 1/-1; }
+    .submitPage .field { margin: 0 0 24px; min-width: 0; }
+    .fieldsGrid .field { margin: 0; }
+    .submitPage .field label { display: block; font: 700 13px var(--sans); color: #252a30; margin-bottom: 9px; }
+    .submitPage .field b { color: #cf6246; }
+    .submitPage .field input, .submitPage .field textarea, .submitPage .field select {
+      width: 100%; border: 1px solid var(--line); border-radius: 5px; background: #fff; color: var(--ink);
+      padding: 13px 14px; font: 14px/1.5 var(--sans); outline: none; transition: border-color .15s, box-shadow .15s;
+    }
+    .submitPage .field input:focus, .submitPage .field textarea:focus, .submitPage .field select:focus {
+      border-color: #cf6246; box-shadow: 0 0 0 3px rgba(207,98,70,.1);
+    }
+    .submitPage .field textarea { resize: vertical; min-height: 105px; }
+    .submitPage input::placeholder, .submitPage textarea::placeholder { color: #a2abb5; }
+    .submitPage .field input.invalid, .submitPage .field textarea.invalid { border-color: #b63a32; background: #fffafa; }
+    .submitPage .help { margin-top: 7px; color: #88919e; font: 12px/1.5 var(--sans); }
+    .submitPage .fieldError { font: 12px/1.5 var(--sans); color: #b63a32; margin-top: 8px; }
+    .submitPage [hidden] { display: none !important; }
+
+    .videoPreview { margin: -5px 0 25px; display: grid; grid-template-columns: 175px 1fr; gap: 18px; align-items: center; background: var(--soft); border: 1px solid var(--line); padding: 12px; border-radius: 5px; }
+    .previewFrame { width: 175px; height: 98px; background: #17191d; border-radius: 3px; overflow: hidden; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; }
+    .previewFrame iframe { width: 100%; height: 100%; border: 0; }
+    .previewStatus { font: 700 12px var(--sans); color: #27704b; }
+    .statusDot { display: inline-block; width: 7px; height: 7px; border-radius: 100%; background: #27704b; margin-right: 5px; }
+    .previewCopy p { font: 12px/1.55 var(--sans); color: var(--muted2); margin: 8px 0 0; }
+
+    .contactPaper { margin-bottom: 0; padding-bottom: 45px; border-bottom: 0; }
+    .consent { display: flex; align-items: flex-start; gap: 12px; font: 13px/1.6 var(--sans); color: #5d6672; margin-top: 13px; cursor: pointer; }
+    .consent input { width: 17px; height: 17px; flex: none; margin: 2px 0 0; accent-color: #cf6246; }
+    .consent b { color: #cf6246; }
+
+    .submitActions { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 27px; }
+    .submitActions p { max-width: 300px; color: var(--muted2); font: 12px/1.5 var(--sans); margin: 0; }
+    .submitActions button { border: 0; background: var(--ink); color: #fff; padding: 15px 22px; border-radius: 4px; cursor: pointer; font: 700 13px var(--sans); white-space: nowrap; transition: background .2s, transform .2s; }
+    .submitActions button:hover { background: #cf6246; transform: translateY(-1px); }
+    .submitActions button span { margin-left: 15px; }
+    .submitFormError { margin: 13px 0; color: #b63a32; font: 13px/1.5 var(--sans); }
+
+    .submissionEnd { display: flex; justify-content: space-between; align-items: center; background: #fff8f4; padding: 22px 27px; }
+    .submissionEnd span { font: 700 10px var(--sans); letter-spacing: .13em; color: #cf6246; }
+    .submissionEnd p { font: 20px var(--serif); margin: 0; }
+
+    @media (max-width: 650px) {
+      .submitIntro { margin-bottom: 28px; padding-bottom: 25px; }
+      .partHeading h2 { font-size: 27px; }
+      .fieldsGrid { grid-template-columns: 1fr; gap: 20px; }
+      .fieldsGrid .full { grid-column: auto; }
+      .videoPreview { grid-template-columns: 1fr; }
+      .previewFrame { width: 100%; height: auto; aspect-ratio: 16/9; }
+      .submitActions { display: block; }
+      .submitActions p { margin: 0 0 16px; }
+      .submitActions button { width: 100%; }
+      .submissionEnd { display: block; padding: 20px; }
+      .submissionEnd p { margin-top: 10px; font-size: 18px; }
+    }
+  </style>
+
+  <div class="submitPage">
+    <div class="submitIntro">
+      <div class="kicker">AIMB / Film submission</div>
+      <h1>Submit <em>a Film</em></h1>
+      <p>Share your AI film, series or short drama with AIMB. Our editorial team reviews submissions for inclusion in the catalog.</p>
+    </div>
+
+    <form id="submissionForm" novalidate>
+      <section class="submissionPaper">
+        <div class="partHeading">
+          <span>01</span>
+          <div>
+            <h2>Your film</h2>
+            <p>Start with a public YouTube or Vimeo video link.</p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="videoUrl">YouTube or Vimeo URL <b>*</b></label>
+          <input type="url" id="videoUrl" name="videoUrl" placeholder="https://www.youtube.com/watch?v=..." required autocomplete="url" aria-describedby="urlHint urlError" />
+          <div class="help" id="urlHint">Videos, Shorts, YouTube live replays and Vimeo links are supported.</div>
+          <div class="fieldError" id="urlError" role="alert" hidden>Enter a valid YouTube or Vimeo video URL.</div>
+        </div>
+
+        <div class="videoPreview" id="videoPreview" hidden>
+          <div class="previewFrame" id="previewFrame"></div>
+          <div class="previewCopy">
+            <div class="previewStatus"><span class="statusDot"></span> Recognized video URL</div>
+            <p>Link format validated. Video availability will be reviewed by AIMB.</p>
+          </div>
+        </div>
+
+        <div class="fieldsGrid">
+          <div class="field full">
+            <label for="filmTitle">Film title <b>*</b></label>
+            <input type="text" id="filmTitle" name="filmTitle" placeholder="Title of your film" required maxlength="160" />
+          </div>
+          <div class="field full">
+            <label for="description">Synopsis <b>*</b></label>
+            <textarea id="description" name="description" rows="4" placeholder="Briefly describe the story, concept and production" required></textarea>
+          </div>
+          <div class="field">
+            <label for="creator">Director / Creator <b>*</b></label>
+            <input type="text" id="creator" name="creator" placeholder="Filmmaker or studio name" required />
+          </div>
+          <div class="field">
+            <label for="format">Format</label>
+            <select id="format" name="format">
+              <option value="AI Movie">AI Movie</option>
+              <option value="AI Series">AI Series</option>
+              <option value="AI Short Drama">AI Short Drama</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label for="tools">AI tools used</label>
+            <input type="text" id="tools" name="tools" placeholder="e.g. Kling, Runway, Veo, Midjourney" />
+          </div>
+          <div class="field full">
+            <label for="genres">Genres / Keywords</label>
+            <input type="text" id="genres" name="genres" placeholder="e.g. sci-fi, drama, animation" />
+          </div>
+        </div>
+      </section>
+
+      <section class="submissionPaper contactPaper">
+        <div class="partHeading">
+          <span>02</span>
+          <div>
+            <h2>Contact information</h2>
+            <p>So we can contact you if we need additional details.</p>
+          </div>
+        </div>
+        <div class="fieldsGrid">
+          <div class="field">
+            <label for="contactName">Your name</label>
+            <input type="text" id="contactName" name="contactName" placeholder="Your name" />
+          </div>
+          <div class="field">
+            <label for="contactEmail">Email address <b>*</b></label>
+            <input type="email" id="contactEmail" name="contactEmail" placeholder="you@example.com" required />
+          </div>
+        </div>
+        <label class="consent">
+          <input type="checkbox" id="rights" required />
+          <span>I confirm that I own this work or have permission to submit it for editorial consideration. <b>*</b></span>
+        </label>
+        <div class="submitActions">
+          <p>Submissions are reviewed by the AIMB editorial team. Publication is not guaranteed.</p>
+          <button type="submit" id="submitFilm">Submit Film for Review <span>↗</span></button>
+        </div>
+        <div class="submitFormError" id="submitError" role="alert" hidden></div>
+      </section>
+    </form>
+
+    <div class="submissionEnd">
+      <span>Independent AI cinema</span>
+      <p>Made by people, for people.</p>
+    </div>
+  </div>
+
+  <script is:inline>
+    (function () {
+      const form = document.getElementById('submissionForm');
+      if (!form) return;
+      const urlField = document.getElementById('videoUrl');
+      const error = document.getElementById('urlError');
+      const preview = document.getElementById('videoPreview');
+      const frame = document.getElementById('previewFrame');
+
+      function parseVideo(input) {
+        let u;
+        try { u = new URL(input.trim()); } catch { return null; }
+        if (!['https:', 'http:'].includes(u.protocol) || u.username || u.password) return null;
+        const host = u.hostname.toLowerCase().replace(/^www\./, '').replace(/^m\./, '');
+        const parts = u.pathname.split('/').filter(Boolean);
+        let id = null, provider = null;
+        if (host === 'youtube.com' || host === 'youtube-nocookie.com') {
+          if (parts[0] === 'watch') id = u.searchParams.get('v');
+          else if (['shorts', 'embed', 'live', 'v'].includes(parts[0]) && parts.length === 2) id = parts[1];
+          provider = 'youtube';
+          if (!/^[a-zA-Z0-9_-]{11}$/.test(id || '')) return null;
+        } else if (host === 'youtu.be' && parts.length === 1) {
+          provider = 'youtube'; id = parts[0];
+          if (!/^[a-zA-Z0-9_-]{11}$/.test(id)) return null;
+        } else if (host === 'vimeo.com' && parts.length === 1 && /^\d+$/.test(parts[0])) {
+          provider = 'vimeo'; id = parts[0];
+        } else if (host === 'player.vimeo.com' && parts.length === 2 && parts[0] === 'video' && /^\d+$/.test(parts[1])) {
+          provider = 'vimeo'; id = parts[1];
+        } else return null;
+        return { provider, id };
+      }
+
+      function updateUrl(showError) {
+        const result = parseVideo(urlField.value);
+        const invalid = !result;
+        error.hidden = !(showError && invalid);
+        urlField.classList.toggle('invalid', showError && invalid);
+        urlField.setAttribute('aria-invalid', String(showError && invalid));
+        preview.hidden = invalid;
+        if (result) {
+          const src = result.provider === 'youtube'
+            ? `https://www.youtube-nocookie.com/embed/${result.id}`
+            : `https://player.vimeo.com/video/${result.id}`;
+          if (frame.dataset.src !== src) {
+            frame.dataset.src = src;
+            frame.replaceChildren();
+            const iframe = document.createElement('iframe');
+            iframe.src = src;
+            iframe.title = 'Submitted film preview';
+            iframe.loading = 'lazy';
+            iframe.allow = 'encrypted-media; picture-in-picture';
+            iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+            frame.appendChild(iframe);
+          }
+        } else {
+          frame.replaceChildren();
+          delete frame.dataset.src;
+        }
+        return result;
+      }
+
+      urlField.addEventListener('input', () => updateUrl(false));
+      urlField.addEventListener('blur', () => updateUrl(true));
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const parsed = updateUrl(true);
+        if (!parsed) { urlField.focus(); return; }
+        const invalid = form.querySelector('input:invalid,textarea:invalid,select:invalid');
+        if (invalid) { invalid.reportValidity(); invalid.focus(); return; }
+        if (!document.getElementById('rights').checked) { document.getElementById('rights').reportValidity(); return; }
+
+        const data = new FormData(form);
+        const items = [
+          ['Film title', data.get('filmTitle')],
+          ['Video URL', data.get('videoUrl')],
+          ['Director / Creator', data.get('creator')],
+          ['Format', data.get('format')],
+          ['Synopsis', data.get('description')],
+          ['AI tools used', data.get('tools')],
+          ['Genres / Keywords', data.get('genres')],
+          ['Submitted by', data.get('contactName')],
+          ['Contact email', data.get('contactEmail')],
+        ];
+        const body = items.map(([k, v]) => k + ': ' + (v || '—')).join('\n\n');
+        // Static site, no submission backend: this opens a pre-filled email
+        // to AIMB's real contact address rather than pretending to submit
+        // to a server that doesn't exist yet.
+        location.href = 'mailto:contact@aimoviebase.com?subject=' + encodeURIComponent('AIMB film submission: ' + data.get('filmTitle')) + '&body=' + encodeURIComponent(body);
+      });
+    })();
+  </script>
+</BaseLayout>
