@@ -191,6 +191,12 @@ function isActive(prefix: string) {
     main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
 
     .siteFooter { background: var(--black); color: #d2d5d9; padding: 40px 0 24px; margin-top: 2rem; }
+    /* When a page's last section is the full-bleed newsletter band, that
+       section already pulls itself flush to <main>'s bottom edge (see its
+       own negative margin-bottom in index.astro). The footer's own
+       margin-top would otherwise re-open that exact gap, so cancel it
+       whenever the footer directly follows a <main> ending in .newsletter. */
+    main:has(> .newsletter:last-child) + .siteFooter { margin-top: 0; }
     .footInner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
     .footGrid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; }
     .footGrid .footBrand { font-family: var(--serif); font-size: 1.4rem; font-weight: 800; color: #fff; }
