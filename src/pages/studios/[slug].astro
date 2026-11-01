@@ -3,9 +3,12 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getToolMeta } from '../../data/toolMeta';
 import Icon from '../../components/Icon.astro';
+import { studioHasPage, creatorHasPage } from '../../lib/links';
 
 export async function getStaticPaths() {
-  const studios = await getCollection('studios');
+  // A studio with only one film in the catalog doesn't get a page — see
+  // src/lib/links.ts for the rule and every other place it's enforced.
+  const studios = (await getCollection('studios')).filter(studioHasPage);
   const movies = await getCollection('movies');
   const creators = await getCollection('creators');
   return studios.map((studio) => {
@@ -252,15 +255,18 @@ const awardEntries = films.flatMap((f) => (f.data.awards ?? []).map((text) => ({
       </div>
       <p class="hintro">The filmmakers and artists behind the studio's productions.</p>
       <div class="hscroll" id="people">
-        {team.map((c) => (
-          <a class="personCard" href={`/name/${c.id}`}>
-            <div class="avatar">
-              {c.data.photo ? <img src={c.data.photo} alt={c.data.name} loading="lazy" /> : initialsOf(c.data.name)}
-            </div>
-            <h3>{c.data.alias || c.data.name}</h3>
-            {c.data.role && <p>{c.data.role}</p>}
-          </a>
-        ))}
+        {team.map((c) => {
+          const Tag = creatorHasPage(c) ? 'a' : 'div';
+          return (
+            <Tag class="personCard" {...(creatorHasPage(c) ? { href: `/name/${c.id}` } : {})}>
+              <div class="avatar">
+                {c.data.photo ? <img src={c.data.photo} alt={c.data.name} loading="lazy" /> : initialsOf(c.data.name)}
+              </div>
+              <h3>{c.data.alias || c.data.name}</h3>
+              {c.data.role && <p>{c.data.role}</p>}
+            </Tag>
+          );
+        })}
       </div>
     </section>
   )}

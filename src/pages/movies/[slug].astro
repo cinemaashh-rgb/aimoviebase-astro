@@ -3,7 +3,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getToolMeta } from '../../data/toolMeta';
 import { widePoster } from '../../lib/images';
-import { resolveCreatorSlug, resolveStudioSlug } from '../../lib/links';
+import { resolveCreatorSlug, resolveStudioSlug, verifyCreatorSlug } from '../../lib/links';
 
 export async function getStaticPaths() {
   const movies = await getCollection('movies');
@@ -44,8 +44,14 @@ const isSeries = m.type === 'series';
 // falling back to any explicit slug already set.
 const allCreators = await getCollection('creators');
 const allStudios = await getCollection('studios');
-const directorSlug = m.director?.slug ?? resolveCreatorSlug(m.director?.name, allCreators);
+const directorSlug = verifyCreatorSlug(m.director?.slug, allCreators) ?? resolveCreatorSlug(m.director?.name, allCreators);
 const studioSlug = resolveStudioSlug(m.studio, allStudios);
+
+// Crew rows carry their own explicit slug per member — same one-film rule
+// applies, verified against the creators collection rather than trusted
+// as-is (a crew member can be credited on this film and still not clear
+// the threshold across their whole catalog entry).
+const crewWithLinks = (m.crew ?? []).map((c) => ({ ...c, pageSlug: verifyCreatorSlug(c.slug, allCreators) }));
 
 // The film-page mockup's ".details" line reads "2026 · 24 min · Sci-Fi ·
 // Drama" — year, runtime/season info, then every genre inline (not just a
@@ -243,12 +249,12 @@ detailsParts.push(...m.genres);
         </div>
       )}
 
-      {m.crew && m.crew.length > 0 && (
+      {crewWithLinks.length > 0 && (
         <div class="sideSection">
           <h3>{isSeries ? 'Team' : 'Crew'}</h3>
-          {m.crew.map((c) => (
+          {crewWithLinks.map((c) => (
             <div class="crewRow">
-              <strong>{c.slug ? <a href={`/name/${c.slug}`} style="color:var(--ink);">{c.name}</a> : c.name}</strong>
+              <strong>{c.pageSlug ? <a href={`/name/${c.pageSlug}`} style="color:var(--ink);">{c.name}</a> : c.name}</strong>
               <span class="role">{c.role}</span>
             </div>
           ))}

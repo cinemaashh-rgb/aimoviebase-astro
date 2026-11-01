@@ -1,8 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { studioHasPage } from '../../lib/links';
 
-const studios = await getCollection('studios');
+// A studio with only one film doesn't get a page of its own (see
+// src/lib/links.ts) — this directory links out to studio pages, so it
+// only lists studios that have one, rather than a card with nowhere to go.
+const allStudios = await getCollection('studios');
+const studios = allStudios.filter(studioHasPage);
 studios.sort((a, b) => a.data.name.localeCompare(b.data.name));
 ---
 <BaseLayout title="AI Studios" description="AI filmmaking studios on AI Movie Base.">
@@ -14,7 +19,7 @@ studios.sort((a, b) => a.data.name.localeCompare(b.data.name));
     .studioGrid { display: grid; grid-template-columns: repeat(auto-fill,minmax(230px,1fr)); gap: 14px; }
   </style>
   <h1 style="margin-top:0">AI Studios</h1>
-  <p class="pageLede" style="margin-bottom:28px">{studios.length} studios in the catalog so far.</p>
+  <p class="pageLede" style="margin-bottom:28px">{studios.length} studio{studios.length === 1 ? '' : 's'} with two or more catalog titles so far — {allStudios.length} total studios are credited across the catalog, but a studio with a single film doesn't get its own page yet.</p>
 
   <div class="studioGrid">
     {studios.map((studio) => (

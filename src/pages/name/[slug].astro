@@ -3,9 +3,12 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getToolMeta } from '../../data/toolMeta';
 import Icon from '../../components/Icon.astro';
+import { creatorHasPage, verifyStudioSlug } from '../../lib/links';
 
 export async function getStaticPaths() {
-  const creators = await getCollection('creators');
+  // A creator with only one film in the catalog doesn't get a page — see
+  // src/lib/links.ts for the rule and every other place it's enforced.
+  const creators = (await getCollection('creators')).filter(creatorHasPage);
   return creators.map((creator) => ({
     params: { slug: creator.id },
     props: { creator },
@@ -19,6 +22,8 @@ const { creator } = Astro.props;
 const c = creator.data;
 
 const movies = await getCollection('movies');
+const allStudios = await getCollection('studios');
+const studioHref = c.studio ? verifyStudioSlug(c.studio.slug, allStudios) : undefined;
 const films = c.films
   .map((slug) => movies.find((m) => m.id === slug))
   .filter((m): m is CollectionEntry<'movies'> => Boolean(m));
@@ -129,7 +134,7 @@ const awardsList = [
       {c.bioMore && <p style="color:var(--ink); font-size:.92rem; line-height:1.6; max-width:620px; margin-top:8px;">{c.bioMore}</p>}
       <div class="facts">
         {c.basedIn && <span><Icon name="pin" size={16} /> {c.basedIn}</span>}
-        {c.studio && <span><Icon name="studio" size={16} /> {c.studio.slug ? <a href={`/studios/${c.studio.slug}`} style="color:var(--blue); font-weight:600;">{c.studio.name}</a> : c.studio.name}</span>}
+        {c.studio && <span><Icon name="studio" size={16} /> {studioHref ? <a href={`/studios/${studioHref}`} style="color:var(--blue); font-weight:600;">{c.studio.name}</a> : c.studio.name}</span>}
         {c.knownFor.length > 0 && <span><Icon name="genre" size={16} /> {c.knownFor.join(', ')}</span>}
         <span>{films.length} film{films.length === 1 ? '' : 's'} in catalog</span>
       </div>

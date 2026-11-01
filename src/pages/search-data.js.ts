@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { creatorHasPage, studioHasPage } from '../lib/links';
 
 // Single generated search index, replacing the original site's per-page
 // duplicated `_OLD_DATA_UNUSED` arrays (every one of the ~111 original HTML
@@ -32,7 +33,11 @@ export const GET: APIRoute = async () => {
     items.push(item);
   }
 
+  // A creator/studio with only one film in the catalog has no page of its
+  // own (see src/lib/links.ts) — leaving it in the index would send a
+  // search result to a page that doesn't exist.
   for (const c of creators) {
+    if (!creatorHasPage(c)) continue;
     const item: Item = {
       title: c.data.name,
       href: `/name/${c.id}`,
@@ -43,6 +48,7 @@ export const GET: APIRoute = async () => {
   }
 
   for (const s of studios) {
+    if (!studioHasPage(s)) continue;
     items.push({ title: s.data.name, href: `/studios/${s.id}`, sub: 'Studio' });
   }
 

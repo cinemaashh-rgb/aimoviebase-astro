@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { verifyCreatorSlug } from '../../lib/links';
 
 export async function getStaticPaths() {
   const entries = await getCollection('awards');
@@ -12,6 +13,13 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const a = entry.data;
+const allCreators = await getCollection('creators');
+// Same one-film-or-no-page rule as everywhere else a director is linked —
+// a winner's stored directorSlug isn't itself proof a /name page exists.
+const directorHref = (slug: string | undefined) => {
+  const verified = verifyCreatorSlug(slug, allCreators);
+  return verified ? `/name/${verified}` : undefined;
+};
 ---
 <BaseLayout title={a.name} description={a.description}>
   <style>
@@ -161,7 +169,7 @@ const a = entry.data;
                 <div class="winnerBody">
                   <span class={`chip ${chipClass(w.place)}`}>{w.place}</span>
                   <div class="wtitle">{w.movieSlug ? <a href={`/movies/${w.movieSlug}`} style="color:inherit;">{w.title}</a> : w.title}</div>
-                  {w.director && <div class="director">By {w.directorSlug ? <a href={`/name/${w.directorSlug}`} style="color:var(--blue); font-weight:600;">{w.director}</a> : w.director}</div>}
+                  {w.director && <div class="director">By {directorHref(w.directorSlug) ? <a href={directorHref(w.directorSlug)} style="color:var(--blue); font-weight:600;">{w.director}</a> : w.director}</div>}
                   {w.prize && (
                     <div class="prize">
                       <div class="amount">{w.prize}</div>
@@ -184,7 +192,7 @@ const a = entry.data;
                 <div>
                   <div class="eyebrow">{w.place}</div>
                   <h3>{w.movieSlug ? <a href={`/movies/${w.movieSlug}`} style="color:inherit;">{w.title}</a> : w.title}</h3>
-                  {w.director && <div class="director">By {w.directorSlug ? <a href={`/name/${w.directorSlug}`} style="color:var(--blue); font-weight:600;">{w.director}</a> : w.director}</div>}
+                  {w.director && <div class="director">By {directorHref(w.directorSlug) ? <a href={directorHref(w.directorSlug)} style="color:var(--blue); font-weight:600;">{w.director}</a> : w.director}</div>}
                   {w.prize && <div class="director" style="margin-top:2px; font-weight:600; color:var(--ink);">{w.prize}</div>}
                 </div>
               </div>
@@ -200,7 +208,7 @@ const a = entry.data;
                 <div>
                   <div class="cat">{n.category}</div>
                   <strong>{n.movieSlug ? <a href={`/movies/${n.movieSlug}`} style="color:inherit;">{n.title}</a> : n.title}</strong>
-                  {n.director && <div class="by">By {n.directorSlug ? <a href={`/name/${n.directorSlug}`} style="color:var(--blue);">{n.director}</a> : n.director}</div>}
+                  {n.director && <div class="by">By {directorHref(n.directorSlug) ? <a href={directorHref(n.directorSlug)} style="color:var(--blue);">{n.director}</a> : n.director}</div>}
                 </div>
               </div>
             ))}
