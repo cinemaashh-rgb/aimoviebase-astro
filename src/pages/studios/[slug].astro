@@ -35,7 +35,14 @@ const movieCount = films.filter((f) => f.data.type !== 'series').length;
 const seriesCount = films.filter((f) => f.data.type === 'series').length;
 const contentType = movieCount > 0 && seriesCount > 0 ? 'AI Movies & Series' : seriesCount > 0 ? 'AI Series' : 'AI Movies';
 
-const initials = s.name.split(' ').filter((w) => /[a-zA-Z]/.test(w)).slice(0, 2).map((w) => w.charAt(0)).join('').toUpperCase();
+// Strips a trailing "(real name)"/"(alias)" parenthetical before taking
+// initials, so e.g. "Rafa (Rafael Pedroso)" yields "RP" rather than
+// grabbing the opening parenthesis as a stray initial.
+function initialsOf(name: string) {
+  const clean = name.replace(/\(.*?\)/g, ' ').trim();
+  return clean.split(/\s+/).filter((w) => /[a-zA-Z]/.test(w)).slice(0, 2).map((w) => w.charAt(0)).join('').toUpperCase();
+}
+const initials = initialsOf(s.name);
 
 // Every distinct AI tool used across this studio's films, aggregated from
 // real per-film credits rather than a hand-picked list.
@@ -248,7 +255,7 @@ const awardEntries = films.flatMap((f) => (f.data.awards ?? []).map((text) => ({
         {team.map((c) => (
           <a class="personCard" href={`/name/${c.id}`}>
             <div class="avatar">
-              {c.data.photo ? <img src={c.data.photo} alt={c.data.name} loading="lazy" /> : c.data.name.split(' ').filter((w) => /[a-zA-Z]/.test(w)).slice(0, 2).map((w) => w.charAt(0)).join('').toUpperCase()}
+              {c.data.photo ? <img src={c.data.photo} alt={c.data.name} loading="lazy" /> : initialsOf(c.data.name)}
             </div>
             <h3>{c.data.alias || c.data.name}</h3>
             {c.data.role && <p>{c.data.role}</p>}
