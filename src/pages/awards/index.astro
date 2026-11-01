@@ -31,90 +31,90 @@ const directory = [
     slug: 'aaiff',
     logo: 'AAIFF',
     location: aaiff!.data.location,
-    edition: '1–3 Oct 2026',
-    format: 'In-Person',
+    edition: 'October 2026',
+    formats: ['In-Person'],
     fund: '$2,000,000',
-    winner: { title: 'The First Honest Day', year: '2026', movieSlug: 'the-first-honest-day' },
+    winner: { title: 'The First Honest Day', year: '2026', movieSlug: 'the-first-honest-day', note: 'Grand Prix' },
   },
   {
     name: 'Runway AI Film Festival',
     slug: 'runway-aiff',
     logo: 'Runway',
     location: 'New York / Los Angeles',
-    edition: '2026',
-    format: 'In-Person',
-    fund: null,
-    winner: { title: 'A Face Only A Mother Could Love', year: '2026', movieSlug: 'a-face-only-a-mother-could-love' },
+    edition: 'June 2026',
+    formats: ['In-Person', 'Online'],
+    fund: '$135,000+',
+    winner: { title: 'A Face Only A Mother Could Love', year: '2026', movieSlug: 'a-face-only-a-mother-could-love', note: 'Grand Prix' },
   },
   {
     name: 'Reply AI Film Festival',
     url: 'https://www.reply.com/',
     logo: 'Reply',
     location: 'Venice, Italy',
-    edition: '6 Sep 2026',
-    format: 'In-Person',
+    edition: 'September 2026',
+    formats: ['In-Person'],
     fund: null,
-    winner: { title: 'A Face Only A Mother Could Love', year: '2026', movieSlug: 'a-face-only-a-mother-could-love' },
+    winner: { title: 'A Face Only A Mother Could Love', year: '2026', movieSlug: 'a-face-only-a-mother-could-love', note: '1st Place' },
   },
   {
     name: 'Higgsfield Global Film Festival',
     url: 'https://higgsfield.ai/',
     logo: 'H',
     location: 'Online',
-    edition: '2026',
-    format: 'Online',
+    edition: 'October 2026',
+    formats: ['Online'],
     fund: '$1,000,000',
-    winner: { title: 'Not yet confirmed' },
+    winner: { title: 'Awaiting results', pending: true },
   },
   {
-    name: 'BIFAN — AI Film Competition',
+    name: 'BIFAN — Bucheon International Fantastic Film Festival',
     url: 'https://www.bifan.kr/',
     logo: 'BIFAN',
     location: 'Bucheon, South Korea',
-    edition: '2025 (confirmed edition)',
-    format: 'In-Person',
+    edition: 'July 2026',
+    formats: ['In-Person'],
     fund: null,
-    winner: { title: 'Last Dream', year: '2025' },
+    winner: { title: 'Cornered', year: '2026', movieSlug: 'sinuca-de-bico', note: 'Best AI Film' },
   },
   {
     name: 'Busan International AI Film Festival',
     url: 'https://www.biaif.com/',
     logo: 'BIAIF',
     location: 'Busan, South Korea',
-    edition: '3–5 Dec 2026 (planned)',
-    format: 'In-Person',
-    fund: null,
-    winner: { title: 'Not yet announced' },
+    edition: 'December 2025',
+    formats: ['In-Person'],
+    fund: '$3,000',
+    winner: { title: 'Chairman', year: '2025', note: 'Audience Award' },
   },
   {
     name: 'Artificial Intelligence Media Festival',
     url: 'https://aimf.us/',
     logo: 'AIMF',
     location: 'Los Angeles, USA',
-    edition: '2–4 Oct 2026',
-    format: 'In-Person',
+    edition: 'October 2026',
+    formats: ['In-Person'],
     fund: null,
-    winner: { title: 'Not verified' },
+    winner: { title: 'Awaiting results', pending: true },
   },
   {
     name: 'Cinema Shift Festival',
     url: 'https://cinemashiftfestival.com/',
     logo: 'SHIFT',
     location: 'Toronto, Canada',
-    edition: '5 Jun 2026',
-    format: 'In-Person',
+    edition: 'June 2026',
+    formats: ['In-Person'],
     fund: null,
-    winner: { title: 'Sinuca de Bico', year: '2026', movieSlug: 'sinuca-de-bico' },
+    winner: { title: 'Cornered', year: '2026', movieSlug: 'sinuca-de-bico', note: 'Best AI Narrative' },
   },
   {
     name: 'Bochnia International AI Film Festival',
     url: 'https://yingtu.art/en/opportunities/',
     logo: 'BIAIFF',
     location: 'Bochnia, Poland',
-    edition: '17 Sep 2026',
-    format: 'In-Person',
+    edition: 'September 2026',
+    formats: ['In-Person'],
     fund: '$2,500',
-    winner: { title: 'Far Away Home', year: '2026' },
+    winner: { title: 'Far Away Home', year: '2026', note: 'Grand Prix' },
   },
 ];
 
@@ -160,7 +160,8 @@ const initialCount = 6;
     .flogo { flex: none; display: grid; place-items: center; width: 38px; height: 38px; background: var(--black); color: #fff; border-radius: 6px; font-size: .6rem; font-weight: 800; text-align: center; line-height: 1.1; padding: 2px; }
     .fname a { font-weight: 700; color: var(--ink); font-size: .82rem; display: block; }
     .fname a:hover { color: var(--blue); }
-    .format { font-size: .72rem; white-space: nowrap; color: #3a58bf; background: #e9edff; padding: 4px 9px; border-radius: 6px; }
+    .formatStack { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 5px; }
+    .format { font-size: .72rem; white-space: nowrap; color: #3a58bf; background: #e9edff; padding: 4px 9px; border-radius: 999px; }
     .format.online { background: #e6f4ec; color: #287754; }
     .fund { display: inline-block; background: #d9f1df; color: #23583b; border-radius: 50px; padding: 3px 10px; font-size: .76rem; font-weight: 700; white-space: nowrap; }
     .fund.empty { background: var(--soft); color: var(--muted2); }
@@ -228,23 +229,23 @@ const initialCount = 6;
             </td>
             <td>{f.location}</td>
             <td>{f.edition}</td>
-            <td><span class={`format ${f.format === 'Online' ? 'online' : ''}`}>{f.format}</span></td>
+            <td><span class="formatStack">{f.formats.map((fmt) => <span class={`format ${fmt === 'Online' ? 'online' : ''}`}>{fmt}</span>)}</span></td>
             <td>{f.fund ? <span class="fund">{f.fund}</span> : <span class="fund empty">—</span>}</td>
             <td class="winner">
-              {f.winner.movieSlug && movieExists(f.winner.movieSlug) ? (
+              {!f.winner.pending && f.winner.movieSlug && movieExists(f.winner.movieSlug) ? (
                 <>
                   {moviePoster(f.winner.movieSlug) && (
                     <img class="winner-thumb" src={moviePoster(f.winner.movieSlug)} alt={f.winner.title} loading="lazy" />
                   )}
                   <div>
                     <a href={`/movies/${f.winner.movieSlug}`}><strong>{f.winner.title}</strong></a>
-                    <small>{f.winner.year} winner</small>
+                    <small>{f.winner.note ? `${f.winner.note} · ` : ''}{f.winner.year}</small>
                   </div>
                 </>
-              ) : f.winner.year ? (
+              ) : !f.winner.pending && f.winner.year ? (
                 <div>
                   <strong>{f.winner.title}</strong>
-                  <small>{f.winner.year} winner</small>
+                  <small>{f.winner.note ? `${f.winner.note} · ` : ''}{f.winner.year}</small>
                 </div>
               ) : (
                 <span class="pending">{f.winner.title}</span>
@@ -260,7 +261,7 @@ const initialCount = 6;
     <div class="count" id="count">Showing {initialCount} of {directory.length} festivals</div>
   </div>
 
-  <p style="color:var(--muted); font-size:.76rem; margin-top:22px;">Festivals without a dedicated page here link out to their own site. Award-winning films already in our catalog link to their page with a poster; films not yet catalogued are shown by name only, rather than guessed at.</p>
+  <p style="color:var(--muted); font-size:.76rem; margin-top:22px;">Festival details checked against organizer sources (October 2026). Festivals without a dedicated page here link out to their own site. Award-winning films already in our catalog link to their page with a real poster; films not yet catalogued are shown by name only, and a pending result is shown as "Awaiting results" rather than guessed at.</p>
 
   <script is:inline define:vars={{ total: directory.length, initialCount }}>
     (function () {
