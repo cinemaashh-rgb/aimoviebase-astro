@@ -145,13 +145,14 @@ const journal = articles;
     .festivalCard span { display: block; color: var(--muted2); font-size: .64rem; margin-top: 4px; }
 
     /* ---- Newsletter (full-bleed dark, matching the footer) ---- */
-    /* True full-bleed, same 100vw/-50vw break-out as .hero — a plain
-       negative margin only cancels <main>'s own padding, so past main's
-       1200px max-width (wide desktop screens) it still left a visible
-       gutter of page background on each side. This also reaches the
-       footer: negative bottom margin cancels main's bottom padding so
-       there's no gap before the footer either, on any breakpoint. */
-    .newsletter { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; margin-bottom: -2rem; background: var(--black); color: #fff; }
+    /* True full-bleed, same 100vw/-50vw break-out as .hero, so past
+       main's 1200px max-width (wide desktop screens) it still reaches
+       the true viewport edge instead of leaving a page-background
+       gutter on each side. It has no vertical margin of its own: the
+       zero-gap join with the footer below is controlled in one place,
+       by BaseLayout zeroing <main>'s bottom padding on pages that end
+       in this section — see BaseLayout.astro for that rule. */
+    .newsletter { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; background: var(--black); color: #fff; }
     .newsletterIn { max-width: 1200px; margin: 0 auto; padding: 28px 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center; }
     .newsletter .eyebrow { font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #9aa4b2; }
     .newsletter h2 { font-size: 1.7rem; line-height: 1.12; margin: 6px 0; }
@@ -179,10 +180,6 @@ const journal = articles;
     @media (max-width: 650px) {
       .festivalGrid { grid-template-columns: repeat(2,minmax(0,1fr)); }
       .listsGrid { grid-template-columns: 1fr; }
-      /* <main>'s own bottom padding shrinks to 1.25rem at this breakpoint
-         (see BaseLayout) — match it so the footer still sits flush
-         instead of overlapping into the newsletter's own content. */
-      .newsletter { margin-bottom: -1.25rem; }
     }
   </style>
 
