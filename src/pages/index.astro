@@ -1,13 +1,33 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 const movies = await getCollection('movies');
 const notable = [...movies].sort((a, b) => b.data.year - a.data.year).slice(0, 6);
+
+// Award-winning films: any movie whose real `awards` field is non-empty,
+// excluding anything already shown above in Notable so the two homepage
+// grids don't just repeat each other. No hand-picked slugs here — this is
+// computed from the catalog so it stays correct as new winners are added.
+const notableIds = new Set(notable.map((m) => m.id));
+const awardWinners = movies
+  .filter((m) => (m.data.awards?.length ?? 0) > 0 && !notableIds.has(m.id))
+  .sort((a, b) => b.data.year - a.data.year)
+  .slice(0, 6);
 
 const shortdramaAll = await getCollection('shortdrama');
 const shortdramaPublished = shortdramaAll.filter((e) => e.data.status === 'published').slice(0, 3);
 
 const awards = await getCollection('awards');
+
+// AI Film Lists: the real /lists collection (all four exist today — two
+// hand-curated, two mechanically grouped "starter lists", see
+// src/content/lists and the README). Reusing the same cover-lookup logic
+// as /lists/index.astro rather than inventing homepage-only art.
+const homeLists = await getCollection('lists');
+function listCover(list: CollectionEntry<'lists'>) {
+  const first = list.data.movies.map((slug) => movies.find((m) => m.id === slug)).find((m) => m?.data.poster);
+  return first?.data.poster;
+}
 
 // Real journal content — the same three articles published in full on
 // /news (src/pages/news.astro). There's no per-article route yet (news.astro
@@ -86,6 +106,19 @@ const journal = [
     .filmGrid .muted { color: var(--muted2); font-size: .74rem; margin-top: 3px; }
     .filmGrid .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
     .filmGrid .tags span { background: var(--soft); color: var(--muted); border-radius: 3px; font-size: .64rem; padding: 3px 7px; }
+    .filmGrid .awardLine { display: flex; align-items: flex-start; gap: 5px; margin-top: 6px; font-size: .72rem; color: var(--muted); line-height: 1.35; }
+    .filmGrid .awardLine::before { content: '✦'; color: var(--blue); flex: none; }
+
+    /* ---- AI Film Lists (reuses the /lists card pattern) ---- */
+    .listsGrid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 24px; }
+    .listsGrid .listCard { display: block; color: inherit; }
+    .listsGrid .posterStrip { aspect-ratio: 370/206; border-radius: 4px; overflow: hidden; background: var(--soft); }
+    .listsGrid .posterStrip img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .listsGrid .posterFallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .78rem; font-weight: 700; text-align: center; padding: 10px; }
+    .listsGrid h3 { font-family: var(--serif); font-size: 1.02rem; line-height: 1.2; margin: 10px 0 2px; font-weight: 700; }
+    .listsGrid .listCard:hover h3 { color: var(--blue); }
+    .listsGrid .count { font-size: .7rem; color: var(--muted2); margin: 0; }
+    .listsGrid .placeholderTag { display: inline-block; font-size: .6rem; text-transform: uppercase; letter-spacing: .04em; background: var(--soft); color: var(--muted2); border-radius: 4px; padding: 2px 6px; margin-left: 5px; vertical-align: middle; }
 
     /* ---- Journal ---- */
     .journalGrid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 22px; }
@@ -130,9 +163,11 @@ const journal = [
       .shortLayout { grid-template-columns: 1fr; }
       .festivalGrid { grid-template-columns: repeat(3,minmax(0,1fr)); }
       .newsletterIn { grid-template-columns: 1fr; }
+      .listsGrid { grid-template-columns: repeat(2,minmax(0,1fr)); }
     }
     @media (max-width: 650px) {
       .festivalGrid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .listsGrid { grid-template-columns: 1fr; }
     }
   </style>
 
@@ -176,6 +211,32 @@ const journal = [
     </div>
   </section>
 
+  {awardWinners.length > 0 && (
+    <section class="section">
+      <div class="sectionHead">
+        <div>
+          <h2>Award-Winning AI Films</h2>
+          <p class="intro">AI-generated films recognized with a real festival win or selection in the catalog.</p>
+        </div>
+        <a class="more" href="/lists/award-winners-nominees">View all winners →</a>
+      </div>
+      <div class="filmGrid">
+        {awardWinners.map((movie) => (
+          <a href={`/movies/${movie.id}`} aria-label={`Read about ${movie.data.title}`}>
+            {movie.data.poster ? (
+              <img src={movie.data.poster} alt={movie.data.title} loading="lazy" />
+            ) : (
+              <div class="posterFallback">{movie.data.title}</div>
+            )}
+            <strong>{movie.data.title}</strong>
+            <span class="muted">{movie.data.year}</span>
+            <span class="awardLine">{movie.data.awards[0]}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
   <section class="section">
     <div class="sectionHead">
       <div>
@@ -196,6 +257,33 @@ const journal = [
       ))}
     </div>
   </section>
+
+  {homeLists.length > 0 && (
+    <section class="section">
+      <div class="sectionHead">
+        <div>
+          <h2>AI Film Lists</h2>
+          <p class="intro">Curated and catalog-grouped collections of AI-generated films.</p>
+        </div>
+        <a class="more" href="/lists">View all lists →</a>
+      </div>
+      <div class="listsGrid">
+        {homeLists.map((list) => (
+          <a class="listCard" href={`/lists/${list.id}`}>
+            <div class="posterStrip">
+              {listCover(list) ? (
+                <img src={listCover(list)} alt={`Cover artwork for ${list.data.name}`} loading="lazy" />
+              ) : (
+                <div class="posterFallback">{list.data.name}</div>
+              )}
+            </div>
+            <h3>{list.data.name}{list.data.placeholder && <span class="placeholderTag">starter list</span>}</h3>
+            <p class="count">{list.data.movies.length} films</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
 
   <section class="section">
     <div class="shortLayout">
