@@ -7,13 +7,19 @@ import Icon from '../../components/Icon.astro';
 export async function getStaticPaths() {
   const studios = await getCollection('studios');
   const movies = await getCollection('movies');
+  const creators = await getCollection('creators');
   return studios.map((studio) => {
     const films = studio.data.films
       .map((slug) => movies.find((m) => m.id === slug))
       .filter((m): m is CollectionEntry<'movies'> => Boolean(m));
+    // Real team roster: creators whose own `studio.slug` points back here,
+    // rather than the reference mockup's invented names — several studios
+    // in the catalog have no linked creators yet, in which case this is
+    // simply empty and the section doesn't render.
+    const team = creators.filter((c) => c.data.studio?.slug === studio.id);
     return {
       params: { slug: studio.id },
-      props: { studio, films },
+      props: { studio, films, team },
     };
   });
 }
@@ -21,15 +27,18 @@ export async function getStaticPaths() {
 interface Props {
   studio: CollectionEntry<'studios'>;
   films: CollectionEntry<'movies'>[];
+  team: CollectionEntry<'creators'>[];
 }
-const { studio, films } = Astro.props;
+const { studio, films, team } = Astro.props;
 const s = studio.data;
 const movieCount = films.filter((f) => f.data.type !== 'series').length;
 const seriesCount = films.filter((f) => f.data.type === 'series').length;
+const contentType = movieCount > 0 && seriesCount > 0 ? 'AI Movies & Series' : seriesCount > 0 ? 'AI Series' : 'AI Movies';
 
-// Collect every distinct AI tool used across this studio's films, for the
-// "Creative Stack" tab — aggregated from real per-film credits rather than
-// the mockup's hand-picked list.
+const initials = s.name.split(' ').filter((w) => /[a-zA-Z]/.test(w)).slice(0, 2).map((w) => w.charAt(0)).join('').toUpperCase();
+
+// Every distinct AI tool used across this studio's films, aggregated from
+// real per-film credits rather than a hand-picked list.
 const toolCounts = new Map<string, number>();
 for (const f of films) {
   for (const tool of f.data.aiTools) {
@@ -39,115 +48,153 @@ for (const f of films) {
 const tools = [...toolCounts.entries()]
   .sort((a, b) => b[1] - a[1])
   .map(([name, count]) => ({ name, count, meta: getToolMeta(name) }));
+
+// Awards & Recognition: every real award string already on the studio's
+// own films (src/content/movies/*.json `awards`), paired with the film it
+// belongs to. Omitted entirely for studios with no award-winning title
+// yet, rather than filling the slot with the reference mockup's
+// demonstration festival wins.
+const awardEntries = films.flatMap((f) => (f.data.awards ?? []).map((text) => ({ text, film: f })));
 ---
 <BaseLayout title={s.name} description={s.description}>
   <style>
-    .studioHero { display: grid; grid-template-columns: 180px 1fr 220px; gap: 26px; margin: 24px 0 0; align-items: start; }
-    .studioLogo { width: 100%; aspect-ratio: 1; border-radius: 6px; background: var(--black); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.6rem; font-family: var(--serif); object-fit: cover; }
-    .eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .08em; color: var(--muted2); text-transform: uppercase; }
-    h1.sname { font-size: clamp(30px,3.6vw,44px); margin: 6px 0 2px; letter-spacing: -0.03em; }
-    .subtitle { color: var(--muted); font-size: 1rem; margin-bottom: 12px; }
-    .facts { display: flex; align-items: center; gap: 20px; color: var(--muted); font-size: .88rem; margin: 14px 0 0; }
-    .fact { display: flex; gap: 8px; align-items: flex-start; }
-    .fact svg { flex: none; margin-top: 2px; }
-    .fact + .fact { border-left: 1px solid var(--line); padding-left: 20px; }
-    .teamCol { border-left: 1px solid var(--line); padding-left: 20px; }
-    .teamCol h2 { font-size: .86rem; font-weight: 400; color: var(--muted); margin: 0 0 16px; }
-    .member { margin-bottom: 14px; }
-    .member strong { font-family: var(--serif); font-size: .95rem; display: block; }
-    .member .role { color: var(--muted2); font-size: .78rem; display: block; margin-top: 3px; }
+    /* ---- Hero ---- */
+    .studioHero { display: grid; grid-template-columns: 220px minmax(0,1fr); gap: 40px; align-items: start; padding: 10px 0 44px; border-bottom: 1px solid var(--line); }
+    .logoTile { height: 220px; background: var(--black); color: #fff; display: flex; align-items: center; justify-content: center; flex-direction: column; border-radius: 4px; position: relative; overflow: hidden; }
+    .logoTile::before { content: ""; position: absolute; width: 150px; height: 150px; border: 1px solid #555; transform: rotate(45deg); opacity: .5; }
+    .logoTile img { position: relative; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+    .logoMark { font: 700 56px/1 var(--serif); letter-spacing: -4px; z-index: 1; }
+    .logoWord { font-size: 10px; letter-spacing: .3em; font-weight: 700; z-index: 1; margin-top: 10px; }
 
-    .tabs { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; gap: 24px; margin-top: 24px; }
-    .tab { appearance: none; border: 0; background: none; padding: 12px 4px 11px; color: var(--muted); font-size: .88rem; position: relative; font-weight: 600; cursor: pointer; }
-    .tab[aria-selected="true"] { color: var(--ink); }
-    .tab[aria-selected="true"]::after { content: ""; position: absolute; height: 2px; background: var(--ink); bottom: -1px; left: 0; right: 0; }
-    .pane[hidden] { display: none !important; }
+    .studioEyebrow { font-size: .68rem; font-weight: 800; color: #aa8443; letter-spacing: .14em; text-transform: uppercase; margin: 2px 0 10px; }
+    .studioHero h1 { font: 700 clamp(34px,4.6vw,54px)/1.06 var(--serif); letter-spacing: -0.03em; margin: 0 0 10px; }
+    .studioSubtitle { font-size: .95rem; color: var(--muted2); margin: 0 0 16px; }
+    .rolebar { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-bottom: 18px; }
+    .rolebar .pill { background: #f4f2ee; padding: 6px 12px; font-size: .74rem; font-weight: 650; color: #514331; border-radius: 3px; }
+    .studioDesc { max-width: 660px; font-size: .92rem; line-height: 1.75; color: var(--muted); margin: 0 0 20px; }
+    .studioFacts { border-top: 1px solid var(--line); padding-top: 16px; display: flex; gap: 26px; flex-wrap: wrap; }
+    .studioFacts .fact { display: flex; gap: 8px; align-items: flex-start; font-size: .78rem; color: var(--muted); }
+    .studioFacts .fact svg { flex: none; margin-top: 1px; stroke: var(--muted2); }
 
-    .sectionbar { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 20px 0 14px; flex-wrap: wrap; }
-    .sectionbar h2 { font-size: 1.4rem; margin: 0; }
-    .sectionbar .count { color: var(--muted); font-size: .8rem; margin-left: 8px; font-weight: 400; }
-    .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-    .pill { border: 1px solid var(--line); background: #fff; border-radius: 6px; padding: 8px 13px; font-size: .78rem; font-weight: 600; color: var(--muted); cursor: pointer; }
-    .pill[aria-pressed="true"] { background: var(--black); color: #fff; border-color: var(--black); }
-    .sortSelect { height: 34px; border: 1px solid var(--line); background: #fff; border-radius: 6px; color: var(--ink); font-size: .78rem; padding: 0 10px; }
+    .toolsHeading { font-size: .76rem; color: var(--muted2); font-weight: 600; margin: 20px 0 10px; letter-spacing: .02em; }
+    .toolGrid { display: flex; flex-wrap: wrap; gap: 10px; }
+    .toolChip { display: inline-flex; align-items: center; gap: 8px; background: #f4f2ee; padding: 7px 12px; border-radius: 3px; color: #514331; font-size: .72rem; font-weight: 650; min-height: 35px; }
+    .toolChip .mark { width: 20px; height: 20px; flex: none; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: .72rem; }
 
-    .grid6 { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 20px 15px; }
-    .grid6 a[hidden] { display: none; }
-    .thumb { position: relative; aspect-ratio: 1.42; border-radius: 5px; overflow: hidden; background: var(--soft); }
-    .thumb img, .thumb .posterFallback { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .durationBadge { position: absolute; bottom: 6px; left: 6px; background: rgba(12,17,23,.86); color: #fff; font-size: .7rem; border-radius: 4px; padding: 3px 7px; }
-    .filmCard h3 { font-family: var(--serif); font-size: .92rem; margin: 9px 0 5px; font-weight: 700; color: var(--ink); }
-    .filmMeta { font-size: .76rem; color: var(--muted); margin: 0 0 8px; }
-    .filmMeta span { padding: 0 7px; }
-    .filmTags { display: flex; gap: 6px; flex-wrap: wrap; }
-    .filmTags span { background: var(--soft); border-radius: 4px; color: var(--muted); font-size: .7rem; padding: 4px 9px; }
+    /* ---- Shared horizontal-scroll section chrome ---- */
+    .hsection { padding-top: 44px; }
+    .hsection + .hsection { border-top: 1px solid var(--line); }
+    .hheading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 6px; }
+    .hheading h2 { font: 700 1.6rem/1.2 var(--serif); letter-spacing: -0.02em; margin: 0; }
+    .hheading .count { font-size: .7rem; color: var(--muted2); margin-left: 8px; font-weight: 400; }
+    .hintro { font-size: .8rem; color: var(--muted2); margin: 0 0 18px; }
+    .arrowNav { display: flex; gap: 7px; }
+    .arrowNav button { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--line); background: #fff; font-size: 1.1rem; cursor: pointer; }
+    .arrowNav button:disabled { opacity: .3; cursor: default; }
 
-    .stackIntro { color: var(--muted); font-size: .88rem; margin: 0 0 20px; }
-    .toolGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
-    .toolCard { border: 1px solid var(--line); border-radius: 8px; padding: 16px; display: flex; align-items: center; gap: 12px; }
-    .toolIcon { border-radius: 8px; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; font-weight: 800; font-size: 1.1rem; flex-shrink: 0; }
-    .toolCard strong { font-size: .88rem; display: block; }
-    .toolCard small { color: var(--muted2); display: block; margin-top: 3px; font-size: .76rem; }
+    .hscroll { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 2px 1px 14px; scrollbar-width: none; }
+    .hscroll::-webkit-scrollbar { display: none; }
+
+    /* ---- Filmography ---- */
+    .controls { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 18px; }
+    .controls .pill { border: 1px solid var(--line); color: var(--muted); background: #fff; padding: 8px 13px; border-radius: 3px; font-size: .72rem; font-weight: 600; cursor: pointer; }
+    .controls .pill[aria-pressed="true"] { background: var(--black); border-color: var(--black); color: #fff; }
+    .sortSelect { height: 34px; border: 1px solid var(--line); background: #fff; border-radius: 3px; color: var(--ink); font-size: .74rem; padding: 0 10px; }
+    .filmCard { flex: 0 0 180px; scroll-snap-align: start; color: inherit; }
+    .filmCard .thumb { aspect-ratio: 2/3; position: relative; border-radius: 4px; overflow: hidden; background: var(--soft); }
+    .filmCard .thumb img, .filmCard .posterFallback { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s ease; }
+    .filmCard:hover .thumb img { transform: scale(1.04); }
+    .filmCard .durationBadge { position: absolute; bottom: 8px; left: 8px; background: rgba(12,17,23,.86); color: #fff; font-size: .66rem; border-radius: 4px; padding: 3px 7px; z-index: 1; }
+    .filmCard h3 { font-family: var(--serif); font-size: .88rem; margin: 10px 0 3px; font-weight: 700; }
+    .filmCard .filmMeta { font-size: .7rem; color: var(--muted2); margin: 0 0 7px; }
+    .filmCard .filmMeta span { padding: 0 6px; }
+    .filmCard .filmTags { display: flex; gap: 5px; flex-wrap: wrap; }
+    .filmCard .filmTags span { background: var(--soft); border-radius: 3px; color: var(--muted); font-size: .64rem; padding: 3px 7px; }
+    .filmCard[hidden] { display: none; }
+
+    /* ---- Awards & Recognition ---- */
+    .awardCard { flex: 0 0 340px; scroll-snap-align: start; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: flex; gap: 16px; align-items: center; color: inherit; }
+    .awardCard .mark { flex: 0 0 44px; width: 44px; height: 44px; border-radius: 10px; background: var(--soft); color: #a77820; display: flex; align-items: center; justify-content: center; }
+    .awardCard strong { display: block; font-family: var(--serif); font-size: 1rem; line-height: 1.25; }
+    .awardCard small { color: var(--muted2); font-size: .76rem; display: block; margin-top: 7px; line-height: 1.4; }
+
+    /* ---- Creators & Team ---- */
+    .personCard { flex: 0 0 150px; scroll-snap-align: start; color: inherit; }
+    .avatar { aspect-ratio: 1; border-radius: 4px; background: linear-gradient(145deg,#eeeae4,#dadbdc); display: flex; align-items: center; justify-content: center; color: #94908a; font: 700 1.8rem var(--serif); overflow: hidden; }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .personCard h3 { font-size: .84rem; margin: 10px 0 2px; }
+    .personCard p { font-size: .72rem; color: var(--muted2); margin: 0; }
 
     @media (max-width: 860px) {
-      .studioHero { grid-template-columns: 110px 1fr; gap: 18px; }
-      .studioLogo { width: 110px; }
-      .teamCol { grid-column: 1/-1; border-left: 0; border-top: 1px solid var(--line); padding: 16px 0 0; }
-      .grid6 { grid-template-columns: repeat(2,minmax(0,1fr)); }
-      .toolGrid { grid-template-columns: 1fr; }
+      .studioHero { grid-template-columns: 130px 1fr; gap: 20px; }
+      .logoTile { height: 130px; }
+      .logoMark { font-size: 34px; }
+    }
+    @media (max-width: 650px) {
+      .arrowNav { display: none; }
     }
   </style>
 
   <section class="studioHero" aria-labelledby="studio-name">
-    {s.logo ? <img class="studioLogo" src={s.logo} alt={`${s.name} logo`} /> : <div class="studioLogo">{s.name.split(' ').slice(0, 2).map((w) => w.charAt(0)).join('').toUpperCase()}</div>}
+    {s.logo ? <div class="logoTile"><img src={s.logo} alt={`${s.name} logo`} /></div> : <div class="logoTile"><div class="logoMark">{initials}</div><div class="logoWord">{s.name}</div></div>}
     <div>
-      <div class="eyebrow">Studio</div>
-      <h1 class="sname" id="studio-name">{s.name}</h1>
-      {s.subtitle && <div class="subtitle">{s.subtitle}</div>}
-      <p class="pageLede" style="max-width:600px;">{s.description}</p>
-      {s.descriptionMore && <p style="color:var(--ink); font-size:.92rem; line-height:1.6; max-width:600px; margin-top:8px;">{s.descriptionMore}</p>}
-      <div class="facts">
-        {s.basedIn && <div class="fact"><Icon name="pin" size={15} /> <span>{s.basedIn}</span></div>}
-        {s.founded && <div class="fact"><Icon name="calendar" size={15} /> <span>Founded<br />{s.founded}</span></div>}
+      <div class="studioEyebrow">AI Film Studio</div>
+      <h1 id="studio-name">{s.name}</h1>
+      {s.subtitle && <p class="studioSubtitle">{s.subtitle}</p>}
+      <div class="rolebar">
+        {films.length > 0 && <span class="pill">{contentType}</span>}
       </div>
-    </div>
-    {s.team && s.team.length > 0 && (
-      <aside class="teamCol" aria-label="Core team">
-        <h2>Core team</h2>
-        {s.team.map((m) => <div class="member"><strong>{m.name}</strong><span class="role">{m.role}</span></div>)}
-      </aside>
-    )}
-  </section>
-
-  <div class="tabs" role="tablist" aria-label="Studio details">
-    <button class="tab" role="tab" id="tab-movies" aria-selected="true" aria-controls="panel-movies" data-tab="movies" type="button">Movies</button>
-    {tools.length > 0 && (
-      <button class="tab" role="tab" id="tab-stack" aria-selected="false" aria-controls="panel-stack" data-tab="stack" type="button">Creative Stack</button>
-    )}
-  </div>
-
-  <section class="pane" id="panel-movies" role="tabpanel" aria-labelledby="tab-movies">
-    {films.length > 0 ? (
-      <>
-        <div class="sectionbar">
-          <h2>Filmography <span class="count" id="filmCount">{films.length} title{films.length === 1 ? '' : 's'}</span></h2>
-          <div class="controls" role="group" aria-label="Filter filmography">
-            <button class="pill" data-kind="all" aria-pressed="true">All ({films.length})</button>
-            <button class="pill" data-kind="movie" aria-pressed="false">Movies ({movieCount})</button>
-            <button class="pill" data-kind="series" aria-pressed="false">Series ({seriesCount})</button>
-            <select class="sortSelect" id="filmSort">
-              <option value="newest">Newest first</option>
-              <option value="oldest">Oldest first</option>
-              <option value="title">A–Z</option>
-            </select>
+      <p class="studioDesc">{s.description}</p>
+      {s.descriptionMore && <p class="studioDesc">{s.descriptionMore}</p>}
+      {(s.basedIn || s.founded) && (
+        <div class="studioFacts">
+          {s.basedIn && <div class="fact"><Icon name="pin" size={15} /> <span>{s.basedIn}</span></div>}
+          {s.founded && <div class="fact"><Icon name="calendar" size={15} /> <span>Founded {s.founded}</span></div>}
+        </div>
+      )}
+      {tools.length > 0 && (
+        <div>
+          <div class="toolsHeading">AI Tools</div>
+          <div class="toolGrid">
+            {tools.map((t) => (
+              <span class="toolChip">
+                <span class="mark" style={`background:${t.meta.bg};color:${t.meta.fg};${t.meta.border ? `border:1px solid ${t.meta.border};` : ''}`}>{t.meta.image ? <img src={t.meta.image} alt="" width="14" height="14" style="border-radius:3px;" /> : t.meta.icon}</span>
+                {t.name}
+              </span>
+            ))}
           </div>
         </div>
-        <div class="grid6" id="filmsGrid">
+      )}
+    </div>
+  </section>
+
+  <section class="hsection" id="filmography">
+    <div class="hheading">
+      <h2>Filmography <span class="count" id="filmCount">{films.length} title{films.length === 1 ? '' : 's'}</span></h2>
+      <div class="arrowNav">
+        <button type="button" data-scroll="films" data-direction="-1" aria-label="Previous films">‹</button>
+        <button type="button" data-scroll="films" data-direction="1" aria-label="Next films">›</button>
+      </div>
+    </div>
+    <p class="hintro">AI movies and series produced by the studio.</p>
+    {films.length > 0 ? (
+      <>
+        <div class="controls" role="group" aria-label="Filter filmography">
+          <button class="pill" data-kind="all" aria-pressed="true" type="button">All ({films.length})</button>
+          {movieCount > 0 && <button class="pill" data-kind="movie" aria-pressed="false" type="button">Movies ({movieCount})</button>}
+          {seriesCount > 0 && <button class="pill" data-kind="series" aria-pressed="false" type="button">Series ({seriesCount})</button>}
+          <select class="sortSelect" id="filmSort">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="title">A–Z</option>
+          </select>
+        </div>
+        <div class="hscroll" id="films">
           {films.map((f) => (
             <a class="filmCard" href={`/movies/${f.id}`} data-kind={f.data.type} data-year={f.data.year} data-title={f.data.title}>
               <div class="thumb">
-                {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" /> : <div class="posterFallback">{f.data.title}</div>}
                 {f.data.duration && <span class="durationBadge">▶ {f.data.duration}</span>}
+                {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" /> : <div class="posterFallback" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-weight:700;">{f.data.title}</div>}
               </div>
               <h3>{f.data.title}</h3>
               <p class="filmMeta">{f.data.year}<span>·</span>{f.data.type === 'series' ? 'Series' : 'Movie'}</p>
@@ -159,20 +206,53 @@ const tools = [...toolCounts.entries()]
         </div>
       </>
     ) : (
-      <p class="pageLede">No films in this studio's catalog yet.</p>
+      <p class="hintro">No films in this studio's catalog yet.</p>
     )}
   </section>
 
-  {tools.length > 0 && (
-    <section class="pane" id="panel-stack" role="tabpanel" aria-labelledby="tab-stack" hidden>
-      <div class="sectionbar"><h2>Creative Stack</h2></div>
-      <p class="stackIntro">Production tools associated with the studio's filmography, based on project credits.</p>
-      <div class="toolGrid">
-        {tools.map((t) => (
-          <div class="toolCard">
-            <span class="toolIcon" style={`background:${t.meta.bg};color:${t.meta.fg};${t.meta.border ? `border:1px solid ${t.meta.border};` : ''}`}>{t.meta.image ? <img src={t.meta.image} alt="" width="24" height="24" style="border-radius:6px;" /> : t.meta.icon}</span>
-            <span><strong>{t.name}</strong><small>{t.meta.category}</small></span>
-          </div>
+  {awardEntries.length > 0 && (
+    <section class="hsection" id="recognition">
+      <div class="hheading">
+        <h2>Awards &amp; Recognition</h2>
+        <div class="arrowNav">
+          <button type="button" data-scroll="awards" data-direction="-1" aria-label="Previous awards">‹</button>
+          <button type="button" data-scroll="awards" data-direction="1" aria-label="Next awards">›</button>
+        </div>
+      </div>
+      <p class="hintro">Real festival recognition for the studio's films, from each film's own catalog entry.</p>
+      <div class="hscroll" id="awards">
+        {awardEntries.map((e) => (
+          <a class="awardCard" href={`/movies/${e.film.id}`}>
+            <span class="mark"><Icon name="laurel" size={22} /></span>
+            <div>
+              <strong>{e.text}</strong>
+              <small>{e.film.data.title} · {e.film.data.year}</small>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {team.length > 0 && (
+    <section class="hsection" id="team">
+      <div class="hheading">
+        <h2>Creators &amp; Team</h2>
+        <div class="arrowNav">
+          <button type="button" data-scroll="people" data-direction="-1" aria-label="Previous creators">‹</button>
+          <button type="button" data-scroll="people" data-direction="1" aria-label="Next creators">›</button>
+        </div>
+      </div>
+      <p class="hintro">The filmmakers and artists behind the studio's productions.</p>
+      <div class="hscroll" id="people">
+        {team.map((c) => (
+          <a class="personCard" href={`/name/${c.id}`}>
+            <div class="avatar">
+              {c.data.photo ? <img src={c.data.photo} alt={c.data.name} loading="lazy" /> : c.data.name.split(' ').filter((w) => /[a-zA-Z]/.test(w)).slice(0, 2).map((w) => w.charAt(0)).join('').toUpperCase()}
+            </div>
+            <h3>{c.data.alias || c.data.name}</h3>
+            {c.data.role && <p>{c.data.role}</p>}
+          </a>
         ))}
       </div>
     </section>
@@ -180,48 +260,44 @@ const tools = [...toolCounts.entries()]
 
   <script is:inline>
     (function () {
-      var tabs = [].slice.call(document.querySelectorAll('[data-tab]'));
-      tabs.forEach(function (tab) {
-        tab.addEventListener('click', function () {
-          tabs.forEach(function (t) {
-            var selected = t === tab;
-            t.setAttribute('aria-selected', String(selected));
-            var panel = document.getElementById('panel-' + t.dataset.tab);
-            if (panel) panel.hidden = !selected;
+      var grid = document.getElementById('films');
+      if (grid) {
+        var cards = [].slice.call(grid.children);
+        var pills = [].slice.call(document.querySelectorAll('.controls .pill'));
+        var sortSelect = document.getElementById('filmSort');
+        var countEl = document.getElementById('filmCount');
+        var kind = 'all';
+
+        function render() {
+          var list = cards.filter(function (c) { return kind === 'all' || c.dataset.kind === kind; });
+          var mode = sortSelect.value;
+          list.sort(function (a, b) {
+            if (mode === 'oldest') return Number(a.dataset.year) - Number(b.dataset.year);
+            if (mode === 'title') return a.dataset.title.localeCompare(b.dataset.title);
+            return Number(b.dataset.year) - Number(a.dataset.year);
+          });
+          cards.forEach(function (c) { c.hidden = true; });
+          list.forEach(function (c) { c.hidden = false; });
+          grid.replaceChildren.apply(grid, list.concat(cards.filter(function (c) { return list.indexOf(c) === -1; })));
+          if (countEl) countEl.textContent = list.length + ' title' + (list.length === 1 ? '' : 's');
+        }
+        pills.forEach(function (pill) {
+          pill.addEventListener('click', function () {
+            kind = pill.dataset.kind;
+            pills.forEach(function (p) { p.setAttribute('aria-pressed', String(p === pill)); });
+            render();
           });
         });
-      });
-
-      var grid = document.getElementById('filmsGrid');
-      if (!grid) return;
-      var cards = [].slice.call(grid.children);
-      var pills = [].slice.call(document.querySelectorAll('.pill'));
-      var sortSelect = document.getElementById('filmSort');
-      var countEl = document.getElementById('filmCount');
-      var kind = 'all';
-
-      function render() {
-        var list = cards.filter(function (c) { return kind === 'all' || c.dataset.kind === kind; });
-        var mode = sortSelect.value;
-        list.sort(function (a, b) {
-          if (mode === 'oldest') return Number(a.dataset.year) - Number(b.dataset.year);
-          if (mode === 'title') return a.dataset.title.localeCompare(b.dataset.title);
-          return Number(b.dataset.year) - Number(a.dataset.year);
-        });
-        cards.forEach(function (c) { c.hidden = true; });
-        list.forEach(function (c) { c.hidden = false; });
-        grid.replaceChildren.apply(grid, list.concat(cards.filter(function (c) { return list.indexOf(c) === -1; })));
-        if (countEl) countEl.textContent = list.length + ' title' + (list.length === 1 ? '' : 's');
+        sortSelect.addEventListener('change', render);
+        render();
       }
-      pills.forEach(function (pill) {
-        pill.addEventListener('click', function () {
-          kind = pill.dataset.kind;
-          pills.forEach(function (p) { p.setAttribute('aria-pressed', String(p === pill)); });
-          render();
+
+      [].slice.call(document.querySelectorAll('[data-scroll]')).forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var el = document.getElementById(btn.dataset.scroll);
+          if (el) el.scrollBy({ left: el.clientWidth * 0.8 * Number(btn.dataset.direction), behavior: 'smooth' });
         });
       });
-      sortSelect.addEventListener('change', render);
-      render();
     })();
   </script>
 </BaseLayout>
