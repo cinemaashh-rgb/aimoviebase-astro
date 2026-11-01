@@ -68,20 +68,26 @@ const journal = [
        1200px max-width — a plain negative margin only cancels main's
        padding, so on any screen wider than 1200px it left a visible gutter
        on each side (same bug already fixed on the genre hero). */
-    .hero { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; margin-top: -2rem; min-height: 420px; overflow: hidden; background: var(--soft) url(/images/home-hero.webp) center right / cover no-repeat; }
-    /* The photo itself already fades to white on its left ~40%, which is
-       exactly where heroCopy sits — this thin extra gradient just
-       guarantees contrast for the text over any screen width/crop. */
+    /* Dark, photographic hero — eclipse-and-tree artwork with a radial
+       vignette for text contrast, replacing the earlier light crop-fade
+       treatment per the new homepage reference. */
+    .hero { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; margin-top: -2rem; min-height: 420px; overflow: hidden; background: #080b11 url(/images/home-hero.webp) center center / cover no-repeat; }
     .hero::after {
       content: "";
       position: absolute; inset: 0;
-      background: linear-gradient(90deg, var(--bg) 0%, var(--bg) 14%, rgba(255,255,255,.55) 30%, rgba(255,255,255,0) 50%);
+      background: radial-gradient(ellipse 54% 85% at 50% 46%, transparent 18%, rgba(5,7,13,.13) 57%, rgba(3,5,10,.76) 100%);
     }
     .heroIn { position: relative; z-index: 1; min-height: 420px; display: flex; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
     .heroCopy { max-width: 480px; padding: 40px 0; }
-    .hero .eyebrow { font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted2); }
-    .hero h1 { font-size: clamp(42px,5.2vw,68px); line-height: .99; letter-spacing: -0.03em; margin: 14px 0 18px; }
-    .hero p { color: var(--muted); font-size: .96rem; line-height: 1.6; margin: 0 0 22px; max-width: 460px; }
+    .hero .eyebrow {
+      font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      width: fit-content; max-width: 100%;
+      background: linear-gradient(105deg,#ffc18a 0%,#ee8a55 40%,#ffb77e 73%,#e4774d 100%);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 1px 5px rgba(0,0,0,.4));
+    }
+    .hero h1 { color: #fff; font-size: clamp(42px,5.2vw,68px); line-height: .99; letter-spacing: -0.03em; margin: 14px 0 18px; text-shadow: 0 2px 14px rgba(0,0,0,.65); }
+    .hero p { color: #fff; font-size: .96rem; line-height: 1.6; margin: 0 0 22px; max-width: 460px; text-shadow: 0 2px 14px rgba(0,0,0,.65); }
     .heroActions { display: flex; gap: 10px; flex-wrap: wrap; }
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 42px; font-size: .78rem; font-weight: 700; padding: 11px 18px; border-radius: 3px; border: 1px solid var(--line); background: #fff; color: var(--ink); }
     .btn.primary { background: var(--black); color: #fff; border-color: var(--black); }
@@ -174,12 +180,11 @@ const journal = [
   <section class="hero">
     <div class="heroIn">
       <div class="heroCopy">
-        <div class="eyebrow">Discover AI movies, series &amp; the people behind them</div>
-        <h1>A new era<br />of cinema is<br />already here.</h1>
+        <div class="eyebrow">AIMB — made by people, for people.</div>
+        <h1>A new era<br />of cinema is<br />already here</h1>
         <p>AIMB is an independent platform for AI-generated movies, AI-assisted films and series. Discover remarkable works, the creators behind them, festival recognition and the emerging tools shaping a new cinematic language.</p>
         <div class="heroActions">
           <a class="btn primary" href="/movies">Explore AI Movies &amp; Series →</a>
-          <a class="btn" href="/short-drama">Explore AI Short Drama</a>
         </div>
       </div>
     </div>

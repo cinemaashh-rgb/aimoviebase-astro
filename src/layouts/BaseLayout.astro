@@ -118,8 +118,26 @@ import Icon from '../components/Icon.astro';
     .darkHeader nav a { color: #d7dae0; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; }
     .darkHeader nav a:hover, .darkHeader nav a.active { color: #fff; }
     .darkHeader .headerRight { display: flex; align-items: center; gap: 14px; }
-    .submitBtn { background: #fff; color: #111; font-size: 0.72rem; font-weight: 700; padding: 9px 14px; border-radius: 4px; white-space: nowrap; }
-    .submitBtn:hover { opacity: .85; color: #111; }
+    /* Ember-gold gradient treatment for the header CTA, matching the new
+       homepage reference's warm accent palette (sampled from the hero's
+       eclipse artwork) rather than a plain white button. */
+    .submitBtn {
+      position: relative; isolation: isolate; overflow: hidden;
+      display: inline-flex; align-items: center; justify-content: center;
+      border: 1px solid #c85e43; color: #25100e; font-size: 0.72rem; font-weight: 700;
+      padding: 9px 14px; border-radius: 4px; white-space: nowrap;
+      background: linear-gradient(112deg,#9f392f 0%,#db6944 22%,#ffbd85 44%,#ee8a55 62%,#b44736 82%,#e9784d 100%);
+      background-size: 260% 100%;
+      box-shadow: 0 0 0 1px rgba(224,99,63,.16), 0 0 12px rgba(235,108,68,.28);
+      animation: aimbGoldSweep 6s ease-in-out infinite;
+      transition: box-shadow .25s ease, transform .25s ease;
+    }
+    .submitBtn:hover, .submitBtn:focus-visible {
+      color: #25100e; opacity: 1; transform: translateY(-1px);
+      box-shadow: 0 0 0 1px rgba(237,122,80,.42), 0 0 18px rgba(242,115,73,.44);
+    }
+    @keyframes aimbGoldSweep { 0%, 12% { background-position: 100% 50%; } 54%, 80% { background-position: 0 50%; } 100% { background-position: 100% 50%; } }
+    @media (prefers-reduced-motion: reduce) { .submitBtn { animation: none; transition: none; } }
     .menuToggle { display: none; background: none; border: 0; color: #fff; font-size: 1.4rem; cursor: pointer; }
 
     .siteSearch { position: relative; width: 210px; flex: none; }
