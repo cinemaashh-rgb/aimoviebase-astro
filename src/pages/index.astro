@@ -171,7 +171,10 @@ const journal = [
     .festivalCard span { display: block; color: var(--muted2); font-size: .64rem; margin-top: 4px; }
 
     /* ---- Newsletter (full-bleed dark, matching the footer) ---- */
-    .newsletter { background: var(--black); color: #fff; margin: 0 -2rem; }
+    /* Full-bleed to the footer too, not just the sides — without the
+       negative bottom margin, <main>'s own bottom padding left a visible
+       white gap between this section and the footer on every breakpoint. */
+    .newsletter { background: var(--black); color: #fff; margin: 0 -2rem -2rem; }
     .newsletterIn { max-width: 1200px; margin: 0 auto; padding: 28px 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center; }
     .newsletter .eyebrow { font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #9aa4b2; }
     .newsletter h2 { font-size: 1.7rem; line-height: 1.12; margin: 6px 0; }
@@ -199,6 +202,9 @@ const journal = [
     @media (max-width: 650px) {
       .festivalGrid { grid-template-columns: repeat(2,minmax(0,1fr)); }
       .listsGrid { grid-template-columns: 1fr; }
+      /* <main>'s own padding shrinks to 1.25rem at this breakpoint (see
+         BaseLayout) — match it so the full-bleed edges above still line up. */
+      .newsletter { margin: 0 -1.25rem -1.25rem; }
     }
   </style>
 
