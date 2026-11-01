@@ -99,6 +99,20 @@ function isActive(prefix: string) {
     :global(a:hover) { color: var(--blue); }
     :global(p) { line-height: 1.55; }
 
+    /* Shared full-bleed utility: breaks a section out of <main>'s
+       1200px max-width to the true viewport edge, regardless of screen
+       width. Add class="full-bleed" to any section that needs to span
+       the full page (dark hero/CTA bands, etc.) instead of re-deriving
+       this 100vw/-50vw math per page — that duplication is what let the
+       homepage hero, newsletter band, genre hero and awards hero drift
+       into four slightly different copies of the same six properties.
+       :global() is required: each page's hero/banner lives in that
+       page's own scoped <style>, not in BaseLayout's. A full-bleed
+       section still needs its own margin-top/bottom, min-height,
+       background and color — this utility only owns the horizontal
+       break-out. */
+    :global(.full-bleed) { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; }
+
     .darkHeader {
       background: var(--black);
       color: #fff;

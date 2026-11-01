@@ -57,8 +57,10 @@ const journal = articles;
        on each side (same bug already fixed on the genre hero). */
     /* Dark, photographic hero — eclipse-and-tree artwork with a radial
        vignette for text contrast, replacing the earlier light crop-fade
-       treatment per the new homepage reference. */
-    .hero { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; margin-top: -2rem; min-height: 420px; overflow: hidden; background: #080b11 url(/images/home-hero.webp) center center / cover no-repeat; }
+       treatment per the new homepage reference. Horizontal full-bleed
+       comes from the shared .full-bleed class (see BaseLayout.astro);
+       this rule only owns the hero's own vertical/visual properties. */
+    .hero { margin-top: -2rem; min-height: 420px; overflow: hidden; background: #080b11 url(/images/home-hero.webp) center center / cover no-repeat; }
     .hero::after {
       content: "";
       position: absolute; inset: 0;
@@ -145,14 +147,12 @@ const journal = articles;
     .festivalCard span { display: block; color: var(--muted2); font-size: .64rem; margin-top: 4px; }
 
     /* ---- Newsletter (full-bleed dark, matching the footer) ---- */
-    /* True full-bleed, same 100vw/-50vw break-out as .hero, so past
-       main's 1200px max-width (wide desktop screens) it still reaches
-       the true viewport edge instead of leaving a page-background
-       gutter on each side. It has no vertical margin of its own: the
+    /* Horizontal full-bleed comes from the shared .full-bleed class (see
+       BaseLayout.astro). It has no vertical margin of its own: the
        zero-gap join with the footer below is controlled in one place,
-       by BaseLayout zeroing <main>'s bottom padding on pages that end
-       in this section — see BaseLayout.astro for that rule. */
-    .newsletter { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; background: var(--black); color: #fff; }
+       by BaseLayout zeroing <main>'s bottom padding on pages that
+       contain this section — see BaseLayout.astro for that rule. */
+    .newsletter { background: var(--black); color: #fff; }
     .newsletterIn { max-width: 1200px; margin: 0 auto; padding: 28px 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center; }
     .newsletter .eyebrow { font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #9aa4b2; }
     .newsletter h2 { font-size: 1.7rem; line-height: 1.12; margin: 6px 0; }
@@ -183,7 +183,7 @@ const journal = articles;
     }
   </style>
 
-  <section class="hero">
+  <section class="hero full-bleed">
     <div class="heroIn">
       <div class="heroCopy">
         <div class="eyebrow">AIMB — made by people, for people.</div>
@@ -344,7 +344,7 @@ const journal = articles;
     </section>
   )}
 
-  <section class="newsletter">
+  <section class="newsletter full-bleed">
     <div class="newsletterIn">
       <div>
         <div class="eyebrow">Stay updated</div>

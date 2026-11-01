@@ -36,11 +36,10 @@ const seriesFilms = films.filter((f) => f.data.type === 'series');
     /* The mockup's .hero sits outside its .shell content column entirely
        (full browser width), while only the text inside it is constrained
        back to the shared 1200px column — our <main> wraps everything in
-       that max-width, so a plain negative margin can't break out of it on
-       a wide viewport (it only cancels main's own padding). The
-       100vw/50vw trick breaks the hero out to the true viewport edge
-       regardless of main's max-width or how wide the screen is. */
-    .genreHero { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; margin-top: -2rem; margin-bottom: 28px; background: var(--black); color: #fff; overflow: hidden; min-height: 280px; }
+       that max-width. Horizontal full-bleed comes from the shared
+       .full-bleed class (see BaseLayout.astro); this rule only owns the
+       hero's own vertical/visual properties. */
+    .genreHero { margin-top: -2rem; margin-bottom: 28px; background: var(--black); color: #fff; overflow: hidden; min-height: 280px; }
     .genreHero .heroArt { position: absolute; inset: 0 0 0 33%; background-size: cover; background-position: center; }
     .genreHero .heroOverlay { position: absolute; inset: 0; background: linear-gradient(90deg, var(--black) 0%, var(--black) 17%, rgba(8,11,13,.96) 31%, rgba(8,11,13,.65) 53%, rgba(8,11,13,.06) 100%); }
     .genreHero .heroInner { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; min-height: 280px; display: flex; flex-direction: column; justify-content: center; padding: 32px 2rem; }
@@ -63,7 +62,7 @@ const seriesFilms = films.filter((f) => f.data.type === 'series');
     .load[hidden] { display: none; }
   </style>
 
-  <div class="genreHero">
+  <div class="genreHero full-bleed">
     {g.heroImage && <div class="heroArt" style={`background-image:url(${g.heroImage})`}></div>}
     {g.heroImage && <div class="heroOverlay"></div>}
     <div class="heroInner">
