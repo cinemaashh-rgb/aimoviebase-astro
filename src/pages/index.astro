@@ -21,12 +21,25 @@ const awards = await getCollection('awards');
 
 // AI Film Lists: the real /lists collection (all four exist today — two
 // hand-curated, two mechanically grouped "starter lists", see
-// src/content/lists and the README). Reusing the same cover-lookup logic
-// as /lists/index.astro rather than inventing homepage-only art.
+// src/content/lists and the README). Covers are a Letterboxd-style fanned
+// poster stack built from each list's own real movie posters (up to 6,
+// however many actually have one) rather than a single cropped cover —
+// matching the homepage reference's list-card art without inventing
+// artwork for lists that don't have six real posters.
 const homeLists = await getCollection('lists');
-function listCover(list: CollectionEntry<'lists'>) {
-  const first = list.data.movies.map((slug) => movies.find((m) => m.id === slug)).find((m) => m?.data.poster);
-  return first?.data.poster;
+function listPosters(list: CollectionEntry<'lists'>, max = 6) {
+  return list.data.movies
+    .map((slug) => movies.find((m) => m.id === slug))
+    .filter((m): m is CollectionEntry<'movies'> => Boolean(m?.data.poster))
+    .slice(0, max);
+}
+
+// "2026 · AI Movie · Sci-Fi" style single-line taxonomy, as in the homepage
+// reference, built from the movie's own real year/type/genre fields.
+function taxonomy(movie: CollectionEntry<'movies'>) {
+  const parts = [String(movie.data.year), movie.data.type === 'series' ? 'AI Series' : 'AI Movie'];
+  if (movie.data.genres.length > 0) parts.push(movie.data.genres[0]);
+  return parts.join(' · ');
 }
 
 // Real journal content — the same three articles published in full on
@@ -94,36 +107,39 @@ const journal = [
     .btn:hover { opacity: .85; color: inherit; }
 
     /* ---- Shared section chrome ---- */
+    /* The whole heading is one clickable link (title + chevron), the same
+       pattern as the reference's `.section-title-link` — no separate
+       "View all" link floating on the right. */
     .section { padding: 28px 0 29px; border-top: 1px solid var(--line); }
-    .sectionHead { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 14px; }
-    .sectionHead h2 { font-size: clamp(26px,3vw,32px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 4px; }
-    .sectionHead .intro { color: var(--muted); font-size: .8rem; margin: 0; }
-    .sectionHead .more { white-space: nowrap; font-size: .78rem; color: var(--ink); font-weight: 600; }
-    .sectionHead .more:hover { text-decoration: underline; }
+    .sectionHead { margin-bottom: 14px; }
+    .sectionTitleLink { display: inline-flex; align-items: center; gap: 13px; color: inherit; text-decoration: none; }
+    .sectionTitleLink h2 { font-size: clamp(26px,3vw,32px); line-height: 1.1; letter-spacing: -0.02em; margin: 0; }
+    .sectionTitleLink .arrow { font-weight: 900; font-size: 1.3rem; line-height: 1; color: var(--ink); transition: color .2s ease, transform .2s ease; }
+    .sectionTitleLink:hover .arrow, .sectionTitleLink:focus-visible .arrow { color: #cf6246; transform: translateX(6px); }
+    .sectionHead .intro { color: var(--muted); font-size: .8rem; margin: 8px 0 0; max-width: 680px; }
 
-    /* ---- Notable movies ---- */
+    /* ---- Notable movies / Award-winning films ---- */
     .filmGrid { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 15px; }
     .filmGrid a { display: flex; flex-direction: column; min-width: 0; color: inherit; }
     /* Vertical poster cards — the poster's own 2/3 ratio, never cropped to
        a different shape (see README note on the earlier wide-crop version
        of this grid, which forced real 16:9 art into a near-square box). */
-    .filmGrid img, .filmGrid .posterFallback { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 4px; background: var(--soft); display: block; }
-    .filmGrid strong { font-family: var(--serif); font-size: .92rem; margin-top: 9px; line-height: 1.22; font-weight: 700; }
-    .filmGrid .muted { color: var(--muted2); font-size: .74rem; margin-top: 3px; }
-    .filmGrid .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
-    .filmGrid .tags span { background: var(--soft); color: var(--muted); border-radius: 3px; font-size: .64rem; padding: 3px 7px; }
+    .filmGrid img, .filmGrid .posterFallback { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 5px; border: 1px solid var(--line); background: var(--soft); display: block; transition: transform .2s ease, box-shadow .2s ease; }
+    .filmGrid a:hover img { transform: translateY(-3px); box-shadow: 0 8px 23px rgba(0,0,0,.1); }
+    .filmGrid strong { font-family: var(--serif); font-size: .92rem; margin-top: 10px; line-height: 1.22; font-weight: 700; }
+    .filmGrid .taxonomy { display: block; margin-top: 5px; font-size: .72rem; color: var(--muted2); }
     .filmGrid .awardLine { display: flex; align-items: flex-start; gap: 5px; margin-top: 6px; font-size: .72rem; color: var(--muted); line-height: 1.35; }
-    .filmGrid .awardLine::before { content: '✦'; color: var(--blue); flex: none; }
+    .filmGrid .awardLine::before { content: '✦'; color: #a77820; flex: none; }
 
-    /* ---- AI Film Lists (reuses the /lists card pattern) ---- */
-    .listsGrid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 24px; }
+    /* ---- AI Film Lists — fanned poster stack, like the reference ---- */
+    .listsGrid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 30px 26px; }
     .listsGrid .listCard { display: block; color: inherit; }
-    .listsGrid .posterStrip { aspect-ratio: 370/206; border-radius: 4px; overflow: hidden; background: var(--soft); }
-    .listsGrid .posterStrip img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .listsGrid .listArt { position: relative; isolation: isolate; overflow: hidden; aspect-ratio: 1.39/1; background: #fff; border: 1px solid var(--line); border-radius: 8px; }
+    .listsGrid .listCover { position: absolute; top: 0; bottom: 0; height: 100%; object-fit: cover; object-position: center; box-shadow: -2px 0 9px rgba(0,0,0,.15); }
     .listsGrid .posterFallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .78rem; font-weight: 700; text-align: center; padding: 10px; }
-    .listsGrid h3 { font-family: var(--serif); font-size: 1.02rem; line-height: 1.2; margin: 10px 0 2px; font-weight: 700; }
-    .listsGrid .listCard:hover h3 { color: var(--blue); }
-    .listsGrid .count { font-size: .7rem; color: var(--muted2); margin: 0; }
+    .listsGrid h3 { font-family: var(--serif); font-size: 1.3rem; line-height: 1.2; margin: 14px 0 0; font-weight: 700; }
+    .listsGrid .listCard:hover h3 { color: #cf6246; }
+    .listsGrid .count { font-size: .76rem; color: var(--muted2); margin: 6px 0 0; }
     .listsGrid .placeholderTag { display: inline-block; font-size: .6rem; text-transform: uppercase; letter-spacing: .04em; background: var(--soft); color: var(--muted2); border-radius: 4px; padding: 2px 6px; margin-left: 5px; vertical-align: middle; }
 
     /* ---- Journal ---- */
@@ -136,12 +152,15 @@ const journal = [
     .story time { font-size: .7rem; color: var(--muted2); }
 
     /* ---- Short drama ---- */
-    .shortLayout { display: grid; grid-template-columns: 1.05fr 1.45fr; gap: 38px; align-items: center; }
-    .shortLayout h2 { font-size: 2.1rem; margin: 10px 0 12px; }
-    .shortLayout p { color: var(--muted); font-size: .88rem; line-height: 1.55; margin: 0 0 14px; }
-    .shortImages { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
-    .shortImages a { display: block; }
-    .shortImages img, .shortImages .dramaFallback { width: 100%; aspect-ratio: .66; object-fit: cover; border-radius: 4px; background: var(--soft); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .72rem; font-weight: 700; text-align: center; padding: 8px; }
+    .shortLayout { display: grid; grid-template-columns: minmax(0,1fr) 350px; gap: 40px; align-items: center; }
+    .shortCopy h2 { font-size: clamp(30px,3vw,40px); margin: 0 0 11px; }
+    .shortHeadingLink { display: inline-flex; align-items: center; gap: 13px; color: inherit; text-decoration: none; }
+    .shortHeadingLink .arrow { font-size: .64em; color: #cf6246; transition: transform .2s ease; }
+    .shortHeadingLink:hover .arrow { transform: translateX(5px); }
+    .shortCopy p { color: var(--muted); font-size: .88rem; line-height: 1.55; margin: 0; max-width: 480px; }
+    .shortGallery { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; background: var(--soft); border-radius: 8px; padding: 10px; }
+    .shortGallery a { display: block; }
+    .shortGallery img, .shortGallery .dramaFallback { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 4px; background: #fff; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .68rem; font-weight: 600; text-align: center; padding: 8px; }
 
     /* ---- Festivals ---- */
     .festivalGrid { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 10px; }
@@ -158,18 +177,24 @@ const journal = [
     .newsletter h2 { font-size: 1.7rem; line-height: 1.12; margin: 6px 0; }
     .newsletter p { font-size: .8rem; color: #b8c1cc; margin: 0; }
     .newsletter form { display: flex; }
-    .newsletter input { flex: 1; min-width: 0; background: #232a32; border: 1px solid #3b444e; border-radius: 4px 0 0 4px; color: #fff; padding: 12px; font-size: .86rem; }
-    .newsletter button { border: 0; border-radius: 0 4px 4px 0; padding: 0 21px; background: #fff; color: #111; font-weight: 700; cursor: pointer; }
+    .newsletter input { flex: 1; min-width: 0; background: #232a32; border: 1px solid #a94a38; border-radius: 4px 0 0 4px; color: #fff; padding: 12px; font-size: .86rem; }
+    .newsletter input:focus, .newsletter input:focus-visible { outline: 2px solid #ec8c66; outline-offset: 2px; border-color: #ec8c66; }
+    .newsletter button {
+      border: 1px solid #be6044; border-radius: 0 4px 4px 0; padding: 0 21px; font-weight: 700; cursor: pointer;
+      background: linear-gradient(112deg,#ab3f34 0%,#df754d 35%,#ffc18a 63%,#dc6847 100%); color: #27100d;
+      transition: filter .2s ease, box-shadow .2s ease;
+    }
+    .newsletter button:hover, .newsletter button:focus-visible { filter: brightness(1.08); box-shadow: 0 3px 15px rgba(216,164,59,.35); }
     .newsletter .fineprint { font-size: .68rem; color: #8b94a1; margin-top: 7px; }
-    .newsletter #subscribeNotice { font-size: .76rem; color: #9ec2ff; min-height: 1.1em; margin-top: 5px; }
+    .newsletter #subscribeNotice { font-size: .76rem; color: #ffc18a; min-height: 1.1em; margin-top: 5px; }
 
     @media (max-width: 900px) {
       .filmGrid { grid-template-columns: repeat(3,minmax(0,1fr)); }
       .journalGrid { grid-template-columns: 1fr; }
       .shortLayout { grid-template-columns: 1fr; }
+      .shortGallery { max-width: 420px; }
       .festivalGrid { grid-template-columns: repeat(3,minmax(0,1fr)); }
       .newsletterIn { grid-template-columns: 1fr; }
-      .listsGrid { grid-template-columns: repeat(2,minmax(0,1fr)); }
     }
     @media (max-width: 650px) {
       .festivalGrid { grid-template-columns: repeat(2,minmax(0,1fr)); }
@@ -192,11 +217,11 @@ const journal = [
 
   <section class="section">
     <div class="sectionHead">
-      <div>
+      <a class="sectionTitleLink" href="/movies">
         <h2>Notable AI Movies &amp; Series</h2>
-        <p class="intro">Discover noteworthy AI-generated movies, films and series from our growing database.</p>
-      </div>
-      <a class="more" href="/movies">Explore all titles →</a>
+        <span class="arrow" aria-hidden="true">❯</span>
+      </a>
+      <p class="intro">Discover noteworthy AI-generated movies, films and series from our growing database.</p>
     </div>
     <div class="filmGrid">
       {notable.map((movie) => (
@@ -207,10 +232,7 @@ const journal = [
             <div class="posterFallback">{movie.data.title}</div>
           )}
           <strong>{movie.data.title}</strong>
-          <span class="muted">{movie.data.year}</span>
-          {movie.data.genres.length > 0 && (
-            <span class="tags">{movie.data.genres.slice(0, 2).map((g) => <span>{g}</span>)}</span>
-          )}
+          <span class="taxonomy">{taxonomy(movie)}</span>
         </a>
       ))}
     </div>
@@ -219,11 +241,11 @@ const journal = [
   {awardWinners.length > 0 && (
     <section class="section">
       <div class="sectionHead">
-        <div>
+        <a class="sectionTitleLink" href="/lists/award-winners-nominees">
           <h2>Award-Winning AI Films</h2>
-          <p class="intro">AI-generated films recognized with a real festival win or selection in the catalog.</p>
-        </div>
-        <a class="more" href="/lists/award-winners-nominees">View all winners →</a>
+          <span class="arrow" aria-hidden="true">❯</span>
+        </a>
+        <p class="intro">AI-generated films recognized with a real festival win or selection in the catalog.</p>
       </div>
       <div class="filmGrid">
         {awardWinners.map((movie) => (
@@ -234,7 +256,7 @@ const journal = [
               <div class="posterFallback">{movie.data.title}</div>
             )}
             <strong>{movie.data.title}</strong>
-            <span class="muted">{movie.data.year}</span>
+            <span class="taxonomy">{taxonomy(movie)}</span>
             <span class="awardLine">{movie.data.awards[0]}</span>
           </a>
         ))}
@@ -244,11 +266,11 @@ const journal = [
 
   <section class="section">
     <div class="sectionHead">
-      <div>
+      <a class="sectionTitleLink" href="/news">
         <h2>From the Journal</h2>
-        <p class="intro">Articles, interviews and practical guides exploring the people and ideas shaping AI films.</p>
-      </div>
-      <a class="more" href="/news">View all articles →</a>
+        <span class="arrow" aria-hidden="true">❯</span>
+      </a>
+      <p class="intro">Articles, interviews and practical guides exploring the people and ideas shaping AI films.</p>
     </div>
     <div class="journalGrid">
       {journal.map((j) => (
@@ -266,39 +288,43 @@ const journal = [
   {homeLists.length > 0 && (
     <section class="section">
       <div class="sectionHead">
-        <div>
+        <a class="sectionTitleLink" href="/lists">
           <h2>AI Film Lists</h2>
-          <p class="intro">Curated and catalog-grouped collections of AI-generated films.</p>
-        </div>
-        <a class="more" href="/lists">View all lists →</a>
+          <span class="arrow" aria-hidden="true">❯</span>
+        </a>
+        <p class="intro">Explore AIMB collections of award-winning, editor-selected and genre-defining AI films.</p>
       </div>
       <div class="listsGrid">
-        {homeLists.map((list) => (
-          <a class="listCard" href={`/lists/${list.id}`}>
-            <div class="posterStrip">
-              {listCover(list) ? (
-                <img src={listCover(list)} alt={`Cover artwork for ${list.data.name}`} loading="lazy" />
-              ) : (
-                <div class="posterFallback">{list.data.name}</div>
-              )}
-            </div>
-            <h3>{list.data.name}{list.data.placeholder && <span class="placeholderTag">starter list</span>}</h3>
-            <p class="count">{list.data.movies.length} films</p>
-          </a>
-        ))}
+        {homeLists.map((list) => {
+          const posters = listPosters(list);
+          const n = posters.length;
+          return (
+            <a class="listCard" href={`/lists/${list.id}`}>
+              <div class="listArt">
+                {n > 0 ? posters.map((m, i) => {
+                  const w = i === 0 ? 50 : 50 / Math.max(n - 1, 1);
+                  const left = i === 0 ? 0 : 50 + (i - 1) * (50 / Math.max(n - 1, 1));
+                  return (
+                    <img class="listCover" src={m.data.poster} alt="" loading="lazy" style={`left:${left}%; width:${w}%; z-index:${i + 1};`} />
+                  );
+                }) : <div class="posterFallback">{list.data.name}</div>}
+              </div>
+              <h3>{list.data.name}{list.data.placeholder && <span class="placeholderTag">starter list</span>}</h3>
+              <p class="count">{list.data.movies.length} films{list.data.placeholder ? '' : ' · ' + list.data.description}</p>
+            </a>
+          );
+        })}
       </div>
     </section>
   )}
 
   <section class="section">
     <div class="shortLayout">
-      <div>
-        <div class="eyebrow">Vertical stories · Global audience</div>
-        <h2>Discover AI Short Dramas</h2>
+      <div class="shortCopy">
+        <h2><a class="shortHeadingLink" href="/short-drama">Discover AI Short Dramas<span class="arrow" aria-hidden="true">→</span></a></h2>
         <p>Explore a new form of vertical, episodic storytelling. AI short dramas combine compact stories, new production techniques and emerging creative voices.</p>
-        <a class="more" href="/short-drama">Explore AI Short Drama →</a>
       </div>
-      <div class="shortImages">
+      <div class="shortGallery">
         {Array.from({ length: 3 }).map((_, i) => {
           const d = shortdramaPublished[i];
           return d ? (
@@ -316,11 +342,11 @@ const journal = [
   {awards.length > 0 && (
     <section class="section">
       <div class="sectionHead">
-        <div>
+        <a class="sectionTitleLink" href="/awards">
           <h2>AI Film Festivals</h2>
-          <p class="intro">Explore international festivals recognizing AI-generated movies and AI-assisted films.</p>
-        </div>
-        <a class="more" href="/awards">View all festivals →</a>
+          <span class="arrow" aria-hidden="true">❯</span>
+        </a>
+        <p class="intro">Explore international festivals recognizing AI-generated movies and AI-assisted films.</p>
       </div>
       <div class="festivalGrid">
         {awards.map((a) => (
