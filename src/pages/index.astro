@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { articles } from '../data/articles';
 const movies = await getCollection('movies');
 const notable = [...movies].sort((a, b) => b.data.year - a.data.year).slice(0, 6);
 
@@ -42,40 +43,10 @@ function taxonomy(movie: CollectionEntry<'movies'>) {
   return parts.join(' · ');
 }
 
-// Real journal content — the same three articles published in full on
-// /news (src/pages/news.astro). There's no per-article content collection
-// yet, so each card links to that article's own section on /news (#id)
-// rather than a /news/<slug> permalink that doesn't exist. Reusing the
-// actual published text rather than inventing homepage-only copy.
-const journal = [
-  {
-    id: 'reset-solo-crew',
-    label: 'Editorial',
-    title: 'RESET makes the case for the one-person AI film crew',
-    excerpt: "Max Barskih's RESET — written, directed, and entirely produced solo using Higgsfield AI — is the clearest sign yet that a single filmmaker can now credibly deliver a multi-location sci-fi short without a crew.",
-    date: 'Sep 22, 2026',
-    datetime: '2026-09-22',
-    image: '/images/posters/reset-wide.webp',
-  },
-  {
-    id: 'echo-hunter-sag-aftra',
-    label: 'News',
-    title: "What Echo Hunter's SAG-AFTRA sign-off actually means",
-    excerpt: "Echo Hunter was produced with explicit performer consent and guild sign-off for re-rendering a live performance with Arcana AI's video model.",
-    date: 'Jun 2, 2025',
-    datetime: '2025-06-02',
-    image: '/images/posters/echo-hunter-wide.webp',
-  },
-  {
-    id: 'toys-r-us-sora',
-    label: 'News',
-    title: 'Toys "R" Us and the first wave of AI brand films',
-    excerpt: "The Sora-produced Toys “R” Us spot was one of the first major brand commercials built with a text-to-video model.",
-    date: 'May 10, 2024',
-    datetime: '2024-05-10',
-    image: undefined,
-  },
-];
+// Real journal content, shared with /news and /news/[slug] (src/data/
+// articles.ts) so the homepage teaser, the listing and each article's own
+// permalink never drift out of sync.
+const journal = articles;
 ---
 <BaseLayout title="AI Movie Base" description="Discover AI-generated movies, AI films and series from filmmakers worldwide. Explore notable works, creator stories, AI short dramas and film festivals.">
   <style>
@@ -283,7 +254,7 @@ const journal = [
     </div>
     <div class="journalGrid">
       {journal.map((j) => (
-        <a class="story" href={`/news#${j.id}`}>
+        <a class="story" href={`/news/${j.id}`}>
           {j.image ? <img src={j.image} alt={j.title} loading="lazy" /> : <div class="storyFallback">{j.title}</div>}
           <small>{j.label}</small>
           <strong>{j.title}</strong>

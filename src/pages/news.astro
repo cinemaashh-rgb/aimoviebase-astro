@@ -1,47 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { articles } from '../data/articles';
 
 // Real articles only — the reference mockup (aimb_journal_main.html) is an
-// explicit noindex,nofollow prototype with 9 cards, 6 of which
-// ("Most Popular AI Series in 2026", "Inside the World's First AI Film
-// Festival", "The Best AI Film Tools in 2026", "From Prompt to Premiere",
-// "10 AI Short Films You Need to Watch", "Inside the Mind of an AI
-// Filmmaker") have no real article behind them anywhere in this project.
-// Rather than invent copy and stock imagery for six fictional stories,
-// this page keeps the reference's grid+card layout but only lists the
-// three articles that are actually written below. There's also no
-// per-article content collection yet — each card links to that article's
-// own section further down this same page (#id) instead of a
-// /news/<slug> permalink that doesn't exist.
-const articles = [
-  {
-    id: 'reset-solo-crew',
-    label: 'Editorial',
-    date: 'Sep 22, 2026',
-    datetime: '2026-09-22',
-    title: 'RESET makes the case for the one-person AI film crew',
-    excerpt: "Max Barskih's RESET — written, directed, and entirely produced solo using Higgsfield AI — is the clearest sign yet that a single filmmaker can now credibly deliver a multi-location sci-fi short without a crew.",
-    image: '/images/posters/reset-wide.webp',
-  },
-  {
-    id: 'echo-hunter-sag-aftra',
-    label: 'News',
-    date: 'Jun 2, 2025',
-    datetime: '2025-06-02',
-    title: "What Echo Hunter's SAG-AFTRA sign-off actually means",
-    excerpt: "Echo Hunter was produced with explicit performer consent and guild sign-off for re-rendering a live performance with Arcana AI's video model.",
-    image: '/images/posters/echo-hunter-wide.webp',
-  },
-  {
-    id: 'toys-r-us-sora',
-    label: 'News',
-    date: 'May 10, 2024',
-    datetime: '2024-05-10',
-    title: 'Toys "R" Us and the first wave of AI brand films',
-    excerpt: 'The Sora-produced Toys "R" Us spot was one of the first major brand commercials built with a text-to-video model.',
-    image: undefined,
-  },
-];
+// explicit noindex,nofollow prototype with 9 cards, 6 of which have no
+// real article behind them anywhere in this project (see git history /
+// src/data/articles.ts for the fuller note). Each card here links to a
+// real permalink at /news/<id> (src/pages/news/[slug].astro).
 ---
 <BaseLayout title="Journal" description="AIMB Journal: stories, interviews, filmmaking tools and news from the world of AI cinema.">
   <style>
@@ -50,7 +15,7 @@ const articles = [
     .journalHeading h1 { font: 400 clamp(44px,7vw,78px)/.98 var(--serif); letter-spacing: -.045em; margin: 0 0 16px; }
     .journalHeading p { max-width: 640px; color: var(--muted); font: 19px/1.6 var(--serif); margin: 0; }
 
-    .journalGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 34px 26px; margin-bottom: 8px; }
+    .journalGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 34px 26px; }
     .journalCard { min-width: 0; transition: transform .22s ease; color: inherit; display: block; }
     .journalCard:hover { transform: translateY(-3px); }
     .journalCover { display: block; aspect-ratio: 1.53; overflow: hidden; border-radius: 7px; background: var(--soft); box-shadow: 0 0 0 1px var(--line); transition: box-shadow .22s ease; }
@@ -61,20 +26,10 @@ const articles = [
     .journalCard h2 { font: 700 22px/1.18 var(--serif); letter-spacing: -.02em; margin: 0 0 8px; }
     .journalCard p { font: 13px/1.6 var(--sans); color: var(--muted); margin: 0; }
 
-    .articleSection { margin: 54px 0 0; padding-top: 40px; border-top: 1px solid var(--line); scroll-margin-top: 80px; }
-    .articleSection:first-of-type { margin-top: 20px; }
-    .articleBody { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center; }
-    .articleImage { border-radius: 10px; overflow: hidden; aspect-ratio: 16/9; background: var(--soft); }
-    .articleImage img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .articleImage .fallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px; color: var(--muted); font: 700 .9rem var(--serif); }
-    .articleBody h2 { font-size: 1.6rem; line-height: 1.15; margin: 0 0 .5em; }
-    .articleBody p { color: var(--muted); line-height: 1.65; margin: 0; }
-
     @media (max-width: 760px) {
       .journalGrid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 26px 16px; }
       .journalHeading h1 { font-size: 48px; }
       .journalHeading p { font-size: 17px; }
-      .articleBody { grid-template-columns: 1fr; }
     }
     @media (max-width: 480px) {
       .journalGrid { grid-template-columns: 1fr; }
@@ -89,7 +44,7 @@ const articles = [
 
   <section class="journalGrid" aria-label="Latest Journal articles">
     {articles.map((a) => (
-      <a class="journalCard" href={`#${a.id}`}>
+      <a class="journalCard" href={`/news/${a.id}`}>
         <div class="journalCover">
           {a.image ? <img src={a.image} alt={a.title} loading="lazy" /> : <div class="fallback">{a.title}</div>}
         </div>
@@ -99,19 +54,4 @@ const articles = [
       </a>
     ))}
   </section>
-
-  {articles.map((a) => (
-    <article class="articleSection" id={a.id}>
-      <div class="articleBody">
-        <div class="articleImage">
-          {a.image ? <img src={a.image} alt={a.title} /> : <div class="fallback">{a.title}</div>}
-        </div>
-        <div>
-          <div class="journalMeta">{a.label} • <time datetime={a.datetime}>{a.date}</time></div>
-          <h2>{a.title}</h2>
-          <p>{a.excerpt}</p>
-        </div>
-      </div>
-    </article>
-  ))}
 </BaseLayout>

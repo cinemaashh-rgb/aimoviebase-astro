@@ -1,0 +1,185 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { articles } from '../../data/articles';
+
+export async function getStaticPaths() {
+  const movies = await getCollection('movies');
+  return articles.map((article) => {
+    const featured = article.featuredMovieSlug
+      ? movies.find((m) => m.id === article.featuredMovieSlug)
+      : undefined;
+    const related = articles.filter((a) => a.id !== article.id).slice(0, 3);
+    return {
+      params: { slug: article.id },
+      props: { article, featured, related },
+    };
+  });
+}
+
+interface Props {
+  article: (typeof articles)[number];
+  featured?: CollectionEntry<'movies'>;
+  related: (typeof articles)[number][];
+}
+const { article: a, featured, related } = Astro.props;
+---
+<BaseLayout title={a.title} description={a.excerpt}>
+  <style>
+    .crumb { font-size: .78rem; color: var(--muted); margin: 18px 0 20px; }
+    .crumb span { padding: 0 8px; }
+
+    .masthead { max-width: 820px; margin: 0 0 30px; }
+    .masthead .kicker { color: #cf6246; font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 800; margin-bottom: 18px; }
+    .masthead h1 { font: 400 clamp(36px,4.6vw,58px)/1.08 var(--serif); letter-spacing: -.03em; margin: 0 0 20px; }
+    .masthead .lede { max-width: 700px; font: 19px/1.55 var(--serif); color: var(--muted); margin: 0 0 20px; }
+    .articleMeta { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; font-size: .78rem; color: var(--muted2); border-top: 1px solid var(--line); padding-top: 16px; }
+    .metaAuthor { display: flex; align-items: center; gap: 10px; }
+    .authorIcon { background: var(--ink); color: #fff; border-radius: 50%; width: 32px; height: 32px; display: grid; place-items: center; font-size: 9px; font-weight: 800; }
+    .articleMeta strong { color: var(--ink); }
+    .shareTools { margin-left: auto; display: flex; gap: 7px; }
+    .shareTools button { width: 32px; height: 32px; border: 1px solid var(--line); background: #fff; border-radius: 50%; font-size: .8rem; cursor: pointer; color: var(--muted); }
+    .shareTools button:hover { color: #cf6246; border-color: #d5a08f; }
+
+    .heroFigure { max-width: 1000px; margin: 28px 0 0; }
+    .heroFigure img { width: 100%; height: auto; max-height: 480px; object-fit: cover; display: block; border-radius: 4px; }
+    .heroFigure .fallback { width: 100%; aspect-ratio: 16/9; border-radius: 4px; background: var(--soft); display: flex; align-items: center; justify-content: center; color: var(--muted); font: 700 1rem var(--serif); }
+
+    .articleContent { width: min(100%,700px); margin: 40px 0 0; font: 18px/1.8 var(--serif); color: #2c333c; }
+    .articleContent p { margin: 0 0 24px; }
+
+    .featuredFilm { display: grid; grid-template-columns: 110px minmax(0,1fr) auto; gap: 20px; align-items: center; margin: 32px 0 36px; padding: 16px; background: var(--soft); border: 1px solid var(--line); border-radius: 5px; width: min(100%,700px); }
+    .featuredFilm img { display: block; aspect-ratio: 2/3; width: 110px; height: 165px; object-fit: cover; border-radius: 3px; }
+    .featuredFilm small { display: block; font-size: 10px; font-weight: 800; letter-spacing: .1em; color: #cf6246; margin-bottom: 8px; }
+    .featuredFilm h3 { font: 400 1.4rem var(--serif); margin: 0 0 5px; }
+    .featuredFilm p { font-size: .78rem; color: var(--muted); margin: 0; }
+    .filmAction { display: inline-block; border: 1px solid #d5a18e; border-radius: 3px; padding: 10px 13px; color: #963f2c; background: #fff; font-size: .72rem; font-weight: 700; white-space: nowrap; }
+    .filmAction:hover { background: #cf6246; color: #fff; }
+
+    .articleEnd { width: min(100%,700px); margin: 40px 0 0; padding: 20px 0; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 13px; font-size: .78rem; color: var(--muted); }
+    .articleEnd strong { color: var(--ink); }
+    .articleEnd a { margin-left: auto; color: #cf6246; font-weight: 700; }
+
+    .relatedSection { max-width: 1104px; margin: 56px 0 0; }
+    .relatedSection h2 { font: 400 1.9rem var(--serif); margin: 0 0 18px; }
+    .relatedGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 20px; }
+    .relatedCard { border-radius: 8px; padding: 10px 10px 14px; margin: -10px; transition: transform .22s ease, box-shadow .22s ease; color: inherit; display: block; }
+    .relatedCard:hover { transform: translateY(-4px); box-shadow: 0 12px 26px rgba(15,20,25,.1); }
+    .relatedImage { overflow: hidden; border-radius: 5px; background: var(--soft); aspect-ratio: 16/10; }
+    .relatedImage img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .relatedImage .fallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-align: center; padding: 8px; color: var(--muted); font: 700 .78rem var(--serif); }
+    .relatedCard h3 { font: 400 1.15rem/1.25 var(--serif); margin: 11px 0 5px; }
+    .relatedCard small { color: var(--muted2); font-size: .72rem; }
+
+    @media (max-width: 760px) {
+      .masthead h1 { font-size: 36px; }
+      .masthead .lede { font-size: 17px; }
+      .featuredFilm { grid-template-columns: 80px 1fr; }
+      .featuredFilm img { width: 80px; height: 120px; }
+      .filmAction { grid-column: 2; justify-self: start; }
+      .relatedGrid { grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <nav class="crumb"><a href="/">Home</a><span>/</span><a href="/news">Journal</a><span>/</span>{a.title}</nav>
+
+  <article>
+    <header class="masthead">
+      <div class="kicker">AIMB Journal / {a.label}</div>
+      <h1>{a.title}</h1>
+      <p class="lede">{a.excerpt}</p>
+      <div class="articleMeta">
+        <div class="metaAuthor">
+          <span class="authorIcon">AIMB</span>
+          <span><strong>AIMB Editorial</strong><br />{a.label} · <time datetime={a.datetime}>{a.date}</time></span>
+        </div>
+        <div class="shareTools">
+          <button aria-label="Share article" id="shareButton" title="Share">↗</button>
+          <button aria-label="Copy link" id="copyButton" title="Copy link">⌁</button>
+        </div>
+      </div>
+    </header>
+
+    <figure class="heroFigure">
+      {a.image ? <img src={a.image} alt={a.title} /> : <div class="fallback">{a.title}</div>}
+    </figure>
+
+    <div class="articleContent">
+      {a.body.map((p) => <p>{p}</p>)}
+    </div>
+
+    {featured && (
+      <aside class="featuredFilm" aria-label="Featured film">
+        <a href={`/movies/${featured.id}`}>
+          {featured.data.poster ? <img src={featured.data.poster} alt={featured.data.title} /> : <div />}
+        </a>
+        <div>
+          <small>Featured AI Film</small>
+          <h3>{featured.data.title}</h3>
+          <p>Explore the film profile, credits and related works on AIMB.</p>
+        </div>
+        <a class="filmAction" href={`/movies/${featured.id}`}>View film profile ↗</a>
+      </aside>
+    )}
+
+    <div class="articleEnd">
+      <span class="authorIcon">AIMB</span>
+      <span><strong>AIMB Editorial</strong><br />Independent AI cinema coverage</span>
+      <a href="/news">More from the Journal →</a>
+    </div>
+  </article>
+
+  {related.length > 0 && (
+    <section class="relatedSection" aria-labelledby="related-heading">
+      <h2 id="related-heading">Related Articles</h2>
+      <div class="relatedGrid">
+        {related.map((r) => (
+          <a class="relatedCard" href={`/news/${r.id}`}>
+            <div class="relatedImage">
+              {r.image ? <img src={r.image} alt={r.title} loading="lazy" /> : <div class="fallback">{r.title}</div>}
+            </div>
+            <h3>{r.title}</h3>
+            <small>{r.label} · {r.date}</small>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: a.title,
+    description: a.excerpt,
+    datePublished: a.datetime,
+    author: { '@type': 'Organization', name: 'AIMB Journal' },
+    publisher: { '@type': 'Organization', name: 'AIMB', url: 'https://www.aimoviebase.com' },
+    isPartOf: { '@type': 'WebSite', name: 'AIMovieBase', url: 'https://www.aimoviebase.com' },
+  })} />
+
+  <script is:inline>
+    (function () {
+      const shareButton = document.getElementById('shareButton');
+      const copyButton = document.getElementById('copyButton');
+      async function copyArticleLink() {
+        try { await navigator.clipboard.writeText(location.href); }
+        catch (e) {
+          const t = document.createElement('textarea');
+          t.value = location.href;
+          document.body.appendChild(t);
+          t.select();
+          document.execCommand('copy');
+          t.remove();
+        }
+      }
+      shareButton?.addEventListener('click', async () => {
+        if (navigator.share) {
+          try { await navigator.share({ title: document.title, url: location.href }); return; }
+          catch (e) { if (e.name === 'AbortError') return; }
+        }
+        await copyArticleLink();
+      });
+      copyButton?.addEventListener('click', copyArticleLink);
+    })();
+  </script>
+</BaseLayout>

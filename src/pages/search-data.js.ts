@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { creatorHasPage, studioHasPage } from '../lib/links';
+import { articles } from '../data/articles';
 
 // Single generated search index, replacing the original site's per-page
 // duplicated `_OLD_DATA_UNUSED` arrays (every one of the ~111 original HTML
@@ -69,6 +70,12 @@ export const GET: APIRoute = async () => {
 
   for (const a of awards) {
     items.push({ title: a.data.name, href: `/awards/${a.id}`, sub: 'Award' });
+  }
+
+  for (const article of articles) {
+    const item: Item = { title: article.title, href: `/news/${article.id}`, sub: `Journal · ${article.label}` };
+    if (article.image) item.img = article.image;
+    items.push(item);
   }
 
   // Static guide/catalog pages that have no content collection of their own.
