@@ -1,45 +1,117 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Real articles only — the reference mockup (aimb_journal_main.html) is an
+// explicit noindex,nofollow prototype with 9 cards, 6 of which
+// ("Most Popular AI Series in 2026", "Inside the World's First AI Film
+// Festival", "The Best AI Film Tools in 2026", "From Prompt to Premiere",
+// "10 AI Short Films You Need to Watch", "Inside the Mind of an AI
+// Filmmaker") have no real article behind them anywhere in this project.
+// Rather than invent copy and stock imagery for six fictional stories,
+// this page keeps the reference's grid+card layout but only lists the
+// three articles that are actually written below. There's also no
+// per-article content collection yet — each card links to that article's
+// own section further down this same page (#id) instead of a
+// /news/<slug> permalink that doesn't exist.
+const articles = [
+  {
+    id: 'reset-solo-crew',
+    label: 'Editorial',
+    date: 'Sep 22, 2026',
+    datetime: '2026-09-22',
+    title: 'RESET makes the case for the one-person AI film crew',
+    excerpt: "Max Barskih's RESET — written, directed, and entirely produced solo using Higgsfield AI — is the clearest sign yet that a single filmmaker can now credibly deliver a multi-location sci-fi short without a crew.",
+    image: '/images/posters/reset-wide.webp',
+  },
+  {
+    id: 'echo-hunter-sag-aftra',
+    label: 'News',
+    date: 'Jun 2, 2025',
+    datetime: '2025-06-02',
+    title: "What Echo Hunter's SAG-AFTRA sign-off actually means",
+    excerpt: "Echo Hunter was produced with explicit performer consent and guild sign-off for re-rendering a live performance with Arcana AI's video model.",
+    image: '/images/posters/echo-hunter-wide.webp',
+  },
+  {
+    id: 'toys-r-us-sora',
+    label: 'News',
+    date: 'May 10, 2024',
+    datetime: '2024-05-10',
+    title: 'Toys "R" Us and the first wave of AI brand films',
+    excerpt: 'The Sora-produced Toys "R" Us spot was one of the first major brand commercials built with a text-to-video model.',
+    image: undefined,
+  },
+];
 ---
-<BaseLayout title="Journal" description="Reporting and commentary on AI-made films, the tools behind them, and where the festival and awards world is heading.">
-  <h1 style="margin-top:34px">Journal</h1>
-  <p class="lede" style="color:var(--muted); max-width:640px; line-height:1.6; margin-bottom:34px;">Reporting and commentary on AI-made films, the tools behind them, and where the festival and awards world is heading.</p>
+<BaseLayout title="Journal" description="AIMB Journal: stories, interviews, filmmaking tools and news from the world of AI cinema.">
+  <style>
+    .journalHeading { max-width: 850px; margin-bottom: 36px; }
+    .journalKicker { font-size: .72rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #cf6246; margin-bottom: 12px; }
+    .journalHeading h1 { font: 400 clamp(44px,7vw,78px)/.98 var(--serif); letter-spacing: -.045em; margin: 0 0 16px; }
+    .journalHeading p { max-width: 640px; color: var(--muted); font: 19px/1.6 var(--serif); margin: 0; }
 
-  <article style="display:grid; grid-template-columns:1.2fr 1fr; gap:32px; align-items:center; margin:0 0 44px; padding-bottom:40px; border-bottom:1px solid var(--line);">
-    <div style="border-radius:10px; overflow:hidden; aspect-ratio:16/9; background:var(--bg-elev); display:block;">
-      <img src="/images/posters/reset-wide.webp" alt="RESET title card" style="width:100%; height:100%; object-fit:cover; display:block;" />
-    </div>
-    <div>
-      <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px; font-size:.78rem; color:var(--muted);">
-        <span style="display:inline-flex; align-items:center; background:var(--bg-elev); border:1px solid var(--line); border-radius:999px; padding:3px 11px; font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em;">Editorial</span>
-        <time datetime="2026-09-22">Sep 22, 2026</time>
-      </div>
-      <h2 style="font-size:1.7rem; line-height:1.15; margin:0 0 .4em;">RESET makes the case for the one-person AI film crew</h2>
-      <p style="color:var(--muted); line-height:1.6; margin:0;">Max Barskih's RESET — written, directed, and entirely produced solo using Higgsfield AI — is the clearest sign yet that a single filmmaker can now credibly deliver a multi-location sci-fi short without a crew. Its selection at the Higgsfield Global Film Festival says less about novelty and more about craft: the lunar throne-room confrontation holds up as a piece of staging, not just a technical demo.</p>
-    </div>
-  </article>
+    .journalGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 34px 26px; margin-bottom: 8px; }
+    .journalCard { min-width: 0; transition: transform .22s ease; color: inherit; display: block; }
+    .journalCard:hover { transform: translateY(-3px); }
+    .journalCover { display: block; aspect-ratio: 1.53; overflow: hidden; border-radius: 7px; background: var(--soft); box-shadow: 0 0 0 1px var(--line); transition: box-shadow .22s ease; }
+    .journalCard:hover .journalCover { box-shadow: 0 12px 24px rgba(22,25,28,.12); }
+    .journalCover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .journalCover .fallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px; color: var(--muted); font: 700 .85rem var(--serif); }
+    .journalMeta { font: 700 11px/1.5 var(--sans); color: #9a6a58; margin: 15px 0 8px; letter-spacing: .01em; }
+    .journalCard h2 { font: 700 22px/1.18 var(--serif); letter-spacing: -.02em; margin: 0 0 8px; }
+    .journalCard p { font: 13px/1.6 var(--sans); color: var(--muted); margin: 0; }
 
-  <h2 style="font-size:.76rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-family:-apple-system,sans-serif; font-weight:700; margin:0 0 20px; border:none;">Latest</h2>
-  <div style="display:grid; grid-template-columns:1fr 1fr; gap:36px 32px;">
-    <article>
-      <div style="border-radius:8px; overflow:hidden; aspect-ratio:16/9; margin-bottom:14px; background:var(--bg-elev);">
-        <img src="/images/posters/echo-hunter-wide.webp" alt="Echo Hunter title card" style="width:100%; height:100%; object-fit:cover; display:block;" />
+    .articleSection { margin: 54px 0 0; padding-top: 40px; border-top: 1px solid var(--line); scroll-margin-top: 80px; }
+    .articleSection:first-of-type { margin-top: 20px; }
+    .articleBody { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center; }
+    .articleImage { border-radius: 10px; overflow: hidden; aspect-ratio: 16/9; background: var(--soft); }
+    .articleImage img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .articleImage .fallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px; color: var(--muted); font: 700 .9rem var(--serif); }
+    .articleBody h2 { font-size: 1.6rem; line-height: 1.15; margin: 0 0 .5em; }
+    .articleBody p { color: var(--muted); line-height: 1.65; margin: 0; }
+
+    @media (max-width: 760px) {
+      .journalGrid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 26px 16px; }
+      .journalHeading h1 { font-size: 48px; }
+      .journalHeading p { font-size: 17px; }
+      .articleBody { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .journalGrid { grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <section class="journalHeading">
+    <div class="journalKicker">AIMB / Editorial</div>
+    <h1>Journal</h1>
+    <p>News, stories and conversations about AI movies, creators and the ideas shaping a new cinematic language.</p>
+  </section>
+
+  <section class="journalGrid" aria-label="Latest Journal articles">
+    {articles.map((a) => (
+      <a class="journalCard" href={`#${a.id}`}>
+        <div class="journalCover">
+          {a.image ? <img src={a.image} alt={a.title} loading="lazy" /> : <div class="fallback">{a.title}</div>}
+        </div>
+        <div class="journalMeta">{a.label} • {a.date}</div>
+        <h2>{a.title}</h2>
+        <p>{a.excerpt}</p>
+      </a>
+    ))}
+  </section>
+
+  {articles.map((a) => (
+    <article class="articleSection" id={a.id}>
+      <div class="articleBody">
+        <div class="articleImage">
+          {a.image ? <img src={a.image} alt={a.title} /> : <div class="fallback">{a.title}</div>}
+        </div>
+        <div>
+          <div class="journalMeta">{a.label} • <time datetime={a.datetime}>{a.date}</time></div>
+          <h2>{a.title}</h2>
+          <p>{a.excerpt}</p>
+        </div>
       </div>
-      <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px; font-size:.78rem; color:var(--muted);">
-        <span style="display:inline-flex; align-items:center; background:var(--bg-elev); border:1px solid var(--line); border-radius:999px; padding:3px 11px; font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em;">News</span>
-        <time datetime="2025-06-02">Jun 2, 2025</time>
-      </div>
-      <h3 style="font-size:1.08rem; line-height:1.25; margin:0 0 .45em;">What Echo Hunter's SAG-AFTRA sign-off actually means</h3>
-      <p style="color:var(--muted); line-height:1.55; margin:0; font-size:.86rem;">Echo Hunter was produced with explicit performer consent and guild sign-off for re-rendering a live performance with Arcana AI's video model — a template other AI productions using a real actor's likeness are likely to follow as the space matures. We break down what was agreed to, and what it doesn't cover.</p>
     </article>
-    <article>
-      <div style="border-radius:8px; overflow:hidden; aspect-ratio:16/9; margin-bottom:14px; background:var(--soft); display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:.85rem; font-weight:700; text-align:center; padding:10px;">Toys "R" Us × Sora</div>
-      <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px; font-size:.78rem; color:var(--muted);">
-        <span style="display:inline-flex; align-items:center; background:var(--bg-elev); border:1px solid var(--line); border-radius:999px; padding:3px 11px; font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em;">News</span>
-        <time datetime="2024-05-10">May 10, 2024</time>
-      </div>
-      <h3 style="font-size:1.08rem; line-height:1.25; margin:0 0 .45em;">Toys "R" Us and the first wave of AI brand films</h3>
-      <p style="color:var(--muted); line-height:1.55; margin:0; font-size:.86rem;">The Sora-produced Toys "R" Us spot was one of the first major brand commercials built with a text-to-video model, and it's aged into a useful reference point for how fast — and unevenly — the technology has moved since.</p>
-    </article>
-  </div>
+  ))}
 </BaseLayout>

@@ -43,12 +43,13 @@ function taxonomy(movie: CollectionEntry<'movies'>) {
 }
 
 // Real journal content — the same three articles published in full on
-// /news (src/pages/news.astro). There's no per-article route yet (news.astro
-// is a single static page, not a content collection), so every card here
-// links to /news rather than a slug that doesn't exist. Reusing the actual
-// published text rather than inventing homepage-only copy.
+// /news (src/pages/news.astro). There's no per-article content collection
+// yet, so each card links to that article's own section on /news (#id)
+// rather than a /news/<slug> permalink that doesn't exist. Reusing the
+// actual published text rather than inventing homepage-only copy.
 const journal = [
   {
+    id: 'reset-solo-crew',
     label: 'Editorial',
     title: 'RESET makes the case for the one-person AI film crew',
     excerpt: "Max Barskih's RESET — written, directed, and entirely produced solo using Higgsfield AI — is the clearest sign yet that a single filmmaker can now credibly deliver a multi-location sci-fi short without a crew.",
@@ -57,6 +58,7 @@ const journal = [
     image: '/images/posters/reset-wide.webp',
   },
   {
+    id: 'echo-hunter-sag-aftra',
     label: 'News',
     title: "What Echo Hunter's SAG-AFTRA sign-off actually means",
     excerpt: "Echo Hunter was produced with explicit performer consent and guild sign-off for re-rendering a live performance with Arcana AI's video model.",
@@ -65,6 +67,7 @@ const journal = [
     image: '/images/posters/echo-hunter-wide.webp',
   },
   {
+    id: 'toys-r-us-sora',
     label: 'News',
     title: 'Toys "R" Us and the first wave of AI brand films',
     excerpt: "The Sora-produced Toys “R” Us spot was one of the first major brand commercials built with a text-to-video model.",
@@ -280,7 +283,7 @@ const journal = [
     </div>
     <div class="journalGrid">
       {journal.map((j) => (
-        <a class="story" href="/news">
+        <a class="story" href={`/news#${j.id}`}>
           {j.image ? <img src={j.image} alt={j.title} loading="lazy" /> : <div class="storyFallback">{j.title}</div>}
           <small>{j.label}</small>
           <strong>{j.title}</strong>
