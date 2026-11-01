@@ -179,6 +179,20 @@ const initialCount = 6;
 
     @media (max-width: 760px) {
       .featuredGrid { grid-template-columns: 1fr; }
+      /* The table was just squeezing six fixed-width columns into a
+         narrow screen and overlapping text (see the reference's own
+         mobile table→card rules) — stack each row as a card instead. */
+      .tableFrame { border: 0; overflow: visible; }
+      table { table-layout: auto; }
+      thead { display: none; }
+      tbody { display: grid; gap: 12px; }
+      .festivalRow { display: block; border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; background: #fff; }
+      .festivalRow.extra[hidden] { display: none; }
+      tbody td { display: flex; justify-content: space-between; align-items: center; gap: 12px; border: 0; border-top: 1px solid var(--line); padding: 10px 0; text-align: right; min-width: 0; }
+      tbody td:first-child { border-top: 0; display: block; text-align: left; padding-bottom: 10px; }
+      tbody td:not(:first-child)::before { content: attr(data-label); flex: 0 0 38%; text-align: left; font-size: .68rem; font-weight: 700; color: var(--muted); }
+      .winner { justify-content: flex-end; text-align: left; }
+      .formatStack { align-items: flex-end; }
     }
   </style>
 
@@ -220,18 +234,18 @@ const initialCount = 6;
       <thead><tr><th>Festival</th><th>Location</th><th>Latest edition</th><th>Format</th><th>Prize fund</th><th>Award-winning film</th></tr></thead>
       <tbody>
         {directory.map((f, i) => (
-          <tr class={i >= initialCount ? 'extra' : ''} hidden={i >= initialCount}>
-            <td>
+          <tr class={`festivalRow ${i >= initialCount ? 'extra' : ''}`} hidden={i >= initialCount}>
+            <td data-label="Festival">
               <div class="fname">
                 <span class="flogo">{f.logo}</span>
                 {f.slug ? <a href={`/awards/${f.slug}`}>{f.name}</a> : <a href={f.url} target="_blank" rel="noopener">{f.name} ↗</a>}
               </div>
             </td>
-            <td>{f.location}</td>
-            <td>{f.edition}</td>
-            <td><span class="formatStack">{f.formats.map((fmt) => <span class={`format ${fmt === 'Online' ? 'online' : ''}`}>{fmt}</span>)}</span></td>
-            <td>{f.fund ? <span class="fund">{f.fund}</span> : <span class="fund empty">—</span>}</td>
-            <td class="winner">
+            <td data-label="Location">{f.location}</td>
+            <td data-label="Latest edition">{f.edition}</td>
+            <td data-label="Format"><span class="formatStack">{f.formats.map((fmt) => <span class={`format ${fmt === 'Online' ? 'online' : ''}`}>{fmt}</span>)}</span></td>
+            <td data-label="Prize fund">{f.fund ? <span class="fund">{f.fund}</span> : <span class="fund empty">—</span>}</td>
+            <td class="winner" data-label="Award-winning film">
               {!f.winner.pending && f.winner.movieSlug && movieExists(f.winner.movieSlug) ? (
                 <>
                   {moviePoster(f.winner.movieSlug) && (
