@@ -7,10 +7,14 @@
     "Documentary"
   ],
   "synopsis": "An AI-generated documentary short.",
+  "poster": "/images/posters/jailbird.webp",
   "youtubeId": "-87zR06PkOc",
   "director": {
     "name": "Andrew Salter"
   },
+  "awards": [
+    "Runway AI Film Festival — Gold, AIFF 2025"
+  ],
   "audienceReactions": [
     {
       "quote": "This is really impressive use of cutting edge tech in the service of storytelling, and hopefully an example of how film making survives and thrives in the future. Congrats on the award.",
