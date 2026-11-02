@@ -69,6 +69,7 @@ const awardsList = [
   <style>
     /* ---- Hero ---- */
     .personHero { display: grid; grid-template-columns: 220px minmax(0,1fr); gap: 40px; align-items: start; padding: 10px 0 44px; border-bottom: 1px solid var(--line); }
+    .personHero.withPanel { grid-template-columns: 220px minmax(0,1fr) 300px; }
     .personPhoto { width: 100%; aspect-ratio: 3/4; border-radius: 4px; overflow: hidden; background: linear-gradient(135deg,var(--blue),#5e85c9); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 2.4rem; font-family: var(--serif); }
     .personPhoto img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
@@ -88,26 +89,19 @@ const awardsList = [
     .fact-social { display: inline-flex; align-items: center; gap: 8px; font-weight: 650; color: var(--ink); }
     .fact-social .mark { display: inline-grid; place-items: center; width: 24px; height: 24px; flex: none; border-radius: 6px; background: var(--black); color: #fff; font-size: .95rem; line-height: 1; }
 
-    /* ---- Shared horizontal-scroll section chrome (matches /studios) ---- */
     .hsection { padding-top: 44px; }
     .hsection + .hsection { border-top: 1px solid var(--line); }
     .hheading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 6px; }
     .hheading h2 { font: 700 1.6rem/1.2 var(--serif); letter-spacing: -0.02em; margin: 0; }
     .hheading .count { font-size: .7rem; color: var(--muted2); margin-left: 8px; font-weight: 400; }
     .hintro { font-size: .8rem; color: var(--muted2); margin: 0 0 18px; }
-    .arrowNav { display: flex; gap: 7px; }
-    .arrowNav button { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--line); background: #fff; font-size: 1.1rem; cursor: pointer; }
-    .arrowNav button:disabled { opacity: .3; cursor: default; }
-
-    .hscroll { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 2px 1px 14px; scrollbar-width: none; }
-    .hscroll::-webkit-scrollbar { display: none; }
 
     /* ---- Filmography ---- */
     .controls { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 18px; }
     .controls .pill { border: 1px solid var(--line); color: var(--muted); background: #fff; padding: 8px 13px; border-radius: 3px; font-size: .72rem; font-weight: 600; cursor: pointer; }
     .controls .pill[aria-pressed="true"] { background: var(--black); border-color: var(--black); color: #fff; }
     .sortSelect { height: 34px; border: 1px solid var(--line); background: #fff; border-radius: 3px; color: var(--ink); font-size: .74rem; padding: 0 10px; }
-    .filmCard { flex: 0 0 180px; scroll-snap-align: start; color: inherit; }
+    .filmCard { color: inherit; }
     .filmCard .thumb { aspect-ratio: 2/3; position: relative; border-radius: 4px; overflow: hidden; background: var(--soft); }
     .filmCard .thumb img, .filmCard .posterFallback { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s ease; }
     .filmCard:hover .thumb img { transform: scale(1.04); }
@@ -121,7 +115,7 @@ const awardsList = [
     /* ---- Production tools / Awards — same vertical-list sidebar card
        used on the movie page (src/pages/movies/[slug].astro), so a
        creator's tools and awards read the same way as a film's. ---- */
-    .toolsPanel { max-width: 420px; border: 1px solid var(--line); border-radius: 6px; padding: 0 18px; background: #fff; }
+    .toolsPanel { border: 1px solid var(--line); border-radius: 6px; padding: 0 18px; background: #fff; }
     .panelSection { padding: 18px 0; border-bottom: 1px solid var(--line); }
     .panelSection:last-child { border-bottom: 0; }
     .panelSection h3 { font: 700 1.05rem/1.2 var(--serif); margin: 0 0 14px; }
@@ -134,15 +128,18 @@ const awardsList = [
     .awardChip:first-child { border-top: 0; }
     .awardChip small { display: block; color: var(--muted2); font-size: .74rem; margin-top: 2px; }
 
+    .filmsGrid { display: grid; grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); gap: 16px 14px; }
+
+    @media (max-width: 980px) {
+      .personHero.withPanel { grid-template-columns: 130px 1fr; }
+      .toolsPanel { grid-column: 1 / -1; max-width: 420px; }
+    }
     @media (max-width: 860px) {
       .personHero { grid-template-columns: 130px 1fr; gap: 20px; }
     }
-    @media (max-width: 650px) {
-      .arrowNav { display: none; }
-    }
   </style>
 
-  <section class="personHero" aria-labelledby="person-name">
+  <section class={`personHero ${(creativeStack.length > 0 || awardsList.length > 0) ? 'withPanel' : ''}`} aria-labelledby="person-name">
     <div class="personPhoto">
       {c.photo ? <img src={c.photo} alt={c.name} /> : initials(c.name)}
     </div>
@@ -174,50 +171,8 @@ const awardsList = [
         )}
       </div>
     </div>
-  </section>
 
-  <section class="hsection" id="filmography">
-    <div class="hheading">
-      <h2>Filmography <span class="count" id="filmCount">{films.length} title{films.length === 1 ? '' : 's'}</span></h2>
-      <div class="arrowNav">
-        <button type="button" data-scroll="films" data-direction="-1" aria-label="Previous films">‹</button>
-        <button type="button" data-scroll="films" data-direction="1" aria-label="Next films">›</button>
-      </div>
-    </div>
-    {films.length > 0 ? (
-      <>
-        <div class="controls" role="group" aria-label="Filter filmography">
-          <button class="pill" data-kind="all" aria-pressed="true" type="button">All ({films.length})</button>
-          {movieCount > 0 && <button class="pill" data-kind="movie" aria-pressed="false" type="button">Movies ({movieCount})</button>}
-          {seriesCount > 0 && <button class="pill" data-kind="series" aria-pressed="false" type="button">Series ({seriesCount})</button>}
-          <select class="sortSelect" id="filmSort">
-            <option value="newest">Newest first</option>
-            <option value="oldest">Oldest first</option>
-            <option value="title">A–Z</option>
-          </select>
-        </div>
-        <div class="hscroll" id="films">
-          {films.map((f) => (
-            <a class="filmCard" href={`/movies/${f.id}`} data-kind={f.data.type} data-year={f.data.year} data-title={f.data.title}>
-              <div class="thumb">
-                {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" /> : <div class="posterFallback" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-weight:700;">{f.data.title}</div>}
-              </div>
-              <h3>{f.data.title}</h3>
-              <p class="filmMeta">{f.data.year}<span>·</span>{f.data.type === 'series' ? 'Series' : 'Movie'}</p>
-              {f.data.genres.length > 0 && (
-                <div class="filmTags">{f.data.genres.slice(0, 2).map((g) => <span>{g}</span>)}</div>
-              )}
-            </a>
-          ))}
-        </div>
-      </>
-    ) : (
-      <p class="hintro">No films in this creator's catalog yet.</p>
-    )}
-  </section>
-
-  {(creativeStack.length > 0 || awardsList.length > 0) && (
-    <section class="hsection" aria-label="Production tools and awards">
+    {(creativeStack.length > 0 || awardsList.length > 0) && (
       <div class="toolsPanel">
         {creativeStack.length > 0 && (
           <div class="panelSection">
@@ -240,8 +195,44 @@ const awardsList = [
           </div>
         )}
       </div>
-    </section>
-  )}
+    )}
+  </section>
+
+  <section class="hsection" id="filmography">
+    <div class="hheading">
+      <h2>Filmography <span class="count" id="filmCount">{films.length} title{films.length === 1 ? '' : 's'}</span></h2>
+    </div>
+    {films.length > 0 ? (
+      <>
+        <div class="controls" role="group" aria-label="Filter filmography">
+          <button class="pill" data-kind="all" aria-pressed="true" type="button">All ({films.length})</button>
+          {movieCount > 0 && <button class="pill" data-kind="movie" aria-pressed="false" type="button">Movies ({movieCount})</button>}
+          {seriesCount > 0 && <button class="pill" data-kind="series" aria-pressed="false" type="button">Series ({seriesCount})</button>}
+          <select class="sortSelect" id="filmSort">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="title">A–Z</option>
+          </select>
+        </div>
+        <div class="filmsGrid" id="films">
+          {films.map((f) => (
+            <a class="filmCard" href={`/movies/${f.id}`} data-kind={f.data.type} data-year={f.data.year} data-title={f.data.title}>
+              <div class="thumb">
+                {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" /> : <div class="posterFallback" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-weight:700;">{f.data.title}</div>}
+              </div>
+              <h3>{f.data.title}</h3>
+              <p class="filmMeta">{f.data.year}<span>·</span>{f.data.type === 'series' ? 'Series' : 'Movie'}</p>
+              {f.data.genres.length > 0 && (
+                <div class="filmTags">{f.data.genres.slice(0, 2).map((g) => <span>{g}</span>)}</div>
+              )}
+            </a>
+          ))}
+        </div>
+      </>
+    ) : (
+      <p class="hintro">No films in this creator's catalog yet.</p>
+    )}
+  </section>
 
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org',
@@ -284,13 +275,6 @@ const awardsList = [
         sortSelect.addEventListener('change', render);
         render();
       }
-
-      [].slice.call(document.querySelectorAll('[data-scroll]')).forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var el = document.getElementById(btn.dataset.scroll);
-          if (el) el.scrollBy({ left: el.clientWidth * 0.8 * Number(btn.dataset.direction), behavior: 'smooth' });
-        });
-      });
     })();
   </script>
 </BaseLayout>
