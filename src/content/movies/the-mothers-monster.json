@@ -5,9 +5,10 @@
   "type": "movie",
   "duration": "28:30",
   "genres": [
-    "Fantasy"
+    "Fantasy",
+    "Dragons"
   ],
-  "synopsis": "An original fantasy story from MYTHRA (explicitly not an adaptation).",
+  "synopsis": "A mother gives birth to a dragon her village brands a monster, and must protect him from the superstition that surrounds them both.",
   "poster": "/images/posters/the-mothers-monster.webp",
   "youtubeId": "dqCGNrQ6N_o",
   "studio": "MYTHRA",
