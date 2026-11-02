@@ -1,0 +1,24 @@
+{
+  "movie_id": "02aec31a-4a80-4416-a031-8662e57385d5",
+  "title": "Centenarian Kindergarten",
+  "year": 2026,
+  "type": "movie",
+  "genres": [
+    "Sci-Fi",
+    "Drama"
+  ],
+  "country": "China",
+  "synopsis": "In a future where growing old means returning to kindergarten, happiness is compulsory and even memories of loved ones come at a price — an unsettling vision of humanity under algorithmic control.",
+  "poster": "/images/posters/centenarian-kindergarten.webp",
+  "director": {
+    "name": "Shuheng Liu"
+  },
+  "crew": [
+    { "name": "Junchao Tian", "role": "Co-Director" },
+    { "name": "Zengfu Qin", "role": "Co-Director" }
+  ],
+  "studio": "2xLabs",
+  "awards": [
+    "Best Chinese Cinema (Special Recognition) — Bali International AI Film Festival (BIAIFF) Season 5 2026"
+  ]
+}
