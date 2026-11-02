@@ -5,43 +5,75 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 const lists = await getCollection('lists');
 const movies = await getCollection('movies');
 
-function cover(list: CollectionEntry<'lists'>) {
-  const first = list.data.movies.map((slug) => movies.find((m) => m.id === slug)).find((m) => m?.data.poster);
-  return first?.data.poster;
+function posters(list: CollectionEntry<'lists'>, max = 3) {
+  return list.data.movies
+    .map((slug) => movies.find((m) => m.id === slug))
+    .filter((m): m is CollectionEntry<'movies'> => Boolean(m?.data.poster))
+    .slice(0, max);
 }
 ---
 <BaseLayout title="Lists" description="Curated lists of AI-made films — by theme, by model, by festival selection.">
   <style>
-    .listGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px 36px; margin-top: 10px; }
-    .listCard { display: block; }
-    .posterStrip { aspect-ratio: 370/206; border-radius: 4px; overflow: hidden; background: var(--soft); }
-    .posterStrip img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .listCard h2 { font-size: 1.15rem; margin: 10px 0 2px; }
-    .listCard:hover h2 { color: var(--blue); }
-    .count { font-size: .76rem; color: var(--muted2); margin: 0 0 4px; }
-    .summary { font-size: .82rem; color: var(--muted); line-height: 1.5; margin: 0; }
-    .placeholderTag { display: inline-block; font-size: .64rem; text-transform: uppercase; letter-spacing: .04em; background: var(--soft); color: var(--muted2); border-radius: 4px; padding: 2px 7px; margin-left: 6px; vertical-align: middle; }
-    @media (max-width: 760px) { .listGrid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; } }
+    .crumb { font-size: .78rem; color: var(--muted2); margin: 0 0 22px; }
+    .crumb a:hover { color: #cf6246; }
+    .eyebrow { font-size: .68rem; font-weight: 800; letter-spacing: .15em; color: #cf6246; text-transform: uppercase; margin: 0 0 12px; }
+    .introHead { border-bottom: 1px solid var(--line); padding-bottom: 30px; margin-bottom: 30px; }
+    .introHead h1 { font: 400 clamp(44px,6vw,72px)/.98 var(--serif); letter-spacing: -0.03em; margin: 0 0 14px; }
+    .introHead h1 em { font-style: italic; color: #cf6246; }
+    .introHead p { font: 1.1rem/1.6 var(--serif); color: var(--muted); margin: 0; max-width: 640px; }
+
+    .sectionline { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; }
+    .sectionline h2 { font: 400 1.7rem/1.1 var(--serif); letter-spacing: -0.02em; margin: 0; }
+
+    .listGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); column-gap: 28px; row-gap: 34px; }
+    .listCard { min-width: 0; transition: transform .22s ease; }
+    @media (hover: hover) and (pointer: fine) { .listCard:hover { transform: translateY(-4px); } }
+    .listLink { display: block; }
+    .posterStrip { aspect-ratio: 370/206; border-radius: 5px; overflow: hidden; background: var(--soft); transition: box-shadow .22s ease; }
+    .listCard:hover .posterStrip { box-shadow: 0 12px 26px rgba(23,24,27,.13); }
+    .posterGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 3px; width: 100%; height: 100%; }
+    .posterGrid img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .listCard h2 { font: 400 1.5rem/1.14 var(--serif); letter-spacing: -0.02em; margin: 12px 0 4px; transition: color .2s ease; }
+    .listCard:hover h2 { color: #cf6246; }
+    .count { font-size: .76rem; color: #a26a56; font-weight: 700; letter-spacing: .02em; margin: 0 0 6px; }
+    .summary { font-size: .82rem; color: var(--muted); line-height: 1.55; margin: 0; max-width: 340px; }
+    .placeholderTag { display: inline-block; font-size: .62rem; text-transform: uppercase; letter-spacing: .04em; background: var(--soft); color: var(--muted2); border-radius: 4px; padding: 2px 7px; margin-left: 6px; vertical-align: middle; }
+
+    @media (max-width: 760px) { .listGrid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 26px 15px; } .listCard h2 { font-size: 1.3rem; } }
     @media (max-width: 460px) { .listGrid { grid-template-columns: 1fr; } }
   </style>
 
-  <h1 style="margin-top:0">Lists</h1>
-  <p class="pageLede" style="margin-bottom:28px">Curated lists of AI-made films — by theme, by model, by festival selection. Track what's essential, popular and award-winning through each one.</p>
+  <p class="crumb"><a href="/">Home</a> / Lists</p>
+  <div class="introHead">
+    <div class="eyebrow">AIMB · Curated Collections</div>
+    <h1>Film <em>Lists</em></h1>
+    <p>Curated lists of AI-made films — by theme, by model, by festival selection. Track what's essential, popular and award-winning through each one.</p>
+  </div>
 
+  <div class="sectionline"><h2>Explore collections</h2></div>
   <section class="listGrid" aria-label="Curated AI film lists">
-    {lists.map((list) => (
-      <article>
-        <a class="listCard" href={`/lists/${list.id}`}>
-          <div class="posterStrip">
-            {cover(list) ? <img src={cover(list)} alt={`Cover artwork for ${list.data.name}`} loading="lazy" /> : <div class="posterFallback" style="width:100%;height:100%;">{list.data.name}</div>}
-          </div>
-          <h2>{list.data.name}{list.data.placeholder && <span class="placeholderTag">starter list</span>}</h2>
-        </a>
-        <p class="count">{list.data.movies.length} films</p>
-        <p class="summary">{list.data.description}</p>
-      </article>
-    ))}
+    {lists.map((list) => {
+      const covers = posters(list);
+      return (
+        <article class="listCard">
+          <a class="listLink" href={`/lists/${list.id}`} aria-label={`Explore ${list.data.name}`}>
+            <div class="posterStrip">
+              {covers.length >= 2 ? (
+                <div class="posterGrid">
+                  {covers.map((m) => <img src={m.data.poster} alt="" loading="lazy" />)}
+                </div>
+              ) : (
+                <div class="posterFallback" style="width:100%;height:100%;">{list.data.name}</div>
+              )}
+            </div>
+            <h2>{list.data.name}{list.data.placeholder && <span class="placeholderTag">starter list</span>}</h2>
+          </a>
+          <p class="count">{list.data.movies.length} film{list.data.movies.length === 1 ? '' : 's'}</p>
+          <p class="summary">{list.data.description}</p>
+        </article>
+      );
+    })}
   </section>
 
-  <p class="pageLede" style="margin-top:28px; font-size:.82rem;">More lists are on the way. Lists marked "starter list" are mechanically grouped by genre for now rather than hand-curated — see the README for details.</p>
+  <p class="pageLede" style="margin-top:32px; font-size:.82rem;">More lists are on the way. Lists marked "starter list" are mechanically grouped by genre for now rather than hand-curated — see the README for details.</p>
 </BaseLayout>
