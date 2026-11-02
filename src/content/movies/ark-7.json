@@ -1,0 +1,19 @@
+{
+  "movie_id": "b67d1f2e-1f2f-4495-ab15-0da0380a30bc",
+  "title": "ARK-7",
+  "year": 2026,
+  "type": "movie",
+  "duration": "8:30",
+  "genres": [
+    "Sci-Fi"
+  ],
+  "synopsis": "The pilot episode of Serge Karloff's AI sci-fi series, built on a hybrid model of real identity and AI-native production — including Sofia, a young girl whose likeness (used with her mother's permission) makes her the youngest inhabitant of the ARK-7 universe.",
+  "poster": "/images/posters/ark-7.webp",
+  "youtubeId": "VCBFFRXw32A",
+  "director": {
+    "name": "Serge Karloff"
+  },
+  "awards": [
+    "Astana AI Film Festival 2026 — Open Competition entry"
+  ]
+}
