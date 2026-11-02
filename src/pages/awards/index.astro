@@ -64,7 +64,7 @@ const directory = [
     edition: '2026 (results 1 Nov 2026)',
     formats: ['Online'],
     fund: '$1,000,000',
-    winner: { title: 'Listen to Meh', year: '2026', note: '1st Place' },
+    winner: { title: 'Listen to Meh', year: '2026', movieSlug: 'listen-to-meh', note: '1st Place' },
   },
   {
     name: 'BIFAN — Bucheon International Fantastic Film Festival',
@@ -161,6 +161,7 @@ const initialCount = 6;
     .flogo { flex: none; display: grid; place-items: center; width: 38px; height: 38px; background: var(--black); color: #fff; border-radius: 6px; font-size: .6rem; font-weight: 800; text-align: center; line-height: 1.1; padding: 2px; }
     .fname a { font-weight: 700; color: var(--ink); font-size: .82rem; display: block; }
     .fname a:hover { color: var(--blue); }
+    .fnamePlain { font-weight: 700; color: var(--ink); font-size: .82rem; display: block; }
     .formatStack { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 5px; }
     .format { font-size: .72rem; white-space: nowrap; color: #3a58bf; background: #e9edff; padding: 4px 9px; border-radius: 999px; }
     .format.online { background: #e6f4ec; color: #287754; }
@@ -231,7 +232,6 @@ const initialCount = 6;
       <span class="tag">FEATURED</span>
       <h3>Higgsfield Global Film Festival</h3>
       <p>A $1,000,000 online competition for original AI short films.</p>
-      <small>Results 1 Nov 2026</small>
     </a>
   </div>
 
@@ -245,7 +245,7 @@ const initialCount = 6;
             <td data-label="Festival">
               <div class="fname">
                 <span class="flogo">{f.logo}</span>
-                {f.slug ? <a href={`/awards/${f.slug}`}>{f.name}</a> : <a href={f.url} target="_blank" rel="noopener">{f.name} ↗</a>}
+                {f.slug ? <a href={`/awards/${f.slug}`}>{f.name}</a> : <span class="fnamePlain">{f.name}</span>}
               </div>
             </td>
             <td data-label="Location">{f.location}</td>
