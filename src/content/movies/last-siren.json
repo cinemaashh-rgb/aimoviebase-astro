@@ -4,10 +4,21 @@
   "year": 2025,
   "type": "movie",
   "duration": "1:00:15",
-  "genres": ["Dark Fantasy", "Horror"],
+  "genres": [
+    "Dark Fantasy",
+    "Horror"
+  ],
   "synopsis": "A salvage crew wakes Ligeia aboard a derelict ship, and an infection begins to spread.",
   "poster": "/images/posters/last-siren.webp",
   "youtubeId": "JwolZTil_9Y",
   "studio": "Future Frame Movies",
-  "aiTools": ["Veo 3"]
+  "aiTools": [
+    "Veo 3"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "Going to give chance, ninety-nine percent good feedback and free on YouTube interests me.",
+      "author": "YouTube viewer"
+    }
+  ]
 }

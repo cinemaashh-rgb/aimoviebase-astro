@@ -4,7 +4,10 @@
   "year": 2026,
   "type": "movie",
   "duration": "1:17:48",
-  "genres": ["Fantasy", "Dragons"],
+  "genres": [
+    "Fantasy",
+    "Dragons"
+  ],
   "synopsis": "Freya raised five white dragons — now the dark prince Malakai claims them as his own.",
   "poster": "/images/posters/her-own-dragons-turned-against-her.webp",
   "youtubeId": "ifoO7aHLuIU",
@@ -12,5 +15,17 @@
     "name": "Alex"
   },
   "studio": "Epic AI Films",
-  "aiTools": ["AI visuals + synthetic voices"]
+  "aiTools": [
+    "AI visuals + synthetic voices"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "Tragic powerful fantasy, mother watching children become evil is truly heartbreaking premise.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Cannot wait for next part, really good series except usual AI glitches here.",
+      "author": "YouTube viewer"
+    }
+  ]
 }

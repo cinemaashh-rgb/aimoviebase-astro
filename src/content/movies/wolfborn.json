@@ -4,10 +4,29 @@
   "year": 2026,
   "type": "movie",
   "duration": "33:16",
-  "genres": ["Fantasy", "Family"],
+  "genres": [
+    "Fantasy",
+    "Family"
+  ],
   "synopsis": "A mother hides her wolf-born twin from her hunter husband, keeping a secret by the ice river.",
   "poster": "/images/posters/wolfborn.webp",
   "youtubeId": "0VIFsNiLy94",
   "studio": "VORAN",
-  "aiTools": ["AI visuals + voices"]
+  "aiTools": [
+    "AI visuals + voices"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "I hope they make movie or series about this, it is so incredibly good.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Watching from Trinidad and Tobago, I love this emotional wolf family story.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Mother remains mother, only mother can love child no matter who they are.",
+      "author": "YouTube viewer"
+    }
+  ]
 }

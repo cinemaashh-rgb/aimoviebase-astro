@@ -4,10 +4,29 @@
   "year": 2026,
   "type": "movie",
   "duration": "23:37",
-  "genres": ["Fantasy", "Adventure"],
+  "genres": [
+    "Fantasy",
+    "Adventure"
+  ],
   "synopsis": "A street boy named Aladdin is dragged into the desert in search of a sealed brass lamp.",
   "poster": "/images/posters/1001-aladdin-and-the-lamp.webp",
   "youtubeId": "dJE4BJmS1ZE",
   "studio": "SAGAS",
-  "aiTools": ["Higgsfield Cinema Studio"]
+  "aiTools": [
+    "Higgsfield Cinema Studio"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "Most talented AI creators on entire internet, please continue this storyline further.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Think of movies we could not afford before, now any dream can be done.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Best AI short film ever with layering, perfect frames and no awkward movements.",
+      "author": "YouTube viewer"
+    }
+  ]
 }

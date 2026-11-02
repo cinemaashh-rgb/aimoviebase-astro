@@ -4,10 +4,32 @@
   "year": 2026,
   "type": "movie",
   "duration": "12:34",
-  "genres": ["80s", "Fan Film"],
+  "genres": [
+    "80s",
+    "Fan Film"
+  ],
   "synopsis": "The Lion-O team faces Mumm-Ra's deception in a retro live-action reimagining.",
   "poster": "/images/posters/thundercats-pumm-ra.webp",
   "youtubeId": "viPDfmnhhwk",
   "studio": "AIM Media Pro",
-  "aiTools": ["Claude", "Nano-Banana", "GPT-Image 2", "Seedance 2.5"]
+  "aiTools": [
+    "Claude",
+    "Nano-Banana",
+    "GPT-Image 2",
+    "Seedance 2.5"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "Remember watching episode on CRT TV in eighties, does this match imagined real life.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Damn we need live action ThunderCats with this level of AI detail now.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Fifty years from now kids will watch these AI movies and call it classic era.",
+      "author": "YouTube viewer"
+    }
+  ]
 }

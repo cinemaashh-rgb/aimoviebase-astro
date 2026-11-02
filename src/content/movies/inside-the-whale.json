@@ -4,10 +4,25 @@
   "year": 2026,
   "type": "movie",
   "duration": "1:01:13",
-  "genres": ["Fantasy", "Mermaid"],
+  "genres": [
+    "Fantasy",
+    "Mermaid"
+  ],
   "synopsis": "Fisherwoman Oda wakes inside a whale, where the last mermaid has waited fifty years.",
   "poster": "/images/posters/inside-the-whale.webp",
   "youtubeId": "Iq12dUQZ6Mc",
   "studio": "Future Frame Movies",
-  "aiTools": ["AI feature"]
+  "aiTools": [
+    "AI feature"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "Fascinating imaginative story, giant whale hiding mermaid waited fifty years is truly magical.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Watching from Macau, amazing movie, my origin is Philippines, love ocean fantasy.",
+      "author": "YouTube viewer"
+    }
+  ]
 }

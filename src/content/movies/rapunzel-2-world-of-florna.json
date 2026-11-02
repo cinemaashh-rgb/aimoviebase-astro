@@ -4,10 +4,29 @@
   "year": 2026,
   "type": "movie",
   "duration": "1:38:11",
-  "genres": ["Fantasy", "Fairy Tale"],
+  "genres": [
+    "Fantasy",
+    "Fairy Tale"
+  ],
   "synopsis": "Rapunzel leaves her tower for a magic academy, five kingdoms, and a Halloween mage hall.",
   "poster": "/images/posters/rapunzel-2-world-of-florna.webp",
   "youtubeId": "5hkLR3Vff04",
   "studio": "BD Original AI Movies",
-  "aiTools": ["AI + original soundtrack"]
+  "aiTools": [
+    "AI + original soundtrack"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "Seen many AI dramas, this is top five, no dub mismatch, detailed visuals impressive.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "To honor community support, woven entire journey into seamless movie with refined audio.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Real story of Cinderella makes me hopeful, lot of work in details remarkable.",
+      "author": "YouTube viewer"
+    }
+  ]
 }

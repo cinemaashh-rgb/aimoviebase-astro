@@ -4,10 +4,28 @@
   "year": 2026,
   "type": "movie",
   "duration": "44:01",
-  "genres": ["Epic Fantasy"],
+  "genres": [
+    "Epic Fantasy"
+  ],
   "synopsis": "Leah and the pirate Black plot revenge as Reynor awakens his dragon blood.",
   "poster": "/images/posters/dragonbone-continent.webp",
   "youtubeId": "eukX9YI0MV0",
   "studio": "Shanhay Studio",
-  "aiTools": ["AI 4K"]
+  "aiTools": [
+    "AI 4K"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "Some films pull you into world and refuse to let go, absolutely unforgettable experience.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "So well made, plot, fight choreography and music feel insanely well thought out.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "One of best movies I watched recently, highly recommended for fantasy lovers.",
+      "author": "YouTube viewer"
+    }
+  ]
 }

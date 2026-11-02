@@ -4,12 +4,30 @@
   "year": 2026,
   "type": "movie",
   "duration": "23:15",
-  "genres": ["Post-Apocalyptic"],
+  "genres": [
+    "Post-Apocalyptic"
+  ],
   "synopsis": "Sarah and her dog Shadow cross a reclaimed world toward a survivor settlement.",
   "poster": "/images/posters/after-you.webp",
   "youtubeId": "17xvUrjO54g",
   "director": {
     "name": "Martin Gerhát"
   },
-  "aiTools": ["Higgsfield"]
+  "aiTools": [
+    "Higgsfield"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "Did excellent job bringing Shadow to life, expressions like my boy Conch, miss him.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Interesting how quickly AI dialogue has become recognizable in festival shorts lately.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Handwritten name tag on backpack makes ruined world feel personal and grounded.",
+      "author": "YouTube viewer"
+    }
+  ]
 }

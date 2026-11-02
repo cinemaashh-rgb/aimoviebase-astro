@@ -4,7 +4,10 @@
   "year": 2026,
   "type": "movie",
   "duration": "2:20:12",
-  "genres": ["Fantasy", "Epic Finale"],
+  "genres": [
+    "Fantasy",
+    "Epic Finale"
+  ],
   "synopsis": "Season One finale of the Age of Kingdoms saga: Varic faces arena death in the capital while orc hordes besiege it and a black dragon wakes over the burning city.",
   "poster": "/images/posters/nobody-was-coming-to-save-the-last-king.webp",
   "youtubeId": "Rk4UsZPm1nA",
@@ -12,5 +15,21 @@
     "name": "Alex"
   },
   "studio": "Epic AI Films",
-  "aiTools": ["Seedance 2.5"]
+  "aiTools": [
+    "Seedance 2.5"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "Visual scale and ominous dread across factions give me actual chills watching this.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "You never know when you stumble on something truly fascinating on YouTube.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "This elven queen is really something, very good performance and strong presence.",
+      "author": "YouTube viewer"
+    }
+  ]
 }

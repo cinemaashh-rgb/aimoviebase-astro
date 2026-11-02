@@ -4,10 +4,29 @@
   "year": 2026,
   "type": "movie",
   "duration": "1:44:11",
-  "genres": ["Fantasy", "Adventure"],
+  "genres": [
+    "Fantasy",
+    "Adventure"
+  ],
   "synopsis": "The first dragon's creation changes the kingdoms forever as forbidden magic reshapes the world.",
   "poster": "/images/posters/last-dragon-war-of-kingdoms.webp",
   "youtubeId": "l40ICpNVzjE",
   "studio": "The Next Show",
-  "aiTools": ["AI cinematic"]
+  "aiTools": [
+    "AI cinematic"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "Love seeing creative dragon adventures, inspiring to see creators bring worlds alive.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "You deserve award for this work, truly incredible fantasy execution and heart.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Completely impressed, concept fantastic, execution even better, story kept me curious.",
+      "author": "YouTube viewer"
+    }
+  ]
 }

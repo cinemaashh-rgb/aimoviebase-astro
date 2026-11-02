@@ -4,10 +4,29 @@
   "year": 2026,
   "type": "movie",
   "duration": "1:09:46",
-  "genres": ["Fantasy", "Naval Adventure"],
+  "genres": [
+    "Fantasy",
+    "Naval Adventure"
+  ],
   "synopsis": "Captain Lucius chases the Golden Island, pursued by flying fish and the pirate Bernard.",
   "poster": "/images/posters/epoch-of-voyages-ep1.webp",
   "youtubeId": "_oKHNBRf45M",
   "studio": "Shanhay Studio",
-  "aiTools": ["AI 4K series"]
+  "aiTools": [
+    "AI 4K series"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "First episode is incredible cinematic feast for fantasy and adventure lovers worldwide.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Production value is off the roof, many thanks again to AI masters here.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Absolutely hooked, characters interesting, storyline captivating, lip-sync and visuals top notch.",
+      "author": "YouTube viewer"
+    }
+  ]
 }

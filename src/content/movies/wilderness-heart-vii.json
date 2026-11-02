@@ -4,10 +4,29 @@
   "year": 2026,
   "type": "movie",
   "duration": "18:02",
-  "genres": ["Sci-Fi", "Series"],
+  "genres": [
+    "Sci-Fi",
+    "Series"
+  ],
   "synopsis": "Reynold and robot X chase the Hantu weapon and the truth about a missing team.",
   "poster": "/images/posters/wilderness-heart-vii.webp",
   "youtubeId": "Ze0osm-NcMk",
   "studio": "Shin Watcher",
-  "aiTools": ["AI-assisted filmmaking"]
+  "aiTools": [
+    "AI-assisted filmmaking"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "Thought this would be action, but quieter character scenes were really very good.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Super series, very good made, for me better than best Hollywood film.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "From Argentina I watch all videos, I am 72-year-old grandmother who loves series.",
+      "author": "YouTube viewer"
+    }
+  ]
 }

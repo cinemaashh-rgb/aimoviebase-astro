@@ -4,9 +4,26 @@
   "year": 2026,
   "type": "movie",
   "duration": "1:12:47",
-  "genres": ["Sci-Fi", "Survival"],
+  "genres": [
+    "Sci-Fi",
+    "Survival"
+  ],
   "synopsis": "A mission to another planet where everything wants to devour the crew.",
   "poster": "/images/posters/black-horizon-remastered.webp",
   "youtubeId": "dBYspFKwo6U",
-  "studio": "Domain Films AI"
+  "studio": "Domain Films AI",
+  "audienceReactions": [
+    {
+      "quote": "As 67-year-old who watched Star Wars and Jurassic Park, this is breath of fresh air.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Played like cut scene in adventure game, great action philosophy and monster battles.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Swear this was great, never expected myself watching AI movies but this was great.",
+      "author": "YouTube viewer"
+    }
+  ]
 }

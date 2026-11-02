@@ -4,9 +4,28 @@
   "year": 2026,
   "type": "movie",
   "duration": "1:12:50",
-  "genres": ["Epic Fantasy", "War"],
+  "genres": [
+    "Epic Fantasy",
+    "War"
+  ],
   "synopsis": "Seraphina's bone power and Highwing's eyes force a truce against an undead army.",
   "youtubeId": "0fytIDfQ13A",
   "studio": "Shanhay Studio",
-  "aiTools": ["AI 4K"]
+  "aiTools": [
+    "AI 4K"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "Absolute epic masterpiece, I need more of this dragon war saga immediately.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Magical when art captures imagination and fills with genuine wonder and warmth.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Awesome series, beautiful and cool, waiting for chapter three and four soon.",
+      "author": "YouTube viewer"
+    }
+  ]
 }

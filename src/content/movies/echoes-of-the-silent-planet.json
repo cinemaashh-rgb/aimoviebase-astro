@@ -4,7 +4,9 @@
   "year": 2026,
   "type": "movie",
   "duration": "13:02",
-  "genres": ["Sci-Fi"],
+  "genres": [
+    "Sci-Fi"
+  ],
   "synopsis": "A lone astronaut crashes on a silent planet and follows its ruins into the unknown.",
   "poster": "/images/posters/echoes-of-the-silent-planet.webp",
   "youtubeId": "yrOTWKWp6xA",
@@ -12,7 +14,13 @@
     "name": "Vincent Perez"
   },
   "studio": "Vincent Perez Films",
-  "aiTools": ["Veo 3", "Midjourney", "Runway", "Kling", "Seedance 2"],
+  "aiTools": [
+    "Veo 3",
+    "Midjourney",
+    "Runway",
+    "Kling",
+    "Seedance 2"
+  ],
   "awards": [
     "Winner, Award of Merit — One-Reeler Short Film Competition 2026",
     "Nominee, Best Sci-Fi Film — LAAIMPA, June 2026",
@@ -22,5 +30,19 @@
     "Honorable Mention — AI Film Awards Cannes 2026",
     "Finalist — One-Reeler Short Film Competition 2026",
     "Official Screening — TIAIF (Thailand International AI Film Festival) 2026"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "Beautiful world with blue tones and silver contrast jumps off screen dramatically.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Absolutely captivating and nightmarish, never seen anything like it, brilliantly done.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Totally badass, automatic sub, looking forward to seeing more of this series.",
+      "author": "YouTube viewer"
+    }
   ]
 }
