@@ -1,15 +1,15 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { articles } from '../../data/articles';
 
 export async function getStaticPaths() {
   const movies = await getCollection('movies');
+  const articles = await getCollection('articles');
   return articles.map((article) => {
-    const featured = article.featuredMovieSlug
-      ? movies.find((m) => m.id === article.featuredMovieSlug)
+    const featured = article.data.featuredMovieSlug
+      ? movies.find((m) => m.id === article.data.featuredMovieSlug)
       : undefined;
-    const related = articles.filter((a) => a.id !== article.id).slice(0, 3);
+    const related = articles.filter((other) => other.id !== article.id).slice(0, 3);
     return {
       params: { slug: article.id },
       props: { article, featured, related },
@@ -18,11 +18,12 @@ export async function getStaticPaths() {
 }
 
 interface Props {
-  article: (typeof articles)[number];
+  article: CollectionEntry<'articles'>;
   featured?: CollectionEntry<'movies'>;
-  related: (typeof articles)[number][];
+  related: CollectionEntry<'articles'>[];
 }
-const { article: a, featured, related } = Astro.props;
+const { article, featured, related } = Astro.props;
+const a = article.data;
 ---
 <BaseLayout title={a.title} description={a.excerpt}>
   <style>
@@ -136,10 +137,10 @@ const { article: a, featured, related } = Astro.props;
         {related.map((r) => (
           <a class="relatedCard" href={`/news/${r.id}`}>
             <div class="relatedImage">
-              {r.image ? <img src={r.image} alt={r.title} loading="lazy" /> : <div class="fallback">{r.title}</div>}
+              {r.data.image ? <img src={r.data.image} alt={r.data.title} loading="lazy" /> : <div class="fallback">{r.data.title}</div>}
             </div>
-            <h3>{r.title}</h3>
-            <small>{r.label} · {r.date}</small>
+            <h3>{r.data.title}</h3>
+            <small>{r.data.label} · {r.data.date}</small>
           </a>
         ))}
       </div>

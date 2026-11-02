@@ -1,12 +1,15 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { articles } from '../data/articles';
 
 // Real articles only — the reference mockup (aimb_journal_main.html) is an
 // explicit noindex,nofollow prototype with 9 cards, 6 of which have no
-// real article behind them anywhere in this project (see git history /
-// src/data/articles.ts for the fuller note). Each card here links to a
-// real permalink at /news/<id> (src/pages/news/[slug].astro).
+// real article behind them anywhere in this project (see the `articles`
+// content collection, src/content/articles, for the fuller note). Each
+// card here links to a real permalink at /news/<id> (src/pages/news/[slug].astro).
+const articles = (await getCollection('articles')).sort(
+  (a, b) => new Date(b.data.datetime).getTime() - new Date(a.data.datetime).getTime(),
+);
 ---
 <BaseLayout title="Journal" description="AIMB Journal: stories, interviews, filmmaking tools and news from the world of AI cinema.">
   <style>
@@ -46,11 +49,11 @@ import { articles } from '../data/articles';
     {articles.map((a) => (
       <a class="journalCard" href={`/news/${a.id}`}>
         <div class="journalCover">
-          {a.image ? <img src={a.image} alt={a.title} loading="lazy" /> : <div class="fallback">{a.title}</div>}
+          {a.data.image ? <img src={a.data.image} alt={a.data.title} loading="lazy" /> : <div class="fallback">{a.data.title}</div>}
         </div>
-        <div class="journalMeta">{a.label} • {a.date}</div>
-        <h2>{a.title}</h2>
-        <p>{a.excerpt}</p>
+        <div class="journalMeta">{a.data.label} • {a.data.date}</div>
+        <h2>{a.data.title}</h2>
+        <p>{a.data.excerpt}</p>
       </a>
     ))}
   </section>

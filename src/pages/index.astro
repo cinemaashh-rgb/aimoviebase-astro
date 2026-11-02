@@ -1,7 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { articles } from '../data/articles';
 const movies = await getCollection('movies');
 const notable = [...movies].sort((a, b) => b.data.year - a.data.year).slice(0, 6);
 
@@ -43,10 +42,12 @@ function taxonomy(movie: CollectionEntry<'movies'>) {
   return parts.join(' · ');
 }
 
-// Real journal content, shared with /news and /news/[slug] (src/data/
-// articles.ts) so the homepage teaser, the listing and each article's own
-// permalink never drift out of sync.
-const journal = articles;
+// Real journal content, shared with /news and /news/[slug] (the `articles`
+// content collection, src/content/articles) so the homepage teaser, the
+// listing and each article's own permalink never drift out of sync.
+const journal = (await getCollection('articles')).sort(
+  (a, b) => new Date(b.data.datetime).getTime() - new Date(a.data.datetime).getTime(),
+);
 ---
 <BaseLayout title="AI Movie Base" description="Discover AI-generated movies, AI films and series from filmmakers worldwide. Explore notable works, creator stories, AI short dramas and film festivals.">
   <style>
@@ -256,11 +257,11 @@ const journal = articles;
     <div class="journalGrid">
       {journal.map((j) => (
         <a class="story" href={`/news/${j.id}`}>
-          {j.image ? <img src={j.image} alt={j.title} loading="lazy" /> : <div class="storyFallback">{j.title}</div>}
-          <small>{j.label}</small>
-          <strong>{j.title}</strong>
-          <p>{j.excerpt}</p>
-          <time datetime={j.datetime}>{j.date}</time>
+          {j.data.image ? <img src={j.data.image} alt={j.data.title} loading="lazy" /> : <div class="storyFallback">{j.data.title}</div>}
+          <small>{j.data.label}</small>
+          <strong>{j.data.title}</strong>
+          <p>{j.data.excerpt}</p>
+          <time datetime={j.data.datetime}>{j.data.date}</time>
         </a>
       ))}
     </div>

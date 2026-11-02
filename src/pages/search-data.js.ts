@@ -1,7 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { creatorHasPage, studioHasPage } from '../lib/links';
-import { articles } from '../data/articles';
 
 // Single generated search index, replacing the original site's per-page
 // duplicated `_OLD_DATA_UNUSED` arrays (every one of the ~111 original HTML
@@ -11,13 +10,14 @@ import { articles } from '../data/articles';
 // no runtime cost and no server — just one array built from the actual
 // content collections every time the site builds.
 export const GET: APIRoute = async () => {
-  const [movies, creators, studios, genres, shortdrama, awards] = await Promise.all([
+  const [movies, creators, studios, genres, shortdrama, awards, articles] = await Promise.all([
     getCollection('movies'),
     getCollection('creators'),
     getCollection('studios'),
     getCollection('genres'),
     getCollection('shortdrama'),
     getCollection('awards'),
+    getCollection('articles'),
   ]);
 
   type Item = { title: string; href: string; sub: string; img?: string };
@@ -73,8 +73,8 @@ export const GET: APIRoute = async () => {
   }
 
   for (const article of articles) {
-    const item: Item = { title: article.title, href: `/news/${article.id}`, sub: `Journal · ${article.label}` };
-    if (article.image) item.img = article.image;
+    const item: Item = { title: article.data.title, href: `/news/${article.id}`, sub: `Journal · ${article.data.label}` };
+    if (article.data.image) item.img = article.data.image;
     items.push(item);
   }
 

@@ -218,4 +218,28 @@ const lists = defineCollection({
   }),
 });
 
-export const collections = { movies, creators, genres, studios, shortdrama, awards, lists };
+// AIMB Journal articles. Migrated from a hardcoded src/data/articles.ts
+// array to a real content collection so new articles can be added as plain
+// JSON files, the same way movies/awards/lists are, instead of editing a
+// TypeScript source file. `body` holds the actual paragraphs to publish:
+// every one of them is real reporting already vetted elsewhere in this
+// project, not expanded with invented quotes or section headings. An
+// article stays exactly as long as what's actually known — no padding to
+// look like a longer piece.
+const articles = defineCollection({
+  type: 'data',
+  schema: z.object({
+    label: z.string(),
+    date: z.string(),
+    datetime: z.string(),
+    title: z.string(),
+    excerpt: z.string(),
+    image: z.string().optional(),
+    body: z.array(z.string()),
+    // The movie this article is about, when there is one in the catalog —
+    // renders the "Featured film" aside linking to its real page/poster.
+    featuredMovieSlug: z.string().optional(),
+  }),
+});
+
+export const collections = { movies, creators, genres, studios, shortdrama, awards, lists, articles };
