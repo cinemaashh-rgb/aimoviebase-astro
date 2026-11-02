@@ -87,9 +87,9 @@ const sections = genres
     .empty-preview p { margin: 0; max-width: 620px; font: 13px/1.65 var(--sans); color: #7a8290; }
 
     .more-area { text-align: center; padding: 30px 0 8px; }
-    .more-btn { border: 1px solid #d7d9db; background: #fff; border-radius: 4px; padding: 13px 26px; color: #15191d; font-weight: 600; font-size: .85rem; cursor: pointer; transition: border-color .2s, background .2s, color .2s; }
+    .more-btn { border: 1px solid #15191d; background: #15191d; border-radius: 4px; padding: 13px 26px; color: #fff; font-weight: 600; font-size: .85rem; cursor: pointer; transition: border-color .2s, background .2s, color .2s; }
     .more-btn[hidden] { display: none; }
-    .more-btn:hover { background: #fff5f0; border-color: #cf6246; color: #ad4a34; }
+    .more-btn:hover { background: #cf6246; border-color: #cf6246; color: #fff; }
     .more-btn:focus-visible { outline: 2px solid #cf6246; outline-offset: 3px; }
 
     @media (max-width: 1000px) {
@@ -171,7 +171,7 @@ const sections = genres
         </section>
       ))}
       <div class="more-area">
-        <button class="more-btn" id="more-btn" type="button">Load more genres</button>
+        <button class="more-btn" id="more-btn" type="button">More genres</button>
       </div>
     </div>
   </div>
@@ -198,7 +198,7 @@ const sections = genres
         visible = Math.min(sections.length, Math.max(visible, targetCount));
         sections.forEach(function (section, index) { section.hidden = index >= visible; });
         button.hidden = visible >= sections.length;
-        if (!button.hidden) button.textContent = 'Load more genres (' + (sections.length - visible) + ' remaining)';
+        if (!button.hidden) button.textContent = 'More genres';
       }
 
       function navigateToGenre(slug, replaceHash) {
