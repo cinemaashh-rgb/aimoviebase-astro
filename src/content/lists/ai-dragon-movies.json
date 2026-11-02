@@ -1,0 +1,13 @@
+{
+  "name": "AI Dragon Movies",
+  "description": "AI-generated fantasy films and series built around dragons — from origin myths to kingdoms at war, across several different studios.",
+  "placeholder": true,
+  "movies": [
+    "dragonbone-continent",
+    "dragonbone-continent-chapter-2",
+    "dragonbound-girl-dragon-chose",
+    "her-own-dragons-turned-against-her",
+    "last-dragon-war-of-kingdoms",
+    "nobody-was-coming-to-save-the-last-king"
+  ]
+}
