@@ -133,9 +133,8 @@ const journal = (await getCollection('articles')).sort(
     .shortLayout { display: grid; grid-template-columns: minmax(0,1fr) 350px; gap: 40px; align-items: center; }
     .shortCopy h2 { font-size: clamp(30px,3vw,40px); margin: 0 0 11px; }
     .shortHeadingLink { display: inline-flex; align-items: center; gap: 13px; text-decoration: none; }
-    .shortHeadingLink .label { color: var(--ink); transition: color .2s ease; }
+    .shortHeadingLink .label { color: var(--ink); }
     .shortHeadingLink .arrow { font-weight: 900; font-size: 1.3rem; line-height: 1; color: var(--ink); transition: color .2s ease, transform .2s ease; }
-    .shortHeadingLink:hover .label, .shortHeadingLink:focus-visible .label { color: #cf6246; }
     .shortHeadingLink:hover .arrow, .shortHeadingLink:focus-visible .arrow { color: #cf6246; transform: translateX(6px); }
     .shortCopy p { color: var(--muted); font-size: .88rem; line-height: 1.55; margin: 0; max-width: 480px; }
     .shortGallery { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; background: var(--soft); border-radius: 8px; padding: 10px; }
