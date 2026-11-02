@@ -45,9 +45,9 @@ function taxonomy(movie: CollectionEntry<'movies'>) {
 // Real journal content, shared with /news and /news/[slug] (the `articles`
 // content collection, src/content/articles) so the homepage teaser, the
 // listing and each article's own permalink never drift out of sync.
-const journal = (await getCollection('articles')).sort(
-  (a, b) => new Date(b.data.datetime).getTime() - new Date(a.data.datetime).getTime(),
-);
+const journal = (await getCollection('articles'))
+  .sort((a, b) => new Date(b.data.datetime).getTime() - new Date(a.data.datetime).getTime())
+  .slice(0, 3);
 ---
 <BaseLayout title="AI Movie Base" description="Discover AI-generated movies, AI films and series from filmmakers worldwide. Explore notable works, creator stories, AI short dramas and film festivals.">
   <style>
