@@ -26,7 +26,7 @@ const awards = await getCollection('awards');
 // however many actually have one) rather than a single cropped cover —
 // matching the homepage reference's list-card art without inventing
 // artwork for lists that don't have six real posters.
-const homeLists = await getCollection('lists');
+const homeLists = (await getCollection('lists')).slice(0, 4);
 function listPosters(list: CollectionEntry<'lists'>, max = 6) {
   return list.data.movies
     .map((slug) => movies.find((m) => m.id === slug))
@@ -79,9 +79,10 @@ const journal = (await getCollection('articles')).sort(
     .hero h1 { color: #fff; font-size: clamp(42px,5.2vw,68px); line-height: .99; letter-spacing: -0.03em; margin: 14px 0 18px; text-shadow: 0 2px 14px rgba(0,0,0,.65); }
     .hero p { color: #fff; font-size: .96rem; line-height: 1.6; margin: 0 0 22px; max-width: 460px; text-shadow: 0 2px 14px rgba(0,0,0,.65); }
     .heroActions { display: flex; gap: 10px; flex-wrap: wrap; }
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 42px; font-size: .78rem; font-weight: 700; padding: 11px 18px; border-radius: 3px; border: 1px solid var(--line); background: #fff; color: var(--ink); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 42px; font-size: .78rem; font-weight: 700; padding: 11px 18px; border-radius: 3px; border: 1px solid var(--line); background: #fff; color: var(--ink); transition: border-color .2s ease, box-shadow .2s ease; }
     .btn.primary { background: var(--black); color: #fff; border-color: var(--black); }
     .btn:hover { opacity: .85; color: inherit; }
+    .btn.primary:hover, .btn.primary:focus-visible { opacity: 1; border-color: #cf6246; box-shadow: 0 0 0 1px rgba(207,98,70,.5), 0 0 22px rgba(224,115,78,.55); }
 
     /* ---- Shared section chrome ---- */
     /* The whole heading is one clickable link (title + chevron), the same
@@ -106,22 +107,20 @@ const journal = (await getCollection('articles')).sort(
     .filmGrid a:hover strong, .filmGrid a:focus-visible strong { color: #cf6246; }
     .filmGrid strong { font-family: var(--serif); font-size: .92rem; margin-top: 10px; line-height: 1.22; font-weight: 700; }
     .filmGrid .taxonomy { display: block; margin-top: 5px; font-size: .72rem; color: var(--muted2); }
-    .filmGrid .awardLine { display: flex; align-items: flex-start; gap: 5px; margin-top: 6px; font-size: .72rem; color: var(--muted); line-height: 1.35; }
-    .filmGrid .awardLine::before { content: '✦'; color: #a77820; flex: none; }
 
     /* ---- AI Film Lists — fanned poster stack, like the reference ---- */
-    .listsGrid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 30px 26px; }
+    .listsGrid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 22px 16px; }
     .listsGrid .listCard { display: block; color: inherit; }
-    .listsGrid .listArt { position: relative; isolation: isolate; overflow: hidden; aspect-ratio: 1.39/1; background: #fff; border: 1px solid var(--line); border-radius: 8px; }
+    .listsGrid .listArt { position: relative; isolation: isolate; overflow: hidden; aspect-ratio: 1.39/1; background: #fff; border: 1px solid var(--line); border-radius: 6px; }
     .listsGrid .listCover { position: absolute; top: 0; bottom: 0; height: 100%; object-fit: cover; object-position: center; box-shadow: -2px 0 9px rgba(0,0,0,.15); }
-    .listsGrid .posterFallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .78rem; font-weight: 700; text-align: center; padding: 10px; }
-    .listsGrid h3 { font-family: var(--serif); font-size: 1.3rem; line-height: 1.2; margin: 14px 0 0; font-weight: 700; }
+    .listsGrid .posterFallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .64rem; font-weight: 700; text-align: center; padding: 8px; }
+    .listsGrid h3 { font-family: var(--serif); font-size: .96rem; line-height: 1.2; margin: 10px 0 0; font-weight: 700; }
     .listsGrid .listCard:hover h3 { color: #cf6246; }
-    .listsGrid .count { font-size: .76rem; color: var(--muted2); margin: 6px 0 0; }
-    .listsGrid .placeholderTag { display: inline-block; font-size: .6rem; text-transform: uppercase; letter-spacing: .04em; background: var(--soft); color: var(--muted2); border-radius: 4px; padding: 2px 6px; margin-left: 5px; vertical-align: middle; }
+    .listsGrid .count { font-size: .68rem; color: var(--muted2); margin: 4px 0 0; }
+    .listsGrid .placeholderTag { display: inline-block; font-size: .56rem; text-transform: uppercase; letter-spacing: .04em; background: var(--soft); color: var(--muted2); border-radius: 4px; padding: 2px 5px; margin-left: 4px; vertical-align: middle; }
 
     /* ---- Journal ---- */
-    .journalGrid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 22px; }
+    .journalGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 22px; }
     .story { display: block; color: inherit; text-decoration: none; }
     .story img, .story .storyFallback { width: 100%; aspect-ratio: 1.75/1; object-fit: cover; border-radius: 4px; background: var(--soft); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .8rem; font-weight: 700; text-align: center; padding: 10px; }
     .story small { display: block; margin-top: 9px; font-size: .62rem; text-decoration: underline; letter-spacing: .06em; color: var(--muted2); text-transform: uppercase; }
@@ -134,9 +133,9 @@ const journal = (await getCollection('articles')).sort(
     .shortLayout { display: grid; grid-template-columns: minmax(0,1fr) 350px; gap: 40px; align-items: center; }
     .shortCopy h2 { font-size: clamp(30px,3vw,40px); margin: 0 0 11px; }
     .shortHeadingLink { display: inline-flex; align-items: center; gap: 13px; color: inherit; text-decoration: none; }
-    .shortHeadingLink .arrow { font-size: .64em; color: #cf6246; transition: transform .2s ease; }
+    .shortHeadingLink .arrow { font-weight: 900; font-size: 1.3rem; line-height: 1; color: var(--ink); transition: color .2s ease, transform .2s ease; }
     .shortHeadingLink:hover, .shortHeadingLink:focus-visible { color: #cf6246; }
-    .shortHeadingLink:hover .arrow, .shortHeadingLink:focus-visible .arrow { transform: translateX(5px); }
+    .shortHeadingLink:hover .arrow, .shortHeadingLink:focus-visible .arrow { color: #cf6246; transform: translateX(6px); }
     .shortCopy p { color: var(--muted); font-size: .88rem; line-height: 1.55; margin: 0; max-width: 480px; }
     .shortGallery { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; background: var(--soft); border-radius: 8px; padding: 10px; }
     .shortGallery a { display: block; }
@@ -181,10 +180,10 @@ const journal = (await getCollection('articles')).sort(
       .shortGallery { max-width: 420px; }
       .festivalGrid { grid-template-columns: repeat(3,minmax(0,1fr)); }
       .newsletterIn { grid-template-columns: 1fr; }
+      .listsGrid { grid-template-columns: repeat(2,minmax(0,1fr)); }
     }
     @media (max-width: 650px) {
       .festivalGrid { grid-template-columns: repeat(2,minmax(0,1fr)); }
-      .listsGrid { grid-template-columns: 1fr; }
     }
   </style>
 
@@ -243,7 +242,6 @@ const journal = (await getCollection('articles')).sort(
             )}
             <strong>{movie.data.title}</strong>
             <span class="taxonomy">{taxonomy(movie)}</span>
-            <span class="awardLine">{movie.data.awards[0]}</span>
           </a>
         ))}
       </div>
@@ -307,7 +305,7 @@ const journal = (await getCollection('articles')).sort(
   <section class="section">
     <div class="shortLayout">
       <div class="shortCopy">
-        <h2><a class="shortHeadingLink" href="/short-drama">Discover AI Short Dramas<span class="arrow" aria-hidden="true">→</span></a></h2>
+        <h2><a class="shortHeadingLink" href="/short-drama">Discover AI Short Dramas<span class="arrow" aria-hidden="true">❯</span></a></h2>
         <p>Explore a new form of vertical, episodic storytelling. AI short dramas combine compact stories, new production techniques and emerging creative voices.</p>
       </div>
       <div class="shortGallery">
