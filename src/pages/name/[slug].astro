@@ -118,18 +118,21 @@ const awardsList = [
     .filmCard .filmTags span { background: var(--soft); border-radius: 3px; color: var(--muted); font-size: .64rem; padding: 3px 7px; }
     .filmCard[hidden] { display: none; }
 
-    /* ---- Awards & Recognition ---- */
-    .awardCard { flex: 0 0 340px; scroll-snap-align: start; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: flex; gap: 16px; align-items: center; }
-    .awardCard .mark { flex: 0 0 44px; width: 44px; height: 44px; border-radius: 10px; background: var(--soft); color: #a77820; display: flex; align-items: center; justify-content: center; }
-    .awardCard strong { display: block; font-family: var(--serif); font-size: 1rem; line-height: 1.25; }
-    .awardCard small { color: var(--muted2); font-size: .76rem; display: block; margin-top: 7px; line-height: 1.4; }
-
-    /* ---- Creative stack ---- */
-    .toolCard { flex: 0 0 148px; scroll-snap-align: start; border: 1px solid var(--line); min-height: 118px; border-radius: 8px; padding: 12px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px; text-align: center; }
-    .toolCard:hover { border-color: #b3beca; }
-    .toolCard strong { font-size: .78rem; display: block; }
-    .toolCard small { font-size: .7rem; color: var(--muted2); display: block; }
-    .toolmark { width: 36px; height: 36px; border-radius: 8px; display: grid; place-items: center; font-size: 1.15rem; font-weight: 800; margin-bottom: 4px; }
+    /* ---- Production tools / Awards — same vertical-list sidebar card
+       used on the movie page (src/pages/movies/[slug].astro), so a
+       creator's tools and awards read the same way as a film's. ---- */
+    .toolsPanel { max-width: 420px; border: 1px solid var(--line); border-radius: 6px; padding: 0 18px; background: #fff; }
+    .panelSection { padding: 18px 0; border-bottom: 1px solid var(--line); }
+    .panelSection:last-child { border-bottom: 0; }
+    .panelSection h3 { font: 700 1.05rem/1.2 var(--serif); margin: 0 0 14px; }
+    .toolRow { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font-size: .82rem; }
+    .toolRow:last-child { margin-bottom: 0; }
+    .toolIcon { width: 32px; height: 32px; border-radius: 7px; display: grid; place-items: center; font-weight: 750; font-size: .95rem; flex-shrink: 0; }
+    .toolRow strong { display: block; font-weight: 600; }
+    .toolRow small { display: block; font-size: .72rem; color: var(--muted2); }
+    .awardChip { font-size: .82rem; padding: 8px 0; color: var(--ink); border-top: 1px dashed var(--line); }
+    .awardChip:first-child { border-top: 0; }
+    .awardChip small { display: block; color: var(--muted2); font-size: .74rem; margin-top: 2px; }
 
     @media (max-width: 860px) {
       .personHero { grid-template-columns: 130px 1fr; gap: 20px; }
@@ -213,47 +216,29 @@ const awardsList = [
     )}
   </section>
 
-  {awardsList.length > 0 && (
-    <section class="hsection" id="recognition">
-      <div class="hheading">
-        <h2>Awards &amp; Recognition</h2>
-        <div class="arrowNav">
-          <button type="button" data-scroll="awards" data-direction="-1" aria-label="Previous awards">‹</button>
-          <button type="button" data-scroll="awards" data-direction="1" aria-label="Next awards">›</button>
-        </div>
-      </div>
-      <div class="hscroll" id="awards">
-        {awardsList.map((a) => (
-          <div class="awardCard">
-            <span class="mark"><Icon name="laurel" size={22} /></span>
-            <div>
-              <strong>{a.title}</strong>
-              {a.note && <small>{a.note}</small>}
-            </div>
+  {(creativeStack.length > 0 || awardsList.length > 0) && (
+    <section class="hsection" aria-label="Production tools and awards">
+      <div class="toolsPanel">
+        {creativeStack.length > 0 && (
+          <div class="panelSection">
+            <h3>Production tools</h3>
+            {creativeStack.map((t) => (
+              <div class="toolRow">
+                <span class="toolIcon" style={`background:${t.meta.bg};color:${t.meta.fg};${t.meta.border ? `border:1px solid ${t.meta.border};` : ''}`}>{t.meta.image ? <img src={t.meta.image} alt="" width="20" height="20" style="border-radius:5px;" /> : t.meta.icon}</span>
+                <span><strong>{t.name}</strong><small>{t.meta.category}</small></span>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </section>
-  )}
+        )}
 
-  {creativeStack.length > 0 && (
-    <section class="hsection" id="stack" aria-labelledby="stack-heading">
-      <div class="hheading">
-        <h2 id="stack-heading">Creative stack</h2>
-        <div class="arrowNav">
-          <button type="button" data-scroll="toolScroll" data-direction="-1" aria-label="Previous tools">‹</button>
-          <button type="button" data-scroll="toolScroll" data-direction="1" aria-label="Next tools">›</button>
-        </div>
-      </div>
-      <p class="hintro">Tools used across {c.alias || c.name}'s films, aggregated from AIMB catalog credits.</p>
-      <div class="hscroll" id="toolScroll">
-        {creativeStack.map((t) => (
-          <div class="toolCard">
-            <span class="toolmark" style={`background:${t.meta.bg};color:${t.meta.fg};${t.meta.border ? `border:1px solid ${t.meta.border};` : ''}`}>{t.meta.image ? <img src={t.meta.image} alt="" width="22" height="22" style="border-radius:6px;" /> : t.meta.icon}</span>
-            <strong>{t.name}</strong>
-            <small>{t.count} film{t.count === 1 ? '' : 's'}</small>
+        {awardsList.length > 0 && (
+          <div class="panelSection">
+            <h3>Awards</h3>
+            {awardsList.map((a) => (
+              <div class="awardChip">{a.title}{a.note && <small>{a.note}</small>}</div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
     </section>
   )}
