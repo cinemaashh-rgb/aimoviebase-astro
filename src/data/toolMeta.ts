@@ -53,6 +53,7 @@ const TOOL_META: [string, ToolMeta][] = [
   ['seedance', { icon: 'S', category: 'Video Generation', bg: '#101319', fg: '#fff' }],
   ['seedream', { icon: 'S', category: 'Image Generation', bg: '#fff', fg: '#101319', border: '#101319' }],
   ['cinematic studio', { icon: '◆', category: 'Higgsfield Workflow', bg: '#101319', fg: '#fff' }],
+  ['cinema studio', { icon: '◆', category: 'Higgsfield Workflow', bg: '#101319', fg: '#fff' }],
   ['soul cinematic', { icon: '◆', category: 'Higgsfield Workflow', bg: '#101319', fg: '#fff' }],
   ['suno', { icon: '♪', category: 'Music Generation', bg: '#101319', fg: '#fff' }],
   ['topaz', { icon: 'T', category: 'Upscaling & Restoration', bg: '#101319', fg: '#fff' }],

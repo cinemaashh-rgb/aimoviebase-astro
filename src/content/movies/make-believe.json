@@ -3,7 +3,7 @@
   "title": "MAKE BELIEVE",
   "year": 2026,
   "type": "movie",
-  "duration": "13:21",
+  "duration": "13:20",
   "genres": [
     "Fantasy"
   ],
@@ -16,6 +16,15 @@
   },
   "awards": [
     "Higgsfield Global Film Festival 2026 selection"
+  ],
+  "aiTools": [
+    "Nano Banana Pro",
+    "Seedream 5.0 Pro",
+    "Soul Cinematic",
+    "GPT Image 2.0",
+    "Seedance 2.5",
+    "Nano Banana 2",
+    "GPT Image 2.5"
   ],
   "audienceReactions": [
     {

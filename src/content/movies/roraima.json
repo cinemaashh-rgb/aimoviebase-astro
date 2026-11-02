@@ -3,7 +3,7 @@
   "title": "RORAIMA",
   "year": 2026,
   "type": "movie",
-  "duration": "11:12",
+  "duration": "11:11",
   "genres": [
     "Fantasy"
   ],
@@ -16,6 +16,10 @@
   },
   "awards": [
     "Higgsfield Global Film Festival selection"
+  ],
+  "aiTools": [
+    "GPT Image 2.0",
+    "Seedance 2.5"
   ],
   "audienceReactions": [
     {
