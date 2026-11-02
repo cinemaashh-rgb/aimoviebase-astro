@@ -6,6 +6,8 @@
   "genres": ["Comedy", "Adventure"],
   "synopsis": "A devoted drive-in movie fan finally gets the chance to become the hero of his own story. What begins as an ordinary night at the movies turns into an unexpected mission.",
   "poster": "/images/posters/the-field-agent.webp",
+  "youtubeId": "wzFqV0AQGRU",
+  "aiTools": ["Nano Banana Pro", "Seedance 2.5"],
   "awards": [
     "3rd Place — Higgsfield Global Film Festival 2026"
   ]

@@ -6,6 +6,8 @@
   "genres": ["Anime", "Horror", "Romance"],
   "synopsis": "Against the neon-lit backdrop of a world inspired by 1990s anime, romance and desire collide with secrecy and supernatural darkness. A story about trust, attraction and the disturbing truths that hide beneath appearances.",
   "poster": "/images/posters/girls-demons.webp",
+  "youtubeId": "6CHHa0MNzxA",
+  "aiTools": ["Soul Cinematic", "Seedance 2.0", "GPT Image 2.5", "GPT Image 2.0"],
   "awards": [
     "Honorable Mention — Higgsfield Global Film Festival 2026"
   ]

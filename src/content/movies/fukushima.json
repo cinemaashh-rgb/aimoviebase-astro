@@ -6,6 +6,8 @@
   "genres": ["Drama", "Thriller", "Historical"],
   "synopsis": "At the Fukushima Daiichi nuclear power plant, a veteran engineer believes the facility can withstand a devastating natural disaster. As the catastrophe unfolds, his confidence gives way to an escalating fight against forces beyond human control.",
   "poster": "/images/posters/fukushima.webp",
+  "youtubeId": "IrYiXEO8WpY",
+  "aiTools": ["Seedream 5.0 Pro", "GPT Image 2.0", "GPT Image 2.5", "Seedance 2.5"],
   "awards": [
     "2nd Place — Higgsfield Global Film Festival 2026"
   ]

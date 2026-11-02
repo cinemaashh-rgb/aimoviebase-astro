@@ -6,6 +6,8 @@
   "genres": ["Sci-Fi", "Drama", "Thriller"],
   "synopsis": "After a self-driving car accident destroys a jazz pianist's ability to play, a robotic dog named Maxwell helps him rediscover music. But as public fear of artificial intelligence intensifies, their unusual friendship faces a deadly threat.",
   "poster": "/images/posters/soulless.webp",
+  "youtubeId": "hjhHLXZY2nY",
+  "aiTools": ["Seedream 5.0 Pro", "Seedance 2.5", "GPT Image 2.0", "Topaz Video"],
   "awards": [
     "Honorable Mention — Higgsfield Global Film Festival 2026"
   ]
