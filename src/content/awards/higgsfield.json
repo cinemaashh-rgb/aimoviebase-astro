@@ -18,9 +18,9 @@
       "lede": "The four headline awards, including the audience-selected winner.",
       "winners": [
         { "place": "1st Place", "title": "Listen to Meh", "director": "@rococo_table_radical", "poster": "/images/awards/listen-to-meh.webp", "prize": "$500,000", "notes": [] },
-        { "place": "2nd Place", "title": "Fukushima", "director": "@aist", "poster": "/images/awards/fukushima.webp", "prize": "$200,000", "notes": [] },
-        { "place": "3rd Place", "title": "The Field Agent", "director": "@zackmmurray", "poster": "/images/awards/the-field-agent.webp", "prize": "$100,000", "notes": [] },
-        { "place": "Audience Choice", "title": "The Tortoise and the Hare", "director": "@benhamin", "poster": "/images/awards/the-tortoise-and-the-hare.webp", "prize": "$100,000", "notes": [] }
+        { "place": "2nd Place", "title": "Fukushima", "movieSlug": "fukushima", "director": "@aist", "poster": "/images/awards/fukushima.webp", "prize": "$200,000", "notes": [] },
+        { "place": "3rd Place", "title": "The Field Agent", "movieSlug": "the-field-agent", "director": "@zackmmurray", "poster": "/images/awards/the-field-agent.webp", "prize": "$100,000", "notes": [] },
+        { "place": "Audience Choice", "title": "The Tortoise and the Hare", "movieSlug": "the-tortoise-and-the-hare", "director": "@benhamin", "poster": "/images/awards/the-tortoise-and-the-hare.webp", "prize": "$100,000", "notes": [] }
       ]
     },
     {
@@ -28,15 +28,15 @@
       "eyebrow": "More Award-Winning Films",
       "lede": "Ten additional films were awarded $10,000 each.",
       "winners": [
-        { "place": "Honorable Mention", "title": "BALLAST", "director": "@lejardinier", "poster": "/images/awards/ballast.webp", "prize": "$10,000", "notes": [] },
-        { "place": "Honorable Mention", "title": "FIX", "director": "@production_pi_korea", "poster": "/images/awards/fix.webp", "prize": "$10,000", "notes": [] },
-        { "place": "Honorable Mention", "title": "ROAR", "director": "@vermeer_ice_9000", "poster": "/images/awards/roar.webp", "prize": "$10,000", "notes": [] },
-        { "place": "Honorable Mention", "title": "Soulless", "director": "@yoav_yariv", "poster": "/images/awards/soulless.webp", "prize": "$10,000", "notes": [] },
+        { "place": "Honorable Mention", "title": "BALLAST", "movieSlug": "ballast", "director": "@lejardinier", "poster": "/images/awards/ballast.webp", "prize": "$10,000", "notes": [] },
+        { "place": "Honorable Mention", "title": "FIX", "movieSlug": "fix", "director": "@production_pi_korea", "poster": "/images/awards/fix.webp", "prize": "$10,000", "notes": [] },
+        { "place": "Honorable Mention", "title": "ROAR", "movieSlug": "roar", "director": "@vermeer_ice_9000", "poster": "/images/awards/roar.webp", "prize": "$10,000", "notes": [] },
+        { "place": "Honorable Mention", "title": "Soulless", "movieSlug": "soulless", "director": "@yoav_yariv", "poster": "/images/awards/soulless.webp", "prize": "$10,000", "notes": [] },
         { "place": "Honorable Mention", "title": "THE COAT", "director": "@davidacfilm", "prize": "$10,000", "notes": [] },
-        { "place": "Honorable Mention", "title": "Morek", "director": "@zezumre", "poster": "/images/awards/morek.webp", "prize": "$10,000", "notes": [] },
-        { "place": "Honorable Mention", "title": "Lullaby", "director": "@keigo_matsumaru", "poster": "/images/awards/lullaby.webp", "prize": "$10,000", "notes": [] },
-        { "place": "Honorable Mention", "title": "GIRLS / DEMONS", "director": "@tambv", "poster": "/images/awards/girls-demons.webp", "prize": "$10,000", "notes": [] },
-        { "place": "Honorable Mention", "title": "The Elevator", "director": "@curious_media_2026", "poster": "/images/awards/the-elevator.webp", "prize": "$10,000", "notes": [] },
+        { "place": "Honorable Mention", "title": "Morek", "movieSlug": "morek", "director": "@zezumre", "poster": "/images/awards/morek.webp", "prize": "$10,000", "notes": [] },
+        { "place": "Honorable Mention", "title": "Lullaby", "movieSlug": "lullaby", "director": "@keigo_matsumaru", "poster": "/images/awards/lullaby.webp", "prize": "$10,000", "notes": [] },
+        { "place": "Honorable Mention", "title": "GIRLS / DEMONS", "movieSlug": "girls-demons", "director": "@tambv", "poster": "/images/awards/girls-demons.webp", "prize": "$10,000", "notes": [] },
+        { "place": "Honorable Mention", "title": "The Elevator", "movieSlug": "the-elevator", "director": "@curious_media_2026", "poster": "/images/awards/the-elevator.webp", "prize": "$10,000", "notes": [] },
         { "place": "Honorable Mention", "title": "HUNGER", "director": "@sssacccade", "prize": "$10,000", "notes": [] }
       ]
     }

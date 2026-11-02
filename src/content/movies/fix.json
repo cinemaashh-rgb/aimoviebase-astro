@@ -1,0 +1,12 @@
+{
+  "movie_id": "ac1c56d1-d7a1-499e-bdee-a7fb362399cf",
+  "title": "FIX",
+  "year": 2026,
+  "type": "movie",
+  "genres": ["Animation", "Fantasy", "Drama"],
+  "synopsis": "In a delicate world made entirely of folded paper, an anxious middle-school singer discovers a real pushpin with the extraordinary power to hold anything in place. The discovery promises control in a world where everything feels uncertain.",
+  "poster": "/images/posters/fix.webp",
+  "awards": [
+    "Honorable Mention — Higgsfield Global Film Festival 2026"
+  ]
+}

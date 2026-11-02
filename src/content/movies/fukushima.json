@@ -1,0 +1,12 @@
+{
+  "movie_id": "7795ffe0-ae93-40a8-80dd-661ae31a4746",
+  "title": "Fukushima",
+  "year": 2026,
+  "type": "movie",
+  "genres": ["Drama", "Thriller", "Historical"],
+  "synopsis": "At the Fukushima Daiichi nuclear power plant, a veteran engineer believes the facility can withstand a devastating natural disaster. As the catastrophe unfolds, his confidence gives way to an escalating fight against forces beyond human control.",
+  "poster": "/images/posters/fukushima.webp",
+  "awards": [
+    "2nd Place — Higgsfield Global Film Festival 2026"
+  ]
+}

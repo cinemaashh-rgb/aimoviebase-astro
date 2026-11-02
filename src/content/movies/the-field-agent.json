@@ -1,0 +1,12 @@
+{
+  "movie_id": "4e440b1c-0029-4f06-8fab-aae2124a6699",
+  "title": "The Field Agent",
+  "year": 2026,
+  "type": "movie",
+  "genres": ["Comedy", "Adventure"],
+  "synopsis": "A devoted drive-in movie fan finally gets the chance to become the hero of his own story. What begins as an ordinary night at the movies turns into an unexpected mission.",
+  "poster": "/images/posters/the-field-agent.webp",
+  "awards": [
+    "3rd Place — Higgsfield Global Film Festival 2026"
+  ]
+}

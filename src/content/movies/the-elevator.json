@@ -1,0 +1,12 @@
+{
+  "movie_id": "a56af271-e28f-4f57-b465-aa54c7482a73",
+  "title": "The Elevator",
+  "year": 2026,
+  "type": "movie",
+  "genres": ["Mystery", "Thriller", "Fantasy"],
+  "synopsis": "An ordinary elevator ride becomes a descent into the impossible. Across nine increasingly surreal floors, a man encounters bizarre realities that draw him toward an unavoidable personal reckoning.",
+  "poster": "/images/posters/the-elevator.webp",
+  "awards": [
+    "Honorable Mention — Higgsfield Global Film Festival 2026"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "movie_id": "2b6f8698-30c6-4b91-a0a6-6b290bbc8437",
+  "title": "Ballast",
+  "year": 2026,
+  "type": "movie",
+  "genres": ["Animation", "Adventure", "Drama"],
+  "synopsis": "A hermit crab dreams of flying alongside the seabirds above its coastal home. Using discarded objects washed ashore, it builds a pair of wings and sets out to turn an impossible dream into reality.",
+  "poster": "/images/posters/ballast.webp",
+  "awards": [
+    "Honorable Mention — Higgsfield Global Film Festival 2026"
+  ]
+}

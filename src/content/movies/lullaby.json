@@ -1,0 +1,12 @@
+{
+  "movie_id": "b116d3bb-c1e3-4ab1-9530-3dc010565d85",
+  "title": "Lullaby",
+  "year": 2026,
+  "type": "movie",
+  "genres": ["Animation", "Fantasy", "Adventure"],
+  "synopsis": "Iris must return three living swords to the earth in an animated fantasy about duty, belonging and separation. Her journey becomes a deeply personal farewell to the family that raised her.",
+  "poster": "/images/posters/lullaby.webp",
+  "awards": [
+    "Honorable Mention — Higgsfield Global Film Festival 2026"
+  ]
+}

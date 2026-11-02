@@ -1,0 +1,12 @@
+{
+  "movie_id": "76c03f1b-2f89-40a9-952e-5499b19afa06",
+  "title": "ROAR",
+  "year": 2026,
+  "type": "movie",
+  "genres": ["Adventure", "Family", "Fantasy"],
+  "synopsis": "A father and daughter explore a breathtaking dinosaur park, sharing moments of wonder that become lasting memories. Their journey explores childhood imagination, family connections and the emotional power of experiences shared across generations.",
+  "poster": "/images/posters/roar.webp",
+  "awards": [
+    "Honorable Mention — Higgsfield Global Film Festival 2026"
+  ]
+}

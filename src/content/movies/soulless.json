@@ -1,0 +1,12 @@
+{
+  "movie_id": "a784f423-7018-4eb9-aad6-60e2091cd4e0",
+  "title": "Soulless",
+  "year": 2026,
+  "type": "movie",
+  "genres": ["Sci-Fi", "Drama", "Thriller"],
+  "synopsis": "After a self-driving car accident destroys a jazz pianist's ability to play, a robotic dog named Maxwell helps him rediscover music. But as public fear of artificial intelligence intensifies, their unusual friendship faces a deadly threat.",
+  "poster": "/images/posters/soulless.webp",
+  "awards": [
+    "Honorable Mention — Higgsfield Global Film Festival 2026"
+  ]
+}
