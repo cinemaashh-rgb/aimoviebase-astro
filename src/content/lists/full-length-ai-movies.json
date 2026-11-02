@@ -1,0 +1,20 @@
+{
+  "name": "Full-Length AI Movies",
+  "description": "Feature-length AI-generated films, 35 minutes and up — from independent productions to ambitious full-length releases, ranked longest first.",
+  "placeholder": true,
+  "movies": [
+    "nobody-was-coming-to-save-the-last-king",
+    "last-dragon-war-of-kingdoms",
+    "rapunzel-2-world-of-florna",
+    "hell-grind",
+    "her-own-dragons-turned-against-her",
+    "black-horizon-remastered",
+    "dragonbone-continent-chapter-2",
+    "epoch-of-voyages-ep1",
+    "invasion-battle-for-new-york",
+    "inside-the-whale",
+    "dragonbound-girl-dragon-chose",
+    "last-siren",
+    "dragonbone-continent"
+  ]
+}
