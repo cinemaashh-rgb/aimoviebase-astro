@@ -190,7 +190,7 @@ const mobileCreators = [
       .factsLine { font-size: .94rem; line-height: 1.55; margin-bottom: 16px; color: #717780; }
       .hero .synopsis { font-size: 1rem; line-height: 1.48; text-align: left; margin: 20px 0 0; color: #262a30; max-width: none; }
       .hero .tags { display: none; }
-      .hero .actions { display: flex; justify-content: center; gap: 10px; }
+      .hero .actions { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }
       .hero .watch { flex: 1; max-width: 325px; height: 46px; border-radius: 9px; }
       .hero .shareBtn { height: 46px; width: 46px; border-radius: 9px; }
 
@@ -303,7 +303,7 @@ const mobileCreators = [
             {m.audienceReactions.map((r) => (
               <div class="reaction">
                 <div class="reactionTop">
-                  <span class="ytBadge" aria-hidden="true">▶</span>
+                  <span class="ytBadge" aria-hidden="true"><svg viewBox="0 0 16 16" width="9" height="9" fill="currentColor"><path d="M3 1.5v13l11-6.5-11-6.5z"/></svg></span>
                   <p class="quote">"{r.quote}"</p>
                 </div>
                 <div class="author">— {r.author}</div>
