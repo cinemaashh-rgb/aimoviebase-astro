@@ -17,7 +17,7 @@
       "eyebrow": "2026 Results",
       "lede": "The four headline awards, including the audience-selected winner.",
       "winners": [
-        { "place": "1st Place", "title": "Listen to Meh", "director": "@rococo_table_radical", "poster": "/images/awards/listen-to-meh.webp", "prize": "$500,000", "notes": [] },
+        { "place": "1st Place", "title": "Listen to Meh", "movieSlug": "listen-to-meh", "director": "@rococo_table_radical", "poster": "/images/posters/listen-to-meh.webp", "prize": "$500,000", "notes": [] },
         { "place": "2nd Place", "title": "Fukushima", "movieSlug": "fukushima", "director": "@aist", "poster": "/images/awards/fukushima.webp", "prize": "$200,000", "notes": [] },
         { "place": "3rd Place", "title": "The Field Agent", "movieSlug": "the-field-agent", "director": "@zackmmurray", "poster": "/images/awards/the-field-agent.webp", "prize": "$100,000", "notes": [] },
         { "place": "Audience Choice", "title": "The Tortoise and the Hare", "movieSlug": "the-tortoise-and-the-hare", "director": "@benhamin", "poster": "/images/awards/the-tortoise-and-the-hare.webp", "prize": "$100,000", "notes": [] }

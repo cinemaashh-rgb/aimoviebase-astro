@@ -1,0 +1,13 @@
+{
+  "movie_id": "22da04ec-1a19-4bc9-9b05-acfa6072fe2d",
+  "title": "ThunderCats Pumm-Ra",
+  "year": 2026,
+  "type": "movie",
+  "duration": "12:34",
+  "genres": ["80s", "Fan Film"],
+  "synopsis": "The Lion-O team faces Mumm-Ra's deception in a retro live-action reimagining.",
+  "poster": "/images/posters/thundercats-pumm-ra.webp",
+  "youtubeId": "viPDfmnhhwk",
+  "studio": "AIM Media Pro",
+  "aiTools": ["Claude", "Nano-Banana", "GPT-Image 2", "Seedance 2.5"]
+}

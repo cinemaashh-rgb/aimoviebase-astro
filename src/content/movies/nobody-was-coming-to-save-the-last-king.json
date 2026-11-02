@@ -1,0 +1,16 @@
+{
+  "movie_id": "7f5250bb-b8e7-445e-8237-443a3a52fdb4",
+  "title": "Nobody Was Coming To Save The Last King",
+  "year": 2026,
+  "type": "movie",
+  "duration": "2:20:12",
+  "genres": ["Fantasy", "Epic Finale"],
+  "synopsis": "Season One finale of the Age of Kingdoms saga: Varic faces arena death in the capital while orc hordes besiege it and a black dragon wakes over the burning city.",
+  "poster": "/images/posters/nobody-was-coming-to-save-the-last-king.webp",
+  "youtubeId": "Rk4UsZPm1nA",
+  "director": {
+    "name": "Alex"
+  },
+  "studio": "Epic AI Films",
+  "aiTools": ["Seedance 2.5"]
+}

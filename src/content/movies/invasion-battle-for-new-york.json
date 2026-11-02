@@ -1,0 +1,16 @@
+{
+  "movie_id": "df6e934c-1d56-4afe-bd7d-90f71f1f4cd8",
+  "title": "INVASION Battle for New York",
+  "year": 2026,
+  "type": "movie",
+  "duration": "1:01:28",
+  "genres": ["Sci-Fi", "Disaster"],
+  "synopsis": "Alien dreadnoughts trigger EMP blackouts; a father fights through subway catacombs to find his family.",
+  "poster": "/images/posters/invasion-battle-for-new-york.webp",
+  "youtubeId": "inF5vSTBRo0",
+  "director": {
+    "name": "Alex"
+  },
+  "studio": "Epic AI Films",
+  "aiTools": ["AI assisted"]
+}

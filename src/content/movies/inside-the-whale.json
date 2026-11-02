@@ -1,0 +1,13 @@
+{
+  "movie_id": "1d55b494-6658-4e26-9301-a36c66141c85",
+  "title": "Inside the Whale",
+  "year": 2026,
+  "type": "movie",
+  "duration": "1:01:13",
+  "genres": ["Fantasy", "Mermaid"],
+  "synopsis": "Fisherwoman Oda wakes inside a whale, where the last mermaid has waited fifty years.",
+  "poster": "/images/posters/inside-the-whale.webp",
+  "youtubeId": "Iq12dUQZ6Mc",
+  "studio": "Future Frame Movies",
+  "aiTools": ["AI feature"]
+}

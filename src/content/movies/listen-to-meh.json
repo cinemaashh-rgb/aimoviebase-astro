@@ -1,0 +1,14 @@
+{
+  "movie_id": "a33c031a-8657-4bb3-bb10-81ec94f4e7ce",
+  "title": "Listen to Meh",
+  "year": 2026,
+  "type": "movie",
+  "genres": [],
+  "synopsis": "A gaucho's routine is repeatedly interrupted by a sheep that keeps returning to his roof.",
+  "poster": "/images/posters/listen-to-meh.webp",
+  "youtubeId": "miNfT_JSzpk",
+  "aiTools": ["Seedance 2.5", "Seedream 5.0 Pro", "Cinematic Studio Image"],
+  "awards": [
+    "1st Place ($500,000) — Higgsfield Global Film Festival 2026"
+  ]
+}

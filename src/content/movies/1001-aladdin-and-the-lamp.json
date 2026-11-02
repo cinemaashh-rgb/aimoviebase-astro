@@ -1,0 +1,13 @@
+{
+  "movie_id": "40cb88c5-2bc1-429f-982c-9f8e87934851",
+  "title": "1001 Aladdin and The Lamp",
+  "year": 2026,
+  "type": "movie",
+  "duration": "23:37",
+  "genres": ["Fantasy", "Adventure"],
+  "synopsis": "A street boy named Aladdin is dragged into the desert in search of a sealed brass lamp.",
+  "poster": "/images/posters/1001-aladdin-and-the-lamp.webp",
+  "youtubeId": "dJE4BJmS1ZE",
+  "studio": "SAGAS",
+  "aiTools": ["Higgsfield Cinema Studio"]
+}

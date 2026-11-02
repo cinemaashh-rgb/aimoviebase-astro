@@ -1,0 +1,13 @@
+{
+  "movie_id": "a27ef1d4-ef56-4e77-a811-b654700f4973",
+  "title": "Epoch of Voyages Ep1",
+  "year": 2026,
+  "type": "movie",
+  "duration": "1:09:46",
+  "genres": ["Fantasy", "Naval Adventure"],
+  "synopsis": "Captain Lucius chases the Golden Island, pursued by flying fish and the pirate Bernard.",
+  "poster": "/images/posters/epoch-of-voyages-ep1.webp",
+  "youtubeId": "_oKHNBRf45M",
+  "studio": "Shanhay Studio",
+  "aiTools": ["AI 4K series"]
+}

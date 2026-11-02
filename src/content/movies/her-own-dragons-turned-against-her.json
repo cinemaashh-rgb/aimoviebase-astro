@@ -1,0 +1,16 @@
+{
+  "movie_id": "1041b0d2-cf28-4ded-8ce7-0b8da0832e21",
+  "title": "Her Own Dragons Turned Against Her",
+  "year": 2026,
+  "type": "movie",
+  "duration": "1:17:48",
+  "genres": ["Fantasy", "Dragons"],
+  "synopsis": "Freya raised five white dragons — now the dark prince Malakai claims them as his own.",
+  "poster": "/images/posters/her-own-dragons-turned-against-her.webp",
+  "youtubeId": "ifoO7aHLuIU",
+  "director": {
+    "name": "Alex"
+  },
+  "studio": "Epic AI Films",
+  "aiTools": ["AI visuals + synthetic voices"]
+}

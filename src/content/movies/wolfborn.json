@@ -1,0 +1,13 @@
+{
+  "movie_id": "af3c0457-7c2e-4008-90a6-a9bb105bc3e9",
+  "title": "WOLFBORN",
+  "year": 2026,
+  "type": "movie",
+  "duration": "33:16",
+  "genres": ["Fantasy", "Family"],
+  "synopsis": "A mother hides her wolf-born twin from her hunter husband, keeping a secret by the ice river.",
+  "poster": "/images/posters/wolfborn.webp",
+  "youtubeId": "0VIFsNiLy94",
+  "studio": "VORAN",
+  "aiTools": ["AI visuals + voices"]
+}

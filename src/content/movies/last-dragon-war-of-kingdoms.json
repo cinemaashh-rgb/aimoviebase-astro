@@ -1,0 +1,13 @@
+{
+  "movie_id": "68e1376d-4152-4095-b3da-4e7c9b97dd59",
+  "title": "LAST DRAGON War of Kingdoms",
+  "year": 2026,
+  "type": "movie",
+  "duration": "1:44:11",
+  "genres": ["Fantasy", "Adventure"],
+  "synopsis": "The first dragon's creation changes the kingdoms forever as forbidden magic reshapes the world.",
+  "poster": "/images/posters/last-dragon-war-of-kingdoms.webp",
+  "youtubeId": "l40ICpNVzjE",
+  "studio": "The Next Show",
+  "aiTools": ["AI cinematic"]
+}
