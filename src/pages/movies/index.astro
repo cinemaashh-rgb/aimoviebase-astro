@@ -5,60 +5,111 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 const movies = await getCollection('movies');
 const genres = await getCollection('genres');
 
-// Real per-genre groupings (not the mockup's hand-picked 4-per-genre preview —
-// this is the actual catalog, so every genre section lists every matching
-// film currently in the collection).
+// Real per-genre groupings. Every genre in the catalog gets a sidebar entry
+// and a section, including the two with no films yet (Animation, Trailer) —
+// shown with an honest empty state rather than hidden, so the taxonomy on
+// this page always matches /genre/[genre]'s own getStaticPaths. Sections
+// with real films are sorted with the fullest genres first; a per-section
+// film cap (below) keeps this a *preview*, not a duplicate of the full
+// genre page every section already links out to.
+const PREVIEW_CAP = 6;
 const sections = genres
   .map((genre) => {
-    const films = genre.data.films
+    const allFilms = genre.data.films
       .map((slug) => movies.find((m) => m.id === slug))
       .filter((m): m is CollectionEntry<'movies'> => Boolean(m));
-    return { id: genre.id, name: genre.data.name, description: genre.data.description, films };
+    // Prefer films with a real poster for the preview grid, then newest
+    // first — the ones without a poster are still reachable on the full
+    // genre page, just not used to represent the genre here.
+    const preview = [...allFilms]
+      .sort((a, b) => {
+        const posterDiff = Number(Boolean(b.data.poster)) - Number(Boolean(a.data.poster));
+        if (posterDiff !== 0) return posterDiff;
+        return b.data.year - a.data.year;
+      })
+      .slice(0, PREVIEW_CAP);
+    return { id: genre.id, name: genre.data.name, description: genre.data.description, total: allFilms.length, preview };
   })
-  .filter((s) => s.films.length > 0)
-  .sort((a, b) => b.films.length - a.films.length);
+  .sort((a, b) => b.total - a.total);
 ---
-<BaseLayout title="AI Movies & Series" description="Browse all AI-generated movies and series on AI Movie Base, by genre, with sort by Newest or A-Z.">
+<BaseLayout title="AI Movies &amp; Series" description="A curated guide to AI-generated and AI-assisted movies and series on AI Movie Base. Browse sci-fi, drama, animation and more, then open any genre for the full catalog.">
   <style>
-    .moviesHero { margin: 10px 0 30px; }
-    .layout { display: grid; grid-template-columns: 200px minmax(0,1fr); gap: 34px; }
-    aside.genreNav { border-right: 1px solid var(--line); padding-right: 18px; }
-    aside.genreNav h2 { font-size: 1.4rem; margin: 2px 0 14px; }
-    .genre-link { display: flex; justify-content: space-between; align-items: center; padding: 8px 9px; margin: 0 -7px; border-radius: 4px; color: var(--ink); font-size: .85rem; }
-    .genre-link:hover { background: var(--soft); color: var(--ink); }
-    .genre-link.is-active { background: var(--soft); font-weight: 700; }
-    .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+    /* AI Movies by Genre — editorial layout matching about.astro/index.astro's
+       own hero + accent tokens, carrying forward the real genre-browsing UX
+       (sticky nav, progressive reveal, scroll-synced sidebar highlight)
+       this page already had under the previous, plainer visual design. */
+    .moviesHero { padding: 10px 0 38px; border-bottom: 1px solid var(--line); max-width: 900px; }
+    .moviesKicker { font: 700 11px/1.5 var(--sans); letter-spacing: .14em; color: #cf6246; text-transform: uppercase; }
+    .moviesHero h1 { font: 400 clamp(44px,6vw,74px)/1.03 var(--serif); letter-spacing: -.045em; margin: 16px 0 16px; color: var(--ink); }
+    .moviesLead { max-width: 660px; font: 17px/1.65 var(--serif); color: var(--muted); margin: 0; }
+
+    .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 22px 0 6px; flex-wrap: wrap; }
     .toolbar label { font-size: .78rem; color: var(--muted); margin-right: 6px; }
     .sortSelect { height: 36px; border: 1px solid var(--line); background: #fff; border-radius: 6px; color: var(--ink); font-size: .82rem; padding: 0 10px; }
+    .sortSelect:focus-visible { outline: 2px solid #cf6246; outline-offset: 2px; }
     .sortNote { font-size: .72rem; color: var(--muted2); }
-    .genre-section { padding: 22px 0 28px; border-bottom: 1px solid var(--line); scroll-margin-top: 20px; }
+
+    .layout { display: grid; grid-template-columns: 210px minmax(0,1fr); gap: 50px; padding-top: 38px; align-items: start; }
+    aside.genreNav { position: sticky; top: 22px; max-height: calc(100vh - 40px); overflow-y: auto; scrollbar-width: thin; padding-right: 14px; }
+    .genreNavLabel { font: 700 10px/1.5 var(--sans); letter-spacing: .14em; color: #cf6246; text-transform: uppercase; }
+    aside.genreNav h2 { font: 400 1.65rem/1.15 var(--serif); margin: 8px 0 18px; }
+    .genreLinks { display: flex; flex-direction: column; gap: 2px; }
+    .genre-link { display: flex; justify-content: space-between; align-items: center; padding: 9px 12px; margin: 0 -7px; border-radius: 4px; color: #5c6878; font-size: .82rem; transition: background .18s, color .18s; }
+    .genre-link span { color: #cf6246; opacity: 0; font-size: .85rem; }
+    .genre-link:hover, .genre-link.is-active { background: #fff3ed; color: #ae4f38; }
+    .genre-link.is-active { font-weight: 700; }
+    .genre-link:hover span, .genre-link.is-active span { opacity: 1; }
+
+    .genre-section { padding: 30px 0 36px; border-bottom: 1px solid var(--line); scroll-margin-top: 20px; }
     .genre-section[hidden] { display: none !important; }
-    .genre-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 14px; flex-wrap: wrap; }
-    .genre-heading h2 { font-size: 1.7rem; margin: 0 0 4px; }
-    .genre-heading p { margin: 0; color: var(--muted); font-size: .84rem; max-width: 560px; }
-    .genre-count { font-size: .78rem; color: var(--muted2); white-space: nowrap; padding-top: 6px; }
-    .film-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px; }
+    .genre-heading { margin-bottom: 20px; }
+    .genre-heading h2 { font: 700 clamp(26px,3vw,33px)/1.1 var(--serif); letter-spacing: -.03em; margin: 0 0 8px; color: var(--ink); }
+    .genre-title-link { display: inline-flex; align-items: baseline; gap: 13px; color: var(--ink); text-decoration: none; }
+    .genre-title-link:hover, .genre-title-link:focus-visible { color: var(--ink); }
+    .genre-title-arrow { font: 900 .74em/1 var(--sans); color: var(--ink); display: inline-block; transition: color .2s ease, transform .2s ease; }
+    .genre-title-link:hover .genre-title-arrow, .genre-title-link:focus-visible .genre-title-arrow { color: #cf6246; transform: translate(4px,-1px); }
+    .genre-heading p { margin: 0; color: #6c7887; font: 13px/1.65 var(--sans); max-width: 560px; }
+
+    .film-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 19px; }
     .film-card { display: block; min-width: 0; }
-    .film-card img, .film-card .posterFallback { aspect-ratio: 1.5; width: 100%; object-fit: cover; border-radius: 5px; display: block; background: var(--soft); }
-    .film-card h3 { font-size: .92rem; margin: 8px 0 4px; }
-    .film-meta { font-size: .76rem; color: var(--muted); }
-    .more-area { text-align: center; padding: 24px 0 8px; }
-    .more-btn { border: 1px solid #cfd4dd; background: #fff; border-radius: 22px; padding: 11px 32px; font-weight: 600; font-size: .85rem; cursor: pointer; }
+    .film-visual { display: block; aspect-ratio: 1.56; overflow: hidden; border-radius: 4px; background: var(--soft); }
+    .film-visual img, .film-visual .posterFallback { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .35s ease; }
+    .posterFallback { display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px; color: var(--muted); font: 700 .85rem var(--serif); }
+    .film-card:hover .film-visual img { transform: scale(1.045); }
+    .film-card h3 { font: 400 22px/1.18 var(--serif); letter-spacing: -.02em; margin: 11px 0 8px; color: var(--ink); }
+    .film-card h3:hover { color: #cf6246; }
+    .film-meta { font-size: 11px; color: #788390; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .pill { font-size: 10px; background: #f5f3f2; color: #7b6e6b; border-radius: 3px; padding: 2px 6px; }
+    .film-card p { font-size: 12px; line-height: 1.65; color: #737f8d; margin: 11px 0 0; }
+
+    .empty-preview { border: 1px solid #efebe8; background: #fdfaf7; border-radius: 4px; padding: 23px 25px; }
+    .empty-preview p { margin: 0; max-width: 620px; font: 13px/1.65 var(--sans); color: #7a8290; }
+
+    .more-area { text-align: center; padding: 30px 0 8px; }
+    .more-btn { border: 1px solid #d7d9db; background: #fff; border-radius: 4px; padding: 13px 26px; color: #15191d; font-weight: 600; font-size: .85rem; cursor: pointer; transition: border-color .2s, background .2s, color .2s; }
     .more-btn[hidden] { display: none; }
-    .more-btn:hover { background: var(--soft); }
+    .more-btn:hover { background: #fff5f0; border-color: #cf6246; color: #ad4a34; }
+    .more-btn:focus-visible { outline: 2px solid #cf6246; outline-offset: 3px; }
+
+    @media (max-width: 1000px) {
+      .layout { grid-template-columns: 175px minmax(0,1fr); gap: 28px; }
+      .film-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    }
     @media (max-width: 760px) {
-      .layout { display: block; }
-      aside.genreNav { border-right: 0; border-bottom: 1px solid var(--line); padding-right: 0; padding-bottom: 12px; margin-bottom: 20px; }
-      .genreLinks { display: flex; overflow-x: auto; gap: 6px; }
-      .genre-link { flex: none; background: var(--soft); margin: 0; }
-      .film-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+      .layout { display: block; padding-top: 26px; }
+      aside.genreNav { position: static; max-height: none; overflow: visible; padding-right: 0; border-bottom: 1px solid var(--line); margin-bottom: 24px; padding-bottom: 14px; }
+      .genreLinks { flex-direction: row; overflow-x: auto; gap: 7px; }
+      .genre-link { flex: none; background: var(--soft); margin: 0; border: 1px solid var(--line); }
+      .genre-link span { display: none; }
+      .film-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 13px; }
+      .film-card p { display: none; }
     }
   </style>
 
   <div class="moviesHero">
-    <div class="pageEyebrow">AI Movies &amp; Series</div>
-    <h1 style="margin:8px 0 10px;">Explore AI Movies by Genre</h1>
-    <p class="pageLede">A curated guide to AI-generated and AI-assisted films. Discover titles in sci-fi, drama, animation and more — sort any section by newest or A–Z as you browse.</p>
+    <div class="moviesKicker">Discover / AIMB</div>
+    <h1>AI Movies &amp; Series by Genre</h1>
+    <p class="moviesLead">A curated guide to AI-generated and AI-assisted films. Discover selected works in sci-fi, drama, animation and more, then open any genre to browse its full catalog.</p>
   </div>
 
   <div class="toolbar">
@@ -77,10 +128,11 @@ const sections = genres
 
   <div class="layout">
     <aside class="genreNav">
-      <h2>Genres</h2>
+      <div class="genreNavLabel">Genre Index</div>
+      <h2>Explore genres</h2>
       <nav class="genreLinks" aria-label="Jump to a genre">
         {sections.map((s) => (
-          <a class="genre-link" data-genre={s.id} href={`#${s.id}`}>{s.name}<span style="color:var(--muted2);">{s.films.length}</span></a>
+          <a class="genre-link" data-genre={s.id} href={`#${s.id}`}>{s.name}<span aria-hidden="true">↗</span></a>
         ))}
       </nav>
     </aside>
@@ -89,21 +141,32 @@ const sections = genres
       {sections.map((s) => (
         <section class="genre-section" id={s.id} aria-labelledby={`heading-${s.id}`}>
           <div class="genre-heading">
-            <div>
-              <h2 id={`heading-${s.id}`}>{s.name}</h2>
-              <p>{s.description}</p>
+            <h2 id={`heading-${s.id}`}>
+              <a class="genre-title-link" href={`/genre/${s.id}`}>{s.name}<span class="genre-title-arrow" aria-hidden="true">❯</span></a>
+            </h2>
+            <p>{s.description}</p>
+          </div>
+          {s.preview.length > 0 ? (
+            <div class="film-grid">
+              {s.preview.map((f) => (
+                <a class="film-card" href={`/movies/${f.id}`} data-title={f.data.title} data-year={f.data.year}>
+                  <span class="film-visual">
+                    {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" /> : <span class="posterFallback">{f.data.title}</span>}
+                  </span>
+                  <h3>{f.data.title}</h3>
+                  <div class="film-meta">
+                    <span>{f.data.year}</span>
+                    {f.data.genres.length > 0 && <span class="pill">{f.data.genres.slice(0, 2).join(' · ')}</span>}
+                  </div>
+                  {f.data.synopsis && <p>{f.data.synopsis}</p>}
+                </a>
+              ))}
             </div>
-            <div class="genre-count">{s.films.length} {s.films.length === 1 ? 'film' : 'films'} · <a href={`/genre/${s.id}`} style="color:var(--blue);font-weight:700;">Open full genre page ↗</a></div>
-          </div>
-          <div class="film-grid">
-            {s.films.map((f) => (
-              <a class="film-card" href={`/movies/${f.id}`} data-title={f.data.title} data-year={f.data.year}>
-                {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" /> : <div class="posterFallback">{f.data.title}</div>}
-                <h3>{f.data.title}</h3>
-                <div class="film-meta">{f.data.year} · {f.data.genres.slice(0, 2).join(' · ')}</div>
-              </a>
-            ))}
-          </div>
+          ) : (
+            <div class="empty-preview">
+              <p>No preview films have been added for this genre yet. Browse the full genre page for the complete catalog.</p>
+            </div>
+          )}
         </section>
       ))}
       <div class="more-area">
@@ -123,7 +186,10 @@ const sections = genres
 
       function setActive(slug) {
         links.forEach(function (link) {
-          link.classList.toggle('is-active', link.dataset.genre === slug);
+          var active = link.dataset.genre === slug;
+          link.classList.toggle('is-active', active);
+          if (active) link.setAttribute('aria-current', 'location');
+          else link.removeAttribute('aria-current');
         });
       }
 
@@ -134,22 +200,31 @@ const sections = genres
         if (!button.hidden) button.textContent = 'Load more genres (' + (sections.length - visible) + ' remaining)';
       }
 
+      function navigateToGenre(slug, replaceHash) {
+        var index = sections.findIndex(function (s) { return s.id === slug; });
+        if (index < 0) return;
+        reveal(index + 1);
+        setActive(slug);
+        if (replaceHash) history.replaceState(null, '', '#' + encodeURIComponent(slug));
+        requestAnimationFrame(function () {
+          sections[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+
       button.addEventListener('click', function () {
+        var start = visible;
         reveal(visible + batchSize);
+        var firstNew = sections[start];
+        if (firstNew) {
+          setActive(firstNew.id);
+          requestAnimationFrame(function () { firstNew.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+        }
       });
 
       links.forEach(function (link) {
         link.addEventListener('click', function (e) {
           e.preventDefault();
-          var slug = link.dataset.genre;
-          var index = sections.findIndex(function (s) { return s.id === slug; });
-          if (index < 0) return;
-          reveal(index + 1);
-          setActive(slug);
-          history.replaceState(null, '', '#' + slug);
-          requestAnimationFrame(function () {
-            sections[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
-          });
+          navigateToGenre(link.dataset.genre, true);
         });
       });
 
@@ -168,18 +243,39 @@ const sections = genres
           } else if (mode === 'title') {
             cards.sort(function (a, b) { return a.dataset.title.localeCompare(b.dataset.title); });
           }
-          // 'default', 'popular', 'rating' (disabled options) leave catalog order.
           grid.replaceChildren.apply(grid, cards);
         });
       }
       sortSelect.addEventListener('change', applySort);
 
+      // Keep sidebar highlighting in sync with the currently visible genre
+      // while scrolling, not just on click.
+      var scrollQueued = false;
+      function syncActiveOnScroll() {
+        scrollQueued = false;
+        var shown = sections.filter(function (s) { return !s.hidden; });
+        if (!shown.length) return;
+        var guide = Math.min(180, window.innerHeight * 0.3);
+        var active = shown[0];
+        for (var i = 0; i < shown.length; i++) {
+          if (shown[i].getBoundingClientRect().top <= guide) active = shown[i];
+          else break;
+        }
+        setActive(active.id);
+      }
+      function queueScrollSync() {
+        if (scrollQueued) return;
+        scrollQueued = true;
+        requestAnimationFrame(syncActiveOnScroll);
+      }
+      window.addEventListener('scroll', queueScrollSync, { passive: true });
+      window.addEventListener('resize', queueScrollSync);
+
       reveal(visible);
+      queueScrollSync();
       var startingGenre = decodeURIComponent(location.hash.slice(1));
       if (startingGenre && sections.some(function (s) { return s.id === startingGenre; })) {
-        var idx = sections.findIndex(function (s) { return s.id === startingGenre; });
-        reveal(idx + 1);
-        setActive(startingGenre);
+        setTimeout(function () { navigateToGenre(startingGenre, false); }, 0);
       }
     })();
   </script>
