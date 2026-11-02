@@ -79,10 +79,10 @@ const journal = (await getCollection('articles')).sort(
     .hero h1 { color: #fff; font-size: clamp(42px,5.2vw,68px); line-height: .99; letter-spacing: -0.03em; margin: 14px 0 18px; text-shadow: 0 2px 14px rgba(0,0,0,.65); }
     .hero p { color: #fff; font-size: .96rem; line-height: 1.6; margin: 0 0 22px; max-width: 460px; text-shadow: 0 2px 14px rgba(0,0,0,.65); }
     .heroActions { display: flex; gap: 10px; flex-wrap: wrap; }
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 42px; font-size: .78rem; font-weight: 700; padding: 11px 18px; border-radius: 3px; border: 1px solid var(--line); background: #fff; color: var(--ink); transition: border-color .2s ease, box-shadow .2s ease; }
-    .btn.primary { background: var(--black); color: #fff; border-color: var(--black); }
-    .btn:hover { opacity: .85; color: inherit; }
-    .btn.primary:hover, .btn.primary:focus-visible { opacity: 1; border-color: #cf6246; box-shadow: 0 0 0 1px rgba(207,98,70,.5), 0 0 22px rgba(224,115,78,.55); }
+    .heroLink { display: inline-flex; align-items: center; gap: 9px; font-size: .95rem; font-weight: 700; color: #fff; text-decoration: none; text-shadow: 0 2px 14px rgba(0,0,0,.65); transition: color .2s ease; }
+    .heroLink .arrow { font-weight: 900; transition: color .2s ease, transform .2s ease; }
+    .heroLink:hover, .heroLink:focus-visible { color: #cf6246; }
+    .heroLink:hover .arrow, .heroLink:focus-visible .arrow { transform: translateX(6px); }
 
     /* ---- Shared section chrome ---- */
     /* The whole heading is one clickable link (title + chevron), the same
@@ -132,9 +132,10 @@ const journal = (await getCollection('articles')).sort(
     /* ---- Short drama ---- */
     .shortLayout { display: grid; grid-template-columns: minmax(0,1fr) 350px; gap: 40px; align-items: center; }
     .shortCopy h2 { font-size: clamp(30px,3vw,40px); margin: 0 0 11px; }
-    .shortHeadingLink { display: inline-flex; align-items: center; gap: 13px; color: inherit; text-decoration: none; }
+    .shortHeadingLink { display: inline-flex; align-items: center; gap: 13px; text-decoration: none; }
+    .shortHeadingLink .label { color: var(--ink); transition: color .2s ease; }
     .shortHeadingLink .arrow { font-weight: 900; font-size: 1.3rem; line-height: 1; color: var(--ink); transition: color .2s ease, transform .2s ease; }
-    .shortHeadingLink:hover, .shortHeadingLink:focus-visible { color: #cf6246; }
+    .shortHeadingLink:hover .label, .shortHeadingLink:focus-visible .label { color: #cf6246; }
     .shortHeadingLink:hover .arrow, .shortHeadingLink:focus-visible .arrow { color: #cf6246; transform: translateX(6px); }
     .shortCopy p { color: var(--muted); font-size: .88rem; line-height: 1.55; margin: 0; max-width: 480px; }
     .shortGallery { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; background: var(--soft); border-radius: 8px; padding: 10px; }
@@ -194,7 +195,7 @@ const journal = (await getCollection('articles')).sort(
         <h1>A new era<br />of cinema is<br />already here</h1>
         <p>AIMB is an independent platform for AI-generated movies, AI-assisted films and series. Discover remarkable works, the creators behind them, festival recognition and the emerging tools shaping a new cinematic language.</p>
         <div class="heroActions">
-          <a class="btn primary" href="/movies">Explore AI Movies &amp; Series →</a>
+          <a class="heroLink" href="/movies">Explore AI Movies &amp; Series <span class="arrow" aria-hidden="true">❯</span></a>
         </div>
       </div>
     </div>
@@ -305,7 +306,7 @@ const journal = (await getCollection('articles')).sort(
   <section class="section">
     <div class="shortLayout">
       <div class="shortCopy">
-        <h2><a class="shortHeadingLink" href="/short-drama">Discover AI Short Dramas<span class="arrow" aria-hidden="true">❯</span></a></h2>
+        <h2><a class="shortHeadingLink" href="/short-drama"><span class="label">Discover AI Short Dramas</span><span class="arrow" aria-hidden="true">❯</span></a></h2>
         <p>Explore a new form of vertical, episodic storytelling. AI short dramas combine compact stories, new production techniques and emerging creative voices.</p>
       </div>
       <div class="shortGallery">
