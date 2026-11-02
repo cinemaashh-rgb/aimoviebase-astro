@@ -24,16 +24,28 @@ const c = creator.data;
 const movies = await getCollection('movies');
 const allStudios = await getCollection('studios');
 const studioHref = c.studio ? verifyStudioSlug(c.studio.slug, allStudios) : undefined;
+
+// Some studio names already carry a real, verified sub-label in parens,
+// e.g. "Phantom X (co-founder)" — split it out for display the way the
+// creator-page mockup shows it (name + muted sub-label), rather than
+// inventing a separate schema field for something the data already says.
+const studioMatch = c.studio?.name.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
+const studioName = studioMatch ? studioMatch[1] : c.studio?.name;
+const studioSub = studioMatch ? studioMatch[2] : undefined;
+
 const films = c.films
   .map((slug) => movies.find((m) => m.id === slug))
   .filter((m): m is CollectionEntry<'movies'> => Boolean(m));
 const movieCount = films.filter((f) => f.data.type !== 'series').length;
 const seriesCount = films.filter((f) => f.data.type === 'series').length;
-const shortCount = 0; // no "short" sub-type in the schema yet — kept for parity with the mockup's filter pills
 
-// "Creative stack" — the creator-page mockup's tool carousel, but counted
-// from real per-film aiTools credits instead of hand-curated placeholder
-// data. Aggregated across this creator's filmography, most-used first.
+function initials(name: string) {
+  const clean = name.replace(/\(.*?\)/g, ' ').trim();
+  return clean.split(/\s+/).filter((w) => /[a-zA-Z]/.test(w)).slice(0, 2).map((w) => w.charAt(0)).join('').toUpperCase();
+}
+
+// "Creative stack" — aggregated from real per-film aiTools credits across
+// this creator's filmography, most-used first.
 const toolCounts = new Map<string, number>();
 for (const f of films) {
   for (const t of f.data.aiTools) {
@@ -44,202 +56,256 @@ const creativeStack = [...toolCounts.entries()]
   .sort((a, b) => b[1] - a[1])
   .map(([name, count]) => ({ name, count, meta: getToolMeta(name) }));
 
-// "Awards & Recognition" sidebar (ported from the real creator-page mockup,
-// aimb_creator_kavan_cardoza_laurels_bw.html). The mockup's own award data
-// is illustrative placeholder content, so rather than hand-maintain a
-// separate awards list per creator (which drifts out of sync and is easy
-// to leave empty — true of all 27 creator records before this change),
-// it's aggregated the same way the creative stack already is: straight
-// from each film's own `awards` credits, which are real and already
-// verified on the movie pages. A creator record can still carry explicit
-// director-level awards (not tied to one film) via its own `awards` field;
-// those are shown first, film-derived ones after.
+// Awards & Recognition: explicit director-level awards on the creator's
+// own record (not tied to one film) first, then every real award already
+// credited on their films — aggregated the same way the studio page does
+// it, rather than hand-maintaining a separate list that drifts out of sync.
 const awardsList = [
   ...(c.awards || []).map((a) => ({ title: a.title, note: a.note })),
-  ...films.flatMap((f) => (f.data.awards || []).map((a) => ({ title: a, note: f.data.title }))),
+  ...films.flatMap((f) => (f.data.awards || []).map((a) => ({ title: a, note: `${f.data.title} · ${f.data.year}` }))),
 ];
 ---
-<BaseLayout title={c.name} description={c.bio}>
+<BaseLayout title={c.alias ? `${c.name} (${c.alias})` : c.name} description={c.bio}>
   <style>
-    .personHero { display: grid; grid-template-columns: 220px 1fr; gap: 26px; margin: 24px 0 10px; align-items: start; }
-    .personHero.withAwards { grid-template-columns: 220px minmax(300px,1fr) 260px; }
-    .personPhoto { width: 100%; aspect-ratio: 3/4; border-radius: 12px; overflow: hidden; background: linear-gradient(135deg,var(--blue),#5e85c9); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 2.6rem; font-family: var(--serif); }
+    /* ---- Hero ---- */
+    .personHero { display: grid; grid-template-columns: 220px minmax(0,1fr); gap: 40px; align-items: start; padding: 10px 0 44px; border-bottom: 1px solid var(--line); }
+    .personPhoto { width: 100%; aspect-ratio: 3/4; border-radius: 4px; overflow: hidden; background: linear-gradient(135deg,var(--blue),#5e85c9); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 2.4rem; font-family: var(--serif); }
     .personPhoto img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    h1.name { font-size: clamp(34px,4.1vw,52px); letter-spacing: -0.02em; margin: 0 0 2px; }
-    .alias { color: var(--muted); font-size: 1.15rem; font-weight: 600; margin: 0 0 12px; }
-    .rolebar { display: inline-flex; align-items: center; gap: 10px; background: var(--soft); border-radius: 12px; padding: 7px 15px; font-size: .85rem; font-weight: 700; color: var(--ink); margin-bottom: 14px; }
-    .social { display: inline-flex; gap: 10px; margin-left: 4px; vertical-align: middle; }
-    .social a { color: var(--muted); font-size: .8rem; font-weight: 700; border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px; }
-    .social a:hover { color: var(--ink); border-color: var(--muted); }
-    .facts { display: flex; gap: 22px; flex-wrap: wrap; align-items: center; color: var(--muted); font-size: .84rem; margin: 16px 0; }
-    .facts span { display: inline-flex; align-items: center; gap: 7px; }
-    .facts :global(svg) { flex: none; color: var(--ink); opacity: .8; }
-    .awardsCol { border-left: 1px solid var(--line); padding-left: 20px; align-self: start; }
-    .awardsCol h2 { font-size: 1rem; margin: 0 0 14px; }
-    .awardsScroll { max-height: 340px; overflow-y: auto; padding-right: 4px; }
-    .awardRow { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 14px; font-size: .82rem; }
-    .awardRow .ico { flex: none; font-size: 1.1rem; color: var(--ink); margin-top: 1px; }
-    .awardRow strong { display: block; font-size: .83rem; line-height: 1.3; }
-    .awardRow span { color: var(--muted); font-size: .76rem; }
-    .headingbar { display: flex; align-items: baseline; justify-content: space-between; margin: 36px 0 12px; flex-wrap: wrap; gap: 10px; }
-    .headingbar h2 { font-size: 1.7rem; }
-    .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-    .pill { border: 1px solid var(--line); background: #fff; border-radius: 20px; padding: 6px 14px; font-size: .8rem; font-weight: 600; color: var(--muted); cursor: pointer; }
-    .pill[aria-pressed="true"] { background: var(--black); color: #fff; border-color: var(--black); }
-    .sortSelect { height: 34px; border: 1px solid var(--line); background: #fff; border-radius: 6px; color: var(--ink); font-size: .8rem; padding: 0 10px; }
-    .films-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(160px,1fr)); gap: 16px 14px; }
-    .films-grid a[hidden] { display: none; }
-    .films-grid .thumb { aspect-ratio: 2/3; background: var(--soft); border-radius: 6px; overflow: hidden; }
-    .films-grid img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .films-grid h3 { font-size: .95rem; margin: 10px 0 2px; }
-    .films-grid .meta { font-size: .76rem; color: var(--muted); }
-    .stackSection { border-top: 1px solid var(--line); margin-top: 36px; padding-top: 24px; }
-    .stackSection h2 { font-size: 1.7rem; margin: 0; }
-    .stackSection .stackLede { font-size: .84rem; color: var(--muted); margin: 5px 0 14px; }
-    .stackWrap { position: relative; }
-    .toolScroll { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 2px 1px 15px; scrollbar-width: thin; scrollbar-color: #cfd3d9 transparent; }
-    .toolCard { scroll-snap-align: start; flex: 0 0 148px; border: 1px solid var(--line); min-height: 118px; border-radius: 8px; padding: 12px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px; text-align: center; }
+
+    .personEyebrow { font-size: .68rem; font-weight: 800; color: #aa8443; letter-spacing: .14em; text-transform: uppercase; margin: 2px 0 10px; }
+    .personHero h1 { font: 700 clamp(34px,4.6vw,54px)/1.06 var(--serif); letter-spacing: -0.03em; margin: 0 0 6px; }
+    .alias { color: var(--muted2); font-size: .95rem; margin: 0 0 16px; }
+    .rolebar { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-bottom: 16px; }
+    .rolebar .pill { background: #f4f2ee; padding: 6px 12px; font-size: .74rem; font-weight: 650; color: #514331; border-radius: 3px; }
+    .personDesc { max-width: 660px; font-size: .92rem; line-height: 1.75; color: var(--muted); margin: 0 0 20px; }
+    .personDesc a { color: var(--blue); text-decoration: underline; text-decoration-color: #c9ccd2; text-underline-offset: 3px; }
+    .personDesc a:hover { text-decoration-color: var(--blue); }
+    .personFacts { border-top: 1px solid var(--line); padding-top: 16px; display: flex; gap: 26px; flex-wrap: wrap; align-items: flex-start; }
+    .personFacts .fact { display: flex; gap: 8px; align-items: flex-start; font-size: .78rem; color: var(--muted); }
+    .personFacts .fact svg { flex: none; margin-top: 1px; stroke: var(--muted2); }
+    .personFacts .fact a { color: var(--blue); font-weight: 600; }
+    .personFacts .fact small { display: block; color: var(--muted2); font-weight: 400; font-size: .72rem; }
+    .fact-social { display: inline-flex; align-items: center; gap: 8px; font-weight: 650; color: var(--ink); }
+    .fact-social .mark { display: inline-grid; place-items: center; width: 24px; height: 24px; flex: none; border-radius: 6px; background: var(--black); color: #fff; font-size: .95rem; line-height: 1; }
+
+    /* ---- Shared horizontal-scroll section chrome (matches /studios) ---- */
+    .hsection { padding-top: 44px; }
+    .hsection + .hsection { border-top: 1px solid var(--line); }
+    .hheading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 6px; }
+    .hheading h2 { font: 700 1.6rem/1.2 var(--serif); letter-spacing: -0.02em; margin: 0; }
+    .hheading .count { font-size: .7rem; color: var(--muted2); margin-left: 8px; font-weight: 400; }
+    .hintro { font-size: .8rem; color: var(--muted2); margin: 0 0 18px; }
+    .arrowNav { display: flex; gap: 7px; }
+    .arrowNav button { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--line); background: #fff; font-size: 1.1rem; cursor: pointer; }
+    .arrowNav button:disabled { opacity: .3; cursor: default; }
+
+    .hscroll { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 2px 1px 14px; scrollbar-width: none; }
+    .hscroll::-webkit-scrollbar { display: none; }
+
+    /* ---- Filmography ---- */
+    .controls { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 18px; }
+    .controls .pill { border: 1px solid var(--line); color: var(--muted); background: #fff; padding: 8px 13px; border-radius: 3px; font-size: .72rem; font-weight: 600; cursor: pointer; }
+    .controls .pill[aria-pressed="true"] { background: var(--black); border-color: var(--black); color: #fff; }
+    .sortSelect { height: 34px; border: 1px solid var(--line); background: #fff; border-radius: 3px; color: var(--ink); font-size: .74rem; padding: 0 10px; }
+    .filmCard { flex: 0 0 180px; scroll-snap-align: start; color: inherit; }
+    .filmCard .thumb { aspect-ratio: 2/3; position: relative; border-radius: 4px; overflow: hidden; background: var(--soft); }
+    .filmCard .thumb img, .filmCard .posterFallback { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s ease; }
+    .filmCard:hover .thumb img { transform: scale(1.04); }
+    .filmCard h3 { font-family: var(--serif); font-size: .88rem; margin: 10px 0 3px; font-weight: 700; }
+    .filmCard .filmMeta { font-size: .7rem; color: var(--muted2); margin: 0 0 7px; }
+    .filmCard .filmMeta span { padding: 0 6px; }
+    .filmCard .filmTags { display: flex; gap: 5px; flex-wrap: wrap; }
+    .filmCard .filmTags span { background: var(--soft); border-radius: 3px; color: var(--muted); font-size: .64rem; padding: 3px 7px; }
+    .filmCard[hidden] { display: none; }
+
+    /* ---- Awards & Recognition ---- */
+    .awardCard { flex: 0 0 340px; scroll-snap-align: start; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: flex; gap: 16px; align-items: center; }
+    .awardCard .mark { flex: 0 0 44px; width: 44px; height: 44px; border-radius: 10px; background: var(--soft); color: #a77820; display: flex; align-items: center; justify-content: center; }
+    .awardCard strong { display: block; font-family: var(--serif); font-size: 1rem; line-height: 1.25; }
+    .awardCard small { color: var(--muted2); font-size: .76rem; display: block; margin-top: 7px; line-height: 1.4; }
+
+    /* ---- Creative stack ---- */
+    .toolCard { flex: 0 0 148px; scroll-snap-align: start; border: 1px solid var(--line); min-height: 118px; border-radius: 8px; padding: 12px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px; text-align: center; }
     .toolCard:hover { border-color: #b3beca; }
-    .toolCard strong { font-size: .78rem; }
-    .toolCard small { font-size: .7rem; color: var(--muted); }
+    .toolCard strong { font-size: .78rem; display: block; }
+    .toolCard small { font-size: .7rem; color: var(--muted2); display: block; }
     .toolmark { width: 36px; height: 36px; border-radius: 8px; display: grid; place-items: center; font-size: 1.15rem; font-weight: 800; margin-bottom: 4px; }
-    .carouselBtn { position: absolute; top: 36px; width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--line); background: #fff; border-radius: 50%; z-index: 1; }
-    .carouselBtn.left { left: -16px; }
-    .carouselBtn.right { right: -16px; }
-    @media (max-width: 760px) {
-      .personHero, .personHero.withAwards { grid-template-columns: 1fr; }
-      .personPhoto { width: 150px; }
-      .awardsCol { border-left: 0; border-top: 1px solid var(--line); padding: 18px 0 0; margin-top: 6px; }
-      .carouselBtn.left { left: 0; }
-      .carouselBtn.right { right: 0; }
+
+    @media (max-width: 860px) {
+      .personHero { grid-template-columns: 130px 1fr; gap: 20px; }
+    }
+    @media (max-width: 650px) {
+      .arrowNav { display: none; }
     }
   </style>
 
-  <div class={`personHero ${awardsList.length > 0 ? 'withAwards' : ''}`}>
+  <section class="personHero" aria-labelledby="person-name">
     <div class="personPhoto">
-      {c.photo ? <img src={c.photo} alt={c.name} /> : c.name.split(' ').slice(0, 2).map((w) => w.charAt(0)).join('').toUpperCase()}
+      {c.photo ? <img src={c.photo} alt={c.name} /> : initials(c.name)}
     </div>
     <div>
-      <h1 class="name">{c.name}</h1>
-      {c.alias && <div class="alias">“{c.alias}”</div>}
-      {c.role && <div class="rolebar">{c.role}
-        {c.socialLinks && (c.socialLinks.youtube || c.socialLinks.x) && (
-          <span class="social">
-            {c.socialLinks.youtube && <a href={c.socialLinks.youtube} target="_blank" rel="noopener">YouTube</a>}
-            {c.socialLinks.x && <a href={c.socialLinks.x} target="_blank" rel="noopener">X</a>}
+      <div class="personEyebrow">AIMB · Creator Profile</div>
+      <h1 id="person-name">{c.name}</h1>
+      {c.alias && <p class="alias">{c.alias}</p>}
+      {c.role && <div class="rolebar"><span class="pill">{c.role}</span></div>}
+      <p class="personDesc">{c.bio}</p>
+      {c.bioMore && <p class="personDesc">{c.bioMore}</p>}
+      <div class="personFacts">
+        {c.basedIn && <span class="fact"><Icon name="pin" size={15} /> <span>{c.basedIn}</span></span>}
+        {c.studio && (
+          <span class="fact">
+            <Icon name="studio" size={15} />
+            {studioHref ? (
+              <a href={`/studios/${studioHref}`}>{studioName}{studioSub && <small>({studioSub})</small>}</a>
+            ) : (
+              <span>{studioName}{studioSub && <small>({studioSub})</small>}</span>
+            )}
           </span>
         )}
-      </div>}
-      <p class="pageLede" style="max-width:640px;">{c.bio}</p>
-      {c.bioMore && <p style="color:var(--ink); font-size:.92rem; line-height:1.6; max-width:620px; margin-top:8px;">{c.bioMore}</p>}
-      <div class="facts">
-        {c.basedIn && <span><Icon name="pin" size={16} /> {c.basedIn}</span>}
-        {c.studio && <span><Icon name="studio" size={16} /> {studioHref ? <a href={`/studios/${studioHref}`} style="color:var(--blue); font-weight:600;">{c.studio.name}</a> : c.studio.name}</span>}
-        {c.knownFor.length > 0 && <span><Icon name="genre" size={16} /> {c.knownFor.join(', ')}</span>}
-        <span>{films.length} film{films.length === 1 ? '' : 's'} in catalog</span>
+        {c.knownFor.length > 0 && <span class="fact"><Icon name="genre" size={15} /> <span>{c.knownFor.join(', ')}</span></span>}
+        {c.socialLinks?.x && (
+          <a class="fact fact-social" href={c.socialLinks.x} target="_blank" rel="noopener"><span class="mark">𝕏</span> X (Twitter)</a>
+        )}
+        {c.socialLinks?.youtube && (
+          <a class="fact fact-social" href={c.socialLinks.youtube} target="_blank" rel="noopener"><span class="mark">▶</span> YouTube</a>
+        )}
       </div>
     </div>
+  </section>
 
-    {awardsList.length > 0 && (
-      <aside class="awardsCol" aria-label="Awards">
-        <h2>Awards &amp; Recognition</h2>
-        <div class="awardsScroll">
-          {awardsList.map((a) => (
-            <div class="awardRow"><span class="ico"><Icon name="laurel" size={16} /></span><div><strong>{a.title}</strong>{a.note && <span>{a.note}</span>}</div></div>
-          ))}
-        </div>
-      </aside>
-    )}
-  </div>
-
-  {films.length > 0 && (
-    <>
-      <div class="headingbar">
-        <h2 style="margin:0;">Filmography <span style="color:var(--muted);font-weight:400;">({films.length})</span></h2>
-        <div class="controls">
-          <button class="pill" data-kind="all" aria-pressed="true">All ({films.length})</button>
-          <button class="pill" data-kind="movie" aria-pressed="false">Movie ({movieCount})</button>
-          <button class="pill" data-kind="series" aria-pressed="false">Series ({seriesCount})</button>
+  <section class="hsection" id="filmography">
+    <div class="hheading">
+      <h2>Filmography <span class="count" id="filmCount">{films.length} title{films.length === 1 ? '' : 's'}</span></h2>
+      <div class="arrowNav">
+        <button type="button" data-scroll="films" data-direction="-1" aria-label="Previous films">‹</button>
+        <button type="button" data-scroll="films" data-direction="1" aria-label="Next films">›</button>
+      </div>
+    </div>
+    {films.length > 0 ? (
+      <>
+        <div class="controls" role="group" aria-label="Filter filmography">
+          <button class="pill" data-kind="all" aria-pressed="true" type="button">All ({films.length})</button>
+          {movieCount > 0 && <button class="pill" data-kind="movie" aria-pressed="false" type="button">Movies ({movieCount})</button>}
+          {seriesCount > 0 && <button class="pill" data-kind="series" aria-pressed="false" type="button">Series ({seriesCount})</button>}
           <select class="sortSelect" id="filmSort">
-            <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
             <option value="title">A–Z</option>
           </select>
         </div>
-      </div>
-      <div class="films-grid" id="filmsGrid">
-        {films.map((f) => (
-          <a href={`/movies/${f.id}`} data-kind={f.data.type} data-year={f.data.year} data-title={f.data.title}>
-            <div class="thumb">{f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" /> : <div class="posterFallback" style="width:100%;height:100%;">{f.data.title}</div>}</div>
-            <h3>{f.data.title}</h3>
-            <div class="meta">{f.data.year} · {f.data.type === 'series' ? 'Series' : 'Movie'}</div>
-          </a>
-        ))}
-      </div>
-    </>
-  )}
-
-  {creativeStack.length > 0 && (
-    <section class="stackSection" aria-labelledby="stack-heading">
-      <h2 id="stack-heading">Creative stack</h2>
-      <p class="stackLede">Tools used across {c.name}'s films, aggregated from AIMB catalog credits.</p>
-      <div class="stackWrap">
-        <button class="carouselBtn left" id="prevTool" aria-label="Scroll tools left" type="button">←</button>
-        <div class="toolScroll" id="toolScroll">
-          {creativeStack.map((t) => (
-            <div class="toolCard">
-              <span class="toolmark" style={`background:${t.meta.bg};color:${t.meta.fg};${t.meta.border ? `border:1px solid ${t.meta.border};` : ''}`}>{t.meta.image ? <img src={t.meta.image} alt="" width="22" height="22" style="border-radius:6px;" /> : t.meta.icon}</span>
-              <strong>{t.name}</strong>
-              <small>{t.count} film{t.count === 1 ? '' : 's'}</small>
-            </div>
+        <div class="hscroll" id="films">
+          {films.map((f) => (
+            <a class="filmCard" href={`/movies/${f.id}`} data-kind={f.data.type} data-year={f.data.year} data-title={f.data.title}>
+              <div class="thumb">
+                {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" /> : <div class="posterFallback" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-weight:700;">{f.data.title}</div>}
+              </div>
+              <h3>{f.data.title}</h3>
+              <p class="filmMeta">{f.data.year}<span>·</span>{f.data.type === 'series' ? 'Series' : 'Movie'}</p>
+              {f.data.genres.length > 0 && (
+                <div class="filmTags">{f.data.genres.slice(0, 2).map((g) => <span>{g}</span>)}</div>
+              )}
+            </a>
           ))}
         </div>
-        <button class="carouselBtn right" id="nextTool" aria-label="Scroll tools right" type="button">→</button>
+      </>
+    ) : (
+      <p class="hintro">No films in this creator's catalog yet.</p>
+    )}
+  </section>
+
+  {awardsList.length > 0 && (
+    <section class="hsection" id="recognition">
+      <div class="hheading">
+        <h2>Awards &amp; Recognition</h2>
+        <div class="arrowNav">
+          <button type="button" data-scroll="awards" data-direction="-1" aria-label="Previous awards">‹</button>
+          <button type="button" data-scroll="awards" data-direction="1" aria-label="Next awards">›</button>
+        </div>
+      </div>
+      <div class="hscroll" id="awards">
+        {awardsList.map((a) => (
+          <div class="awardCard">
+            <span class="mark"><Icon name="laurel" size={22} /></span>
+            <div>
+              <strong>{a.title}</strong>
+              {a.note && <small>{a.note}</small>}
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   )}
 
+  {creativeStack.length > 0 && (
+    <section class="hsection" id="stack" aria-labelledby="stack-heading">
+      <div class="hheading">
+        <h2 id="stack-heading">Creative stack</h2>
+        <div class="arrowNav">
+          <button type="button" data-scroll="toolScroll" data-direction="-1" aria-label="Previous tools">‹</button>
+          <button type="button" data-scroll="toolScroll" data-direction="1" aria-label="Next tools">›</button>
+        </div>
+      </div>
+      <p class="hintro">Tools used across {c.alias || c.name}'s films, aggregated from AIMB catalog credits.</p>
+      <div class="hscroll" id="toolScroll">
+        {creativeStack.map((t) => (
+          <div class="toolCard">
+            <span class="toolmark" style={`background:${t.meta.bg};color:${t.meta.fg};${t.meta.border ? `border:1px solid ${t.meta.border};` : ''}`}>{t.meta.image ? <img src={t.meta.image} alt="" width="22" height="22" style="border-radius:6px;" /> : t.meta.icon}</span>
+            <strong>{t.name}</strong>
+            <small>{t.count} film{t.count === 1 ? '' : 's'}</small>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: c.name,
+    ...(c.alias ? { alternateName: c.alias } : {}),
+    ...(c.role ? { jobTitle: c.role } : {}),
+  })} />
+
   <script is:inline>
     (function () {
-      var grid = document.getElementById('filmsGrid');
-      if (!grid) return;
-      var cards = [].slice.call(grid.children);
-      var pills = [].slice.call(document.querySelectorAll('.pill'));
-      var sortSelect = document.getElementById('filmSort');
-      var kind = 'all';
+      var grid = document.getElementById('films');
+      if (grid) {
+        var cards = [].slice.call(grid.children);
+        var pills = [].slice.call(document.querySelectorAll('.controls .pill'));
+        var sortSelect = document.getElementById('filmSort');
+        var countEl = document.getElementById('filmCount');
+        var kind = 'all';
 
-      function render() {
-        var list = cards.filter(function (c) { return kind === 'all' || c.dataset.kind === kind; });
-        var mode = sortSelect.value;
-        list.sort(function (a, b) {
-          if (mode === 'oldest') return Number(a.dataset.year) - Number(b.dataset.year);
-          if (mode === 'title') return a.dataset.title.localeCompare(b.dataset.title);
-          return Number(b.dataset.year) - Number(a.dataset.year);
+        function render() {
+          var list = cards.filter(function (c) { return kind === 'all' || c.dataset.kind === kind; });
+          var mode = sortSelect.value;
+          list.sort(function (a, b) {
+            if (mode === 'oldest') return Number(a.dataset.year) - Number(b.dataset.year);
+            if (mode === 'title') return a.dataset.title.localeCompare(b.dataset.title);
+            return Number(b.dataset.year) - Number(a.dataset.year);
+          });
+          cards.forEach(function (c) { c.hidden = true; });
+          list.forEach(function (c) { c.hidden = false; });
+          grid.replaceChildren.apply(grid, list.concat(cards.filter(function (c) { return list.indexOf(c) === -1; })));
+          if (countEl) countEl.textContent = list.length + ' title' + (list.length === 1 ? '' : 's');
+        }
+        pills.forEach(function (pill) {
+          pill.addEventListener('click', function () {
+            kind = pill.dataset.kind;
+            pills.forEach(function (p) { p.setAttribute('aria-pressed', String(p === pill)); });
+            render();
+          });
         });
-        cards.forEach(function (c) { c.hidden = true; });
-        list.forEach(function (c) { c.hidden = false; });
-        grid.replaceChildren.apply(grid, list.concat(cards.filter(function (c) { return list.indexOf(c) === -1; })));
+        sortSelect.addEventListener('change', render);
+        render();
       }
-      pills.forEach(function (pill) {
-        pill.addEventListener('click', function () {
-          kind = pill.dataset.kind;
-          pills.forEach(function (p) { p.setAttribute('aria-pressed', String(p === pill)); });
-          render();
+
+      [].slice.call(document.querySelectorAll('[data-scroll]')).forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var el = document.getElementById(btn.dataset.scroll);
+          if (el) el.scrollBy({ left: el.clientWidth * 0.8 * Number(btn.dataset.direction), behavior: 'smooth' });
         });
       });
-      sortSelect.addEventListener('change', render);
-      render();
-    })();
-  </script>
-
-  <script is:inline>
-    (function () {
-      var scroll = document.getElementById('toolScroll');
-      if (!scroll) return;
-      var prev = document.getElementById('prevTool');
-      var next = document.getElementById('nextTool');
-      prev.addEventListener('click', function () { scroll.scrollBy({ left: -340, behavior: 'smooth' }); });
-      next.addEventListener('click', function () { scroll.scrollBy({ left: 340, behavior: 'smooth' }); });
     })();
   </script>
 </BaseLayout>
