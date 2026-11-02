@@ -58,13 +58,13 @@ const directory = [
   },
   {
     name: 'Higgsfield Global Film Festival',
-    url: 'https://higgsfield.ai/',
+    slug: 'higgsfield',
     logo: 'H',
-    location: 'Online',
-    edition: 'October 2026',
+    location: 'Online · Worldwide',
+    edition: '2026 (results 1 Nov 2026)',
     formats: ['Online'],
     fund: '$1,000,000',
-    winner: { title: 'Awaiting results', pending: true },
+    winner: { title: 'Listen to Meh', year: '2026', note: '1st Place' },
   },
   {
     name: 'BIFAN — Bucheon International Fantastic Film Festival',
@@ -142,7 +142,8 @@ const initialCount = 6;
        the pixels (not a clean photo), so reusing them here would double
        up with this template's own badge/text. Kept as the mockup's dark
        card style without a photo rather than ship a visibly broken one. */
-    .featuredGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; margin-bottom: 36px; }
+    .featuredGrid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 14px; margin-bottom: 36px; }
+    @media (max-width: 900px) { .featuredGrid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
     .featureCard { background: var(--black); border-radius: 8px; padding: 20px 18px; color: #fff; display: flex; flex-direction: column; justify-content: flex-end; min-height: 170px; position: relative; }
     .featureCard .tag { align-self: flex-start; background: #ffe6a8; color: #1a1710; font-weight: 700; border-radius: 6px; padding: 4px 9px; font-size: .62rem; letter-spacing: .02em; margin-bottom: auto; }
     .featureCard h3 { font-family: var(--serif); font-size: 1.25rem; margin: 10px 0 5px; }
@@ -225,6 +226,12 @@ const initialCount = 6;
       <h3>Reply AI Film Festival</h3>
       <p>An international competition spotlighting AI-assisted storytelling.</p>
       <small>6 Sep 2026</small>
+    </a>
+    <a class="featureCard" href="/awards/higgsfield">
+      <span class="tag">FEATURED</span>
+      <h3>Higgsfield Global Film Festival</h3>
+      <p>A $1,000,000 online competition for original AI short films.</p>
+      <small>Results 1 Nov 2026</small>
     </a>
   </div>
 
