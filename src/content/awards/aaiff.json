@@ -27,7 +27,7 @@
       "lede": "Other awards from the Astana AI Film Festival 2026.",
       "winners": [
         { "place": "Best Character", "title": "IT WAS JUST A JOKE", "movieSlug": "it-was-just-a-joke", "director": "Myrzakhan Zhumakhan", "directorSlug": "myrzakhan-zhumakhan", "poster": "/images/posters/it-was-just-a-joke.webp", "notes": [] },
-        { "place": "Best Story", "title": "The Last Span", "director": "2xLabs", "notes": [] },
+        { "place": "Best Story", "title": "The Last Span", "movieSlug": "the-last-span", "director": "2xLabs", "poster": "/images/posters/the-last-span.webp", "notes": [] },
         { "place": "Best Concept", "title": "Pomegranate", "director": "Zachary London", "notes": [] },
         { "place": "Best Visual", "title": "What's the Job?", "director": "Jacopo Zanetti", "notes": [] },
         { "place": "Best Direction", "title": "The Fracture", "director": "Jacopo Reale", "notes": [] }
