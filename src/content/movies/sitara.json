@@ -1,0 +1,15 @@
+{
+  "movie_id": "b3c60e2d-12d9-44f1-b4e3-59a95f4efd83",
+  "title": "SITARA",
+  "year": 2026,
+  "type": "movie",
+  "genres": [],
+  "poster": "/images/posters/sitara.webp",
+  "director": {
+    "name": "Abhik Banerjee"
+  },
+  "studio": "Rollsound",
+  "awards": [
+    "Second Prize ($200,000) — Astana AI Film Festival (AAIFF) 2026"
+  ]
+}

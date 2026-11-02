@@ -37,7 +37,7 @@
         { "place": "Honorable Mention", "title": "Lullaby", "movieSlug": "lullaby", "director": "@keigo_matsumaru", "poster": "/images/awards/lullaby.webp", "prize": "$10,000", "notes": [] },
         { "place": "Honorable Mention", "title": "GIRLS / DEMONS", "movieSlug": "girls-demons", "director": "@tambv", "poster": "/images/awards/girls-demons.webp", "prize": "$10,000", "notes": [] },
         { "place": "Honorable Mention", "title": "The Elevator", "movieSlug": "the-elevator", "director": "@curious_media_2026", "poster": "/images/awards/the-elevator.webp", "prize": "$10,000", "notes": [] },
-        { "place": "Honorable Mention", "title": "HUNGER", "director": "@sssacccade", "prize": "$10,000", "notes": [] }
+        { "place": "Honorable Mention", "title": "HUNGER", "movieSlug": "hunger", "director": "@sssacccade", "poster": "/images/posters/hunger-wide.webp", "prize": "$10,000", "notes": [] }
       ]
     }
   ]
