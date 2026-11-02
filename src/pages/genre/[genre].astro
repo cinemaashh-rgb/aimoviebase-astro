@@ -56,10 +56,15 @@ const seriesFilms = films.filter((f) => f.data.type === 'series');
     .movie-card img, .movie-card .posterFallback { aspect-ratio: 2/3; width: 100%; object-fit: cover; border-radius: 6px; background: var(--soft); }
     .movie-card h3 { font-size: .9rem; margin: 8px 0 2px; }
     .movie-card .year { color: var(--muted); font-size: .78rem; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); gap: 18px 14px; }
+    /* Fixed column count (not auto-fill) so a batch of 6 always fills a
+       clean row instead of auto-fill picking whatever count happens to
+       fit the viewport, which left odd/short trailing rows. */
+    .grid { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 18px 14px; }
     .load-wrap { text-align: center; padding: 28px 0 8px; }
     .load { background: var(--soft); border: 1px solid var(--line); color: var(--ink); border-radius: 6px; font-size: .85rem; font-weight: 600; padding: 11px 40px; cursor: pointer; }
     .load[hidden] { display: none; }
+    @media (max-width: 900px) { .grid { grid-template-columns: repeat(3,minmax(0,1fr)); } }
+    @media (max-width: 520px) { .grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
   </style>
 
   <div class="genreHero full-bleed">
@@ -116,7 +121,8 @@ const seriesFilms = films.filter((f) => f.data.type === 'series');
       var sortSelect = document.getElementById('sortSelect');
       var tabs = { all: document.getElementById('tabAll'), movie: document.getElementById('tabMovies'), series: document.getElementById('tabSeries') };
       var kind = 'all';
-      var shown = 8;
+      var PAGE_SIZE = 6;
+      var shown = PAGE_SIZE;
 
       function filtered() {
         return allCards.filter(function (c) { return kind === 'all' || c.dataset.kind === kind; });
@@ -137,7 +143,7 @@ const seriesFilms = films.filter((f) => f.data.type === 'series');
       }
       function setTab(next) {
         kind = next;
-        shown = 8;
+        shown = PAGE_SIZE;
         Object.keys(tabs).forEach(function (k) { tabs[k].setAttribute('aria-pressed', String(k === next)); });
         render();
       }
@@ -145,7 +151,7 @@ const seriesFilms = films.filter((f) => f.data.type === 'series');
       tabs.movie.addEventListener('click', function () { setTab('movie'); });
       tabs.series.addEventListener('click', function () { setTab('series'); });
       sortSelect.addEventListener('change', render);
-      loadBtn.addEventListener('click', function () { shown += 8; render(); });
+      loadBtn.addEventListener('click', function () { shown += PAGE_SIZE; render(); });
       render();
     })();
   </script>
