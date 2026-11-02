@@ -3,12 +3,26 @@
   "title": "Lullaby",
   "year": 2026,
   "type": "movie",
-  "genres": ["Animation", "Fantasy", "Adventure"],
+  "genres": [
+    "Animation",
+    "Fantasy",
+    "Adventure"
+  ],
   "synopsis": "Iris must return three living swords to the earth in an animated fantasy about duty, belonging and separation. Her journey becomes a deeply personal farewell to the family that raised her.",
   "poster": "/images/posters/lullaby.webp",
   "youtubeId": "HpkMwRu0ppQ",
-  "aiTools": ["Seedream 5.0 Pro", "Seedance 2.5", "Topaz Video"],
+  "aiTools": [
+    "Seedream 5.0 Pro",
+    "Seedance 2.5",
+    "Topaz Video"
+  ],
   "awards": [
     "Honorable Mention — Higgsfield Global Film Festival 2026"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "Well done. The ending was a very sweet twist.",
+      "author": "@anthonylonigro1631"
+    }
   ]
 }

@@ -14,5 +14,19 @@
   "director": {
     "name": "Gregory Ivanets",
     "slug": "gregory-ivanets"
-  }
+  },
+  "audienceReactions": [
+    {
+      "quote": "Your fee for processing the processing fee is what finally broke me.",
+      "author": "@johnfryimages"
+    },
+    {
+      "quote": "If technology keeps advancing like this, I'll come home and tell my AI TV: I want to watch a movie about this and that, now go make it! It'll be easier than frying an egg.",
+      "author": "@VanTraffik"
+    },
+    {
+      "quote": "0:31 right away I'm thinking, the greater good from Hot Fuzz.",
+      "author": "@tech5298"
+    }
+  ]
 }

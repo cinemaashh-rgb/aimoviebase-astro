@@ -3,12 +3,37 @@
   "title": "The Elevator",
   "year": 2026,
   "type": "movie",
-  "genres": ["Mystery", "Thriller", "Fantasy"],
+  "genres": [
+    "Mystery",
+    "Thriller",
+    "Fantasy"
+  ],
   "synopsis": "An ordinary elevator ride becomes a descent into the impossible. Across nine increasingly surreal floors, a man encounters bizarre realities that draw him toward an unavoidable personal reckoning.",
   "poster": "/images/posters/the-elevator.webp",
   "youtubeId": "UrSo7JTq1Vs",
-  "aiTools": ["Nano Banana Pro", "Cinematic Studio Soul Loca…", "Soul Cinematic", "Seedream 5.0 Pro", "Cinematic Studio Soul Cast", "Seedance 2.5"],
+  "aiTools": [
+    "Nano Banana Pro",
+    "Cinematic Studio Soul Loca…",
+    "Soul Cinematic",
+    "Seedream 5.0 Pro",
+    "Cinematic Studio Soul Cast",
+    "Seedance 2.5"
+  ],
   "awards": [
     "Honorable Mention — Higgsfield Global Film Festival 2026"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "Did not see this ending coming. Bravo!",
+      "author": "@MuzOsman"
+    },
+    {
+      "quote": "Wow! Still going back over it. Will have to watch again with the new found knowledge! Excellent.",
+      "author": "@helenaMe325"
+    },
+    {
+      "quote": "Amazing film! Great story and music, smooth scene continuity, and so creative throughout. Really hoping this one wins!",
+      "author": "@vjblqt21"
+    }
   ]
 }

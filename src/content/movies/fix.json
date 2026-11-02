@@ -3,12 +3,29 @@
   "title": "FIX",
   "year": 2026,
   "type": "movie",
-  "genres": ["Animation", "Fantasy", "Drama"],
+  "genres": [
+    "Animation",
+    "Fantasy",
+    "Drama"
+  ],
   "synopsis": "In a delicate world made entirely of folded paper, an anxious middle-school singer discovers a real pushpin with the extraordinary power to hold anything in place. The discovery promises control in a world where everything feels uncertain.",
   "poster": "/images/posters/fix.webp",
   "youtubeId": "bp078TAll4g",
-  "aiTools": ["Seedream 5.0 Pro", "Seedance 2.5"],
+  "aiTools": [
+    "Seedream 5.0 Pro",
+    "Seedance 2.5"
+  ],
   "awards": [
     "Honorable Mention — Higgsfield Global Film Festival 2026"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "Mind-blowing idea! Incredible video! This is beyond amazing. If this doesn't take 1st place, something is definitely wrong!",
+      "author": "@ssk4126"
+    },
+    {
+      "quote": "The paper-textured characters really solve the staleness and awkwardness you get in typical AI videos — feels fresh. I love how full and rich this short film feels.",
+      "author": "@물동이-z1f"
+    }
   ]
 }

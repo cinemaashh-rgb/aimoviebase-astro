@@ -3,12 +3,35 @@
   "title": "Fukushima",
   "year": 2026,
   "type": "movie",
-  "genres": ["Drama", "Thriller", "Historical"],
+  "genres": [
+    "Drama",
+    "Thriller",
+    "Historical"
+  ],
   "synopsis": "At the Fukushima Daiichi nuclear power plant, a veteran engineer believes the facility can withstand a devastating natural disaster. As the catastrophe unfolds, his confidence gives way to an escalating fight against forces beyond human control.",
   "poster": "/images/posters/fukushima.webp",
   "youtubeId": "IrYiXEO8WpY",
-  "aiTools": ["Seedream 5.0 Pro", "GPT Image 2.0", "GPT Image 2.5", "Seedance 2.5"],
+  "aiTools": [
+    "Seedream 5.0 Pro",
+    "GPT Image 2.0",
+    "GPT Image 2.5",
+    "Seedance 2.5"
+  ],
   "awards": [
     "2nd Place — Higgsfield Global Film Festival 2026"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "It feels like a seamless continuous shot, which is absolutely stunning.",
+      "author": "@motoCF-h2p"
+    },
+    {
+      "quote": "Oh man, this is SO damn good. Seriously, one of the best short films I've had the pleasure of watching so far! The whole idea of doing it without a single cut is brilliant.",
+      "author": "@BADBEE-PICTURES"
+    },
+    {
+      "quote": "The future of entertainment. Take it or leave it.",
+      "author": "@Yoel-dr"
+    }
   ]
 }

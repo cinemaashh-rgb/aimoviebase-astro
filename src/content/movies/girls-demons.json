@@ -3,12 +3,35 @@
   "title": "GIRLS / DEMONS",
   "year": 2026,
   "type": "movie",
-  "genres": ["Anime", "Horror", "Romance"],
+  "genres": [
+    "Anime",
+    "Horror",
+    "Romance"
+  ],
   "synopsis": "Against the neon-lit backdrop of a world inspired by 1990s anime, romance and desire collide with secrecy and supernatural darkness. A story about trust, attraction and the disturbing truths that hide beneath appearances.",
   "poster": "/images/posters/girls-demons.webp",
   "youtubeId": "6CHHa0MNzxA",
-  "aiTools": ["Soul Cinematic", "Seedance 2.0", "GPT Image 2.5", "GPT Image 2.0"],
+  "aiTools": [
+    "Soul Cinematic",
+    "Seedance 2.0",
+    "GPT Image 2.5",
+    "GPT Image 2.0"
+  ],
   "awards": [
     "Honorable Mention — Higgsfield Global Film Festival 2026"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "God, so well made — the story is super cool.",
+      "author": "@Andriuu7"
+    },
+    {
+      "quote": "Damnnnnn!!! You really cooked this one, no words.",
+      "author": "@AnimalLover-dm9br"
+    },
+    {
+      "quote": "Amazing work! Honored to have been shortlisted next to your project with my 90's inspired Anime OVA. I think I can learn a lot from your process! Thank you.",
+      "author": "@YoavYariv"
+    }
   ]
 }

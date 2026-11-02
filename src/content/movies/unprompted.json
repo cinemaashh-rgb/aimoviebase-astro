@@ -12,5 +12,19 @@
   "director": {
     "name": "Nikolay Shestak",
     "slug": "shestak"
-  }
+  },
+  "audienceReactions": [
+    {
+      "quote": "It reminds me of 2016 Google DeepDreaming combined with LSD.",
+      "author": "@pluto9000"
+    },
+    {
+      "quote": "Interesting — from a psychoanalytic point of view, our world looks roughly like this: a chaotic mess of psychic bones in beings, and the whole world ends up the same way. Everyone somehow manages to coexist, offering each other their traumas so they end up complementary.",
+      "author": "@Justthename288"
+    },
+    {
+      "quote": "Incredible! Scary to imagine how many tokens were spent to make everything look this amazing! How many photo and video generations did it take?",
+      "author": "@Tonyxify"
+    }
+  ]
 }
