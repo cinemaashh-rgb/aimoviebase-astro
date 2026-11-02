@@ -20,6 +20,10 @@ const movies = defineCollection({
     synopsis: z.string().optional(),
     poster: z.string().optional(),
     youtubeId: z.string().optional(),
+    // Fallback for a film that isn't hosted on YouTube (e.g. Bilibili) —
+    // the Watch button links out directly instead of opening the YouTube
+    // embed modal. Only used when youtubeId is unset.
+    watchUrl: z.string().optional(),
     director: z.object({
       name: z.string(),
       slug: z.string().optional(),
