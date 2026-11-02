@@ -1,0 +1,27 @@
+{
+  "name": "Made with Seedance",
+  "description": "AI-generated films and cinematic projects created using ByteDance's Seedance video models.",
+  "placeholder": true,
+  "movies": [
+    "a-face-only-a-mother-could-love",
+    "ballast",
+    "echoes-of-the-silent-planet",
+    "fix",
+    "fukushima",
+    "girls-demons",
+    "hunger",
+    "hydrocide",
+    "it-was-just-a-joke",
+    "listen-to-meh",
+    "lullaby",
+    "make-believe",
+    "morek",
+    "nobody-was-coming-to-save-the-last-king",
+    "roar",
+    "roraima",
+    "soulless",
+    "the-elevator",
+    "the-field-agent",
+    "thundercats-pumm-ra"
+  ]
+}
