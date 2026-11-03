@@ -6,11 +6,35 @@
   "duration": "4:39",
   "genres": ["Animation", "Comedy", "Drama"],
   "synopsis": "On his last day before the world ends, a fish trapped in a kitchen sink reflects on life, death and existence inside a surreal world of living oil paintings.",
+  "poster": "/images/posters/le-drip.webp",
+  "youtubeId": "yKhlDjq-q3M",
   "director": {
-    "name": "Alex Naghavi & Ezra Li"
+    "name": "Alex Naghavi",
+    "slug": "alex-naghavi"
   },
-  "aiTools": ["Flora", "Nano Banana", "Claude", "Seedance", "Runway", "Leonardo", "ElevenLabs", "Google AI Studio"],
+  "crew": [
+    { "name": "Ezra Li", "role": "Co-Director", "slug": "ezra-li" },
+    { "name": "Jessie Hughes", "role": "Screenwriter" }
+  ],
+  "aiTools": ["Flora", "Nano Banana", "Claude", "Seedance", "Runway", "Adobe", "Leonardo", "Google AI Studio", "ElevenLabs"],
   "awards": [
-    "2nd Place — Reply AI Film Festival 2026"
+    "Best Animated Film — AI International Film Festival, Los Angeles",
+    "Best Use of AI — AI International Film Festival, Los Angeles",
+    "Best Director — AI International Film Festival, Los Angeles",
+    "Best Animated Film — Amsterdam New Cinema Festival, Amsterdam",
+    "Best Animation — Berlin Indie Film Festival, Berlin",
+    "Best Animated Film — Altera Festival, Atlanta",
+    "Golden Storytellers Award — OMNI 1.5 Film Festival, Sydney",
+    "Best Experimental Short — Critics Society Film Festival, India",
+    "Best Animation Short (Finalist) — Critics Society Film Festival, India",
+    "Best Comedy (Finalist) — Critics Society Film Festival, India",
+    "Best AI Film (Finalist) — Critics Society Film Festival, India",
+    "Loudest Applause Award — Bucharest AI Film Festival, Romania",
+    "Finalist — East Village New York Film Festival, New York",
+    "Nominee — Meta Morph AI Film Award, London",
+    "2nd Place — Reply AI Film Festival 2026, Venice",
+    "Official Selection — Bordeaux Shorts Biennale, Bordeaux",
+    "Official Selection — LA International Cinema Awards, Los Angeles",
+    "Official Selection — Short Shot Fest, Moscow"
   ]
 }
