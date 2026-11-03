@@ -1,0 +1,14 @@
+{
+  "movie_id": "ba7dabc3-e476-4968-bcd1-d9d6c6c56d20",
+  "title": "Where Knights Fall",
+  "year": 2026,
+  "type": "movie",
+  "genres": ["Comedy", "Fantasy"],
+  "synopsis": "A comedic spoof of the Rapunzel fairy tale, built around a prince who belly-slides into the action.",
+  "director": {
+    "name": "Mathery"
+  },
+  "awards": [
+    "Silver — Runway AI Film Festival (AIFF) 2026"
+  ]
+}

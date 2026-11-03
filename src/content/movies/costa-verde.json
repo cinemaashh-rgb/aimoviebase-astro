@@ -11,8 +11,10 @@
   "synopsis": "An award-winning AI-generated drama short.",
   "poster": "/images/posters/costa-verde.webp",
   "director": {
-    "name": "Léo Cannone"
+    "name": "Léo Cannone",
+    "slug": "leo-cannone"
   },
+  "studio": "New Forest Films",
   "aiTools": [
     "Midjourney",
     "Runway",
@@ -21,6 +23,8 @@
     "Dreamina"
   ],
   "awards": [
-    "Multiple festival selections"
+    "Honoree — Runway AI Film Festival (AIFF) 2026",
+    "Best Film — World AI Film Festival (WAIFF) Cannes 2026",
+    "Best AI Fantasy — World AI Film Festival (WAIFF) Cannes 2026"
   ]
 }

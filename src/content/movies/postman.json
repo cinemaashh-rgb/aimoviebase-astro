@@ -1,0 +1,14 @@
+{
+  "movie_id": "805a1bcb-7e8e-4213-a9cf-e94fa71765b8",
+  "title": "POSTMAN",
+  "year": 2026,
+  "type": "movie",
+  "duration": "7:00",
+  "genres": [],
+  "director": {
+    "name": "YUUUKI"
+  },
+  "awards": [
+    "Merit — Runway AI Film Festival (AIFF) 2026"
+  ]
+}

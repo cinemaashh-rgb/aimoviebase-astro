@@ -1,0 +1,15 @@
+{
+  "movie_id": "6f5d7aaf-e5ca-4bc2-92b1-72d3e181bd00",
+  "title": "THE WELL",
+  "year": 2026,
+  "type": "movie",
+  "duration": "5:29",
+  "genres": ["Comedy", "Crime"],
+  "synopsis": "A Fargo-style crime story told through hyperdetailed, anthropomorphic animal characters.",
+  "director": {
+    "name": "Dorian & Daniel"
+  },
+  "awards": [
+    "Gold — Runway AI Film Festival (AIFF) 2026"
+  ]
+}

@@ -25,7 +25,63 @@
           "director": "Robert Gaudette",
           "directorSlug": "robert-gaudette",
           "poster": "/images/posters/a-face-only-a-mother-could-love.webp",
-          "notes": [],
+          "notes": [
+            {
+              "category": "Gold",
+              "title": "THE WELL",
+              "movieSlug": "the-well",
+              "director": "Dorian & Daniel"
+            },
+            {
+              "category": "Silver",
+              "title": "Where Knights Fall",
+              "movieSlug": "where-knights-fall",
+              "director": "Mathery"
+            },
+            {
+              "category": "Honoree",
+              "title": "Costa Verde",
+              "movieSlug": "costa-verde",
+              "director": "Léo Cannone & New Forest Films",
+              "directorSlug": "leo-cannone"
+            },
+            {
+              "category": "Honoree",
+              "title": "TAIRELL ISN'T REAL",
+              "movieSlug": "tairell-isnt-real",
+              "director": "Dave Clark"
+            },
+            {
+              "category": "Merit",
+              "title": "Little Mes",
+              "movieSlug": "little-mes",
+              "director": "Lucas Levitan & Fabián Jiménez"
+            },
+            {
+              "category": "Merit",
+              "title": "Between Before and After",
+              "movieSlug": "between-before-and-after",
+              "director": "Sifang Chen & Yang Wang"
+            },
+            {
+              "category": "Merit",
+              "title": "POSTMAN",
+              "movieSlug": "postman",
+              "director": "YUUUKI"
+            },
+            {
+              "category": "Merit",
+              "title": "살(煞) - Divine Retribution",
+              "movieSlug": "sal-divine-retribution",
+              "director": "Minju Choi"
+            },
+            {
+              "category": "Merit",
+              "title": "Simiyu, Lies and Happiness",
+              "movieSlug": "simiyu-lies-and-happiness",
+              "director": "John Kirk Kelly"
+            }
+          ],
           "prize": "$50,000"
         }
       ]
