@@ -7,14 +7,21 @@
   "genres": ["Drama", "Experimental"],
   "country": "Ukraine",
   "synopsis": "A Ukrainian filmmaker's reflection on displacement and self — the distance between the person she was before leaving home and the person shaped by everything since, built in the AI around a true story of a sister and a home someone chose to stay in.",
+  "poster": "/images/posters/distance-between-two-points-of-me.webp",
   "director": {
     "name": "Illya Dutsyk"
   },
   "crew": [
+    { "name": "Nataliia Serebriakova", "role": "Original Story" },
     { "name": "Bogdan Nesvit", "role": "Producer" },
     { "name": "Anatolii Kasianov", "role": "Producer" }
   ],
   "awards": [
-    "Honoree — Runway AI Film Festival (AIFF) 2025"
+    "Honoree — Runway AI Film Festival (AIFF) 2025",
+    "Gold Winner — The Telly Awards, General Animation: Short Form (Under 40 Minutes) 2025",
+    "Gold Winner — The Telly Awards, Craft: Use of Generative AI 2025",
+    "Official Selection — Seoul International AI Film Festival 2025",
+    "Official Selection — AI International Film Festival 2025",
+    "Official Selection — AI Film Awards Cannes 2025"
   ]
 }

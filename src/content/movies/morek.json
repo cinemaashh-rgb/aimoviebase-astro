@@ -11,6 +11,9 @@
   "synopsis": "In a war-torn world brought to life through hand-painted imagery, a young boy struggles to prove his courage and worth. His journey unfolds in a landscape where love and violence coexist, and growing up means confronting the consequences of both.",
   "poster": "/images/posters/morek.webp",
   "youtubeId": "CTV3fFGSrWQ",
+  "director": {
+    "name": "Zeynep Zümre Kuşkapan"
+  },
   "aiTools": [
     "Seedance 2.5",
     "Seedream 5.0 Pro"
