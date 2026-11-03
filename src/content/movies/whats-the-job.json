@@ -1,0 +1,16 @@
+{
+  "movie_id": "e3ef2b91-4dea-4348-875b-8e6de70c0da1",
+  "title": "What's the Job?",
+  "year": 2026,
+  "type": "movie",
+  "genres": ["Comedy", "Experimental"],
+  "synopsis": "Nobody's going to tell you what your job is. Not until you decide. A surreal comedy fable about a world that keeps you waiting for a role, until you realize you're the one who has to pick it.",
+  "poster": "/images/posters/whats-the-job.webp",
+  "youtubeId": "h4vhk7bvnnM",
+  "director": {
+    "name": "Jacopo Zanetti (Jaio)"
+  },
+  "awards": [
+    "Best Visual — Astana AI Film Festival (AAIFF) 2026"
+  ]
+}
