@@ -1,0 +1,78 @@
+{
+  "name": "Reply AI Film Festival",
+  "location": "Venice, Italy",
+  "dates": "2026 (winners announced 7 September 2026)",
+  "organizer": "Reply",
+  "siteUrl": "https://www.reply.com/",
+  "lead": "Reply's annual competition for short films made with generative AI tools, held alongside the Venice International Film Festival.",
+  "description": "The Reply AI Film Festival is an international competition for short films produced with generative AI, run by the Italian digital-services group Reply and staged in Venice during the Venice International Film Festival. The 2026 edition's results were announced on 7 September 2026, naming five uniquely awarded films across a main ranking and four special prizes; two films, \"Website\" and \"Centenarian Kindergarten,\" each took two awards.",
+  "stats": [
+    { "label": "Organizer", "value": "Reply" },
+    { "label": "Edition", "value": "2026" },
+    { "label": "Unique award-winning films", "value": "5" }
+  ],
+  "sections": [
+    {
+      "label": "2026",
+      "eyebrow": "Main competition",
+      "lede": "The top three placements of the Reply AI Film Festival 2026.",
+      "winners": [
+        {
+          "place": "1st Place",
+          "title": "A Face Only a Mother Could Love",
+          "movieSlug": "a-face-only-a-mother-could-love",
+          "director": "Robert Gaudette",
+          "directorSlug": "robert-gaudette",
+          "poster": "/images/posters/a-face-only-a-mother-could-love.webp",
+          "notes": []
+        },
+        {
+          "place": "2nd Place",
+          "title": "Le Drip",
+          "director": "Alex Naghavi & Ezra Li",
+          "notes": []
+        },
+        {
+          "place": "3rd Place",
+          "title": "Centenarian Kindergarten",
+          "movieSlug": "centenarian-kindergarten",
+          "director": "2xLabs",
+          "poster": "/images/posters/centenarian-kindergarten.webp",
+          "notes": []
+        }
+      ]
+    },
+    {
+      "label": "Special Awards",
+      "lede": "Additional prizes from the Reply AI Film Festival 2026 jury.",
+      "winners": [
+        {
+          "place": "Reply AI Studios Grand Prix",
+          "title": "Website",
+          "director": "Jiaze Li",
+          "notes": []
+        },
+        {
+          "place": "AI for Good Award",
+          "title": "Centenarian Kindergarten",
+          "movieSlug": "centenarian-kindergarten",
+          "director": "2xLabs",
+          "poster": "/images/posters/centenarian-kindergarten.webp",
+          "notes": []
+        },
+        {
+          "place": "Community Award",
+          "title": "Website",
+          "director": "Jiaze Li",
+          "notes": []
+        },
+        {
+          "place": "Special Mention",
+          "title": "The Child of the Sea",
+          "director": "Ibai Abad",
+          "notes": []
+        }
+      ]
+    }
+  ]
+}

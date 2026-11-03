@@ -19,6 +19,7 @@ function moviePoster(slug: string | undefined) {
 const byId = (id: string) => awards.find((a) => a.id === id);
 const aaiff = byId('aaiff');
 const runway = byId('runway-aiff');
+const reply = byId('reply-aiff');
 
 // Directory data for every festival shown on this page. The two with a
 // full detail page (AAIFF, Runway) pull their name/location/dates from
@@ -47,10 +48,10 @@ const directory = [
     winner: { title: 'A Face Only A Mother Could Love', year: '2026', movieSlug: 'a-face-only-a-mother-could-love', note: 'Grand Prix' },
   },
   {
-    name: 'Reply AI Film Festival',
-    url: 'https://www.reply.com/',
+    name: reply!.data.name,
+    slug: 'reply-aiff',
     logo: 'Reply',
-    location: 'Venice, Italy',
+    location: reply!.data.location,
     edition: 'September 2026',
     formats: ['In-Person'],
     fund: null,
@@ -222,11 +223,11 @@ const initialCount = 6;
       <p>A global showcase of AI-driven films organized by Runway.</p>
       <small>2026 edition</small>
     </a>
-    <a class="featureCard" href="https://www.reply.com/" target="_blank" rel="noopener">
+    <a class="featureCard" href="/awards/reply-aiff">
       <span class="tag">FEATURED</span>
       <h3>Reply AI Film Festival</h3>
       <p>An international competition spotlighting AI-assisted storytelling.</p>
-      <small>6 Sep 2026</small>
+      <small>7 Sep 2026</small>
     </a>
     <a class="featureCard" href="/awards/higgsfield">
       <span class="tag">FEATURED</span>
