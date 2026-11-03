@@ -80,56 +80,6 @@
           ]
         }
       ]
-    },
-    {
-      "label": "2024",
-      "winners": [
-        {
-          "place": "Grand Prix",
-          "title": "Get Me Out / \u56da\u308f\u308c\u3066",
-          "director": "Daniel Antebi",
-          "notes": [
-            {
-              "category": "Selected finalist",
-              "title": "Pounamu",
-              "director": "Samuel Schrag"
-            },
-            {
-              "category": "Selected finalist",
-              "title": "e^(i\u03c0) + 1 = 0",
-              "director": "Junie Lau"
-            },
-            {
-              "category": "Selected finalist",
-              "title": "Where Do Grandmas Go When They Get Lost?",
-              "director": "L\u00e9o Cannone",
-              "directorSlug": "leo-cannone"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "label": "2023",
-      "winners": [
-        {
-          "place": "Grand Prix",
-          "title": "Generation",
-          "director": "Riccardo Fusetti",
-          "notes": [
-            {
-              "category": "Gold",
-              "title": "Checkpoint",
-              "director": "\u00c1ron Filkey & Joss Fong"
-            },
-            {
-              "category": "Silver",
-              "title": "Given Again",
-              "director": "Jake Oleson"
-            }
-          ]
-        }
-      ]
     }
   ]
 }
