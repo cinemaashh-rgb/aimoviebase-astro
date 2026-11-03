@@ -1,0 +1,39 @@
+{
+  "movie_id": "bc0e91e5-73e1-4514-9ac5-1bfe65149c19",
+  "title": "GOOD BOY",
+  "year": 2026,
+  "type": "movie",
+  "duration": "51:00",
+  "genres": [
+    "Drama",
+    "Post-Apocalyptic"
+  ],
+  "synopsis": "The world collapsed years ago. A lonely girl and her dog keep wandering in search of food, shelter and a reason to keep going.",
+  "poster": "/images/posters/good-boy.webp",
+  "director": {
+    "name": "Dair Karakeev"
+  },
+  "studio": "DigiDoc AI Studio",
+  "aiTools": [
+    "Seedance 2.5",
+    "Seedance 2.0",
+    "GPT Image 2",
+    "ElevenLabs",
+    "Suno AI",
+    "Topaz Labs"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "WAY better than a Hollywood movie now days.. This was a GREAT AI THANK you!",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "This is simply an INCREDIBLE amount of work! The quality and story are top-notch, I say that as an AI creator.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "One of the most realistic looking AI films I've seen. Good technique. I think many people would not recognize it as AI, except perhaps the acting is rather mechanical.",
+      "author": "YouTube viewer"
+    }
+  ]
+}
