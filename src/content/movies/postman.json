@@ -4,8 +4,10 @@
   "year": 2026,
   "type": "movie",
   "duration": "7:00",
-  "genres": [],
+  "genres": ["Sci-Fi", "Drama", "Animation", "Adventure"],
+  "synopsis": "A science-fiction adventure centered on a postman, blending imaginative world-building with a human story.",
   "poster": "/images/posters/postman.webp",
+  "youtubeId": "0eiwtCpNo2c",
   "director": {
     "name": "YUUUKI"
   },

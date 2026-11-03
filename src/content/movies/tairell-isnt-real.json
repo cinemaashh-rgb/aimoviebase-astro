@@ -4,8 +4,10 @@
   "year": 2026,
   "type": "movie",
   "duration": "5:04",
-  "genres": [],
+  "genres": ["Sci-Fi", "Thriller", "Psychological", "Mystery"],
+  "synopsis": "A psychological science-fiction mystery questioning what's real and how far we can trust our own perception.",
   "poster": "/images/posters/tairell-isnt-real.webp",
+  "youtubeId": "uZgqOgQWSv0",
   "director": {
     "name": "Dave Clark"
   },

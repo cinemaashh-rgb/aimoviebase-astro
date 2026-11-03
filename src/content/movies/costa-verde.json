@@ -5,10 +5,14 @@
   "type": "movie",
   "duration": "11:35",
   "genres": [
-    "Drama"
+    "Drama",
+    "Family",
+    "Coming-of-Age",
+    "Nostalgia"
   ],
   "country": "France",
-  "synopsis": "An award-winning AI-generated drama short.",
+  "synopsis": "An intimate story of family and memory, shaped by nostalgia for a place that feels like home.",
+  "watchUrl": "https://vimeo.com/1161090245",
   "poster": "/images/posters/costa-verde.webp",
   "director": {
     "name": "Léo Cannone",

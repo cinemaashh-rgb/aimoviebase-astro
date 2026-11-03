@@ -3,9 +3,10 @@
   "title": "Where Knights Fall",
   "year": 2026,
   "type": "movie",
-  "genres": ["Comedy", "Fantasy"],
-  "synopsis": "A comedic spoof of the Rapunzel fairy tale, built around a prince who belly-slides into the action.",
+  "genres": ["Dark Fantasy", "Romance", "Fairy Tale"],
+  "synopsis": "A dark fantasy reimagining of the world of fairy tales, weaving romance into the dangers of a knight's quest.",
   "poster": "/images/posters/where-knights-fall.webp",
+  "watchUrl": "https://vimeo.com/1177606236",
   "director": {
     "name": "Mathery"
   },

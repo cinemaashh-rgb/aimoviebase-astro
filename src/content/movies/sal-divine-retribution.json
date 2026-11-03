@@ -4,8 +4,10 @@
   "year": 2026,
   "type": "movie",
   "duration": "7:39",
-  "genres": [],
+  "genres": ["Horror", "Mystery", "Historical", "Supernatural", "Folk Horror"],
   "country": "South Korea",
+  "synopsis": "A supernatural horror story in which dark forces and the consequences of human actions collide.",
+  "youtubeId": "1I_7GuRTq0I",
   "director": {
     "name": "Minju Choi"
   },

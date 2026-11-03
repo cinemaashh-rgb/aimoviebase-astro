@@ -5,9 +5,11 @@
   "type": "movie",
   "duration": "7:50",
   "genres": [
-    "Romance"
+    "Drama",
+    "Romance",
+    "Animation"
   ],
-  "synopsis": "An award-winning AI-generated romance short.",
+  "synopsis": "A lonely Parisian dancer with an unusual appearance longs for connection, until an unexpected encounter opens up the possibility of love.",
   "poster": "/images/posters/a-face-only-a-mother-could-love.webp",
   "youtubeId": "wytfCS-N8Sk",
   "director": {

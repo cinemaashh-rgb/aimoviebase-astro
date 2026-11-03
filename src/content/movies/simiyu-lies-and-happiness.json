@@ -3,8 +3,10 @@
   "title": "Simiyu, Lies and Happiness",
   "year": 2026,
   "type": "movie",
-  "genres": [],
+  "genres": ["Drama", "Slice of Life", "Period Drama"],
+  "synopsis": "A character-driven drama examining truth, deception and the search for happiness.",
   "poster": "/images/posters/simiyu-lies-and-happiness.webp",
+  "watchUrl": "https://fairground.tv/watch/6394310613112",
   "director": {
     "name": "John Kirk Kelly"
   },

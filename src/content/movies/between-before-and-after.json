@@ -4,8 +4,10 @@
   "year": 2026,
   "type": "movie",
   "duration": "8:21",
-  "genres": [],
+  "genres": ["Drama", "Romance", "Psychological", "Experimental"],
+  "synopsis": "An emotionally driven drama about relationships, memory, and the fragile space between the past and what comes next.",
   "poster": "/images/posters/between-before-and-after.webp",
+  "youtubeId": "Ax3F-J2cJ0w",
   "director": {
     "name": "Sifang Chen & Yang Wang"
   },

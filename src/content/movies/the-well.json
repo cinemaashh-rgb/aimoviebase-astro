@@ -4,9 +4,10 @@
   "year": 2026,
   "type": "movie",
   "duration": "5:29",
-  "genres": ["Comedy", "Crime"],
-  "synopsis": "A Fargo-style crime story told through hyperdetailed, anthropomorphic animal characters.",
+  "genres": ["Mystery", "Thriller", "Dark Fantasy", "Animation"],
+  "synopsis": "A dark, mysterious tale blending fantasy and suspense, its characters drawn toward the secrets surrounding a well.",
   "poster": "/images/posters/the-well.webp",
+  "youtubeId": "eoZyWHLHHLY",
   "director": {
     "name": "Dorian & Daniel"
   },

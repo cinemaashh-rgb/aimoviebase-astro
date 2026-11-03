@@ -4,8 +4,10 @@
   "year": 2026,
   "type": "movie",
   "duration": "4:19",
-  "genres": [],
+  "genres": ["Drama", "Fantasy", "Experimental", "Philosophical"],
+  "synopsis": "A surreal, reflective story exploring identity, imagination and the different versions of ourselves.",
   "poster": "/images/posters/little-mes.webp",
+  "youtubeId": "wZKS5JKJNjA",
   "director": {
     "name": "Lucas Levitan & Fabián Jiménez"
   },
