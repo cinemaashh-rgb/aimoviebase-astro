@@ -2,7 +2,22 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 const movies = await getCollection('movies');
-const notable = [...movies].sort((a, b) => b.data.year - a.data.year).slice(0, 6);
+// Notable is otherwise fully computed (newest first, no hand-picked
+// slugs — see the comment below), but "1001 Aladdin and The Lamp" only
+// ever led this row because of an alphabetical tie-break among a pile of
+// same-year films, not real curation. Swapped out for "You Became CEO of
+// Zara" by explicit request; everything else in the row is still decided
+// by the normal sort.
+const NOTABLE_EXCLUDE = new Set(['1001-aladdin-and-the-lamp']);
+const NOTABLE_PINNED = ['you-became-ceo-of-zara'];
+const notablePool = movies.filter((m) => !NOTABLE_EXCLUDE.has(m.id));
+const pinned = NOTABLE_PINNED.map((slug) => notablePool.find((m) => m.id === slug)).filter(
+  (m): m is CollectionEntry<'movies'> => Boolean(m)
+);
+const rest = notablePool
+  .filter((m) => !NOTABLE_PINNED.includes(m.id))
+  .sort((a, b) => b.data.year - a.data.year);
+const notable = [...pinned, ...rest].slice(0, 6);
 
 // Award-winning films: any movie whose real `awards` field is non-empty,
 // excluding anything already shown above in Notable so the two homepage
