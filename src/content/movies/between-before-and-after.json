@@ -5,6 +5,7 @@
   "type": "movie",
   "duration": "8:21",
   "genres": [],
+  "poster": "/images/posters/between-before-and-after.webp",
   "director": {
     "name": "Sifang Chen & Yang Wang"
   },

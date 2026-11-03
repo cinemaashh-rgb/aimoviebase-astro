@@ -5,6 +5,7 @@
   "type": "movie",
   "duration": "7:00",
   "genres": [],
+  "poster": "/images/posters/postman.webp",
   "director": {
     "name": "YUUUKI"
   },

@@ -5,6 +5,7 @@
   "type": "movie",
   "duration": "4:19",
   "genres": [],
+  "poster": "/images/posters/little-mes.webp",
   "director": {
     "name": "Lucas Levitan & Fabián Jiménez"
   },

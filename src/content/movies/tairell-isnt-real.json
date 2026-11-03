@@ -5,6 +5,7 @@
   "type": "movie",
   "duration": "5:04",
   "genres": [],
+  "poster": "/images/posters/tairell-isnt-real.webp",
   "director": {
     "name": "Dave Clark"
   },

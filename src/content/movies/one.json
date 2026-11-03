@@ -6,6 +6,7 @@
   "duration": "6:18",
   "genres": ["Sci-Fi"],
   "synopsis": "After Earth's collapse, a crew of transhumans follows the Voyager 1 probe to a distant planet inhabited by lost souls desperate to reclaim human bodies.",
+  "poster": "/images/posters/one.webp",
   "director": {
     "name": "Ricardo Villavicencio",
     "slug": "ricardo-villavicencio"

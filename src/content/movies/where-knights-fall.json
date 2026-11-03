@@ -5,6 +5,7 @@
   "type": "movie",
   "genres": ["Comedy", "Fantasy"],
   "synopsis": "A comedic spoof of the Rapunzel fairy tale, built around a prince who belly-slides into the action.",
+  "poster": "/images/posters/where-knights-fall.webp",
   "director": {
     "name": "Mathery"
   },
