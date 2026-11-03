@@ -3,10 +3,11 @@
   "title": "Jailbird",
   "year": 2025,
   "type": "movie",
+  "duration": "3:39",
   "genres": [
     "Documentary"
   ],
-  "synopsis": "An AI-generated documentary short.",
+  "synopsis": "A chicken enters a human prison as part of an unusual rehabilitation program, revealing an unexpected bond between animals and inmates.",
   "poster": "/images/posters/jailbird.webp",
   "youtubeId": "-87zR06PkOc",
   "director": {

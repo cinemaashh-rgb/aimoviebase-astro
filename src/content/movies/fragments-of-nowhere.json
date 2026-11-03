@@ -1,0 +1,16 @@
+{
+  "movie_id": "f0476b3e-7933-4d86-85a8-4098452fac81",
+  "title": "Fragments Of Nowhere",
+  "year": 2025,
+  "type": "movie",
+  "duration": "8:04",
+  "genres": ["Experimental"],
+  "synopsis": "A surreal journey through shifting, dreamlike spaces, where time bends and the line between perception and reality begins to dissolve.",
+  "director": {
+    "name": "Vallée Duhamel",
+    "slug": "vallee-duhamel"
+  },
+  "awards": [
+    "Merit — Runway AI Film Festival (AIFF) 2025"
+  ]
+}

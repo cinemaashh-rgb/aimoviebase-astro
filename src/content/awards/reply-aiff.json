@@ -29,6 +29,7 @@
         {
           "place": "2nd Place",
           "title": "Le Drip",
+          "movieSlug": "le-drip",
           "director": "Alex Naghavi & Ezra Li",
           "notes": []
         },
@@ -49,6 +50,7 @@
         {
           "place": "Reply AI Studios Grand Prix",
           "title": "Website",
+          "movieSlug": "website",
           "director": "Jiaze Li",
           "notes": []
         },
@@ -63,12 +65,14 @@
         {
           "place": "Community Award",
           "title": "Website",
+          "movieSlug": "website",
           "director": "Jiaze Li",
           "notes": []
         },
         {
           "place": "Special Mention",
           "title": "The Child of the Sea",
+          "movieSlug": "the-child-of-the-sea",
           "director": "Ibai Abad",
           "notes": []
         }

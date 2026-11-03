@@ -1,0 +1,19 @@
+{
+  "movie_id": "fef8b21f-3b50-4218-94d2-775ddeea10d0",
+  "title": "ONE",
+  "year": 2025,
+  "type": "movie",
+  "duration": "6:18",
+  "genres": ["Sci-Fi"],
+  "synopsis": "After Earth's collapse, a crew of transhumans follows the Voyager 1 probe to a distant planet inhabited by lost souls desperate to reclaim human bodies.",
+  "director": {
+    "name": "Ricardo Villavicencio",
+    "slug": "ricardo-villavicencio"
+  },
+  "crew": [
+    { "name": "Edward Saatchi", "role": "Executive Producer", "slug": "edward-saatchi" }
+  ],
+  "awards": [
+    "3rd Place — Runway AI Film Festival (AIFF) 2025"
+  ]
+}

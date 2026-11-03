@@ -51,6 +51,7 @@
             {
               "category": "Silver",
               "title": "ONE",
+              "movieSlug": "one",
               "director": "Ricardo Villavicencio & Edward Saatchi",
               "directorSlug": "ricardo-villavicencio"
             },
@@ -64,17 +65,20 @@
             {
               "category": "Honoree",
               "title": "Distance Between Two Points Of Me",
+              "movieSlug": "distance-between-two-points-of-me",
               "director": "Illya Dutsyk, Bogdan Nesvit, Anatolii Kasianov"
             },
             {
               "category": "Merit",
               "title": "Fragments Of Nowhere",
+              "movieSlug": "fragments-of-nowhere",
               "director": "Vall\u00e9e Duhamel",
               "directorSlug": "vallee-duhamel"
             },
             {
               "category": "Merit",
               "title": "R\u014dHKI \u2014 A Million Trillion Pathways",
+              "movieSlug": "rohki-a-million-trillion-pathways",
               "director": "Hachi and IO"
             }
           ]

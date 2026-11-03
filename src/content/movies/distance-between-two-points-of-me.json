@@ -1,0 +1,20 @@
+{
+  "movie_id": "3724f50f-e4c2-4a05-93d6-43ae414a588d",
+  "title": "Distance Between Two Points Of Me",
+  "year": 2025,
+  "type": "movie",
+  "duration": "2:27",
+  "genres": ["Drama", "Experimental"],
+  "country": "Ukraine",
+  "synopsis": "A Ukrainian filmmaker's reflection on displacement and self — the distance between the person she was before leaving home and the person shaped by everything since, built in the AI around a true story of a sister and a home someone chose to stay in.",
+  "director": {
+    "name": "Illya Dutsyk"
+  },
+  "crew": [
+    { "name": "Bogdan Nesvit", "role": "Producer" },
+    { "name": "Anatolii Kasianov", "role": "Producer" }
+  ],
+  "awards": [
+    "Honoree — Runway AI Film Festival (AIFF) 2025"
+  ]
+}

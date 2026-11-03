@@ -3,6 +3,7 @@
   "title": "Centenarian Kindergarten",
   "year": 2026,
   "type": "movie",
+  "duration": "8:06",
   "genres": [
     "Sci-Fi",
     "Drama"
@@ -19,7 +20,10 @@
     { "name": "Zengfu Qin", "role": "Co-Director" }
   ],
   "studio": "2xLabs",
+  "aiTools": ["Nano Banana Pro", "Jimeng Seedance 2.0"],
   "awards": [
-    "Best Chinese Cinema (Special Recognition) — Bali International AI Film Festival (BIAIFF) Season 5 2026"
+    "Best Chinese Cinema (Special Recognition) — Bali International AI Film Festival (BIAIFF) Season 5 2026",
+    "3rd Place — Reply AI Film Festival 2026",
+    "AI for Good Award — Reply AI Film Festival 2026"
   ]
 }

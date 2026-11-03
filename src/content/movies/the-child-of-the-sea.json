@@ -1,0 +1,18 @@
+{
+  "movie_id": "13df3724-f64a-4310-9231-489e73cb9720",
+  "title": "The Child of the Sea",
+  "year": 2026,
+  "type": "movie",
+  "duration": "13:40",
+  "genres": ["Animation", "Fantasy"],
+  "country": "Spain",
+  "synopsis": "In 17th-century Spain, a boy with fish-like features crosses the country in search of his mother, confronting ridicule and fear along the way — a story about diversity, belonging and acceptance.",
+  "director": {
+    "name": "Ibai Abad"
+  },
+  "studio": "MotionField",
+  "aiTools": ["Magnific"],
+  "awards": [
+    "Special Mention — Reply AI Film Festival 2026"
+  ]
+}

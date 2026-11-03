@@ -3,9 +3,11 @@
   "title": "Total Pixel Space",
   "year": 2025,
   "type": "movie",
+  "duration": "9:28",
   "genres": [
     "Experimental"
   ],
+  "synopsis": "An exploration of a digital universe said to contain every possible image — every life ever lived, and countless others that never existed — using combinatorial math to put a number on it.",
   "poster": "/images/posters/total-pixel-space.webp",
   "youtubeId": "zpAeygE4d1A",
   "director": {

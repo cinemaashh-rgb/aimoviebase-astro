@@ -1,0 +1,16 @@
+{
+  "movie_id": "c24d82f0-1576-403b-8e4f-f64b3648fe56",
+  "title": "Le Drip",
+  "year": 2026,
+  "type": "movie",
+  "duration": "4:39",
+  "genres": ["Animation", "Comedy", "Drama"],
+  "synopsis": "On his last day before the world ends, a fish trapped in a kitchen sink reflects on life, death and existence inside a surreal world of living oil paintings.",
+  "director": {
+    "name": "Alex Naghavi & Ezra Li"
+  },
+  "aiTools": ["Flora", "Nano Banana", "Claude", "Seedance", "Runway", "Leonardo", "ElevenLabs", "Google AI Studio"],
+  "awards": [
+    "2nd Place — Reply AI Film Festival 2026"
+  ]
+}
