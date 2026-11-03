@@ -112,8 +112,13 @@ function meta(f: CollectionEntry<'movies'>) {
     @media (max-width: 860px) {
       .heading { grid-template-columns: 1fr; }
       .featureArt { display: none; }
-      .relatedRow { grid-template-columns: 1fr; }
-      .relStack { display: none; }
+      /* Keep the same fanned-poster card as desktop on mobile too — just
+         stacked (text, then posters) instead of side-by-side, and sized
+         down a bit. Previously this hid .relStack entirely, which left
+         "Keep exploring" as plain text boxes with no film art at all. */
+      .relatedRow { grid-template-columns: 1fr; gap: 10px; }
+      .relStack { height: 86px; }
+      .relStack img { width: 23%; }
     }
     @media (max-width: 620px) {
       .story { grid-template-columns: 120px 1fr; gap: 15px; }
