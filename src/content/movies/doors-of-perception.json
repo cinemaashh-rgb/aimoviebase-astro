@@ -1,0 +1,26 @@
+{
+  "movie_id": "7688a29b-72cd-40c0-97e9-f14d329559e4",
+  "title": "Doors of Perception",
+  "year": 2026,
+  "type": "movie",
+  "genres": [
+    "Sci-Fi",
+    "Drama"
+  ],
+  "synopsis": "For as long as we've been human, we've had to compress our experiences into language and symbols. A new technology changes that by letting people step back into their past exactly as it happened and even share dreams with others. It becomes the next step in the evolution of language, moving from words to pure experience, letting us finally communicate what we could never say.",
+  "poster": "/images/posters/doors-of-perception.webp",
+  "youtubeId": "CwEbKw3bUpo",
+  "director": {
+    "name": "RŌHKI"
+  },
+  "aiTools": [
+    "Imagen",
+    "Nano Banana Pro",
+    "Veo",
+    "ElevenLabs",
+    "Runway Act 2",
+    "Higgsfield",
+    "DaVinci Resolve",
+    "Ableton"
+  ]
+}
