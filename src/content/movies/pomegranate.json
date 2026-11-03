@@ -1,0 +1,17 @@
+{
+  "movie_id": "cd3d20a8-3662-446b-88fb-eaa6250e626a",
+  "title": "Pomegranate",
+  "year": 2026,
+  "type": "movie",
+  "duration": "28m",
+  "genres": ["Sci-Fi", "Fantasy"],
+  "synopsis": "In a future where even the most extreme experiences fail to satisfy, a wealthy aristocrat turns to an underground dealer of artificial realities. Desperate to feel something real, he discovers the power of life's simplest pleasures — leading him to a dangerous, life-changing decision.",
+  "poster": "/images/posters/pomegranate.webp",
+  "director": {
+    "name": "Zack London"
+  },
+  "studio": "Gossip Goblin",
+  "awards": [
+    "Best Concept — Astana AI Film Festival (AAIFF) 2026"
+  ]
+}
