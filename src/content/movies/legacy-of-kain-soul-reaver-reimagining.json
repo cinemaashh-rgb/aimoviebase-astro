@@ -3,8 +3,10 @@
   "title": "Legacy of Kain: Soul Reaver — Reimagining",
   "year": 2026,
   "type": "movie",
+  "duration": "14m",
   "genres": ["Horror", "Fantasy"],
-  "synopsis": "An AI-generated fan film reimagining the gothic world of the Legacy of Kain: Soul Reaver games as live-action dark fantasy, built around the betrayal and resurrection of the vampire-turned-wraith Raziel.",
+  "synopsis": "A live-action-style reimagining of Legacy of Kain: Soul Reaver's gothic world, exploring what its atmosphere, characters and setting could look like through realistic cinematic visuals rather than game cutscenes.",
+  "poster": "/images/posters/legacy-of-kain-soul-reaver-reimagining.webp",
   "youtubeId": "kA1onqWp2dc",
   "director": {
     "name": "Andrea De Nittis"
