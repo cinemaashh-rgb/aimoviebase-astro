@@ -157,7 +157,7 @@ const journal = (await getCollection('articles'))
     .shortGallery img, .shortGallery .dramaFallback { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 4px; background: #fff; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .68rem; font-weight: 600; text-align: center; padding: 8px; }
 
     /* ---- Festivals ---- */
-    .festivalGrid { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 10px; }
+    .festivalGrid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; }
     .festivalCard { display: flex; align-items: center; gap: 10px; min-height: 77px; border: 1px solid var(--line); border-radius: 5px; padding: 12px; background: #fff; }
     .festivalCard:hover, .festivalCard:focus-visible { border-color: #aab8c6; }
     .festivalCard:hover strong, .festivalCard:focus-visible strong { color: #cf6246; }
@@ -354,10 +354,6 @@ const journal = (await getCollection('articles'))
             <div><strong>{a.data.name}</strong><span>{a.data.location ?? ''}</span></div>
           </a>
         ))}
-        <a class="festivalCard" href="/awards">
-          <b class="fmark">+</b>
-          <div><strong>More festivals</strong><span>View the full directory</span></div>
-        </a>
       </div>
     </section>
   )}
