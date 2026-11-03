@@ -78,16 +78,6 @@ export const GET: APIRoute = async () => {
     items.push(item);
   }
 
-  // Static guide/catalog pages that have no content collection of their own.
-  items.push(
-    { title: 'AI Movies', href: '/movies', sub: 'Catalog' },
-    { title: 'AI Short Drama', href: '/short-drama', sub: 'Catalog' },
-    { title: 'Studios', href: '/studios', sub: 'Catalog' },
-    { title: 'Awards & Festivals', href: '/awards', sub: 'Guide' },
-    { title: 'News & Editorial', href: '/news', sub: 'Guide' },
-    { title: 'Lists', href: '/lists', sub: 'Guide' },
-  );
-
   const body = `var DATA = ${JSON.stringify(items)};\n`;
   return new Response(body, {
     headers: { 'Content-Type': 'application/javascript; charset=utf-8' },
