@@ -1,0 +1,21 @@
+{
+  "movie_id": "80ed8d2a-7b41-448f-8128-794cabfc951e",
+  "title": "More Tears Than Harm",
+  "year": 2025,
+  "type": "movie",
+  "duration": "3:14",
+  "genres": ["Animation"],
+  "synopsis": "A rotoscope-animated collage of the director's own childhood memories growing up in Madagascar.",
+  "poster": "/images/posters/more-tears-than-harm.webp",
+  "youtubeId": "Ri--qqBtMD0",
+  "director": {
+    "name": "Herinarivo Rakotomanana",
+    "slug": "herinarivo-rakotomanana"
+  },
+  "awards": [
+    "Honoree — Runway AI Film Festival (AIFF) 2025",
+    "Bucheon Choice AI Film — BIFAN 2025",
+    "Finalist — Curious Refuge Animation Competition 2025",
+    "Finalist — Artefact AI Film Festival"
+  ]
+}

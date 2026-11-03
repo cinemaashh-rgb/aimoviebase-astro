@@ -20,6 +20,14 @@ const directorHref = (slug: string | undefined) => {
   const verified = verifyCreatorSlug(slug, allCreators);
   return verified ? `/name/${verified}` : undefined;
 };
+// The `notes` schema has no poster field of its own (unlike `winners`),
+// so a note's thumbnail — when it has a movieSlug — is resolved here from
+// the movie's own catalog poster. .noteRow .poster img already has real
+// CSS for this; previously the markup never rendered an <img> at all, so
+// every note with a movieSlug showed an empty grey box regardless.
+const allMovies = await getCollection('movies');
+const notePoster = (slug: string | undefined) =>
+  slug ? allMovies.find((m) => m.id === slug)?.data.poster : undefined;
 ---
 <BaseLayout title={a.name} description={a.description}>
   <style>
@@ -204,7 +212,15 @@ const directorHref = (slug: string | undefined) => {
           <div class="notesGrid" style="margin-top:16px;">
             {section.winners.flatMap((w) => w.notes).map((n) => (
               <div class="noteRow">
-                {n.movieSlug && <a class="poster" href={`/movies/${n.movieSlug}`}><div style="width:100%;height:100%;background:var(--soft);"></div></a>}
+                {n.movieSlug && (
+                  <a class="poster" href={`/movies/${n.movieSlug}`}>
+                    {notePoster(n.movieSlug) ? (
+                      <img src={notePoster(n.movieSlug)} alt="" loading="lazy" />
+                    ) : (
+                      <div style="width:100%;height:100%;background:var(--soft);"></div>
+                    )}
+                  </a>
+                )}
                 <div>
                   <div class="cat">{n.category}</div>
                   <strong>{n.movieSlug ? <a href={`/movies/${n.movieSlug}`} style="color:inherit;">{n.title}</a> : n.title}</strong>
