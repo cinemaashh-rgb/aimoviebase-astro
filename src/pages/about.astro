@@ -1,162 +1,156 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="About" description="Learn about AIMB, the independent guide to AI cinema: discovering films, documenting filmmakers and supporting thoughtful criticism.">
+<BaseLayout title="About" description="AIMB is an independent discovery platform for AI cinema: our mission, how we curate films, and how to write for AIMB.">
   <style>
-    /* About AIMB — editorial layout from the reference, reusing the site's
-       own ink/accent tokens instead of a separate local palette. */
-    .aboutPage { color: var(--ink); font-family: var(--sans); }
+    /* About AIMB — single-column editorial layout (aimb_about_us_writers_layout_fixed.html),
+       reusing the site's own ink/accent tokens instead of the mockup's local palette. */
+    .aboutPage { color: var(--ink); font-family: var(--sans); max-width: 820px; margin: 0 auto; }
     .aboutPage * { box-sizing: border-box; }
 
-    .aboutBreadcrumb { font: 12px/1.5 var(--sans); color: var(--muted2); margin-bottom: 33px; }
+    .aboutBreadcrumb { font: 12px/1.5 var(--sans); color: var(--muted2); margin-bottom: 28px; }
     .aboutBreadcrumb a:hover { color: #cf6246; }
     .aboutBreadcrumb span { padding: 0 10px; }
 
-    .aboutHero { padding: 24px 0 50px; border-bottom: 1px solid var(--line); max-width: 820px; }
+    .aboutHero { padding: 15px 0 42px; border-bottom: 1px solid var(--line); }
     .aboutKicker { font: 700 11px/1.5 var(--sans); letter-spacing: .14em; color: #cf6246; text-transform: uppercase; }
-    .aboutHero h1 { font: 400 clamp(52px,8vw,100px)/.98 var(--serif); letter-spacing: -.055em; margin: 21px 0 22px; color: var(--ink); }
+    .aboutHero h1 { font: 400 clamp(44px,7.4vw,92px)/1.02 var(--serif); letter-spacing: -.05em; margin: 21px 0 22px; color: var(--ink); }
     .aboutHero h1 em { font-style: normal; color: #cf6246; }
-    .aboutLead { max-width: 650px; font: 400 clamp(20px,2.2vw,26px)/1.5 var(--serif); color: var(--muted); margin: 0; }
+    .aboutLead { max-width: 650px; font: 400 clamp(19px,2.2vw,26px)/1.5 var(--serif); color: var(--muted); margin: 0; }
     .aboutAttribution { font: 700 11px var(--sans); letter-spacing: .08em; color: var(--muted2); display: flex; align-items: center; gap: 9px; margin-top: 28px; }
     .aboutDot { height: 7px; width: 7px; border-radius: 50%; background: #cf6246; }
 
-    .aboutMainGrid { display: grid; grid-template-columns: minmax(0,1fr) 270px; gap: 70px; align-items: start; padding-top: 50px; }
-
-    .aboutProseSection { margin: 0 0 60px; }
+    .aboutMainGrid { padding-top: 45px; }
+    .aboutProseSection { margin: 0 0 52px; }
+    .aboutProseSection:last-child { margin-bottom: 35px; }
     .aboutSectionKicker { font: 700 11px/1.5 var(--sans); letter-spacing: .14em; color: #cf6246; }
-    .aboutProseSection h2 { font: 400 clamp(29px,3.2vw,42px)/1.14 var(--serif); letter-spacing: -.03em; margin: 17px 0 23px; }
-    .aboutProseSection p { font: 16px/1.88 var(--serif); color: #4e5866; margin: 0 0 19px; }
-    .principles { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin: 30px 0 28px; }
-    .principle { padding: 19px 17px; border: 1px solid #ece7e4; background: #fffaf7; border-radius: 3px; }
-    .principle strong { display: block; font: 400 22px var(--serif); margin-bottom: 9px; color: var(--ink); }
-    .principle p { font: 13px/1.7 var(--sans); color: var(--muted2); margin: 0; }
-    .introLink { display: inline-flex; align-items: center; gap: 12px; font: 700 13px var(--sans); color: #cf6246; margin-top: 2px; }
-    .introLink:hover { gap: 17px; color: #cf6246; }
-    .joinBox { background: #fff7f2; border: 1px solid #f1e5dd; padding: 27px; margin-top: 28px; }
-    .joinBox h3 { font: 400 25px/1.2 var(--serif); margin: 0 0 11px; }
-    .joinBox p { font: 14px/1.7 var(--sans); color: var(--muted); margin: 0 0 21px; }
-    .outlineButton { display: inline-flex; gap: 20px; align-items: center; font: 700 12px var(--sans); background: var(--ink); color: #fff; padding: 12px 17px; border-radius: 3px; }
-    .outlineButton:hover { background: #cf6246; color: #fff; }
+    .aboutProseSection h2 { font: 400 clamp(29px,3.4vw,42px)/1.14 var(--serif); letter-spacing: -.03em; margin: 17px 0 23px; }
+    .aboutProseSection p { font: 16px/1.88 var(--serif); color: #4e5866; margin: 0 0 19px; max-width: 760px; }
 
-    .aboutSide { position: sticky; top: 24px; border-top: 2px solid var(--ink); padding-top: 18px; }
-    .aboutSideKicker { color: var(--ink); margin-bottom: 14px; }
-    .aboutContact { padding: 19px 0; border-bottom: 1px solid var(--line); }
-    .aboutContact h3 { font: 400 21px/1.25 var(--serif); margin: 0 0 8px; color: var(--ink); }
-    .aboutContact p { font: 13px/1.75 var(--sans); color: var(--muted); margin: 0 0 12px; }
-    .aboutContact a { font: 700 12px var(--sans); color: #cf6246; display: inline-flex; gap: 12px; align-items: center; }
-    .aboutContact a:hover { color: #a84730; gap: 16px; }
-    .aboutSmallnote { font: 11px/1.7 var(--sans); color: var(--muted2); margin: 18px 0 0; }
+    /* ---- Write for AIMB application ---- */
+    .writerApply { padding: 40px 0 10px; margin-top: 0; border-top: 1px solid var(--line); }
+    .writerApply h2 { font: 400 clamp(31px,4.5vw,50px)/1.12 var(--serif); letter-spacing: -.035em; margin: 18px 0 20px; color: var(--ink); }
+    .writerApply h2 em { font-style: normal; color: #cf6246; }
+    .writerApply > p { font: 16px/1.75 var(--serif); color: #4e5866; margin: 0 0 14px; max-width: 720px; }
+    .writerApplyForm { margin-top: 30px; }
+    .writerApplyGrid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); column-gap: 18px; row-gap: 20px; }
+    .writerField { display: flex; flex-direction: column; gap: 9px; min-width: 0; }
+    .writerFieldWide { grid-column: 1/-1; }
+    .writerField label { font: 700 12px/1.4 var(--sans); color: #343a41; }
+    .writerField label span:not(.writerOptional) { color: #cf6246; }
+    .writerOptional { font-weight: 400; color: #818a95; }
+    .writerField input, .writerField textarea { display: block; width: 100%; min-height: 46px; padding: 13px 14px; border: 1px solid var(--line); border-radius: 3px; background: #fff; color: #1b1e23; font: 14px/1.5 var(--sans); outline: none; }
+    .writerField textarea { resize: vertical; min-height: 130px; }
+    .writerField input:focus, .writerField textarea:focus { border-color: #cf6246; box-shadow: 0 0 0 3px rgba(207,98,70,.1); }
+    .writerApplyActions { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; margin-top: 24px; }
+    .writerApplyButton { display: inline-flex; gap: 18px; align-items: center; justify-content: center; padding: 14px 21px; border: 0; border-radius: 4px; background: linear-gradient(112deg,#b54433,#e5784a 48%,#bb4c37); color: #fff; font: 700 12px var(--sans); cursor: pointer; transition: filter .2s ease; }
+    .writerApplyButton:hover { filter: brightness(1.08); }
+    .writerApplyNote { font: 12px/1.6 var(--sans); color: var(--muted2); margin: 0; max-width: 290px; }
 
-    .aboutBottom { background: #fbf5f0; margin-top: 60px; padding: 46px 56px 50px; display: grid; grid-template-columns: 1fr auto; gap: 6px 35px; align-items: end; border-radius: 4px; }
-    .aboutBottom > span { grid-column: 1/-1; font: 700 11px var(--sans); letter-spacing: .14em; color: #cf6246; }
-    .aboutBottom h2 { font: 400 clamp(32px,4vw,50px)/1.1 var(--serif); letter-spacing: -.035em; margin: 12px 0 0; }
-    .aboutBottom h2 em { color: #cf6246; font-style: normal; }
-    .aboutBottom > a { display: flex; align-items: center; gap: 20px; background: var(--ink); color: #fff; font: 700 12px var(--sans); padding: 14px 19px; border-radius: 3px; white-space: nowrap; }
-    .aboutBottom > a:hover { background: #cf6246; color: #fff; }
-
-    @media (max-width: 850px) {
-      .aboutMainGrid { gap: 35px; grid-template-columns: minmax(0,1fr) 240px; }
-      .principles { grid-template-columns: 1fr; }
-    }
     @media (max-width: 650px) {
-      .aboutHero { padding: 10px 0 30px; }
-      .aboutHero h1 { font-size: 56px; letter-spacing: -.06em; margin: 17px 0 16px; }
-      .aboutLead { font-size: 19px; }
-      .aboutMainGrid { display: block; padding-top: 30px; }
-      .aboutProseSection { margin-bottom: 42px; }
-      .aboutProseSection h2 { font-size: 30px; }
-      .aboutProseSection p { font-size: 15px; }
-      .aboutSide { position: static; margin-top: 8px; }
-      .aboutBottom { padding: 26px 20px; display: block; }
-      .aboutBottom h2 { font-size: 33px; margin: 13px 0 22px; }
-      .aboutBottom > a { width: max-content; max-width: 100%; }
+      .aboutPage { width: calc(100% - 36px); }
+      .aboutHero { padding: 0 0 29px; }
+      .aboutHero h1 { font-size: clamp(44px,12vw,65px); line-height: 1.05; margin: 15px 0 17px; }
+      .aboutLead { font-size: 18px; line-height: 1.55; }
+      .aboutMainGrid { padding-top: 30px; }
+      .aboutProseSection { margin-bottom: 41px; }
+      .aboutProseSection h2 { font-size: clamp(29px,8vw,38px); line-height: 1.12; }
+      .aboutProseSection p { font-size: 15px; line-height: 1.75; }
+      .writerApply { padding: 31px 0 10px; }
+      .writerApply h2 { font-size: clamp(31px,9vw,45px); line-height: 1.1; }
+      .writerApplyGrid { grid-template-columns: minmax(0,1fr); row-gap: 17px; }
+      .writerFieldWide { grid-column: 1; }
+      .writerApplyActions { flex-direction: column; align-items: stretch; gap: 12px; }
+      .writerApplyButton { width: 100%; min-height: 46px; }
+      .writerApplyNote { max-width: 100%; }
     }
   </style>
 
   <div class="aboutPage">
-    <nav class="aboutBreadcrumb"><a href="/">Home</a><span>/</span>About AIMB</nav>
+    <nav class="aboutBreadcrumb"><a href="/">Home</a><span>/</span>About Us</nav>
 
     <section class="aboutHero">
       <div class="aboutKicker">About / AI Movie Base</div>
-      <h1>About <em>AIMB.</em></h1>
-      <p class="aboutLead">AIMB brings film fans, independent makers, studios and critics together around AI movies and AI series — helping remarkable work find audiences worldwide.</p>
+      <h1>Made by people.<br /><em>For people.</em></h1>
+      <p class="aboutLead">AIMB is an independent guide to AI cinema. We discover, document and curate films worth watching — with human judgment at the center.</p>
       <div class="aboutAttribution"><span class="aboutDot"></span> The independent guide to AI cinema</div>
     </section>
 
     <div class="aboutMainGrid">
-      <div>
-        <section class="aboutProseSection" id="mission" aria-labelledby="mission-h">
-          <div class="aboutSectionKicker">01 / AIMB</div>
-          <h2 id="mission-h">Our mission</h2>
-          <p>Film has always progressed in tandem with technology. AI is opening up completely new avenues for imagining, creating and telling stories and a whole generation of filmmakers are now exploring what that means for cinema.</p>
-          <p>AIMB (AI Movie Base) exists to help this nascent world find its audience. It's about bringing together film fans, independent makers, studios and critics around a new movement in film. The belief is that great work should be found, whether it's from a major studio or a first time filmmaker making in any part of the world.</p>
-          <p>Our ambition is to give remarkable AI films a place to be seen, to be talked about and to be remembered and to help those stories reach people well beyond the communities in which they were created.</p>
-        </section>
+      <section class="aboutProseSection" id="mission" aria-labelledby="mission-h">
+        <div class="aboutSectionKicker">01 / OUR MISSION</div>
+        <h2 id="mission-h">Our mission</h2>
+        <p>Film has always evolved alongside technology. Artificial intelligence is creating brand new pathways for conceiving, creating and sharing stories and an entire generation of filmmakers are getting to work exploring what that means for movies.</p>
+        <p>AIMB exists to help this emerging world find its audience. It's about connecting film enthusiasts, independent artists, studios and critics around this new wave in cinema. If it's good, it should be found. Whether you made it yourself or it's from a Hollywood studio or anywhere in between.</p>
+        <p>Our ambition is to give extraordinary AI films a home to be discovered, talked about and remembered. And help those stories find audiences far beyond the communities they were created in.</p>
+        <p>Discover the standout AI films, series and shorts from around the world. Link to verified credits, learn about production tools and celebrate the festivals &amp; selections they have received. Create space for honest criticism, new perspectives and real discussion.</p>
+        <p>We are not a streaming platform. AIMB is a discovery platform, built to help audiences find films and help films find their audience. By linking to the creators and platforms that can deliver the content to your homes.</p>
+      </section>
 
-        <section class="aboutProseSection" id="what-we-do" aria-labelledby="what-we-do-h">
-          <div class="aboutSectionKicker">02 / AIMB</div>
-          <h2 id="what-we-do-h">What we do</h2>
-          <p>AIMB is an independent discovery and editorial platform for AI-generated and AI-assisted movies and series. We bring films and series together with the context around them: the filmmakers, the studios, the production tools, the festivals, the selections and the stories. All of this is there to help the audience understand the work.</p>
-          <div class="principles">
-            <div class="principle"><strong>Discover</strong><p>Look at the standout AI films, series and short dramas from creators around the world.</p></div>
-            <div class="principle"><strong>Document</strong><p>Link films to verified credits, filmmaking tools and festival accolades.</p></div>
-            <div class="principle"><strong>Discuss</strong><p>Make space for considered criticism, new points of view and genuine discussion.</p></div>
-          </div>
-          <p style="margin-top:24px">AIMB is not a streaming service. We're a discovery platform to help audiences find films and find their way to the creators and platforms where they can watch them.</p>
-          <a class="introLink" href="/movies">Explore AI movies <span aria-hidden="true">→</span></a>
-        </section>
-
-        <section class="aboutProseSection" id="community" aria-labelledby="community-h">
-          <div class="aboutSectionKicker">03 / AIMB</div>
-          <h2 id="community-h">Building a community around AI movies and AI series</h2>
-          <p>New creative movements need more than just technology. They need an audience, they need conversation, they need criticism and they need people who are prepared to stand up for work that is worthy of attention.</p>
-          <p>We want AIMB to be a meeting point for the curious viewer and the filmmaker. A place where you can discover new voices, track the development of the medium and engage in intelligent discussion about the films themselves rather than just the tools with which they are made.</p>
-          <p>As AI movies and AI series develop, we hope to develop with them; to document the important work, to champion the independent talent and to help audiences around the world find the films that are worth watching.</p>
-        </section>
-
-        <section class="aboutProseSection" id="critics" aria-labelledby="critics-h">
-          <div class="aboutSectionKicker">04 / AIMB</div>
-          <h2 id="critics-h">Write for AIMB</h2>
-          <p>We think AI films absolutely merit the same level of serious, independent scrutiny as any other form of cinema. Good criticism can help the audience to find the worthwhile films and can help the filmmakers to understand how their stories are being received.</p>
-          <p>If you're a film critic, a journalist, a writer or just a very enthusiastic movie buff who's keen to review AI films we'd love to hear from you. A bit about yourself, what films you like etc would be useful and if you have any examples of your work already please do share those.</p>
-          <div class="joinBox">
-            <h3>Write reviews for AIMB</h3>
-            <p>Send us a short introduction and, if you have them, examples of your writing.</p>
-            <a class="outlineButton" href="mailto:contact@aimoviebase.com?subject=Writing%20for%20AIMB">Get in touch <span aria-hidden="true">↗</span></a>
-          </div>
-        </section>
-      </div>
-
-      <aside class="aboutSide">
-        <div class="aboutSideKicker aboutSectionKicker">Contact &amp; contributions</div>
-        <div class="aboutContact">
-          <h3>Submit a film</h3>
-          <p>Made an AI film or series? Share your work for consideration in the AIMB catalog.</p>
-          <a href="/submit-film">Submit your film <span aria-hidden="true">→</span></a>
-        </div>
-        <div class="aboutContact">
-          <h3>Write reviews for AIMB</h3>
-          <p>Critics, journalists and film writers are welcome to pitch reviews and editorial stories.</p>
-          <a href="mailto:contact@aimoviebase.com?subject=Writing%20for%20AIMB">Become a contributor <span aria-hidden="true">→</span></a>
-        </div>
-        <div class="aboutContact">
-          <h3>Corrections &amp; updates</h3>
-          <p>Found an incorrect credit, missing information or a broken link? Help us improve the catalog.</p>
-          <a href="mailto:contact@aimoviebase.com?subject=Catalog%20correction">Report an update <span aria-hidden="true">→</span></a>
-        </div>
-        <div class="aboutContact" style="border-bottom:0">
-          <h3>Partnerships &amp; media</h3>
-          <p>For editorial collaborations, festivals, studios, tools and other business inquiries.</p>
-          <a href="mailto:contact@aimoviebase.com?subject=Partnership%20inquiry">Contact AIMB <span aria-hidden="true">→</span></a>
-        </div>
-        <p class="aboutSmallnote">All submissions and editorial pitches are reviewed at AIMB's discretion.</p>
-      </aside>
+      <section class="aboutProseSection" id="community" aria-labelledby="community-h">
+        <div class="aboutSectionKicker">02 / OUR COMMUNITY</div>
+        <h2 id="community-h">Building a creative community around AI generated cinema.</h2>
+        <p>New waves of cinema need more than revolutionary technology. They need curious audiences. They need discussion, they need criticism and they need people who are willing to fight for great work and champion it to the world.</p>
+        <p>We want AIMB to be where filmmakers and movie fans can come together. To discover new talent, watch the medium evolve and talk about movies from the perspective of the story; not just the technology used to tell it.</p>
+        <p>As this new technology and these films evolve we want to evolve with them. To document their progress, champion the indie films that blow us away and help audiences all over the world find movies worth watching.</p>
+      </section>
     </div>
 
-    <section class="aboutBottom">
-      <span>Explore AI cinema</span>
-      <h2>Find your next<br /><em>remarkable film.</em></h2>
-      <a href="/movies">Explore AI Movies <span aria-hidden="true">↗</span></a>
+    <section class="writerApply" aria-labelledby="writer-apply-title" id="write-for-aimb">
+      <div class="aboutSectionKicker">03 / WRITE FOR AIMB</div>
+      <h2 id="writer-apply-title">Love AI movies?<br /><em>Write about them.</em></h2>
+      <p>We believe AI films deserve the same high standard of independent criticism as any other form of cinema. Good criticism allows the audience to find movies that are worth watching and helps filmmakers better understand how their work is received.</p>
+      <p>If you're a film critic, filmmaker, writer or just a movie obsessive who loves watching (and writing about) AI movies then we want to hear from you. Shoot us an email with a little bit about yourself, the kinds of films you like to write about and if possible attach a few examples of your previous work.</p>
+
+      <form class="writerApplyForm" id="writerApplication" method="post" action="mailto:contact@aimoviebase.com" enctype="text/plain">
+        <div class="writerApplyGrid">
+          <div class="writerField">
+            <label for="writerName">Your name <span aria-hidden="true">*</span></label>
+            <input type="text" id="writerName" name="Name" placeholder="Full name" autocomplete="name" required />
+          </div>
+          <div class="writerField">
+            <label for="writerEmail">Email address <span aria-hidden="true">*</span></label>
+            <input type="email" id="writerEmail" name="Email" placeholder="you@example.com" autocomplete="email" required />
+          </div>
+          <div class="writerField writerFieldWide">
+            <label for="writerExperience">Tell us about yourself <span aria-hidden="true">*</span></label>
+            <textarea id="writerExperience" name="About" rows="5" placeholder="What AI films interest you, and why would you like to review them for AIMB?" required></textarea>
+          </div>
+          <div class="writerField writerFieldWide">
+            <label for="writerSamples">Writing samples or portfolio <span class="writerOptional">(optional)</span></label>
+            <input type="url" id="writerSamples" name="Writing samples" placeholder="https://..." />
+          </div>
+        </div>
+        <div class="writerApplyActions">
+          <button class="writerApplyButton" type="submit">Apply to write for AIMB <span aria-hidden="true">↗</span></button>
+          <p class="writerApplyNote">Your email app will open with a prepared application. You can review it before sending.</p>
+        </div>
+      </form>
     </section>
   </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: 'About AIMB',
+  })} />
+
+  <script is:inline>
+    /* No backend: compose an email draft instead. */
+    (function () {
+      var form = document.getElementById('writerApplication');
+      if (!form) return;
+      form.addEventListener('submit', function (event) {
+        if (!form.reportValidity()) { event.preventDefault(); return; }
+        event.preventDefault();
+        var name = document.getElementById('writerName').value.trim();
+        var email = document.getElementById('writerEmail').value.trim();
+        var about = document.getElementById('writerExperience').value.trim();
+        var samples = document.getElementById('writerSamples').value.trim();
+        var subject = 'AIMB — Review Writer Application: ' + name;
+        var body = ['Name: ' + name, 'Email: ' + email, '', 'About me and why I want to review AI films:', about, '', 'Writing samples / portfolio: ' + (samples || 'Not provided')].join('\n');
+        window.location.href = 'mailto:contact@aimoviebase.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      });
+    })();
+  </script>
 </BaseLayout>
