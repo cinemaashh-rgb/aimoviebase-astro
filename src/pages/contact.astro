@@ -1,8 +1,175 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Contact" description="Contact AI Movie Base.">
-  <h1 style="margin-top:34px">Contact</h1>
-  <p class="lede" style="color:var(--muted); max-width:700px; line-height:1.6; font-size:1.05rem; margin-bottom:16px;">Found an error in a film's description, want to report a broken page, or suggest a film for the catalog — reach out to us.</p>
-  <p class="lede" style="color:var(--fg); font-size:1.05rem;">Email: <a href="mailto:contact@aimoviebase.com" style="color:var(--accent); font-weight:600;">contact@aimoviebase.com</a></p>
+<BaseLayout title="Contact" description="Contact the AIMB editorial team about AI movies, film submissions, corrections, collaborations and questions.">
+  <style>
+    /* Contact — same visual system as /about (aimb_contact_us_heading_updated.html),
+       reusing the site's own ink/accent tokens. */
+    .contactPage { color: var(--ink); font-family: var(--sans); max-width: 1120px; margin: 0 auto; }
+    .contactPage * { box-sizing: border-box; }
+
+    .contactBreadcrumb { font: 12px/1.5 var(--sans); color: var(--muted2); margin-bottom: 28px; }
+    .contactBreadcrumb a:hover { color: #cf6246; }
+    .contactBreadcrumb span { padding: 0 10px; }
+
+    .contactHero { padding: 15px 0 46px; border-bottom: 1px solid var(--line); }
+    .contactKicker { font: 700 11px/1.5 var(--sans); letter-spacing: .14em; color: #cf6246; text-transform: uppercase; }
+    .contactHero h1 { font: 400 clamp(44px,7.7vw,96px)/1.02 var(--serif); letter-spacing: -.055em; margin: 21px 0 22px; color: var(--ink); }
+    .contactHero h1 em { font-style: normal; color: #cf6246; }
+    .contactLead { max-width: 650px; font: 400 clamp(19px,2.2vw,26px)/1.5 var(--serif); color: var(--muted); margin: 0; }
+    .contactAttribution { font: 700 11px var(--sans); letter-spacing: .08em; color: var(--muted2); display: flex; align-items: center; gap: 9px; margin-top: 28px; }
+    .contactDot { height: 7px; width: 7px; border-radius: 50%; background: #cf6246; }
+
+    .contactMainGrid { display: grid; grid-template-columns: minmax(0,1fr) 272px; gap: 64px; align-items: start; padding-top: 47px; }
+    .contactProse { min-width: 0; }
+    .contactProseSection { margin: 0 0 33px; padding-bottom: 29px; }
+    .contactSectionKicker { font: 700 11px/1.5 var(--sans); letter-spacing: .14em; color: #cf6246; }
+    .contactProseSection h2 { font: 400 clamp(28px,3.2vw,40px)/1.14 var(--serif); letter-spacing: -.03em; margin: 17px 0 23px; }
+    .contactProseSection > p { font: 16px/1.85 var(--serif); color: #4e5866; margin: 0 0 16px; max-width: 610px; }
+
+    .contactFields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 19px; margin: 27px 0 10px; }
+    .contactField { display: flex; flex-direction: column; min-width: 0; gap: 8px; }
+    .contactFieldFull { grid-column: 1/-1; }
+    .contactField label { font: 700 12px/1.4 var(--sans); color: #20262c; }
+    .contactField label span { color: #cb523c; }
+    .contactField input, .contactField textarea, .contactField select { width: 100%; min-width: 0; display: block; background: #fff; color: #20262c; border: 1px solid var(--line); border-radius: 4px; padding: 13px 14px; font: 400 14px/1.5 var(--sans); outline-offset: 3px; }
+    .contactField input:focus, .contactField textarea:focus, .contactField select:focus { border-color: #cf6348; outline: 2px solid rgba(207,99,72,.14); }
+    .contactField textarea { resize: vertical; min-height: 148px; }
+    .contactActions { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-top: 20px; }
+    .contactSend { display: inline-flex; justify-content: center; align-items: center; gap: 18px; border: 0; border-radius: 5px; padding: 13px 20px; background: linear-gradient(115deg,#ec8b50,#dd4d39 75%,#b93332); color: #fff; font: 700 13px var(--sans); cursor: pointer; }
+    .contactSend:hover { filter: brightness(1.07); }
+    .contactActions p { margin: 0; flex: 1; min-width: 180px; font: 400 11px/1.55 var(--sans); color: var(--muted2); }
+
+    .contactSide { border-left: 1px solid var(--line); padding-left: 26px; }
+    .contactSideKicker { font: 700 11px/1.5 var(--sans); letter-spacing: .14em; color: #b8533c; margin-bottom: 14px; }
+    .contactCard { padding-bottom: 19px; margin-bottom: 20px; border-bottom: 1px solid var(--line); }
+    .contactCard:last-of-type { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+    .contactCard h3 { font: 400 22px/1.2 var(--serif); margin: 0 0 8px; color: var(--ink); }
+    .contactCard p { font: 13px/1.65 var(--sans); color: var(--muted); margin: 0 0 10px; }
+    .contactCard a { color: #ba4e38; font: 700 12px var(--sans); }
+    .contactCard a:hover { color: #a84730; }
+    .contactSmallnote { font: 11px/1.7 var(--sans); color: var(--muted2); margin: 18px 0 0; }
+
+    @media (max-width: 950px) {
+      .contactMainGrid { gap: 34px; grid-template-columns: minmax(0,1fr) 230px; }
+      .contactSide { padding-left: 20px; }
+    }
+    @media (max-width: 720px) {
+      .contactPage { width: calc(100% - 36px); }
+      .contactHero { padding: 0 0 33px; }
+      .contactHero h1 { font-size: clamp(42px,10vw,70px); line-height: 1.05; margin: 15px 0 17px; }
+      .contactLead { font-size: 19px; }
+      .contactMainGrid { display: block; padding-top: 34px; }
+      .contactFields { grid-template-columns: 1fr; }
+      .contactFieldFull { grid-column: auto; }
+      .contactActions { align-items: stretch; flex-direction: column; }
+      .contactActions p { min-width: 0; flex: none; }
+      .contactSend { width: 100%; }
+      .contactSide { margin-top: 37px; border-left: 0; border-top: 1px solid var(--line); padding: 26px 0 0; }
+    }
+  </style>
+
+  <div class="contactPage">
+    <nav class="contactBreadcrumb"><a href="/">Home</a><span>/</span>Contact Us</nav>
+
+    <section class="contactHero">
+      <div class="contactKicker">Contact / AI Movie Base</div>
+      <h1>Let's talk<br /><em>about AI cinema</em></h1>
+      <p class="contactLead">Questions, corrections, ideas or collaborations? Get in touch with the people behind AIMB.</p>
+      <div class="contactAttribution"><span class="contactDot"></span> Made by people, for people</div>
+    </section>
+
+    <div class="contactMainGrid">
+      <div class="contactProse">
+        <section class="contactProseSection">
+          <div class="contactSectionKicker">01 / Get in touch</div>
+          <h2>We'd like to hear from you.</h2>
+          <p>Whether you're a filmmaker, festival organizer, studio, journalist or someone who loves AI movies, you can contact our editorial team.</p>
+          <p>For corrections to film credits, poster attributions or other catalog information, please include a link to the relevant AIMB page.</p>
+        </section>
+
+        <section class="contactProseSection" aria-labelledby="contact-form-title">
+          <div class="contactSectionKicker">02 / Send a message</div>
+          <h2 id="contact-form-title">Send us a message.</h2>
+          <p>Use the form below to prepare an email to our team. Your mail application will open so you can review and send it.</p>
+
+          <form id="contactForm">
+            <div class="contactFields">
+              <div class="contactField">
+                <label for="contactName">Your name <span aria-hidden="true">*</span></label>
+                <input type="text" id="contactName" name="name" placeholder="Full name" autocomplete="name" required />
+              </div>
+              <div class="contactField">
+                <label for="contactEmail">Email address <span aria-hidden="true">*</span></label>
+                <input type="email" id="contactEmail" name="email" placeholder="you@example.com" autocomplete="email" required />
+              </div>
+              <div class="contactField contactFieldFull">
+                <label for="contactTopic">Topic</label>
+                <select id="contactTopic" name="topic">
+                  <option>General inquiry</option>
+                  <option>Film information or correction</option>
+                  <option>Festival or editorial inquiry</option>
+                  <option>Partnership</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="contactField contactFieldFull">
+                <label for="contactMessage">Your message <span aria-hidden="true">*</span></label>
+                <textarea id="contactMessage" name="message" rows="6" placeholder="How can we help?" required></textarea>
+              </div>
+            </div>
+            <div class="contactActions">
+              <button class="contactSend" type="submit">Send message <span aria-hidden="true">↗</span></button>
+              <p>This form opens your email app; messages are not sent directly from this prototype.</p>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <aside class="contactSide" aria-label="Other ways to connect with AIMB">
+        <div class="contactSideKicker">Explore AIMB</div>
+        <div class="contactCard">
+          <h3>Submit a film</h3>
+          <p>Have an AI movie or series you'd like AIMB to consider?</p>
+          <a href="/submit-film">Submit your film →</a>
+        </div>
+        <div class="contactCard">
+          <h3>Write for AIMB</h3>
+          <p>Love AI movies? Interested in contributing thoughtful reviews?</p>
+          <a href="/about#write-for-aimb">Apply as a reviewer →</a>
+        </div>
+        <div class="contactCard">
+          <h3>Corrections &amp; Credits</h3>
+          <p>Found incorrect film information, missing credits, or an attribution issue? Help us keep AIMB accurate.</p>
+          <a href="#contact-form-title" data-contact-topic="Film information or correction">Request a correction →</a>
+        </div>
+        <div class="contactCard">
+          <h3>Press &amp; Partnerships</h3>
+          <p>For media inquiries, festival collaborations, industry partnerships, and professional opportunities.</p>
+          <a href="#contact-form-title" data-contact-topic="Partnership">Get in touch →</a>
+        </div>
+        <p class="contactSmallnote">AIMB is an independent editorial and discovery platform.</p>
+      </aside>
+    </div>
+  </div>
+
+  <script is:inline>
+    document.getElementById('contactForm')?.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var name = document.getElementById('contactName').value.trim();
+      var email = document.getElementById('contactEmail').value.trim();
+      var topic = document.getElementById('contactTopic').value;
+      var message = document.getElementById('contactMessage').value.trim();
+      if (!name || !email || !message) { this.reportValidity(); return; }
+      var subject = 'AIMB Contact — ' + topic;
+      var body = 'Name: ' + name + '\nEmail: ' + email + '\nTopic: ' + topic + '\n\n' + message;
+      window.location.href = 'mailto:contact@aimoviebase.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    });
+    document.querySelectorAll('a[data-contact-topic]').forEach(function (link) {
+      link.addEventListener('click', function () {
+        var topic = document.getElementById('contactTopic');
+        if (topic) topic.value = link.dataset.contactTopic;
+      });
+    });
+  </script>
 </BaseLayout>
