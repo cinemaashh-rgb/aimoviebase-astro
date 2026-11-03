@@ -8,11 +8,23 @@
     "Sci-Fi",
     "Comedy"
   ],
-  "synopsis": "An AI-generated sci-fi comedy short.",
+  "synopsis": "Chris, an ordinary garbage collector, accidentally discovers the last living tree in the universe. But to him, it's not a miracle — it's a jackpot, a fortune waiting to be cashed in.",
   "poster": "/images/posters/jackpot.webp",
   "youtubeId": "q98WM0Gta0A",
   "director": {
     "name": "Dair Karakeev"
+  },
+  "aiTools": [
+    "Seedance 2"
+  ],
+  "editorialReview": {
+    "paragraphs": [
+      "A beautifully executed sci-fi short that has deservedly earned over a million views on YouTube.",
+      "With its impressive visuals, cinematic atmosphere, and compelling premise, the film delivers the kind of science fiction that feels both grand in scale and deeply human.",
+      "Fans of Interstellar and The Martian will find plenty to appreciate here, while its environmental themes will particularly resonate with those passionate about ecology and protecting the planet.",
+      "At its heart lies a familiar cinematic moral dilemma: choosing between personal wealth and doing what is right. It's a classic conflict, but one that feels especially relevant when the last living tree in the universe is at stake."
+    ],
+    "verdict": "A must-watch for fans of thoughtful sci-fi with a strong environmental message."
   },
   "audienceReactions": [
     {
