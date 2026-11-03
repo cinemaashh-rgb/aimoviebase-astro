@@ -8,8 +8,8 @@ const movies = await getCollection('movies');
 // same-year films, not real curation. Swapped out for "You Became CEO of
 // Zara" by explicit request; everything else in the row is still decided
 // by the normal sort.
-const NOTABLE_EXCLUDE = new Set(['1001-aladdin-and-the-lamp', 'alien-invasion-ep3-total-war-begins']);
-const NOTABLE_PINNED = ['you-became-ceo-of-zara', 'the-elevator'];
+const NOTABLE_EXCLUDE = new Set(['1001-aladdin-and-the-lamp', 'alien-invasion-ep3-total-war-begins', 'after-you']);
+const NOTABLE_PINNED = ['you-became-ceo-of-zara', 'the-elevator', 'jackpot'];
 const notablePool = movies.filter((m) => !NOTABLE_EXCLUDE.has(m.id));
 const pinned = NOTABLE_PINNED.map((slug) => notablePool.find((m) => m.id === slug)).filter(
   (m): m is CollectionEntry<'movies'> => Boolean(m)
