@@ -11,8 +11,23 @@ export async function getStaticPaths() {
       .filter((m): m is CollectionEntry<'movies'> => Boolean(m));
     // "Keep exploring" — up to 3 of the catalog's other real lists, so the
     // page always ends with somewhere real to go next rather than the
-    // mockup's invented slugs for collections we don't have.
-    const related = lists.filter((l) => l.id !== list.id).slice(0, 3);
+    // mockup's invented slugs for collections we don't have. Each one also
+    // carries its own small poster fan (same idea as this page's own hero
+    // `filmStack`) so "Keep exploring" reads as a preview of real films
+    // rather than a plain text card.
+    const related = lists
+      .filter((l) => l.id !== list.id)
+      .slice(0, 3)
+      .map((r) => {
+        const rFilms = r.data.movies
+          .map((slug) => movies.find((m) => m.id === slug))
+          .filter((m): m is CollectionEntry<'movies'> => Boolean(m));
+        const posters = rFilms
+          .map((f) => f.data.poster)
+          .filter((p): p is string => Boolean(p))
+          .slice(0, 5);
+        return { entry: r, filmCount: r.data.movies.length, posters };
+      });
     return {
       params: { slug: list.id },
       props: { list, films, related },
@@ -23,7 +38,7 @@ export async function getStaticPaths() {
 interface Props {
   list: CollectionEntry<'lists'>;
   films: CollectionEntry<'movies'>[];
-  related: CollectionEntry<'lists'>[];
+  related: { entry: CollectionEntry<'lists'>; filmCount: number; posters: string[] }[];
 }
 const { list, films, related } = Astro.props;
 const l = list.data;
@@ -76,22 +91,33 @@ function meta(f: CollectionEntry<'movies'>) {
     .exploreLink { display: inline-block; font-size: .76rem; font-weight: 700; border-bottom: 1px solid #cf6246; padding-bottom: 3px; margin-top: 10px; }
 
     .related { margin-top: 20px; padding-top: 30px; border-top: 1px solid var(--line); }
-    .relatedGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; }
-    .relatedGrid a { padding: 20px 18px; background: var(--soft); border: 1px solid var(--line); border-radius: 6px; display: flex; flex-direction: column; gap: 10px; transition: background .2s ease; min-height: 120px; }
-    .relatedGrid a:hover { background: #fff0e7; border-color: #e9c6b6; }
+    /* Each "Keep exploring" entry mirrors this page's own hero: text on the
+       left, a small fanned poster stack on the right — same idea as
+       .heading/.filmStack above, scaled down into a row. */
+    .relatedList { display: flex; flex-direction: column; gap: 14px; }
+    .relatedRow { display: grid; grid-template-columns: minmax(0,1fr) 230px; align-items: center; gap: 26px; padding: 22px 26px; background: var(--soft); border: 1px solid var(--line); border-radius: 8px; transition: background .2s ease, border-color .2s ease; }
+    .relatedRow:hover { background: #fff0e7; border-color: #e9c6b6; }
     .relLabel { font-size: .64rem; color: #cf6246; letter-spacing: .12em; text-transform: uppercase; }
-    .relatedGrid strong { font: 400 1.2rem/1.15 var(--serif); }
-    .relatedGrid .relMeta { font-size: .76rem; color: var(--muted2); line-height: 1.5; }
-    .relatedGrid .relMeta b { float: right; color: #cf6246; }
+    .relatedRow strong { font: 400 1.5rem/1.18 var(--serif); display: block; margin: 7px 0 8px; }
+    .relatedRow .relMeta { font-size: .8rem; color: var(--muted2); }
+    .relatedRow .relMeta b { color: #cf6246; margin-left: 2px; }
+    .relStack { height: 108px; display: flex; justify-content: center; align-items: center; position: relative; }
+    .relStack img { width: 26%; aspect-ratio: 2/3; object-fit: cover; box-shadow: 0 8px 16px rgba(0,0,0,.14); border: 2px solid #fff; border-radius: 3px; margin-left: -18px; }
+    .relStack img:nth-child(1) { transform: rotate(-7deg); }
+    .relStack img:nth-child(2) { transform: rotate(-3deg) translateY(-6px); }
+    .relStack img:nth-child(3) { transform: rotate(2deg) translateY(4px); }
+    .relStack img:nth-child(4) { transform: rotate(6deg) translateY(-5px); }
+    .relStack img:nth-child(5) { transform: rotate(9deg); }
 
     @media (max-width: 860px) {
       .heading { grid-template-columns: 1fr; }
       .featureArt { display: none; }
+      .relatedRow { grid-template-columns: 1fr; }
+      .relStack { display: none; }
     }
     @media (max-width: 620px) {
       .story { grid-template-columns: 120px 1fr; gap: 15px; }
       .story h3 { font-size: 1.2rem; }
-      .relatedGrid { grid-template-columns: 1fr; }
     }
   </style>
 
@@ -162,12 +188,19 @@ function meta(f: CollectionEntry<'movies'>) {
   {related.length > 0 && (
     <section class="related">
       <div class="sectionline" style="border-top:0; padding-top:0;"><h2>Keep exploring</h2></div>
-      <div class="relatedGrid">
-        {related.map((r) => (
-          <a href={`/lists/${r.id}`}>
-            <span class="relLabel">Collection</span>
-            <strong>{r.data.name}</strong>
-            <span class="relMeta">{r.data.movies.length} film{r.data.movies.length === 1 ? '' : 's'} <b>↗</b></span>
+      <div class="relatedList">
+        {related.map(({ entry: r, filmCount, posters }) => (
+          <a class="relatedRow" href={`/lists/${r.id}`}>
+            <div>
+              <span class="relLabel">Collection</span>
+              <strong>{r.data.name}</strong>
+              <span class="relMeta">{filmCount} film{filmCount === 1 ? '' : 's'} <b>↗</b></span>
+            </div>
+            {posters.length >= 3 && (
+              <div class="relStack">
+                {posters.map((p) => <img src={p} alt="" loading="lazy" />)}
+              </div>
+            )}
           </a>
         ))}
       </div>
