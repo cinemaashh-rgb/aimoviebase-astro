@@ -4,6 +4,7 @@
   "year": 2026,
   "type": "movie",
   "genres": [
+    "Comedy",
     "Mystery",
     "Thriller",
     "Fantasy"
@@ -11,6 +12,20 @@
   "synopsis": "An ordinary elevator ride becomes a descent into the impossible. Across nine increasingly surreal floors, a man encounters bizarre realities that draw him toward an unavoidable personal reckoning.",
   "poster": "/images/posters/the-elevator.webp",
   "youtubeId": "UrSo7JTq1Vs",
+  "studio": "Marvs AI",
+  "editorialReview": {
+    "paragraphs": [
+      "It feels like an actual movie and not some AI generated creation.",
+      "Graphics are 🔥. At no point did I feel like I was watching some AI creation. Whether it was the dialogue scene on the 9th floor or facial expressions & reactions of each character. Everything felt authentic.",
+      "Film notes describes it as a comedy thriller. I thought that was accurate when I started but by the end you will struggle to pinpoint what genre Elevator actually falls into.",
+      "Plot is wild. Thought it couldn't get any crazier with Marvs AI referencing movies from all time periods and the main character channeling Johnny Cage from Mortal Kombat at times (starring fight in the forest).",
+      "Halfway through you realize they are just having fight scenes for no reason.",
+      "Until you reach... THE ENDING.",
+      "Once you see how it all comes together you begin to understand how certain scenes you thought were random actually played a key role in creating one hell of a movie. Now you're enjoying a movie that went from chaotic to elegant.",
+      "It's one of those endings that leaves you rewinding and saying \"I'll watch this again but this time I'll appreciate how great of a story this actually is.\""
+    ],
+    "verdict": "You notice the graphics after your first watch. You appreciate the storytelling after your second."
+  },
   "aiTools": [
     "Nano Banana Pro",
     "Cinematic Studio Soul Loca…",
