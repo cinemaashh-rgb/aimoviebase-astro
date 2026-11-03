@@ -7,6 +7,8 @@
   "genres": ["Animation", "Fantasy"],
   "country": "Spain",
   "synopsis": "In 17th-century Spain, a boy with fish-like features crosses the country in search of his mother, confronting ridicule and fear along the way — a story about diversity, belonging and acceptance.",
+  "poster": "/images/posters/the-child-of-the-sea.webp",
+  "youtubeId": "agYhQRIQObw",
   "director": {
     "name": "Ibai Abad"
   },
