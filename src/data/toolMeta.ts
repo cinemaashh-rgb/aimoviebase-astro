@@ -57,6 +57,7 @@ const TOOL_META: [string, ToolMeta][] = [
   ['soul cinematic', { icon: '◆', category: 'Higgsfield Workflow', bg: '#101319', fg: '#fff' }],
   ['suno', { icon: '♪', category: 'Music Generation', bg: '#101319', fg: '#fff' }],
   ['topaz', { icon: 'T', category: 'Upscaling & Restoration', bg: '#101319', fg: '#fff' }],
+  ['animatix', { icon: 'A', category: 'AI Filmmaking Platform', bg: '#101319', fg: '#fff' }],
 ];
 
 export function getToolMeta(name: string): ToolMeta {

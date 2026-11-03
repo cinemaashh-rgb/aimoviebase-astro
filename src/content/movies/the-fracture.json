@@ -1,0 +1,27 @@
+{
+  "movie_id": "4da4d83e-0b1b-42bb-8976-7c86b728f86a",
+  "title": "The Fracture",
+  "year": 2026,
+  "type": "movie",
+  "genres": ["Drama"],
+  "synopsis": "A Queen in 1515. A king returning from battle, his mind broken. A story that moves between two eras without asking permission.",
+  "poster": "/images/posters/the-fracture.webp",
+  "director": {
+    "name": "Jacopo Reale"
+  },
+  "studio": "Labyrinth Studio",
+  "crew": [
+    { "name": "Giacomo Cannelli", "role": "AI Creative Director" },
+    { "name": "Alessandro Risuleo", "role": "AI Creative Director" },
+    { "name": "Aurora Cecchini", "role": "AI Designer" },
+    { "name": "Patrik Gallo", "role": "Executive Producer" },
+    { "name": "Sylvain Montreuil", "role": "Executive Producer" },
+    { "name": "Tiziano Lamberti", "role": "Sound Design, Editing & Final Mix (for Sounzone)" },
+    { "name": "Dario Tatoli", "role": "Additional Sound Design" },
+    { "name": "Sounzone", "role": "Music" }
+  ],
+  "aiTools": ["Animatix"],
+  "awards": [
+    "Best Direction — Astana AI Film Festival (AAIFF) 2026"
+  ]
+}

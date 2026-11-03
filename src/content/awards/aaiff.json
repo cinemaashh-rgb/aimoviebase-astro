@@ -30,7 +30,7 @@
         { "place": "Best Story", "title": "The Last Span", "movieSlug": "the-last-span", "director": "2xLabs", "poster": "/images/posters/the-last-span.webp", "notes": [] },
         { "place": "Best Concept", "title": "Pomegranate", "director": "Zachary London", "notes": [] },
         { "place": "Best Visual", "title": "What's the Job?", "director": "Jacopo Zanetti", "notes": [] },
-        { "place": "Best Direction", "title": "The Fracture", "director": "Jacopo Reale", "notes": [] }
+        { "place": "Best Direction", "title": "The Fracture", "movieSlug": "the-fracture", "director": "Jacopo Reale", "poster": "/images/posters/the-fracture.webp", "notes": [] }
       ]
     }
   ]
