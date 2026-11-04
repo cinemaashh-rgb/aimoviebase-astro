@@ -1,0 +1,139 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const entries = await getCollection('shortdrama');
+const films = entries.filter((e) => e.data.status === 'published');
+// Same English-original / Chinese-original split used on the /short-drama
+// editorial homepage (driven by the optional `originalTitle` field — set
+// only on titles whose native release language isn't English).
+const englishFilms = films.filter((f) => !f.data.originalTitle);
+const chineseFilms = films.filter((f) => f.data.originalTitle);
+---
+<BaseLayout title="All AI Short Dramas" description="Browse every AI short drama and vertical microdrama in the AIMB catalog, English-language and Chinese productions alike.">
+  <style>
+    /* Ported from the genre-page format (/genre/[genre].astro) — same
+       dark hero shell, tab/sort toolbar and paginated grid, minus the
+       photographic hero art (no real backdrop image exists for this
+       catalog-wide view) and with Movies/Series swapped for the
+       English/Chinese split this catalog actually has. */
+    .sdaHero { margin-top: -2rem; margin-bottom: 28px; background: var(--black); color: #fff; overflow: hidden; min-height: 240px; }
+    .sdaHero .heroInner { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; min-height: 240px; display: flex; flex-direction: column; justify-content: center; padding: 32px 2rem; }
+    .sdaHero .eyebrow { color: #d8dce1; font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .sdaHero h1 { font-family: var(--serif); font-size: clamp(36px,5vw,58px); margin: 10px 0 14px; color: #fff; line-height: 1.04; }
+    .sdaHero p { max-width: 460px; color: #e0e3e6; font-size: .95rem; line-height: 1.6; margin: 0; }
+    .sdaToolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+    .sdaTabs { display: flex; gap: 8px; }
+    .sdaTab { border: 1px solid var(--line); background: #fff; border-radius: 20px; padding: 7px 16px; font-size: .82rem; font-weight: 600; cursor: pointer; color: var(--muted); }
+    .sdaTab[aria-pressed="true"] { background: var(--black); color: #fff; border-color: var(--black); }
+    .sdaSortSelect { height: 36px; border: 1px solid var(--line); background: #fff; border-radius: 6px; color: var(--ink); font-size: .82rem; padding: 0 10px; }
+    .sda-card { display: block; }
+    .sda-card[hidden] { display: none; }
+    .sda-card img, .sda-card .sdaPosterFallback { aspect-ratio: 2/3; width: 100%; object-fit: cover; border-radius: 6px; background: var(--soft); display: block; }
+    .sdaPosterFallback { display: flex; align-items: center; justify-content: center; text-align: center; padding: 8px; color: var(--muted); font-size: .72rem; font-weight: 700; }
+    .sda-card h3 { font-family: var(--serif); font-size: .9rem; margin: 8px 0 1px; line-height: 1.2; }
+    .sda-card:hover h3 { color: #cf6246; }
+    .sda-card .sdaOriginal { display: block; font-family: var(--serif); font-size: .74rem; color: var(--muted2); margin: 0 0 2px; }
+    .sda-card .sdaMeta { color: var(--muted); font-size: .76rem; }
+    .sdaGrid { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 18px 14px; }
+    .sdaLoadWrap { text-align: center; padding: 28px 0 8px; }
+    .sdaLoad { background: var(--soft); border: 1px solid var(--line); color: var(--ink); border-radius: 6px; font-size: .85rem; font-weight: 600; padding: 11px 40px; cursor: pointer; }
+    .sdaLoad[hidden] { display: none; }
+    @media (max-width: 900px) { .sdaGrid { grid-template-columns: repeat(3,minmax(0,1fr)); } }
+    @media (max-width: 520px) { .sdaGrid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+  </style>
+
+  <div class="sdaHero full-bleed">
+    <div class="heroInner">
+      <div class="eyebrow">AI Short Drama</div>
+      <h1>All AI Short Dramas</h1>
+      <p>Every vertical microdrama in the AIMB catalog, English-language and Chinese productions alike.</p>
+    </div>
+  </div>
+
+  {films.length > 0 ? (
+    <>
+      <div class="sdaToolbar">
+        <div class="sdaTabs" role="group" aria-label="Filter by catalog">
+          <button type="button" class="sdaTab" id="sdaTabAll" aria-pressed="true">All ({films.length})</button>
+          <button type="button" class="sdaTab" id="sdaTabEnglish" aria-pressed="false">English-Language ({englishFilms.length})</button>
+          <button type="button" class="sdaTab" id="sdaTabChinese" aria-pressed="false">Chinese ({chineseFilms.length})</button>
+        </div>
+        <select class="sdaSortSelect" id="sdaSortSelect">
+          <option value="default">Catalog order</option>
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="title">Title A–Z</option>
+        </select>
+      </div>
+
+      <div class="sdaGrid" id="sdaGrid">
+        {films.map((f) => (
+          <a
+            class="sda-card"
+            href={`/shortdrama/${f.id}`}
+            data-kind={f.data.originalTitle ? 'chinese' : 'english'}
+            data-year={f.data.year ?? 0}
+            data-title={f.data.title}
+          >
+            {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" /> : <div class="sdaPosterFallback">{f.data.title}</div>}
+            <h3>{f.data.title}</h3>
+            {f.data.originalTitle && <span class="sdaOriginal">{f.data.originalTitle}</span>}
+            <div class="sdaMeta">{[f.data.platform, f.data.year].filter(Boolean).join(' · ')}</div>
+          </a>
+        ))}
+      </div>
+      <div class="sdaLoadWrap">
+        <button class="sdaLoad" id="sdaLoadMore" type="button">Load more ↓</button>
+        <p id="sdaLiveStatus" aria-live="polite" style="font-size:.76rem;color:var(--muted);margin-top:10px;"></p>
+      </div>
+    </>
+  ) : (
+    <p>No AI short dramas published yet.</p>
+  )}
+
+  <script is:inline>
+    (function () {
+      var grid = document.getElementById('sdaGrid');
+      if (!grid) return;
+      var allCards = [].slice.call(grid.children);
+      var loadBtn = document.getElementById('sdaLoadMore');
+      var status = document.getElementById('sdaLiveStatus');
+      var sortSelect = document.getElementById('sdaSortSelect');
+      var tabs = { all: document.getElementById('sdaTabAll'), english: document.getElementById('sdaTabEnglish'), chinese: document.getElementById('sdaTabChinese') };
+      var kind = 'all';
+      var PAGE_SIZE = 12;
+      var shown = PAGE_SIZE;
+
+      function filtered() {
+        return allCards.filter(function (c) { return kind === 'all' || c.dataset.kind === kind; });
+      }
+      function sorted(list) {
+        var mode = sortSelect.value;
+        var copy = list.slice();
+        if (mode === 'newest') copy.sort(function (a, b) { return Number(b.dataset.year) - Number(a.dataset.year); });
+        else if (mode === 'oldest') copy.sort(function (a, b) { return Number(a.dataset.year) - Number(b.dataset.year); });
+        else if (mode === 'title') copy.sort(function (a, b) { return a.dataset.title.localeCompare(b.dataset.title); });
+        return copy;
+      }
+      function render() {
+        var list = sorted(filtered());
+        grid.replaceChildren.apply(grid, list.slice(0, shown));
+        loadBtn.hidden = shown >= list.length;
+        if (status) status.textContent = 'Showing ' + Math.min(shown, list.length) + ' of ' + list.length;
+      }
+      function setTab(next) {
+        kind = next;
+        shown = PAGE_SIZE;
+        Object.keys(tabs).forEach(function (k) { tabs[k].setAttribute('aria-pressed', String(k === next)); });
+        render();
+      }
+      tabs.all.addEventListener('click', function () { setTab('all'); });
+      tabs.english.addEventListener('click', function () { setTab('english'); });
+      tabs.chinese.addEventListener('click', function () { setTab('chinese'); });
+      sortSelect.addEventListener('change', render);
+      loadBtn.addEventListener('click', function () { shown += PAGE_SIZE; render(); });
+      render();
+    })();
+  </script>
+</BaseLayout>
