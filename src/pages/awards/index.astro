@@ -137,20 +137,25 @@ const initialCount = 6;
     .sectionHead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 13px; }
     .sectionHead h2 { font-size: 1.4rem; margin: 0; }
 
-    /* Featured Festivals — text-only dark cards. The mockup's own featured
-       cards use a photo background per festival; the only images shipped
-       with the source mockup for these cards were composite screenshot
-       thumbnails with "FEATURED" and the location pin already baked into
-       the pixels (not a clean photo), so reusing them here would double
-       up with this template's own badge/text. Kept as the mockup's dark
-       card style without a photo rather than ship a visibly broken one. */
+    /* Featured Festivals — each card now carries a real photo/logo for its
+       festival (organizer-supplied), with a dark gradient scrim so the
+       badge/heading/copy stay legible on top, same treatment as the
+       homepage hero and newsletter band. */
     .featuredGrid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 14px; margin-bottom: 36px; }
     @media (max-width: 900px) { .featuredGrid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
-    .featureCard { background: var(--black); border-radius: 8px; padding: 20px 18px; color: #fff; display: flex; flex-direction: column; justify-content: flex-end; min-height: 170px; position: relative; }
+    .featureCard { background: var(--black); border-radius: 8px; padding: 20px 18px; color: #fff; display: flex; flex-direction: column; justify-content: flex-end; min-height: 170px; position: relative; overflow: hidden; }
+    /* Photo layer sits behind the gradient scrim on its own pseudo-element
+       (rather than as the card's own background-image) so it can be
+       dimmed with `filter` without touching the real text on top — the
+       organizer artwork carries its own baked-in wordmarks, which read as
+       a muted texture here instead of fighting our own heading. */
+    .featureCard::before { content: ""; position: absolute; inset: 0; background: var(--art) center / cover no-repeat; filter: brightness(.45) saturate(.85); }
+    .featureCard::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,11,13,.25) 0%, rgba(8,11,13,.4) 46%, rgba(8,11,13,.94) 100%); }
+    .featureCard .tag, .featureCard h3, .featureCard p, .featureCard small { position: relative; z-index: 1; }
     .featureCard .tag { align-self: flex-start; background: #ffe6a8; color: #1a1710; font-weight: 700; border-radius: 6px; padding: 4px 9px; font-size: .62rem; letter-spacing: .02em; margin-bottom: auto; }
-    .featureCard h3 { font-family: var(--serif); font-size: 1.25rem; margin: 10px 0 5px; }
-    .featureCard p { margin: 0 0 7px; font-size: .78rem; color: #cfd3da; line-height: 1.4; }
-    .featureCard small { font-size: .72rem; color: #e8eaed; }
+    .featureCard h3 { font-family: var(--serif); font-size: 1.25rem; margin: 10px 0 5px; text-shadow: 0 2px 10px rgba(0,0,0,.5); }
+    .featureCard p { margin: 0 0 7px; font-size: .78rem; color: #e3e6ea; line-height: 1.4; text-shadow: 0 1px 8px rgba(0,0,0,.5); }
+    .featureCard small { font-size: .72rem; color: #e8eaed; text-shadow: 0 1px 8px rgba(0,0,0,.5); }
     .featureCard:hover h3 { color: #fff; text-decoration: underline; }
 
     table { width: 100%; border-collapse: collapse; table-layout: fixed; }
@@ -212,25 +217,25 @@ const initialCount = 6;
 
   <div class="sectionHead"><h2>Featured Festivals</h2></div>
   <div class="featuredGrid">
-    <a class="featureCard" href="/awards/aaiff">
+    <a class="featureCard" href="/awards/aaiff" style="--art:url(/images/awards/aaiff-card.webp)">
       <span class="tag">FEATURED</span>
       <h3>AAIFF — Astana AI Film Festival</h3>
       <p>An international AI film festival with competition prizes and a fund for new productions.</p>
       <small>1–3 October 2026</small>
     </a>
-    <a class="featureCard" href="/awards/runway-aiff">
+    <a class="featureCard" href="/awards/runway-aiff" style="--art:url(/images/awards/runway-aiff-card.webp)">
       <span class="tag">FEATURED</span>
       <h3>Runway AI Film Festival</h3>
       <p>A global showcase of AI-driven films organized by Runway.</p>
       <small>2026 edition</small>
     </a>
-    <a class="featureCard" href="/awards/reply-aiff">
+    <a class="featureCard" href="/awards/reply-aiff" style="--art:url(/images/awards/reply-aiff-card.webp)">
       <span class="tag">FEATURED</span>
       <h3>Reply AI Film Festival</h3>
       <p>An international competition spotlighting AI-assisted storytelling.</p>
       <small>7 Sep 2026</small>
     </a>
-    <a class="featureCard" href="/awards/higgsfield">
+    <a class="featureCard" href="/awards/higgsfield" style="--art:url(/images/awards/higgsfield-card.webp)">
       <span class="tag">FEATURED</span>
       <h3>Higgsfield Global Film Festival</h3>
       <p>A $1,000,000 online competition for original AI short films.</p>
