@@ -1,155 +1,258 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getVerdict, metricColor } from '../lib/qualityIndex';
 
-const entries = await getCollection('shortdrama');
-const published = entries.filter((e) => e.data.status === 'published');
-const categories = entries.filter((e) => e.data.status === 'coming-soon');
-categories.sort((a, b) => a.data.title.localeCompare(b.data.title));
+const all = await getCollection('shortdrama');
+const published = all.filter((e) => e.data.status === 'published');
 
-// Independent search/filter scope, deliberately not wired into the site's
-// global header search (see search-data.js.ts) — AI Short Drama is its own
-// catalog with its own facets (platform, genre), so it gets its own small
-// client-side index instead of mixing into AI Movies & Series results.
-// Platform/genre option lists are derived from the real published entries
-// rather than hardcoded, so a newly added drama's platform/genre shows up
-// in the filters automatically.
-const platforms = [...new Set(published.map((e) => e.data.platform).filter(Boolean))].sort((a, b) =>
-  a!.localeCompare(b!)
-);
-const genres = [...new Set(published.flatMap((e) => e.data.badges))].sort((a, b) => a.localeCompare(b));
+// "Popular AI Short Dramas": English-original titles (no originalTitle set),
+// newest first, capped to 6 for the homepage-style grid — computed from the
+// real catalog rather than hand-picked, same approach as the main
+// homepage's "Notable" row.
+const popular = published
+  .filter((e) => !e.data.originalTitle)
+  .sort((a, b) => (b.data.year ?? 0) - (a.data.year ?? 0))
+  .slice(0, 6);
+
+// "Chinese AI Short Dramas": every published title that carries a native
+// originalTitle, shown with its original-language title underneath.
+const chinese = published.filter((e) => e.data.originalTitle);
+
+// Quality Index feature: the one real editorial score currently in the
+// catalog, read live from its own content entry (not duplicated/hardcoded)
+// so this page and the detail-page widget can never drift apart.
+const scored = published.find((e) => e.data.qualityIndex);
+const qi = scored?.data.qualityIndex;
+const verdict = qi ? getVerdict(qi.score) : null;
+const RING_CIRC = 2 * Math.PI * 46;
+const dash = qi ? (qi.score / 100) * RING_CIRC : 0;
+
+function meta(e: CollectionEntry<'shortdrama'>) {
+  return [e.data.platform, e.data.badges[0]].filter(Boolean).join(' · ');
+}
 ---
-<BaseLayout title="Short Form Drama" description="Vertical, episode-driven AI drama — bite-sized chapters built for phone screens.">
+<BaseLayout title="AI Short Drama" description="Explore AI short dramas and vertical microdramas, including Chinese AI series. AIMB editorial picks and the Slop or Cinema? Quality Index.">
   <style>
-    .sdToolbar { display: flex; flex-wrap: wrap; align-items: end; gap: 14px; margin: 4px 0 22px; padding: 16px; background: var(--soft); border: 1px solid var(--line); border-radius: 8px; }
-    .sdField { display: flex; flex-direction: column; gap: 5px; }
-    .sdField label { font-size: .7rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted2); }
-    .sdField input, .sdField select { height: 36px; border: 1px solid var(--line); background: #fff; border-radius: 6px; color: var(--ink); font-size: .85rem; padding: 0 10px; font-family: var(--sans); }
-    .sdField input { width: 220px; }
-    .sdField input:focus-visible, .sdField select:focus-visible { outline: 2px solid #cf6246; outline-offset: 1px; }
-    .sdResetBtn { height: 36px; border: 1px solid var(--line); background: #fff; border-radius: 6px; color: var(--muted); font-size: .8rem; padding: 0 14px; cursor: pointer; }
-    .sdResetBtn:hover { border-color: #cf6246; color: #cf6246; }
-    .sdCount { margin-left: auto; font-size: .78rem; color: var(--muted2); align-self: center; }
-    .sdEmpty { display: none; padding: 30px 16px; text-align: center; color: var(--muted); font-size: .88rem; border: 1px dashed var(--line); border-radius: 8px; max-width: 700px; }
-    .sdEmpty.is-visible { display: block; }
-    @media (max-width: 560px) {
-      .sdToolbar { flex-direction: column; align-items: stretch; }
-      .sdField input { width: 100%; }
-      .sdCount { margin-left: 0; }
+    /* ---- Hero ---- */
+    .sdhHero { position: relative; overflow: hidden; border-radius: 10px; padding: 52px 44px; margin: 2px 0 6px; background: linear-gradient(120deg, var(--soft) 0%, #eef1f3 58%, #e3eaf0 100%); }
+    .sdhHero::after { content: ""; position: absolute; right: -8%; top: -90%; height: 220%; width: 54%; border-radius: 50%; background: radial-gradient(ellipse at 50% 55%, rgba(207,98,70,.10) 0%, rgba(229,234,239,.08) 60%, transparent 72%); pointer-events: none; }
+    .sdhHeroIn { position: relative; z-index: 1; max-width: 620px; }
+    .sdhKicker { font: 800 .68rem/1.5 var(--sans); letter-spacing: .16em; text-transform: uppercase; color: #c56b49; }
+    .sdhHero h1 { font-family: var(--serif); font-size: clamp(42px,6vw,68px); line-height: .99; letter-spacing: -.03em; margin: 16px 0 16px; }
+    .sdhHero p { font-size: .96rem; line-height: 1.65; color: var(--muted); max-width: 520px; margin: 0; }
+    .sdhHeroLinks { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 24px; font: 700 .76rem var(--sans); }
+    .sdhHeroLinks a { border-bottom: 1px solid var(--muted2); padding-bottom: 5px; }
+    .sdhHeroLinks a:hover { color: #cf6246; border-color: #cf6246; }
+
+    /* ---- Shared section chrome (mirrors the homepage's .section pattern) ---- */
+    .sdhSection { padding: 30px 0 30px; border-top: 1px solid var(--line); }
+    .sdhSectionHead { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; margin-bottom: 18px; }
+    .sdhSectionHead h2 { font-family: var(--serif); font-size: clamp(27px,3.2vw,36px); line-height: 1.12; letter-spacing: -.02em; margin: 6px 0 4px; }
+    .sdhSectionHead .intro { color: var(--muted); font-size: .82rem; max-width: 460px; margin: 0; }
+    .sdhSideCopy { font-size: .74rem; color: var(--muted2); max-width: 230px; text-align: right; line-height: 1.5; }
+    .sdhNote { font-size: .72rem; color: var(--muted2); margin: 16px 0 0; }
+
+    /* ---- Poster grids (Popular / Chinese) ---- */
+    .sdhGrid { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 15px; }
+    .sdhGrid a { display: flex; flex-direction: column; min-width: 0; color: inherit; }
+    .sdhGrid img, .sdhPosterFallback { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 5px; border: 1px solid var(--line); background: var(--soft); display: block; transition: transform .2s ease, box-shadow .2s ease; }
+    .sdhPosterFallback { display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .72rem; font-weight: 700; text-align: center; padding: 10px; }
+    .sdhGrid a:hover img { transform: translateY(-3px); box-shadow: 0 8px 23px rgba(0,0,0,.1); }
+    .sdhGrid a:hover strong { color: #cf6246; }
+    .sdhGrid strong { font-family: var(--serif); font-size: .9rem; margin-top: 10px; line-height: 1.2; font-weight: 700; }
+    .sdhOriginal { display: block; font-family: var(--serif); font-size: .76rem; color: var(--muted2); margin-top: 2px; }
+    .sdhGridMeta { display: block; margin-top: 4px; font-size: .7rem; color: var(--muted2); }
+
+    /* ---- Quality Index feature ---- */
+    .sdhQuality { display: grid; grid-template-columns: 1fr minmax(290px,380px); gap: 48px; align-items: center; background: var(--soft); padding: 36px 38px; border-radius: 8px; }
+    .sdhQuality h2 { font-family: var(--serif); font-size: clamp(32px,4vw,46px); margin: 8px 0 6px; line-height: 1.05; }
+    .sdhQualitySub { font: 700 .86rem var(--serif); color: #b65e42; margin: 0 0 14px; }
+    .sdhQualityCopy { font-size: .84rem; line-height: 1.68; color: var(--muted); max-width: 500px; margin: 0 0 18px; }
+    .sdhQualityLink { display: inline-flex; align-items: center; gap: 10px; font: 700 .68rem var(--sans); letter-spacing: .05em; text-transform: uppercase; border-bottom: 1px solid var(--muted2); padding-bottom: 5px; }
+    .sdhQualityLink:hover { color: #cf6246; border-color: #cf6246; }
+    .sdhScorecard { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 22px 22px 18px; }
+    .sdhScoreTop { display: flex; align-items: center; gap: 18px; margin-bottom: 18px; }
+    .sdhRing { position: relative; width: 84px; height: 84px; flex: 0 0 84px; }
+    .sdhRing svg { width: 100%; height: 100%; display: block; }
+    .sdhRingNum { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; line-height: 1; font-family: var(--serif); font-size: 26px; font-weight: 700; color: var(--ink); }
+    .sdhRingNum small { font-size: .6rem; font-weight: 500; color: var(--muted2); margin-top: 3px; font-family: var(--sans); }
+    .sdhScoreTitle { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; }
+    .sdhScoreLabel { font: 700 .72rem var(--sans); margin-top: 6px; }
+    .sdhScoreNote { font-size: .66rem; color: var(--muted2); margin-top: 4px; }
+    .sdhMetrics { display: grid; gap: 12px; }
+    .sdhMetricHead { font-size: .72rem; display: flex; justify-content: space-between; color: var(--muted); margin-bottom: 5px; }
+    .sdhMetricHead strong { color: var(--ink); }
+    .sdhBar { height: 5px; background: var(--line); overflow: hidden; border-radius: 6px; }
+    .sdhBar span { height: 100%; display: block; border-radius: 6px; }
+
+    /* ---- Journal teaser (honest "in preparation" placeholders — no real
+       short-drama-specific articles exist yet; see /news for general AI
+       film journalism) ---- */
+    .sdhJournalGrid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }
+    .sdhStoryPending { background: var(--soft); border: 1px solid var(--line); border-radius: 6px; padding: 22px; }
+    .sdhStoryPending h3 { font-family: var(--serif); font-size: 1.15rem; margin: 10px 0 6px; }
+    .sdhStoryPending p { font-size: .8rem; color: var(--muted2); margin: 0; }
+
+    /* ---- Explainer ---- */
+    .sdhExplain { display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 56px; }
+    .sdhExplain p { font-size: .9rem; line-height: 1.7; color: var(--muted); max-width: 620px; margin: 12px 0; }
+    .sdhExplainAside { border-left: 1px solid var(--line); padding-left: 24px; }
+    .sdhExplainAside dt { font-family: var(--serif); font-weight: 700; font-size: .92rem; margin: 0 0 5px; }
+    .sdhExplainAside dd { font-size: .76rem; color: var(--muted2); line-height: 1.55; margin: 0 0 18px; }
+
+    @media (max-width: 900px) {
+      .sdhGrid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+      .sdhQuality { grid-template-columns: 1fr; gap: 24px; }
+      .sdhJournalGrid { grid-template-columns: 1fr; }
+      .sdhExplain { grid-template-columns: 1fr; gap: 20px; }
+      .sdhExplainAside { border-left: 0; border-top: 1px solid var(--line); padding: 20px 0 0; }
+    }
+    @media (max-width: 650px) {
+      .sdhHero { padding: 34px 22px; }
+      .sdhSectionHead { flex-direction: column; align-items: flex-start; }
+      .sdhSideCopy { text-align: left; max-width: none; }
+      .sdhGrid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
     }
   </style>
 
-  <h1>AI Short Drama</h1>
-  <p style="color:var(--muted); max-width:640px; line-height:1.5; margin-bottom:28px;">Vertical, episode-driven AI drama — bite-sized chapters built for phone screens.</p>
-
-  {published.length > 0 && (
-    <div class="sdToolbar">
-      <div class="sdField">
-        <label for="sdSearch">Search AI Short Dramas</label>
-        <input type="text" id="sdSearch" placeholder="Title…" autocomplete="off" />
+  <section class="sdhHero">
+    <div class="sdhHeroIn">
+      <span class="sdhKicker">AIMB — Independent Guide to AI Cinema</span>
+      <h1>AI Short Drama</h1>
+      <p>Explore the new world of AI-powered vertical storytelling — from short romance series and fantastical microdramas to emerging Chinese productions.</p>
+      <div class="sdhHeroLinks">
+        <a href="#popular">Discover AI dramas ↓</a>
+        <a href="#explained">What is AI Short Drama? ↗</a>
       </div>
-      <div class="sdField">
-        <label for="sdPlatform">Platform</label>
-        <select id="sdPlatform">
-          <option value="">All platforms</option>
-          {platforms.map((p) => <option value={p}>{p}</option>)}
-        </select>
-      </div>
-      <div class="sdField">
-        <label for="sdGenre">Genre</label>
-        <select id="sdGenre">
-          <option value="">All genres</option>
-          {genres.map((g) => <option value={g}>{g}</option>)}
-        </select>
-      </div>
-      <button type="button" class="sdResetBtn" id="sdReset">Reset filters</button>
-      <span class="sdCount" id="sdCount">{published.length} dramas found</span>
     </div>
-  )}
+  </section>
 
-  <div class="movieGrid" style="max-width:700px" id="sdGrid">
-    {published.map((entry) => (
-      <a
-        class="movieCard"
-        href={`/shortdrama/${entry.id}`}
-        data-title={entry.data.title.toLowerCase()}
-        data-platform={entry.data.platform || ''}
-        data-genres={entry.data.badges.join('|')}
-      >
-        <img src={entry.data.poster} alt={entry.data.title} loading="lazy" />
-        <div class="cardBody">
-          <h3>{entry.data.title}</h3>
-          <div class="meta">{[
-            entry.data.platform,
-            ...entry.data.badges.slice(0, 2),
-            entry.data.episodes ? `${entry.data.episodes} episodes` : null,
-          ].filter(Boolean).join(' · ')}</div>
+  {popular.length > 0 && (
+    <section class="sdhSection" id="popular">
+      <div class="sdhSectionHead">
+        <div>
+          <span class="sdhKicker">Discover the Format</span>
+          <h2>Popular AI Short Dramas</h2>
+          <p class="intro">Vertical stories, unexpected worlds and new formats for the smallest screen.</p>
         </div>
-      </a>
-    ))}
-  </div>
-
-  {published.length > 0 && (
-    <p class="sdEmpty" id="sdEmptyState">No dramas match your filters. Try clearing one of them.</p>
-  )}
-
-  {categories.length > 0 && (
-    <>
-      <h2 style="margin-top:2.5em">Browse by Category</h2>
-      <div style="display:grid; gap:4px; max-width:700px;">
-        {categories.map((entry) => (
-          <a href={`/shortdrama/${entry.id}`} style="display:flex; align-items:center; gap:16px; padding:14px; border-radius:10px; color:inherit;">
-            <div style="flex:1; min-width:0;">
-              <div style="font-weight:700; font-size:1.02rem;">{entry.data.title}</div>
-              <div style="color:var(--muted); font-size:.8rem;">{entry.data.tagline}</div>
-            </div>
-            <div style="color:var(--muted); font-size:1.1rem; flex-shrink:0;">›</div>
+        <span class="sdhSideCopy">Curated selections from the growing AIMB catalogue</span>
+      </div>
+      <div class="sdhGrid">
+        {popular.map((e) => (
+          <a href={`/shortdrama/${e.id}`} aria-label={`View ${e.data.title}`}>
+            {e.data.poster ? <img src={e.data.poster} alt={e.data.title} loading="lazy" /> : <div class="sdhPosterFallback">{e.data.title}</div>}
+            <strong>{e.data.title}</strong>
+            <span class="sdhGridMeta">{meta(e)}</span>
           </a>
         ))}
       </div>
-    </>
+      <p class="sdhNote">Selections are for discovery, not a verified ranking by popularity. Production methods require title-by-title verification.</p>
+    </section>
   )}
 
-  <script is:inline>
-    (function () {
-      var searchInput = document.getElementById('sdSearch');
-      var platformSelect = document.getElementById('sdPlatform');
-      var genreSelect = document.getElementById('sdGenre');
-      var resetBtn = document.getElementById('sdReset');
-      var countEl = document.getElementById('sdCount');
-      var emptyEl = document.getElementById('sdEmptyState');
-      var grid = document.getElementById('sdGrid');
-      if (!grid || !searchInput) return; // no published dramas — toolbar wasn't rendered
-      var cards = [].slice.call(grid.querySelectorAll('.movieCard'));
+  {qi && verdict && scored && (
+    <section class="sdhSection" id="quality">
+      <div class="sdhQuality">
+        <div>
+          <span class="sdhKicker">AIMB Editorial Standard</span>
+          <h2>Slop or Cinema?</h2>
+          <p class="sdhQualitySub">AIMB Quality Index</p>
+          <p class="sdhQualityCopy">Not every AI-generated series is worth watching. Our editorial index scores story and writing (35%), visual quality (25%), direction and editing (25%), and sound and voice (15%). From thoughtful storytelling to low-effort AI slop, the score makes our assessment transparent.</p>
+          <a href="/quality-index" class="sdhQualityLink">How we rate AI short dramas <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="sdhScorecard">
+          <div class="sdhScoreTop">
+            <div class="sdhRing" role="img" aria-label={`Illustrative quality score: ${qi.score} out of 100`}>
+              <svg viewBox="0 0 112 112" aria-hidden="true">
+                <circle cx="56" cy="56" r="46" fill="none" stroke="var(--line)" stroke-width="8"></circle>
+                <circle cx="56" cy="56" r="46" fill="none" stroke={verdict.color} stroke-width="8" stroke-linecap="round" stroke-dasharray={`${dash} ${RING_CIRC - dash}`} transform="rotate(-90 56 56)"></circle>
+              </svg>
+              <span class="sdhRingNum">{qi.score}<small>/100</small></span>
+            </div>
+            <div>
+              <div class="sdhScoreTitle">{scored.data.title}</div>
+              <div class="sdhScoreLabel" style={`color:${verdict.color}`}>{verdict.label}</div>
+              <div class="sdhScoreNote">AIMB editorial rating</div>
+            </div>
+          </div>
+          <div class="sdhMetrics">
+            {qi.breakdown.map((m) => (
+              <div>
+                <div class="sdhMetricHead"><strong>{m.label}</strong><span>{m.score}/10</span></div>
+                <div class="sdhBar"><span style={`width:${m.score * 10}%; background:${metricColor(m.score)}`}></span></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
 
-      function apply() {
-        var q = searchInput.value.trim().toLowerCase();
-        var platform = platformSelect.value;
-        var genre = genreSelect.value;
-        var visible = 0;
-        cards.forEach(function (card) {
-          var matchesTitle = !q || card.dataset.title.indexOf(q) !== -1;
-          var matchesPlatform = !platform || card.dataset.platform === platform;
-          var genres = card.dataset.genres ? card.dataset.genres.split('|') : [];
-          var matchesGenre = !genre || genres.indexOf(genre) !== -1;
-          var show = matchesTitle && matchesPlatform && matchesGenre;
-          card.style.display = show ? '' : 'none';
-          if (show) visible++;
-        });
-        countEl.textContent = visible + (visible === 1 ? ' drama found' : ' dramas found');
-        emptyEl.classList.toggle('is-visible', visible === 0);
-        grid.style.display = visible === 0 ? 'none' : '';
-      }
+  {chinese.length > 0 && (
+    <section class="sdhSection" id="chinese">
+      <div class="sdhSectionHead">
+        <div>
+          <span class="sdhKicker">Global AI Storytelling</span>
+          <h2>Chinese AI Short Dramas</h2>
+          <p class="intro">Discover the fast-evolving Chinese microdrama scene, with original-language titles.</p>
+        </div>
+        <span class="sdhSideCopy">Production status of individual titles is not independently verified</span>
+      </div>
+      <div class="sdhGrid">
+        {chinese.map((e) => (
+          <a href={`/shortdrama/${e.id}`} aria-label={`View ${e.data.title}`}>
+            {e.data.poster ? <img src={e.data.poster} alt={e.data.title} loading="lazy" /> : <div class="sdhPosterFallback">{e.data.title}</div>}
+            <strong>{e.data.title}</strong>
+            {e.data.originalTitle && <span class="sdhOriginal">{e.data.originalTitle}</span>}
+            <span class="sdhGridMeta">{meta(e)}</span>
+          </a>
+        ))}
+      </div>
+      <p class="sdhNote">English titles are working translations; original-language titles are retained from the source catalog.</p>
+    </section>
+  )}
 
-      searchInput.addEventListener('input', apply);
-      platformSelect.addEventListener('change', apply);
-      genreSelect.addEventListener('change', apply);
-      resetBtn.addEventListener('click', function () {
-        searchInput.value = '';
-        platformSelect.value = '';
-        genreSelect.value = '';
-        apply();
-      });
-    })();
-  </script>
+  <section class="sdhSection" id="journal">
+    <div class="sdhSectionHead">
+      <div>
+        <span class="sdhKicker">Stories &amp; Perspectives</span>
+        <h2>Inside the World of AI Short Drama</h2>
+        <p class="intro">How AI production is reshaping short-form storytelling — and what comes next.</p>
+      </div>
+    </div>
+    <div class="sdhJournalGrid">
+      <div class="sdhStoryPending">
+        <span class="sdhKicker">AIMB Journal</span>
+        <h3>The Rise of Chinese AI Short Drama</h3>
+        <p>Editorial topic in preparation.</p>
+      </div>
+      <div class="sdhStoryPending">
+        <span class="sdhKicker">AIMB Journal</span>
+        <h3>Five AI Short Drama Trends to Watch</h3>
+        <p>Editorial topic in preparation.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sdhSection" id="explained">
+    <div class="sdhExplain">
+      <div>
+        <span class="sdhKicker">The Format Explained</span>
+        <h2>What Is AI Short Drama?</h2>
+        <p>AI short dramas are episodic films or series that use AI-generated imagery, animation, voices or other AI production techniques. Many are designed for vertical viewing on mobile devices, with brief episodes and serialized cliffhangers.</p>
+        <p>Unlike conventional short films, short dramas follow ongoing storylines across multiple episodes. Not every vertical microdrama is made with AI, so AIMB distinguishes AI-generated productions from conventional live-action series.</p>
+      </div>
+      <aside class="sdhExplainAside">
+        <dl>
+          <dt>Vertical Storytelling</dt>
+          <dd>Mobile-first framing, often in 9:16 format.</dd>
+          <dt>Bite-sized Episodes</dt>
+          <dd>Short chapters that build into an ongoing narrative.</dd>
+          <dt>AI-powered Production</dt>
+          <dd>Generative visuals, animation or synthetic voices when verified.</dd>
+        </dl>
+      </aside>
+    </div>
+  </section>
 </BaseLayout>
