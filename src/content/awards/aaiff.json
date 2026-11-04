@@ -19,7 +19,7 @@
       "winners": [
         { "place": "Grand Prix", "title": "The First Honest Day", "movieSlug": "the-first-honest-day", "director": "Nikolay Shestak", "directorSlug": "shestak", "poster": "/images/posters/the-first-honest-day.webp", "prize": "$450,000", "notes": [] },
         { "place": "Second Prize", "title": "SITARA", "movieSlug": "sitara", "director": "Abhik Banerjee", "poster": "/images/posters/sitara.webp", "prize": "$200,000", "notes": [] },
-        { "place": "Third Prize", "title": "Looking for Perseida", "director": "Ernest Desumbila", "poster": "/images/awards/looking-for-perseida.webp", "prize": "$100,000", "notes": [] }
+        { "place": "Third Prize", "title": "Looking for Perseida", "movieSlug": "looking-for-perseida", "director": "Ernest Desumbila", "poster": "/images/posters/looking-for-perseida.webp", "prize": "$100,000", "notes": [] }
       ]
     },
     {

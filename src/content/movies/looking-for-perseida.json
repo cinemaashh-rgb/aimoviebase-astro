@@ -1,0 +1,14 @@
+{
+  "movie_id": "a38e0766-8611-4d46-995d-9bd426f6f5bb",
+  "title": "Looking for Perseida",
+  "year": 2026,
+  "type": "movie",
+  "genres": [],
+  "poster": "/images/posters/looking-for-perseida.webp",
+  "director": {
+    "name": "Ernest Desumbila"
+  },
+  "awards": [
+    "Third Prize ($100,000) — Astana AI Film Festival (AAIFF) 2026"
+  ]
+}
