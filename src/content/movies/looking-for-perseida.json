@@ -3,12 +3,28 @@
   "title": "Looking for Perseida",
   "year": 2026,
   "type": "movie",
-  "genres": [],
+  "genres": ["Sci-Fi"],
+  "synopsis": "In a future where humanity is extinct, a lone robot crosses a ruined world ruled by evolved dolphins. His mission is not to survive, but to recover a capsule containing the consciousness of Perseida, the woman he loved. To find her, he must cross deserts, wars, and the remains of a civilization that has forgotten what it meant to be human.",
   "poster": "/images/posters/looking-for-perseida.webp",
+  "youtubeId": "k7DIhD3ubIw",
   "director": {
     "name": "Ernest Desumbila"
   },
+  "studio": "Artificial Fried Chicken",
+  "aiTools": [
+    "Seedance 2.5",
+    "Nano Banana Pro",
+    "Suno",
+    "ElevenLabs",
+    "Magnific"
+  ],
   "awards": [
     "Third Prize ($100,000) — Astana AI Film Festival (AAIFF) 2026"
+  ],
+  "crew": [
+    { "name": "Eva Laffitte", "role": "Executive Producer" },
+    { "name": "Yukio Montilla", "role": "Producer" },
+    { "name": "João Teixeira", "role": "Editor & Sound Design" },
+    { "name": "Elias Goku Vesper", "role": "Composer (\"Her Name Was Perseida\")" }
   ]
 }
