@@ -1,81 +1,272 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getVerdict, metricColor } from '../../lib/qualityIndex';
 
 export async function getStaticPaths() {
   const entries = await getCollection('shortdrama');
-  return entries.map((entry) => ({
-    params: { slug: entry.id },
-    props: { entry },
-  }));
+  const published = entries.filter((e) => e.data.status === 'published');
+
+  return entries.map((entry) => {
+    let related: CollectionEntry<'shortdrama'>[] = [];
+    if (entry.data.status === 'published') {
+      const samePlatform = published.filter(
+        (other) => other.id !== entry.id && other.data.platform && other.data.platform === entry.data.platform
+      );
+      const pool = samePlatform.length > 0 ? samePlatform : published.filter((other) => other.id !== entry.id);
+      related = [...pool].sort(() => Math.random() - 0.5).slice(0, 4);
+    }
+    return {
+      params: { slug: entry.id },
+      props: { entry, related },
+    };
+  });
 }
 
-const { entry } = Astro.props;
+interface Props {
+  entry: CollectionEntry<'shortdrama'>;
+  related: CollectionEntry<'shortdrama'>[];
+}
+const { entry, related } = Astro.props;
 const d = entry.data;
+const verdict = d.qualityIndex ? getVerdict(d.qualityIndex.score) : null;
+// SVG ring: r=46 → circumference ≈ 289.03; dash length is the score's share of it.
+const RING_CIRC = 2 * Math.PI * 46;
+const dash = d.qualityIndex ? (d.qualityIndex.score / 100) * RING_CIRC : 0;
 ---
 <BaseLayout title={d.title} description={d.description ?? d.tagline}>
+  <style>
+    .sdCrumb { font-size: .78rem; color: var(--muted); margin: 0 0 20px; }
+    .sdCrumb a:hover { color: var(--blue); }
+    .sdCrumb span { padding: 0 8px; color: var(--muted2); }
+
+    .sdColumns { display: grid; grid-template-columns: minmax(0,1fr) 270px; gap: 32px; align-items: start; }
+    .sdHero { display: grid; grid-template-columns: 200px minmax(0,1fr); gap: 26px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+    .sdPoster { width: 200px; aspect-ratio: 2/3; object-fit: cover; border-radius: 5px; border: 1px solid var(--line); box-shadow: 0 1px 3px rgba(0,0,0,.08); display: block; background: var(--soft); }
+    .sdPosterFallback { width: 200px; aspect-ratio: 2/3; border-radius: 5px; border: 1px solid var(--line); background: var(--soft); display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px; font-family: var(--serif); font-weight: 700; color: var(--muted2); font-size: .9rem; }
+    .sdEyebrow { color: var(--muted2); font-size: .8rem; margin: 6px 0 2px; }
+    h1.sdTitle { font-size: clamp(28px,3.6vw,44px); margin: 3px 0 6px; letter-spacing: -0.03em; line-height: 1.08; }
+    .sdFacts { color: var(--muted); margin-bottom: 14px; }
+    .sdFacts span { padding: 0 6px; color: var(--muted2); }
+    .sdDesc { color: #566177; font-size: .96rem; line-height: 1.55; max-width: 540px; margin-bottom: 15px; }
+    .sdBadges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 17px; }
+    .sdBadge { background: var(--soft); color: var(--muted); border-radius: 4px; font-size: .76rem; padding: 5px 11px; }
+    .sdActions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .sdWatch { display: inline-flex; align-items: center; justify-content: center; gap: 11px; background: var(--black); border: 1px solid var(--black); color: #fff; border-radius: 5px; min-width: 185px; height: 46px; font-weight: 600; font-size: .9rem; }
+    .sdWatch:hover { opacity: .88; color: #fff; }
+    .sdWatch--off { background: #e4e5e6; border-color: #d8dadd; color: #777d83; cursor: default; }
+    .sdWatch--off:hover { opacity: 1; }
+    .sdPlay { width: 0; height: 0; border-left: 11px solid currentColor; border-top: 6px solid transparent; border-bottom: 6px solid transparent; }
+    .sdUnavailNote { font-size: .78rem; color: var(--muted2); margin: 9px 0 0; }
+    .sdHelp { font-size: .8rem; color: var(--muted); line-height: 1.5; margin: 6px 0 0; max-width: 380px; }
+    .sdHelp a { color: var(--blue); font-weight: 600; }
+
+    .sdBlock { padding: 24px 0 26px; border-top: 1px solid var(--line); margin-top: 26px; }
+    .sdBlock h2 { font-size: 1.5rem; margin: 0 0 14px; }
+    .sdReactions { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
+    .sdReaction { min-height: 140px; border: 1px solid var(--line); border-radius: 6px; padding: 15px 14px 12px; display: flex; flex-direction: column; gap: 12px; }
+    .sdReactionTop { display: flex; align-items: flex-start; gap: 12px; }
+    .sdYtBadge { display: inline-flex; width: 26px; min-width: 26px; height: 18px; border-radius: 5px; align-items: center; justify-content: center; background: var(--black); color: #fff; font-size: 10px; margin-top: 2px; }
+    .sdReaction .sdQuote { color: #566177; font-size: .9rem; line-height: 1.55; margin: 0; }
+    .sdReaction .sdAuthor { color: var(--muted); font-size: .78rem; margin-top: auto; padding-left: 38px; }
+
+    .sdReview h2 { display: flex; align-items: center; gap: 13px; }
+    .sdSeal { width: 30px; height: 30px; flex: 0 0 auto; border: 2px solid var(--ink); border-radius: 50%; display: grid; place-items: center; font-size: 19px; }
+    .sdReview p { color: #657086; font-size: .95rem; line-height: 1.6; max-width: 680px; margin: 0 0 14px; }
+    .sdVerdict { display: grid; grid-template-columns: 105px 1fr; gap: 20px; align-items: center; background: var(--soft); border-radius: 5px; padding: 17px 19px; margin-top: 16px; max-width: 680px; }
+    .sdVerdict strong { font-weight: 600; border-right: 1px solid var(--line); padding-right: 20px; }
+    .sdVerdict p { color: var(--ink); margin: 0; font-size: .92rem; }
+
+    .sdRelated { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 14px; }
+    .sdRelated img, .sdRelated .sdRelatedFallback { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 5px; margin-bottom: 8px; display: block; background: var(--soft); }
+    .sdRelated .sdRelatedFallback { display: flex; align-items: center; justify-content: center; text-align: center; padding: 8px; font-family: var(--serif); font-weight: 700; color: var(--muted2); font-size: .82rem; }
+    .sdRelated strong { display: block; font-family: var(--serif); font-size: .95rem; line-height: 1.28; color: var(--ink); font-weight: 700; }
+    .sdRelated small { color: var(--muted2); display: block; margin-top: 4px; font-size: .78rem; }
+
+    /* Quality Index sidebar */
+    .sdSidebar { border: 1px solid var(--line); border-radius: 6px; padding: 20px; background: #fff; }
+    .sdQiKicker { font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; color: #c56b49; font-weight: 800; margin-bottom: 6px; }
+    .sdSidebar h2 { font: 700 1.5rem/1.15 var(--serif); letter-spacing: -.02em; margin: 0 0 3px; }
+    .sdQiSub { font-size: .76rem; color: var(--muted2); margin: 0 0 16px; }
+    .sdQiMain { display: flex; align-items: center; gap: 14px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+    .sdQiRing { position: relative; width: 84px; height: 84px; flex: 0 0 84px; }
+    .sdQiRing svg { width: 100%; height: 100%; display: block; }
+    .sdQiNum { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 750; letter-spacing: -.05em; flex-direction: column; line-height: 1; color: var(--ink); }
+    .sdQiNum small { font-size: .62rem; letter-spacing: 0; font-weight: 500; color: var(--muted2); margin-top: 3px; }
+    .sdQiMainCopy strong { font: 700 .98rem/1.25 var(--serif); display: block; margin-bottom: 4px; }
+    .sdQiMainCopy span { font-size: .72rem; color: var(--muted2); display: block; line-height: 1.4; }
+    .sdQiBreakHead { display: flex; justify-content: space-between; gap: 8px; margin: 17px 0 12px; font-size: .74rem; font-weight: 800; }
+    .sdQiBreakHead span { font-size: .62rem; color: var(--muted2); font-weight: 700; letter-spacing: .06em; }
+    .sdQiMetric { margin-bottom: 12px; }
+    .sdQiMetricRow { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; font-size: .74rem; }
+    .sdQiMetricRow strong { font-weight: 600; }
+    .sdQiMetricRow > span { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--muted); }
+    .sdQiTrack { height: 5px; background: var(--soft); border-radius: 9px; overflow: hidden; }
+    .sdQiTrack span { height: 100%; display: block; border-radius: 9px; }
+    .sdQiNote { margin: 12px 0 0; font-size: .7rem; line-height: 1.5; color: var(--muted2); font-style: italic; }
+
+    @media (max-width: 860px) {
+      .sdColumns { grid-template-columns: 1fr; }
+      .sdHero { grid-template-columns: 150px minmax(0,1fr); gap: 18px; }
+      .sdPoster, .sdPosterFallback { width: 150px; }
+      .sdRelated { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .sdReactions { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .sdWatch { min-width: 0; flex: 1; }
+      .sdVerdict { grid-template-columns: 1fr; gap: 8px; }
+      .sdVerdict strong { border-right: 0; padding-right: 0; }
+    }
+  </style>
+
+  <p class="sdCrumb"><a href="/">Home</a><span>›</span><a href="/short-drama">AI Short Drama</a><span>›</span>{d.title}</p>
+
   {d.status === 'coming-soon' ? (
     <>
-      <span style="display:inline-block; font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; font-weight:700; color:#fff; background:var(--accent); border-radius:999px; padding:4px 12px; margin:30px 0 14px;">Coming Soon</span>
+      <span style="display:inline-block; font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; font-weight:700; color:#fff; background:var(--black); border-radius:999px; padding:4px 12px; margin:10px 0 14px;">Coming Soon</span>
       <h1 style="margin-top:4px">{d.title}</h1>
       <p class="lede" style="color:var(--muted); max-width:640px; line-height:1.5">{d.tagline}</p>
       <div style="border:1px dashed var(--line); border-radius:10px; padding:40px 24px; text-align:center; color:var(--muted); margin-top:18px;">
-        <strong style="display:block; color:var(--fg); font-size:1rem; margin-bottom:6px; font-family:Georgia,serif;">No titles yet</strong>
+        <strong style="display:block; color:var(--ink); font-size:1rem; margin-bottom:6px; font-family:Georgia,serif;">No titles yet</strong>
         Nothing has been published in {d.title} yet — check back as new vertical-drama titles are added to the catalog.
       </div>
     </>
   ) : (
-    <div style="display:grid; grid-template-columns:1fr; gap:16px; margin:30px 0 40px;" class="dramaHero">
-      <style>
-        @media(min-width:768px){.dramaHero{grid-template-columns:220px 1fr !important;gap:20px !important}}
-      </style>
-      <div style="aspect-ratio:2/3; border-radius:8px; overflow:hidden; background:var(--bg-elev);">
-        {d.poster && <img src={d.poster} alt={d.title} style="width:100%;height:100%;object-fit:cover;display:block;" loading="eager" />}
-      </div>
+    <div class="sdColumns">
       <div>
-        <h1 style="font-size:2.2rem; margin-bottom:8px;">{d.title}</h1>
-        <div style="color:var(--muted); font-size:.9rem; margin-bottom:10px;">
-          {d.year} · vertical short drama {d.episodes && <>&nbsp;·&nbsp; {d.episodes} episodes</>} {d.platform && <>&nbsp;·&nbsp; {d.platform}</>}
+        <div class="sdHero">
+          {d.poster ? <img class="sdPoster" src={d.poster} alt={d.title} /> : <div class="sdPosterFallback">{d.title}</div>}
+          <div>
+            <div class="sdEyebrow">AI Short Drama</div>
+            <h1 class="sdTitle">{d.title}</h1>
+            <div class="sdFacts">
+              {d.year && d.year}
+              {d.episodes && <><span>·</span>{d.episodes} episodes</>}
+              {d.platform && <><span>·</span>{d.platform}</>}
+            </div>
+            {d.description && <p class="sdDesc">{d.description}</p>}
+            {d.badges.length > 0 && (
+              <div class="sdBadges">{d.badges.map((b) => <span class="sdBadge">{b}</span>)}</div>
+            )}
+            <div class="sdActions">
+              {d.watchUrl ? (
+                <a class="sdWatch" href={d.watchUrl} target="_blank" rel="noopener noreferrer"><span class="sdPlay"></span> Watch</a>
+              ) : (
+                <button class="sdWatch sdWatch--off" type="button" disabled title="No verified streaming link available"><span class="sdPlay"></span> Watch</button>
+              )}
+            </div>
+            {!d.watchUrl && (
+              <>
+                <p class="sdUnavailNote">Viewing link currently unavailable</p>
+                <p class="sdHelp">Are you the creator of this series, or know who made it? <a href="/submit-film">Let us know ↗</a></p>
+              </>
+            )}
+          </div>
         </div>
-        <div style="display:flex; gap:8px; flex-wrap:wrap; margin:14px 0;">
-          {d.badges.map((b) => (
-            <span style="display:inline-flex; align-items:center; gap:6px; background:var(--bg-elev); border:1px solid var(--line); border-radius:999px; padding:6px 14px; font-size:.78rem; color:var(--muted); font-weight:500;">{b}</span>
-          ))}
-        </div>
-        <p style="font-size:.9rem; margin:14px 0 18px; max-width:520px; line-height:1.6;">{d.description}</p>
 
-        {d.creatorName && (
+        {d.descriptionMore && (
+          <section class="sdBlock">
+            <h2>Full Description</h2>
+            <p style="line-height:1.6; max-width:680px; color:#566177; font-size:.95rem;">{d.descriptionMore}</p>
+          </section>
+        )}
+
+        {d.audienceReactions && d.audienceReactions.length > 0 && (
+          <section class="sdBlock">
+            <h2>Audience reactions</h2>
+            <div class="sdReactions">
+              {d.audienceReactions.map((r) => (
+                <div class="sdReaction">
+                  <div class="sdReactionTop">
+                    <span class="sdYtBadge" aria-hidden="true"><svg viewBox="0 0 16 16" width="9" height="9" fill="currentColor"><path d="M3 1.5v13l11-6.5-11-6.5z"/></svg></span>
+                    <p class="sdQuote">"{r.quote}"</p>
+                  </div>
+                  <div class="sdAuthor">— {r.author}</div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {d.editorialReview && (
+          <section class="sdBlock sdReview">
+            <h2><span class="sdSeal" aria-hidden="true">★</span>AIMB editorial review</h2>
+            {d.editorialReview.paragraphs.map((p) => <p>{p}</p>)}
+            <div class="sdVerdict"><strong>Verdict</strong><p>{d.editorialReview.verdict}</p></div>
+          </section>
+        )}
+
+        {related.length > 0 && (
+          <section class="sdBlock">
+            <h2>You Might Also Like</h2>
+            <div class="sdRelated">
+              {related.map((r) => (
+                <a href={`/shortdrama/${r.id}`} style="display:block;">
+                  {r.data.poster ? (
+                    <img src={r.data.poster} alt={r.data.title} loading="lazy" />
+                  ) : (
+                    <div class="sdRelatedFallback">{r.data.title}</div>
+                  )}
+                  <strong>{r.data.title}</strong>
+                  <small>{r.data.platform ?? 'AI Short Drama'}</small>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {!d.watchUrl && (
+          <p style="font-size:.78rem; color:var(--muted); font-style:italic; margin-top:10px;">
+            Cast, crew and per-episode details beyond what the platform publishes are still being documented as more information becomes publicly available.
+          </p>
+        )}
+      </div>
+
+      <aside class="sdSidebar">
+        {d.qualityIndex && verdict ? (
           <>
-            <h2 style="font-size:.9rem; margin:0 0 10px;">Creator</h2>
-            <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-              <div style="flex:0 0 44px; width:44px; height:44px; border-radius:999px; display:flex; align-items:center; justify-content:center; font-size:.9rem; font-weight:700; color:#fff; background:var(--accent);">
-                {d.creatorName.split(' ').slice(0, 2).map((w) => w.charAt(0)).join('').toUpperCase()}
+            <div class="sdQiKicker">AIMB EDITORIAL STANDARD</div>
+            <h2>Slop or Cinema?</h2>
+            <p class="sdQiSub">AIMB Quality Index</p>
+            <div class="sdQiMain">
+              <div class="sdQiRing" role="img" aria-label={`Illustrative quality score: ${d.qualityIndex.score} out of 100`}>
+                <svg viewBox="0 0 112 112" aria-hidden="true">
+                  <circle cx="56" cy="56" r="46" fill="none" stroke="var(--soft)" stroke-width="8"></circle>
+                  <circle cx="56" cy="56" r="46" fill="none" stroke={verdict.color} stroke-width="8" stroke-linecap="round" stroke-dasharray={`${dash} ${RING_CIRC - dash}`} transform="rotate(-90 56 56)"></circle>
+                </svg>
+                <span class="sdQiNum">{d.qualityIndex.score}<small>/100</small></span>
               </div>
-              <div>
-                <div style="font-weight:600; font-size:.9rem;">{d.creatorName}</div>
-                {d.creatorRole && <div style="font-size:.74rem; color:var(--muted);">{d.creatorRole}</div>}
+              <div class="sdQiMainCopy">
+                <strong style={`color:${verdict.color}`}>{verdict.label}</strong>
+                <span>Illustrative editorial score</span>
               </div>
             </div>
+            <div class="sdQiBreakHead">Quality Breakdown <span>WEIGHT</span></div>
+            {d.qualityIndex.breakdown.map((m) => (
+              <div class="sdQiMetric">
+                <div class="sdQiMetricRow"><strong>{m.label}</strong><span>{m.score}/10 <small>{m.weight}%</small></span></div>
+                <div class="sdQiTrack"><span style={`width:${m.score * 10}%;background:${metricColor(m.score)}`}></span></div>
+              </div>
+            ))}
+            {d.qualityIndex.note && <p class="sdQiNote">{d.qualityIndex.note}</p>}
           </>
-        )}
-
-        {d.watchUrl && (
+        ) : (
           <>
-            <h2 style="font-size:.9rem; margin:0 0 10px;">Watch</h2>
-            <a href={d.watchUrl} target="_blank" rel="noopener noreferrer" style="background:#fff; color:#000; font-weight:700; border-radius:999px; padding:13px 30px; display:inline-flex; align-items:center; gap:8px; font-size:.95rem;">▶ Watch</a>
+            {d.creatorName && (
+              <div style="margin-bottom:16px;">
+                <h3 style="font-size:.9rem; margin:0 0 8px;">{d.creatorRole ?? 'Creator'}</h3>
+                <div style="font-weight:600; font-size:.92rem;">{d.creatorName}</div>
+              </div>
+            )}
+            {d.platform && (
+              <div>
+                <h3 style="font-size:.9rem; margin:0 0 8px;">Platform</h3>
+                <div style="font-weight:600; font-size:.92rem;">{d.platform}</div>
+              </div>
+            )}
           </>
         )}
-      </div>
+      </aside>
     </div>
-  )}
-
-  {d.status === 'published' && d.descriptionMore && (
-    <>
-      <h2 style="margin-top:2em">Full Description</h2>
-      <p style="line-height:1.6; max-width:680px;">{d.descriptionMore}</p>
-      <p style="font-size:.78rem; color:var(--muted); font-style:italic; margin-top:10px;">
-        {d.title} {d.watchUrl ? 'is published by' : 'streams on'} {d.platform ?? d.creatorName}. Cast, crew and per-episode details beyond what the platform publishes are still being documented as more information becomes publicly available.
-      </p>
-    </>
   )}
 </BaseLayout>

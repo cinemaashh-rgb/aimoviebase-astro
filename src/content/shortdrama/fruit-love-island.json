@@ -1,0 +1,37 @@
+{
+  "show_id": "6b26e0bb-51e1-4e33-a96f-c9aca37a2ee4",
+  "title": "Fruit Love Island",
+  "status": "published",
+  "year": 2026,
+  "platform": "TikTok",
+  "badges": [
+    "AI-generated",
+    "Romance",
+    "Comedy",
+    "Vertical series"
+  ],
+  "description": "A Love Island-inspired dating-show parody featuring animated, human-like fruit contestants who flirt, argue and face dramatic recouplings inside a tropical villa. Created with generative AI for short-form vertical viewing.",
+  "audienceReactions": [
+    { "quote": "People in 100 years will find TS and wonder wtf we were doing", "author": "@pixelsophieeeee" },
+    { "quote": "Ai cried while making this-", "author": "@BEHEHEHHE-p7x" },
+    { "quote": "My brain is shrinking with every second I watch this show. Heck even the worst isekai shows are more watchable than this", "author": "@Iunnohs" }
+  ],
+  "editorialReview": {
+    "paragraphs": [
+      "Fruit Love Island turns a familiar reality-dating format into an AI-generated vertical microdrama. Its hook is immediately readable: anthropomorphic fruit contestants act out the flirtation, jealousy and recoupling rituals of a dating show.",
+      "The concept is deliberately absurd, but the structure is conventional. Short episodes and recurring cliffhangers make it suited to social feeds, where each instalment needs to earn attention quickly. AI generation is not just a production technique here; the unusual cast is central to the series' identity.",
+      "As a storytelling experiment, its appeal lies more in format and character design than in narrative complexity. It is an example of how AI-native entertainment can develop around mobile-first viewing habits instead of adapting the traditional television model."
+    ],
+    "verdict": "Inventive and unmistakably AI-native, Fruit Love Island uses a familiar dating-show format to build a distinctive short-form series around its unconventional cast."
+  },
+  "qualityIndex": {
+    "score": 19,
+    "breakdown": [
+      { "label": "Story & Writing", "score": 2, "weight": 35 },
+      { "label": "Visual Quality", "score": 3, "weight": 25 },
+      { "label": "Direction & Editing", "score": 1, "weight": 25 },
+      { "label": "Sound & Voice", "score": 1, "weight": 15 }
+    ],
+    "note": "Demo score based on 2 / 3 / 1 / 1 — not a published editorial rating."
+  }
+}

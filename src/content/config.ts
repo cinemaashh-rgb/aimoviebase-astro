@@ -150,6 +150,35 @@ const shortdrama = defineCollection({
     creatorRole: z.string().optional(),
     watchUrl: z.string().optional(),
     poster: z.string().optional(),
+    // --- Redesign-phase additions (all optional, mirroring the equivalent
+    // fields already on `movies` — see that collection's comments for the
+    // rationale). Nothing existing has to supply these; the page must
+    // render fine without any of them. ---
+    audienceReactions: z.array(z.object({
+      quote: z.string(),
+      author: z.string(),
+    })).optional(),
+    editorialReview: z.object({
+      paragraphs: z.array(z.string()),
+      verdict: z.string(),
+    }).optional(),
+    // The "AIMB Quality Index" / "Slop or Cinema?" widget. A weighted 0-100
+    // score built from named sub-metrics (each 0-10, with its own display
+    // weight in %). Entirely optional and editor-supplied — there is no
+    // scoring engine, and a title with no `qualityIndex` simply doesn't
+    // render the widget rather than showing a fabricated number. `note`
+    // exists so a score that is itself illustrative/unofficial (as opposed
+    // to a confident published rating) can say so on the page, instead of
+    // silently presenting a demo figure as an editorial verdict.
+    qualityIndex: z.object({
+      score: z.number().min(0).max(100),
+      breakdown: z.array(z.object({
+        label: z.string(),
+        score: z.number().min(0).max(10),
+        weight: z.number().min(0).max(100),
+      })),
+      note: z.string().optional(),
+    }).optional(),
   }),
 });
 
