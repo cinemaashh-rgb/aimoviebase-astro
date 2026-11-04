@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { QUALITY_VERDICTS } from '../lib/qualityIndex';
+
+// Methodology page for the "AIMB Quality Index" / "Slop or Cinema?" widget
+// shown on AI Short Drama detail pages (src/pages/shortdrama/[slug].astro).
+// Verdict tiers/colors are imported from the shared lib rather than
+// hardcoded here, so this page and the widget can never drift apart.
+const criteria = [
+  { name: 'Story & Writing', weight: 35, desc: 'Plot, characters, dialogue and coherence.' },
+  { name: 'Visual Quality', weight: 25, desc: 'Visual consistency, style and AI artifacts.' },
+  { name: 'Direction & Editing', weight: 25, desc: 'Pacing, composition and storytelling.' },
+  { name: 'Sound & Voice', weight: 15, desc: 'Voices, music, sound and synchronization.' },
+];
+---
+<BaseLayout title="AIMB Quality Index" description="How AIMB rates AI Short Dramas: four weighted criteria, a 100-point score and five editorial verdicts.">
+  <style>
+    .qiPage { color: var(--ink); font-family: var(--sans); max-width: 1030px; margin: 0 auto; }
+    .qiCrumb { font: 12px/1.5 var(--sans); color: var(--muted2); margin-bottom: 20px; }
+    .qiCrumb a:hover { color: #c56b49; }
+    .qiCrumb span { padding: 0 10px; }
+
+    .qiHero { padding: 10px 0 40px; border-bottom: 1px solid var(--line); }
+    .qiKicker { font: 800 10px/1.5 var(--sans); letter-spacing: .16em; text-transform: uppercase; color: #c56b49; }
+    .qiHero h1 { font: 700 clamp(42px,7vw,70px)/1.04 var(--serif); letter-spacing: -.05em; margin: 12px 0; }
+    .qiHero h1 em { font-weight: 400; font-style: normal; color: #b27a52; }
+    .qiIntro { font-size: 16px; color: #616c76; max-width: 740px; line-height: 1.65; margin: 15px 0 0; }
+
+    .qiSection { padding: 36px 0; border-bottom: 1px solid var(--line); }
+    .qiSection h2 { font: 700 clamp(25px,3.6vw,33px)/1.2 var(--serif); letter-spacing: -.027em; margin: 0 0 16px; }
+    .qiLead { color: var(--muted); margin: -6px 0 20px; max-width: 680px; }
+    .qiPrinciple { color: #606c75; font-size: 13px; line-height: 1.75; max-width: 850px; }
+    .qiPrinciple strong { color: #252729; }
+
+    .qiCriteria { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 11px; }
+    .qiCriterion { border: 1px solid var(--line); border-radius: 5px; padding: 16px 15px; }
+    .qiCriterion h3 { font: 700 17px/1.25 var(--serif); margin: 0 0 7px; }
+    .qiCriterion strong { font-size: 20px; color: #ae7652; }
+    .qiCriterion p { font-size: 12px; color: #6c7780; margin: 8px 0 0; line-height: 1.55; }
+
+    .qiMath { padding: 16px 20px; background: var(--soft); border-radius: 5px; margin-top: 17px; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+    .qiMath span { color: #616b74; font-size: 13px; }
+    .qiMath b { font-size: 20px; }
+    .qiFormula { margin-top: 9px; color: #667079; font-size: 12px; line-height: 1.65; }
+    .qiFormula code { font-family: inherit; color: #24282c; font-weight: 600; }
+    .qiFormula .qiFormulaLine { display: block; margin-top: 3px; }
+
+    .qiScale { display: grid; grid-template-columns: 1fr; gap: 0; }
+    .qiScaleRow { display: grid; grid-template-columns: 83px 11px 215px 1fr; gap: 16px; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--line); }
+    .qiScaleRow:first-child { border-top: 1px solid var(--line); }
+    .qiRange { font: 700 16px var(--serif); }
+    .qiDot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+    .qiScaleRow strong { font: 700 18px var(--serif); }
+    .qiScaleRow p { font-size: 12px; color: var(--muted); margin: 0; }
+
+    .qiDisclaimer { padding: 20px 0 26px; border-bottom: 1px solid var(--line); }
+    .qiDisclaimer h2 { font: 700 19px/1.3 var(--serif); margin: 0 0 9px; }
+    .qiDisclaimer p { font-size: 12px; line-height: 1.75; color: #78818a; max-width: 850px; margin: 0; }
+
+    .qiCta { padding: 30px 0 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .qiCta strong { font: 700 24px var(--serif); }
+    .qiBtn { background: var(--black); color: #fff; font-size: 12px; font-weight: 700; padding: 13px 18px; border-radius: 4px; white-space: nowrap; }
+    .qiBtn:hover { background: #b7754a; color: #fff; }
+
+    @media (max-width: 760px) {
+      .qiCriteria { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .qiScaleRow { grid-template-columns: 70px 10px 1fr; gap: 10px; }
+      .qiScaleRow p { grid-column: 3; }
+      .qiCta { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+
+  <div class="qiPage">
+    <p class="qiCrumb"><a href="/">Home</a><span>›</span><a href="/short-drama">AI Short Drama</a><span>›</span>Quality Index</p>
+
+    <section class="qiHero">
+      <div class="qiKicker">AIMB Quality Index · AI Short Dramas</div>
+      <h1>Slop <em>or</em> Cinema?</h1>
+      <p class="qiIntro">Our independent 100-point rating helps viewers separate compelling AI short dramas from low-quality content. We judge the finished story — not its popularity or the tools used to make it.</p>
+    </section>
+
+    <section class="qiSection">
+      <h2>Our Editorial Standard</h2>
+      <p class="qiPrinciple"><strong>Quality over views.</strong> Virality never raises a score. <strong>Craft over tools.</strong> Stylized AI work is judged fairly, not penalized for lacking photorealism. <strong>Reviewed, not guessed.</strong> Scores require an editorial viewing and explanation; titles without a review remain <em>Not Yet Reviewed</em>. The 72/100 below is illustrative, not a published drama rating.</p>
+    </section>
+
+    <section class="qiSection">
+      <h2>How We Rate</h2>
+      <p class="qiLead">Each AI short drama receives four scores from 0 to 10, weighted into a final rating out of 100.</p>
+      <div class="qiCriteria">
+        {criteria.map((c) => (
+          <div class="qiCriterion">
+            <h3>{c.name}</h3>
+            <strong>{c.weight}%</strong>
+            <p>{c.desc}</p>
+          </div>
+        ))}
+      </div>
+      <div class="qiMath">
+        <span>Example: 7/10 story · 8/10 visuals · 6/10 direction · 8/10 sound</span>
+        <b>72 / 100</b>
+      </div>
+      <div class="qiFormula" aria-label="AIMB Quality Index calculation example">
+        <span class="qiFormulaLine"><strong>Formula:</strong> (Story × 3.5) + (Visuals × 2.5) + (Direction × 2.5) + (Sound × 1.5)</span>
+        <span class="qiFormulaLine"><strong>Calculation:</strong> (7 × 3.5) + (8 × 2.5) + (6 × 2.5) + (8 × 1.5) = 24.5 + 20 + 15 + 12 = <strong>71.5 → 72/100</strong> (rounded).</span>
+      </div>
+    </section>
+
+    <section class="qiSection">
+      <h2>Five Quality Categories</h2>
+      <div class="qiScale">
+        {QUALITY_VERDICTS.map((v) => (
+          <div class="qiScaleRow" style={`--c:${v.color}`}>
+            <span class="qiRange">{v.min}–{v.max}</span>
+            <span class="qiDot"></span>
+            <strong>{v.label}</strong>
+            <p>
+              {v.label === 'Pure Cinema' && 'Exceptional storytelling and execution.'}
+              {v.label === 'Worth Watching' && 'Quality entertainment with minor flaws.'}
+              {v.label === 'Promising, but Flawed' && 'Strong ideas, uneven execution.'}
+              {v.label === 'Slop Territory' && 'Significant storytelling or production issues.'}
+              {v.label === 'Pure AI Slop' && 'Severely flawed, low-quality execution.'}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="qiDisclaimer" aria-labelledby="qiDisclaimerHeading">
+      <h2 id="qiDisclaimerHeading">Editorial Disclaimer</h2>
+      <p>The AIMB Quality Index is a subjective editorial guide created solely to help viewers distinguish automatically generated, low-effort or incoherent AI stories from AI short dramas that show meaningful storytelling and creative merit. Scores and labels, including "AI Slop," reflect AIMB's opinions, not objective facts or judgments about the creators. They are not a measure of a production's commercial success, and viewers may disagree. AIMB is independent of the featured streaming platforms; ratings are not paid endorsements.</p>
+    </section>
+
+    <section class="qiCta">
+      <strong>Find an AI Short Drama worth watching.</strong>
+      <a class="qiBtn" href="/short-drama">Explore AI Short Dramas ↗</a>
+    </section>
+  </div>
+</BaseLayout>

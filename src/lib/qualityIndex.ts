@@ -1,7 +1,9 @@
 // Shared logic for the "AIMB Quality Index" / "Slop or Cinema?" widget used
 // on AI Short Drama detail pages. Five fixed verdict tiers, each with its
-// own label and dot/ring color — mirrors the tiers defined in the original
-// mockup's "FIVE VERDICTS" legend exactly (same thresholds, same labels).
+// own label and dot/ring color — same thresholds as the methodology page
+// (/quality-index), which is the canonical source for these tier names.
+// Top tier is labeled "Pure Cinema" (not "AI Cinema" as in an earlier
+// mockup) per explicit editorial direction.
 export interface QualityVerdict {
   min: number;
   max: number;
@@ -10,7 +12,7 @@ export interface QualityVerdict {
 }
 
 export const QUALITY_VERDICTS: QualityVerdict[] = [
-  { min: 85, max: 100, label: 'AI Cinema', color: '#43865f' },
+  { min: 85, max: 100, label: 'Pure Cinema', color: '#43865f' },
   { min: 70, max: 84, label: 'Worth Watching', color: '#79a187' },
   { min: 50, max: 69, label: 'Promising, but Flawed', color: '#bc974e' },
   { min: 30, max: 49, label: 'Slop Territory', color: '#c37a53' },
