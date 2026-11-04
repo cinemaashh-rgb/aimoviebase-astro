@@ -74,7 +74,7 @@ function meta(f: CollectionEntry<'movies'>) {
     .filmStack img:nth-child(5) { transform: rotate(9deg); }
     .featureArt span { display: block; text-align: center; font-size: .62rem; letter-spacing: .14em; color: var(--muted2); margin-top: 10px; }
 
-    .sectionline { display: flex; align-items: baseline; justify-content: space-between; border-top: 1px solid var(--line); padding: 26px 0 22px; gap: 12px; }
+    .sectionline { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--line); padding: 26px 0 22px; gap: 12px; }
     .sectionline h2 { font: 400 1.9rem/1.1 var(--serif); letter-spacing: -0.02em; margin: 0; }
     .sectionline .toolbar { display: flex; align-items: center; gap: 10px; }
     .sortSelect { height: 34px; border: 1px solid var(--line); background: #fff; border-radius: 6px; color: var(--ink); font-size: .78rem; padding: 0 10px; }
@@ -148,10 +148,6 @@ function meta(f: CollectionEntry<'movies'>) {
       </div>
     )}
   </section>
-
-  {l.placeholder && (
-    <p class="pageLede" style="font-size:.84rem; margin:18px 0 0;">This is a starter list, grouped mechanically from existing catalog data rather than hand-curated by an editor — flagged here so it's clear which lists are real editorial picks. See the README for the full rundown.</p>
-  )}
 
   {films.length > 0 ? (
     <>
