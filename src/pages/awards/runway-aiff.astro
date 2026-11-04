@@ -1,0 +1,239 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { resolveCreatorSlug, verifyCreatorSlug } from '../../lib/links';
+
+// Dedicated page for this one festival, built to the layout in the
+// supplied mockup (aimb_runway_aiff_white.html): a year-tabbed "Award-
+// winning films" section with a big Grand Prix card plus a grid of the
+// other winners for that year, instead of the generic awards/[slug].astro
+// template's section-as-category treatment. Real content only — the
+// mockup's own illustrative gradient-poster placeholders are kept purely
+// as a fallback for a movie we have no real poster for yet, never as a
+// stand-in for one we do.
+const entry = (await getCollection('awards')).find((e) => e.id === 'runway-aiff')!;
+const a = entry.data;
+const allMovies = await getCollection('movies');
+const allCreators = await getCollection('creators');
+
+const moviePoster = (slug: string | undefined) =>
+  slug ? allMovies.find((m) => m.id === slug)?.data.poster : undefined;
+const directorHref = (name: string | undefined, slug: string | undefined) => {
+  if (!name) return undefined;
+  const resolved = verifyCreatorSlug(slug, allCreators) ?? resolveCreatorSlug(name, allCreators);
+  return resolved ? `/name/${resolved}` : undefined;
+};
+
+// Each section's single `winners[0]` entry is the Grand Prix winner; its
+// own `notes` array holds every other award (Gold, Silver, Honoree,
+// Merit...) for that year — see runway-aiff.json. That's exactly the
+// shape the mockup's `years` object expects (featured film + flat grid).
+const years = a.sections
+  .map((section) => ({
+    year: section.label,
+    grand: section.winners[0],
+    rest: section.winners[0]?.notes ?? [],
+  }))
+  .filter((y) => y.grand);
+---
+<BaseLayout title={a.name} description={a.description}>
+  <style>
+    .crumb { font-size: .78rem; color: var(--muted2); margin: 18px 0 0; }
+    .crumb a:hover { color: #cf6246; }
+
+    .intro { display: grid; grid-template-columns: minmax(0,1.5fr) minmax(250px,320px); gap: 44px; align-items: start; padding: 28px 0 32px; border-bottom: 1px solid var(--line); }
+    .eyebrow { font-size: .68rem; text-transform: uppercase; font-weight: 800; letter-spacing: .16em; color: #cf6246; }
+    .intro h1 { font-size: clamp(36px,4.6vw,58px); line-height: 1.06; letter-spacing: -0.03em; margin: 12px 0 18px; }
+    .intro .lead { color: var(--muted); line-height: 1.65; max-width: 620px; margin: 0; }
+    .facts { display: flex; flex-direction: column; gap: 0; padding-top: 4px; }
+    .fact { border-bottom: 1px solid var(--line); padding: 14px 0; }
+    .fact:last-child { border-bottom: 0; }
+    .fact .flabel { font-size: .66rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted2); margin-bottom: 4px; }
+    .fact .fval { font-size: .85rem; color: var(--ink); font-weight: 600; }
+    .fact .fval a { color: #cf6246; }
+    .fact .fval a:hover { color: #a6472d; }
+
+    .section { padding-top: 40px; }
+    .sectionTop { display: flex; justify-content: space-between; align-items: flex-end; gap: 18px; margin-bottom: 20px; flex-wrap: wrap; }
+    .sectionTop h2 { font-size: clamp(24px,2.8vw,32px); letter-spacing: -0.02em; margin: 0; }
+    .sectionSub { color: var(--muted); font-size: .85rem; margin: 6px 0 0; }
+    .years { display: flex; gap: 26px; border-bottom: 1px solid var(--line); }
+    .yearTab { background: none; border: 0; border-bottom: 2px solid transparent; color: var(--muted2); font-weight: 700; font-size: .82rem; padding: 9px 1px; cursor: pointer; font-family: var(--sans); }
+    .yearTab:hover { color: #cf6246; }
+    .yearTab[aria-selected="true"] { border-color: #cf6246; color: #cf6246; }
+    .yearPanel[hidden] { display: none; }
+
+    .featured { display: grid; grid-template-columns: 300px 1fr; min-height: 340px; background: var(--soft); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+    .featured .fvisual { position: relative; display: block; background: var(--line); }
+    .featured .fvisual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .featured .fallback { width: 100%; height: 100%; min-height: 340px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 20px; color: var(--muted); font: 700 1rem var(--serif); background: var(--soft); }
+    .fdetail { padding: 38px 44px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
+    .ftag { font-size: .7rem; color: #cf6246; letter-spacing: .1em; font-weight: 800; text-transform: uppercase; }
+    .fdetail h3 { font-size: clamp(24px,2.8vw,36px); line-height: 1.15; letter-spacing: -0.03em; margin: 14px 0 8px; }
+    .fdirector { color: var(--muted); font-size: .85rem; }
+    .fprize { display: flex; gap: 14px; align-items: center; margin: 24px 0 20px; padding-top: 16px; border-top: 1px solid var(--line); width: 100%; }
+    .fprize .pnum { font: 700 1.7rem var(--serif); color: var(--ink); letter-spacing: -0.02em; }
+    .fprize .pcap { font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted2); }
+    .flink { font-size: .74rem; text-transform: uppercase; letter-spacing: .06em; color: #cf6246; font-weight: 800; }
+    .flink:hover { color: #a6472d; }
+
+    .moreTitle { display: flex; align-items: center; justify-content: space-between; margin: 36px 0 16px; }
+    .moreTitle h3 { font-size: 1.1rem; letter-spacing: -0.015em; margin: 0; }
+    .moreTitle span { font-size: .76rem; color: var(--muted2); }
+    .filmGrid { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 24px 16px; }
+    .filmCard { min-width: 0; }
+    .filmCard .poster { display: block; width: 100%; aspect-ratio: 2/3; overflow: hidden; background: var(--line); border-radius: 5px; }
+    .filmCard .poster img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .25s ease; }
+    .filmCard .poster:hover img { transform: scale(1.04); }
+    .filmCard .poster:hover { outline: 1px solid #cf6246; }
+    .filmCard .poster .fallback { aspect-ratio: 2/3; font-size: .78rem; }
+    .cat { font-size: .66rem; text-transform: uppercase; font-weight: 800; letter-spacing: .07em; color: #cf6246; margin: 12px 0 4px; }
+    .filmCard h4 { font: 700 .92rem/1.32 var(--serif); margin: 0 0 4px; letter-spacing: -0.01em; }
+    .filmCard h4 a:hover { color: #cf6246; }
+    .filmCard .by { font-size: .76rem; color: var(--muted); line-height: 1.4; }
+    .filmCard .by a { color: var(--ink); font-weight: 600; }
+    .filmCard .by a:hover { color: #cf6246; }
+
+    .about { margin: 56px 0 20px; padding: 28px 32px; background: var(--soft); border: 1px solid var(--line); border-left: 3px solid #cf6246; border-radius: 4px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
+    .about h2 { font-size: 1.4rem; letter-spacing: -0.02em; margin: 0 0 8px; }
+    .about p { max-width: 680px; color: var(--muted); font-size: .88rem; line-height: 1.7; margin: 0; }
+    .about .flink { white-space: nowrap; }
+
+    @media (max-width: 860px) {
+      .intro { grid-template-columns: 1fr; }
+      .featured { grid-template-columns: 42% 58%; }
+      .fdetail { padding: 22px; }
+      .filmGrid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+    }
+    @media (max-width: 620px) {
+      .featured { grid-template-columns: 1fr; }
+      .featured .fvisual { aspect-ratio: 2/3; }
+      .filmGrid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px 12px; }
+      .about { grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <p class="crumb"><a href="/awards">Festivals &amp; Awards</a> › {a.name}</p>
+
+  <section class="intro">
+    <div>
+      <div class="eyebrow">International AI film festival</div>
+      <h1>{a.name}</h1>
+      <p class="lead">{a.lead || a.description}</p>
+    </div>
+    <div class="facts">
+      {a.dates && (
+        <div class="fact"><div class="flabel">Dates</div><div class="fval">{a.dates}</div></div>
+      )}
+      {a.location && (
+        <div class="fact"><div class="flabel">Location</div><div class="fval">{a.location}</div></div>
+      )}
+      <div class="fact"><div class="flabel">Format</div><div class="fval">In-person screenings</div></div>
+      {a.siteUrl && (
+        <div class="fact"><div class="flabel">Website</div><div class="fval"><a href={a.siteUrl} target="_blank" rel="noopener noreferrer">Official website ↗</a></div></div>
+      )}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sectionTop">
+      <div>
+        <div class="eyebrow" style="margin-bottom:8px;">Festival archive</div>
+        <h2>Award-winning films</h2>
+        <p class="sectionSub">Explore the standout films recognized by Runway AIFF.</p>
+      </div>
+      <div class="years" role="tablist" aria-label="Festival year">
+        {years.map((y, i) => (
+          <button class="yearTab" role="tab" data-year={y.year} id={`tab-${y.year}`} aria-controls={`panel-${y.year}`} aria-selected={i === 0 ? 'true' : 'false'}>{y.year}</button>
+        ))}
+      </div>
+    </div>
+
+    {years.map((y, i) => {
+      const g = y.grand;
+      const gHref = directorHref(g.director, g.directorSlug);
+      const gPoster = g.poster || moviePoster(g.movieSlug);
+      const prizeNum = g.prize || 'Grand Prix';
+      const prizeCap = g.prize ? 'Grand prize' : 'Top award';
+      return (
+        <div class="yearPanel" id={`panel-${y.year}`} role="tabpanel" aria-labelledby={`tab-${y.year}`} hidden={i !== 0}>
+          <article class="featured">
+            <a class="fvisual" href={g.movieSlug ? `/movies/${g.movieSlug}` : '#'} aria-label={`View ${g.title}`}>
+              {gPoster ? <img src={gPoster} alt="" loading="lazy" /> : <div class="fallback">{g.title}</div>}
+            </a>
+            <div class="fdetail">
+              <div class="ftag">✦ Grand Prix · {y.year}</div>
+              <h3>{g.movieSlug ? <a href={`/movies/${g.movieSlug}`} style="color:inherit;">{g.title}</a> : g.title}</h3>
+              {g.director && <div class="fdirector">Directed by {gHref ? <a href={gHref} style="color:var(--ink); font-weight:600;">{g.director}</a> : g.director}</div>}
+              <div class="fprize">
+                <span class="pnum">{prizeNum}</span>
+                <span class="pcap">{prizeCap}</span>
+              </div>
+              {g.movieSlug && <a class="flink" href={`/movies/${g.movieSlug}`}>Explore film ↗</a>}
+            </div>
+          </article>
+
+          {y.rest.length > 0 && (
+            <>
+              <div class="moreTitle">
+                <h3>More {y.year} winners</h3>
+                <span>{y.rest.length} films</span>
+              </div>
+              <div class="filmGrid">
+                {y.rest.map((n) => {
+                  const nHref = directorHref(n.director, n.directorSlug);
+                  const nPoster = moviePoster(n.movieSlug);
+                  return (
+                    <div class="filmCard">
+                      <a class="poster" href={n.movieSlug ? `/movies/${n.movieSlug}` : '#'} aria-label={`View ${n.title}`}>
+                        {nPoster ? <img src={nPoster} alt="" loading="lazy" /> : <div class="fallback">{n.title}</div>}
+                      </a>
+                      <div class="cat">{n.category}</div>
+                      <h4>{n.movieSlug ? <a href={`/movies/${n.movieSlug}`} style="color:inherit;">{n.title}</a> : n.title}</h4>
+                      {n.director && <div class="by">{nHref ? <a href={nHref}>{n.director}</a> : n.director}</div>}
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
+        </div>
+      );
+    })}
+  </section>
+
+  <section class="about">
+    <div>
+      <h2>About {a.name}</h2>
+      <p>{a.description}</p>
+    </div>
+    {a.siteUrl && <a class="flink" href={a.siteUrl} target="_blank" rel="noopener noreferrer">Visit official website ↗</a>}
+  </section>
+
+  <script>
+    const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('.yearTab'));
+    const panels = Array.from(document.querySelectorAll<HTMLElement>('.yearPanel'));
+    function selectYear(year: string) {
+      tabs.forEach((t) => {
+        const yes = t.dataset.year === year;
+        t.setAttribute('aria-selected', String(yes));
+        t.tabIndex = yes ? 0 : -1;
+      });
+      panels.forEach((p) => { p.hidden = p.id !== `panel-${year}`; });
+      history.replaceState(null, '', `#${year}`);
+    }
+    tabs.forEach((t) => {
+      t.addEventListener('click', () => selectYear(t.dataset.year!));
+      t.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        const i = tabs.indexOf(t);
+        const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length];
+        selectYear(next.dataset.year!);
+        next.focus();
+      });
+    });
+    const initial = location.hash.replace('#', '');
+    if (initial && tabs.some((t) => t.dataset.year === initial)) selectYear(initial);
+  </script>
+</BaseLayout>
