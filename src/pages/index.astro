@@ -21,13 +21,23 @@ const notable = [...pinned, ...rest].slice(0, 6);
 
 // Award-winning films: any movie whose real `awards` field is non-empty,
 // excluding anything already shown above in Notable so the two homepage
-// grids don't just repeat each other. No hand-picked slugs here — this is
-// computed from the catalog so it stays correct as new winners are added.
+// grids don't just repeat each other. Otherwise computed from the catalog
+// (newest first) so it stays correct as new winners are added — except for
+// a few explicit swaps by request: ARK-7, ATLAS i3 and Echoes of the
+// Silent Planet swapped out for Le Drip, Listen to Meh and GIRLS / DEMONS.
 const notableIds = new Set(notable.map((m) => m.id));
-const awardWinners = movies
-  .filter((m) => (m.data.awards?.length ?? 0) > 0 && !notableIds.has(m.id))
-  .sort((a, b) => b.data.year - a.data.year)
-  .slice(0, 6);
+const AWARD_EXCLUDE = new Set(['ark-7', 'atlas-i3', 'echoes-of-the-silent-planet']);
+const AWARD_PINNED = ['le-drip', 'listen-to-meh', 'girls-demons'];
+const awardPool = movies.filter(
+  (m) => (m.data.awards?.length ?? 0) > 0 && !notableIds.has(m.id) && !AWARD_EXCLUDE.has(m.id)
+);
+const awardPinned = AWARD_PINNED.map((slug) => awardPool.find((m) => m.id === slug)).filter(
+  (m): m is CollectionEntry<'movies'> => Boolean(m)
+);
+const awardRest = awardPool
+  .filter((m) => !AWARD_PINNED.includes(m.id))
+  .sort((a, b) => b.data.year - a.data.year);
+const awardWinners = [...awardPinned, ...awardRest].slice(0, 6);
 
 const shortdramaAll = await getCollection('shortdrama');
 const shortdramaPublished = shortdramaAll.filter((e) => e.data.status === 'published').slice(0, 3);
