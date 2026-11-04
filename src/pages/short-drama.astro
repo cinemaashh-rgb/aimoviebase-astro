@@ -79,7 +79,11 @@ const genres = [...new Set(published.flatMap((e) => e.data.badges))].sort((a, b)
         <img src={entry.data.poster} alt={entry.data.title} loading="lazy" />
         <div class="cardBody">
           <h3>{entry.data.title}</h3>
-          <div class="meta">{entry.data.platform} · {entry.data.badges.slice(0, 2).join(' · ')} · {entry.data.episodes} episodes</div>
+          <div class="meta">{[
+            entry.data.platform,
+            ...entry.data.badges.slice(0, 2),
+            entry.data.episodes ? `${entry.data.episodes} episodes` : null,
+          ].filter(Boolean).join(' · ')}</div>
         </div>
       </a>
     ))}
