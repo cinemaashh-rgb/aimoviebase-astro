@@ -5,12 +5,13 @@ import { verifyCreatorSlug } from '../../lib/links';
 
 export async function getStaticPaths() {
   const entries = await getCollection('awards');
-  // "runway-aiff" has its own dedicated page (awards/runway-aiff.astro) —
-  // a year-tabbed layout built from the aimb_runway_aiff_white.html
-  // mockup, which this generic template's sections-as-categories layout
-  // doesn't fit (its sections are years, not award categories). Excluded
-  // here so the two don't collide on the same route.
-  return entries.filter((e) => e.id !== 'runway-aiff').map((entry) => ({
+  // These festivals have their own dedicated pages, all sharing the
+  // AwardFestivalPage component (the hero/tabs/featured-card/grid layout
+  // built from the aimb_runway_aiff_white.html mockup, generalized beyond
+  // runway-aiff's year-tabs to any festival's own `sections`). Excluded
+  // here so the dedicated pages don't collide with this generic route.
+  const DEDICATED = new Set(['runway-aiff', 'aaiff', 'reply-aiff', 'higgsfield']);
+  return entries.filter((e) => !DEDICATED.has(e.id)).map((entry) => ({
     params: { slug: entry.id },
     props: { entry },
   }));
