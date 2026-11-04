@@ -68,23 +68,30 @@ if (isSeries) {
 if (m.country) detailsParts.push(m.country);
 detailsParts.push(...m.genres);
 
-// Mobile-only "Creators" carousel (see the .mobile-insert styles below):
-// director + crew combined into one horizontally-scrollable row of cards,
-// each with a 2-letter monogram in place of a photo we don't have. This
-// duplicates data already in the sidebar rather than introducing anything
-// new — the sidebar itself stays in the DOM (for the sections this
-// carousel doesn't cover: Studio, Awards, Lists) and only its
-// Director/Crew/Production-tools rows are hidden on mobile to avoid
-// showing the same credits twice.
+// Mobile-only "Credits" carousel (see the .mobile-insert styles below):
+// director + crew + studio combined into one horizontally-scrollable row
+// of cards, right under the Watch button, each with a 2-letter monogram
+// in place of a photo we don't have. This duplicates data already in the
+// sidebar rather than introducing anything new — the sidebar itself stays
+// in the DOM (for the sections this carousel doesn't cover: Awards,
+// Lists) and only its Director/Crew/Production-tools/Studio rows are
+// hidden on mobile to avoid showing the same credits twice.
 function initials(name: string) {
   const parts = name.trim().split(/\s+/).filter(Boolean);
   if (parts.length === 0) return '';
   if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
-const mobileCreators = [
-  ...(m.director ? [{ name: m.director.name, role: isSeries ? 'Creator' : 'Director', pageSlug: directorSlug }] : []),
-  ...crewWithLinks.map((c) => ({ name: c.name, role: c.role, pageSlug: c.pageSlug })),
+// Studio is folded into the same carousel (as its own card, with a link to
+// /studios/<slug> instead of /name/<slug>) so it also lands right under the
+// Watch button on mobile instead of only surfacing all the way down in the
+// sidebar-turned-stacked-block — which, for a film with no director/crew
+// credited (studio-only, e.g. most Raw Number Studio entries), previously
+// meant nothing appeared here at all until after "You might also like".
+const mobileCredits = [
+  ...(m.director ? [{ name: m.director.name, role: isSeries ? 'Creator' : 'Director', href: directorSlug ? `/name/${directorSlug}` : undefined }] : []),
+  ...crewWithLinks.map((c) => ({ name: c.name, role: c.role, href: c.pageSlug ? `/name/${c.pageSlug}` : undefined })),
+  ...(m.studio ? [{ name: m.studio, role: 'Studio', href: studioSlug ? `/studios/${studioSlug}` : undefined }] : []),
 ];
 ---
 <BaseLayout title={m.title} description={m.synopsis}>
@@ -219,9 +226,9 @@ const mobileCreators = [
       .related a { flex: 0 0 144px; scroll-snap-align: start; }
       .related img, .related .posterFallback { aspect-ratio: 2/3; }
 
-      /* Director/Crew/Production-tools now live in the carousels above —
-         hide just those sidebar rows so the same credits aren't shown
-         twice. Studio, Awards and Lists have no mobile carousel, so they
+      /* Director/Crew/Production-tools/Studio now live in the carousels
+         above — hide just those sidebar rows so the same credits aren't
+         shown twice. Awards and Lists have no mobile carousel, so they
          stay put, just as a full-width stacked block instead of a side
          column. */
       .columns .sidebar { border-radius: 0; border-left: 0; border-right: 0; padding: 0 0; margin-top: 4px; }
@@ -264,15 +271,15 @@ const mobileCreators = [
         </div>
       </div>
 
-      {mobileCreators.length > 0 && (
+      {mobileCredits.length > 0 && (
         <section class="mobileInsert">
-          <h3>Creators</h3>
+          <h3>Credits</h3>
           <div class="mobileInsertRow">
-            {mobileCreators.map((c) => (
+            {mobileCredits.map((c) => (
               <div class="personCard">
                 <div class="monogram">{initials(c.name)}</div>
                 <div>
-                  {c.pageSlug ? <a href={`/name/${c.pageSlug}`} style="color:inherit;"><b>{c.name}</b></a> : <b>{c.name}</b>}
+                  {c.href ? <a href={c.href} style="color:inherit;"><b>{c.name}</b></a> : <b>{c.name}</b>}
                   <small>{c.role}</small>
                 </div>
               </div>
@@ -356,7 +363,7 @@ const mobileCreators = [
       )}
 
       {m.studio && (
-        <div class="sideSection">
+        <div class="sideSection sideSection--mobileDup">
           <h3>Studio</h3>
           {studioSlug ? (
             <a class="sideLink" href={`/studios/${studioSlug}`}><span class="person"><b>{m.studio}</b></span><span class="arrow">›</span></a>
