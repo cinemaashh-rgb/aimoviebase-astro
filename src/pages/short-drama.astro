@@ -44,19 +44,45 @@ const journal = journalSlugs.map((id) => articles.find((a) => a.id === id)).filt
     /* ---- Hero ---- */
     /* Horizontal full-bleed comes from the shared .full-bleed class (see
        BaseLayout.astro); margin-top cancels out <main>'s own top padding
-       so the image sits flush under the dark header, same approach as
-       the genre page's .genreHero. */
-    .sdhHero { overflow: hidden; margin-top: -2rem; margin-bottom: 32px; background: #080b0d; line-height: 0; }
-    .sdhHeroMedia { position: relative; }
-    .sdhHero img { display: block; width: 100%; height: auto; }
-    .sdhSrOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-    /* Invisible hit areas over the two buttons baked into the hero
-       image, positioned as percentages of the image so they track its
-       scaled size at any viewport width. */
-    .sdhHeroHit { position: absolute; top: 66%; height: 13%; }
-    .sdhHeroHit--primary { left: 6%; width: 15%; }
-    .sdhHeroHit--secondary { left: 21.5%; width: 17%; }
+       so the hero sits flush under the dark header, same approach as
+       the genre page's .genreHero. Background color is matched exactly
+       to the poster artwork's own near-black backdrop (sampled from the
+       source image) so the image never shows a seam against the
+       section's fill. */
+    .sdhHero { overflow: hidden; margin-top: -2rem; margin-bottom: 32px; background: #050506; display: grid; grid-template-columns: minmax(300px,480px) 1fr; align-items: center; gap: 0; }
+    .sdhHeroCopy { position: relative; z-index: 1; padding: 52px 44px 52px 2rem; }
+    .sdhHeroCopy h1 { font-family: var(--serif); color: #fff; font-size: clamp(38px,4.6vw,60px); line-height: .99; letter-spacing: -.03em; margin: 16px 0 16px; }
+    .sdhHeroCopy p { font-size: .94rem; line-height: 1.65; color: #cfd3d8; max-width: 440px; margin: 0; }
+    .sdhHeroActions { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; margin-top: 26px; }
+    /* Solid ember-gold gradient CTA, same family as the header's
+       .submitBtn treatment, with a hover sweep rather than a static fill. */
+    .sdhHeroCta {
+      display: inline-flex; align-items: center; gap: 9px;
+      font: 700 .82rem var(--sans); color: #27100d;
+      padding: 13px 22px; border-radius: 5px; white-space: nowrap;
+      background: linear-gradient(112deg,#ab3f34 0%,#df754d 35%,#ffc18a 63%,#dc6847 100%);
+      background-size: 200% 100%; background-position: 0% 50%;
+      box-shadow: 0 0 0 1px rgba(224,99,63,.25);
+      transition: background-position .4s ease, box-shadow .25s ease, transform .2s ease;
+    }
+    .sdhHeroCta .arrow { font-weight: 900; transition: transform .2s ease; }
+    .sdhHeroCta:hover, .sdhHeroCta:focus-visible {
+      background-position: 100% 50%;
+      box-shadow: 0 0 0 1px rgba(237,122,80,.5), 0 0 18px rgba(242,115,73,.38);
+      transform: translateY(-1px);
+    }
+    .sdhHeroCta:hover .arrow { transform: translateX(4px); }
+    .sdhHeroLink { display: inline-flex; align-items: center; gap: 9px; font: 700 .78rem var(--sans); color: #fff; border-bottom: 1px solid rgba(255,255,255,.4); padding-bottom: 5px; transition: color .2s ease, border-color .2s ease; }
+    .sdhHeroLink:hover, .sdhHeroLink:focus-visible { color: #ee8a55; border-color: #ee8a55; }
+    .sdhHeroArt { position: relative; height: 100%; min-height: 280px; display: flex; align-items: center; overflow: hidden; }
+    .sdhHeroArt img { display: block; width: 100%; height: auto; }
     .sdhKicker { font: 800 .68rem/1.5 var(--sans); letter-spacing: .16em; text-transform: uppercase; color: #c56b49; }
+    .sdhHero .sdhKicker { color: #e4916a; }
+    @media (max-width: 860px) {
+      .sdhHero { grid-template-columns: 1fr; }
+      .sdhHeroArt { display: none; }
+      .sdhHeroCopy { padding: 40px 1.25rem; }
+    }
 
     /* ---- Shared section chrome (mirrors the homepage's .section pattern) ---- */
     .sdhSection { padding: 30px 0 30px; border-top: 1px solid var(--line); }
@@ -133,16 +159,22 @@ const journal = journalSlugs.map((id) => articles.find((a) => a.id === id)).filt
   </style>
 
   <section class="sdhHero full-bleed">
-    <h1 class="sdhSrOnly">AI Short Drama</h1>
-    <div class="sdhHeroMedia">
+    <div class="sdhHeroCopy">
+      <span class="sdhKicker">AIMB — Independent Guide to AI Cinema</span>
+      <h1>AI Short Drama</h1>
+      <p>Explore the new world of AI-powered vertical storytelling — from short romance series and fantastical microdramas to emerging Chinese productions.</p>
+      <div class="sdhHeroActions">
+        <a class="sdhHeroCta" href="#popular">Discover AI Dramas <span class="arrow">→</span></a>
+        <a class="sdhHeroLink" href="#explained">What is AI Short Drama? ↗</a>
+      </div>
+    </div>
+    <div class="sdhHeroArt">
       <img
-        src="/images/hero/short-drama-hero.webp"
-        alt="AI Short Drama — AIMB, independent guide to AI cinema. Explore AI-powered vertical storytelling, from short romance series and fantastical microdramas to emerging Chinese productions."
-        width="2172"
+        src="/images/hero/short-drama-posters.webp"
+        alt="Poster art for AI short dramas including Thief Mother Billionaire Son, The Other Daughter, All Billionaires Come Begging to Me, and The $500K Mafia Husband"
+        width="1272"
         height="724"
       />
-      <a class="sdhHeroHit sdhHeroHit--primary" href="#popular" aria-label="Discover AI dramas"></a>
-      <a class="sdhHeroHit sdhHeroHit--secondary" href="#explained" aria-label="What is AI Short Drama?"></a>
     </div>
   </section>
 
