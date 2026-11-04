@@ -6,22 +6,88 @@ const entries = await getCollection('shortdrama');
 const published = entries.filter((e) => e.data.status === 'published');
 const categories = entries.filter((e) => e.data.status === 'coming-soon');
 categories.sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+// Independent search/filter scope, deliberately not wired into the site's
+// global header search (see search-data.js.ts) — AI Short Drama is its own
+// catalog with its own facets (platform, genre), so it gets its own small
+// client-side index instead of mixing into AI Movies & Series results.
+// Platform/genre option lists are derived from the real published entries
+// rather than hardcoded, so a newly added drama's platform/genre shows up
+// in the filters automatically.
+const platforms = [...new Set(published.map((e) => e.data.platform).filter(Boolean))].sort((a, b) =>
+  a!.localeCompare(b!)
+);
+const genres = [...new Set(published.flatMap((e) => e.data.badges))].sort((a, b) => a.localeCompare(b));
 ---
 <BaseLayout title="Short Form Drama" description="Vertical, episode-driven AI drama — bite-sized chapters built for phone screens.">
+  <style>
+    .sdToolbar { display: flex; flex-wrap: wrap; align-items: end; gap: 14px; margin: 4px 0 22px; padding: 16px; background: var(--soft); border: 1px solid var(--line); border-radius: 8px; }
+    .sdField { display: flex; flex-direction: column; gap: 5px; }
+    .sdField label { font-size: .7rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted2); }
+    .sdField input, .sdField select { height: 36px; border: 1px solid var(--line); background: #fff; border-radius: 6px; color: var(--ink); font-size: .85rem; padding: 0 10px; font-family: var(--sans); }
+    .sdField input { width: 220px; }
+    .sdField input:focus-visible, .sdField select:focus-visible { outline: 2px solid #cf6246; outline-offset: 1px; }
+    .sdResetBtn { height: 36px; border: 1px solid var(--line); background: #fff; border-radius: 6px; color: var(--muted); font-size: .8rem; padding: 0 14px; cursor: pointer; }
+    .sdResetBtn:hover { border-color: #cf6246; color: #cf6246; }
+    .sdCount { margin-left: auto; font-size: .78rem; color: var(--muted2); align-self: center; }
+    .sdEmpty { display: none; padding: 30px 16px; text-align: center; color: var(--muted); font-size: .88rem; border: 1px dashed var(--line); border-radius: 8px; max-width: 700px; }
+    .sdEmpty.is-visible { display: block; }
+    @media (max-width: 560px) {
+      .sdToolbar { flex-direction: column; align-items: stretch; }
+      .sdField input { width: 100%; }
+      .sdCount { margin-left: 0; }
+    }
+  </style>
+
   <h1>AI Short Drama</h1>
   <p style="color:var(--muted); max-width:640px; line-height:1.5; margin-bottom:28px;">Vertical, episode-driven AI drama — bite-sized chapters built for phone screens.</p>
 
-  <div class="movieGrid" style="max-width:700px">
+  {published.length > 0 && (
+    <div class="sdToolbar">
+      <div class="sdField">
+        <label for="sdSearch">Search AI Short Dramas</label>
+        <input type="text" id="sdSearch" placeholder="Title…" autocomplete="off" />
+      </div>
+      <div class="sdField">
+        <label for="sdPlatform">Platform</label>
+        <select id="sdPlatform">
+          <option value="">All platforms</option>
+          {platforms.map((p) => <option value={p}>{p}</option>)}
+        </select>
+      </div>
+      <div class="sdField">
+        <label for="sdGenre">Genre</label>
+        <select id="sdGenre">
+          <option value="">All genres</option>
+          {genres.map((g) => <option value={g}>{g}</option>)}
+        </select>
+      </div>
+      <button type="button" class="sdResetBtn" id="sdReset">Reset filters</button>
+      <span class="sdCount" id="sdCount">{published.length} dramas found</span>
+    </div>
+  )}
+
+  <div class="movieGrid" style="max-width:700px" id="sdGrid">
     {published.map((entry) => (
-      <a class="movieCard" href={`/shortdrama/${entry.id}`}>
+      <a
+        class="movieCard"
+        href={`/shortdrama/${entry.id}`}
+        data-title={entry.data.title.toLowerCase()}
+        data-platform={entry.data.platform || ''}
+        data-genres={entry.data.badges.join('|')}
+      >
         <img src={entry.data.poster} alt={entry.data.title} loading="lazy" />
         <div class="cardBody">
           <h3>{entry.data.title}</h3>
-          <div class="meta">{entry.data.year} · {entry.data.episodes} episodes · {entry.data.platform}</div>
+          <div class="meta">{entry.data.platform} · {entry.data.badges.slice(0, 2).join(' · ')} · {entry.data.episodes} episodes</div>
         </div>
       </a>
     ))}
   </div>
+
+  {published.length > 0 && (
+    <p class="sdEmpty" id="sdEmptyState">No dramas match your filters. Try clearing one of them.</p>
+  )}
 
   {categories.length > 0 && (
     <>
@@ -39,4 +105,47 @@ categories.sort((a, b) => a.data.title.localeCompare(b.data.title));
       </div>
     </>
   )}
+
+  <script is:inline>
+    (function () {
+      var searchInput = document.getElementById('sdSearch');
+      var platformSelect = document.getElementById('sdPlatform');
+      var genreSelect = document.getElementById('sdGenre');
+      var resetBtn = document.getElementById('sdReset');
+      var countEl = document.getElementById('sdCount');
+      var emptyEl = document.getElementById('sdEmptyState');
+      var grid = document.getElementById('sdGrid');
+      if (!grid || !searchInput) return; // no published dramas — toolbar wasn't rendered
+      var cards = [].slice.call(grid.querySelectorAll('.movieCard'));
+
+      function apply() {
+        var q = searchInput.value.trim().toLowerCase();
+        var platform = platformSelect.value;
+        var genre = genreSelect.value;
+        var visible = 0;
+        cards.forEach(function (card) {
+          var matchesTitle = !q || card.dataset.title.indexOf(q) !== -1;
+          var matchesPlatform = !platform || card.dataset.platform === platform;
+          var genres = card.dataset.genres ? card.dataset.genres.split('|') : [];
+          var matchesGenre = !genre || genres.indexOf(genre) !== -1;
+          var show = matchesTitle && matchesPlatform && matchesGenre;
+          card.style.display = show ? '' : 'none';
+          if (show) visible++;
+        });
+        countEl.textContent = visible + (visible === 1 ? ' drama found' : ' dramas found');
+        emptyEl.classList.toggle('is-visible', visible === 0);
+        grid.style.display = visible === 0 ? 'none' : '';
+      }
+
+      searchInput.addEventListener('input', apply);
+      platformSelect.addEventListener('change', apply);
+      genreSelect.addEventListener('change', apply);
+      resetBtn.addEventListener('click', function () {
+        searchInput.value = '';
+        platformSelect.value = '';
+        genreSelect.value = '';
+        apply();
+      });
+    })();
+  </script>
 </BaseLayout>

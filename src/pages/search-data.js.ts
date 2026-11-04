@@ -10,12 +10,11 @@ import { creatorHasPage, studioHasPage } from '../lib/links';
 // no runtime cost and no server — just one array built from the actual
 // content collections every time the site builds.
 export const GET: APIRoute = async () => {
-  const [movies, creators, studios, genres, shortdrama, awards, articles] = await Promise.all([
+  const [movies, creators, studios, genres, awards, articles] = await Promise.all([
     getCollection('movies'),
     getCollection('creators'),
     getCollection('studios'),
     getCollection('genres'),
-    getCollection('shortdrama'),
     getCollection('awards'),
     getCollection('articles'),
   ]);
@@ -57,16 +56,10 @@ export const GET: APIRoute = async () => {
     items.push({ title: g.data.name, href: `/genre/${g.id}`, sub: 'Genre' });
   }
 
-  for (const sd of shortdrama) {
-    if (sd.data.status !== 'published') continue;
-    const item: Item = {
-      title: sd.data.title,
-      href: `/shortdrama/${sd.id}`,
-      sub: `Vertical Drama · ${sd.data.episodes} episodes`,
-    };
-    if (sd.data.poster) item.img = sd.data.poster;
-    items.push(item);
-  }
+  // AI Short Drama is deliberately left out of the global index — it has
+  // its own independent search/filter UI on /short-drama (title, platform,
+  // genre), separate from AI Movies & Series so the two catalogs don't mix
+  // in one global result list. See short-drama.astro.
 
   for (const a of awards) {
     items.push({ title: a.data.name, href: `/awards/${a.id}`, sub: 'Award' });
