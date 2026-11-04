@@ -119,6 +119,12 @@ function meta(f: CollectionEntry<'movies'>) {
       .relatedRow { grid-template-columns: 1fr; gap: 10px; }
       .relStack { height: 86px; }
       .relStack img { width: 23%; }
+      /* The little ↗ after the film count reads fine next to a hover
+         affordance on desktop, but on mobile (no hover) each "Keep
+         exploring" row just ends up with a stray arrow glyph — drop it
+         here, the film count and the whole row being a tappable link
+         already say "go to this collection" without it. */
+      .relMeta b { display: none; }
     }
     @media (max-width: 620px) {
       .story { grid-template-columns: 120px 1fr; gap: 15px; }
