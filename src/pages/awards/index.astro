@@ -6,9 +6,10 @@ const awards = await getCollection('awards');
 const movies = await getCollection('movies');
 
 // Only link a winner to a movie page when it's actually in the catalog —
-// several winners below (BIFAN, Cinema Shift, Bochnia) are real-world
-// festival winners this catalog hasn't ingested, so they render as plain
-// text rather than a fabricated link.
+// a `winner` entry with no `movieSlug` is a real-world festival result
+// this catalog hasn't ingested yet, so it renders as plain text instead
+// of a fabricated link (see AIMF's "Awaiting results" below, handled via
+// `pending` instead).
 function movieExists(slug: string | undefined) {
   return slug ? movies.some((m) => m.id === slug) : false;
 }
@@ -85,7 +86,7 @@ const directory = [
     edition: 'December 2025',
     formats: ['In-Person'],
     fund: '$3,000',
-    winner: { title: 'Chairman', year: '2025', note: 'Audience Award' },
+    winner: { title: 'Chairman', year: '2025', movieSlug: 'chairman', note: 'Audience Award' },
   },
   {
     name: 'Artificial Intelligence Media Festival',
@@ -115,7 +116,7 @@ const directory = [
     edition: 'September 2026',
     formats: ['In-Person'],
     fund: '$2,500',
-    winner: { title: 'Far Away Home', year: '2026', note: 'Grand Prix' },
+    winner: { title: 'Far Away Home', year: '2026', movieSlug: 'far-away-home', note: 'Grand Prix' },
   },
 ];
 
