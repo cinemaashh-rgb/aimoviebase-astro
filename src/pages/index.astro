@@ -181,40 +181,18 @@ const journal = (await getCollection('articles'))
        zero-gap join with the footer below is controlled in one place,
        by BaseLayout zeroing <main>'s bottom padding on pages that
        contain this section — see BaseLayout.astro for that rule. */
-    .newsletter { background: var(--black); color: #fff; position: relative; }
-    .newsletterIn { max-width: 1200px; margin: 0 auto; padding: 28px 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center; position: relative; }
+    .newsletter { background: var(--black); color: #fff; }
+    /* box-sizing: border-box is set globally in BaseLayout.astro, but as
+       a scoped style there it doesn't reach markup slotted in from this
+       page (see the similar note on :global(.movieGrid) etc. further
+       down and in BaseLayout) — set explicitly here so this container's
+       1200px max-width matches the footer's footInner exactly and their
+       left edges (the "Stay in the Loop" heading and the "AIMB" footer
+       mark) line up instead of sitting 32px apart. */
+    .newsletterIn { box-sizing: border-box; max-width: 1200px; margin: 0 auto; padding: 28px 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center; }
     .newsletter .eyebrow { font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #9aa4b2; }
     .newsletter h2 { font-size: 1.7rem; line-height: 1.12; margin: 6px 0; }
     .newsletter p { font-size: .8rem; color: #b8c1cc; margin: 0; }
-
-    /* Decorative hand-drawn-style accents (desktop only — see the
-       media query below): a curved bracket that cradles the "Stay
-       updated / Stay in the Loop" copy, an arrow nodding at the
-       subscribe form, and a line that continues the bracket's stroke
-       down past the section's own bottom edge into the footer below.
-       That last piece relies on .newsletter and .siteFooter sharing
-       the same solid --black background with zero gap between them
-       (see the comment on main:has(> .newsletter) in BaseLayout), so
-       an absolutely-positioned, overflowing SVG here reads as one
-       continuous line crossing into the footer rather than two. */
-    .newsletterDeco, .newsletterArrow { display: none; }
-    .newsletterCopy { position: relative; }
-    @media (min-width: 901px) {
-      /* Extra headroom above the copy, just on this breakpoint, so the
-         arrow accent has clear dark space to sit in above the email
-         input rather than crossing over it — the two columns are
-         vertically centered as one grid row, so padding added here
-         pushes the input down by the same amount as the heading. */
-      .newsletterIn { padding-top: 58px; }
-      .newsletterDeco {
-        display: block; position: absolute; pointer-events: none; left: -28px; top: 16px;
-        width: 90px; height: 250px; overflow: visible; z-index: 1;
-      }
-      .newsletterArrow {
-        display: block; position: absolute; pointer-events: none; left: calc(100% - 10px); top: -46px;
-        width: 140px; height: 50px; overflow: visible; z-index: 1;
-      }
-    }
     .newsletter form { display: flex; }
     .newsletter input { flex: 1; min-width: 0; background: #232a32; border: 1px solid #a94a38; border-radius: 4px 0 0 4px; color: #fff; padding: 12px; font-size: .86rem; }
     .newsletter input:focus, .newsletter input:focus-visible { outline: 2px solid #ec8c66; outline-offset: 2px; border-color: #ec8c66; }
@@ -399,14 +377,7 @@ const journal = (await getCollection('articles'))
 
   <section class="newsletter full-bleed">
     <div class="newsletterIn">
-      <div class="newsletterCopy">
-        <svg class="newsletterDeco" viewBox="0 0 90 250" fill="none" aria-hidden="true">
-          <path d="M58 8 C20 8 10 28 14 52 C18 76 42 86 60 92 C36 96 18 112 18 148 C18 178 20 200 26 218 C30 230 38 240 50 246" stroke="#a855f7" stroke-width="2.5" stroke-linecap="round"/>
-        </svg>
-        <svg class="newsletterArrow" viewBox="0 0 150 60" fill="none" aria-hidden="true">
-          <path d="M2 46 C48 36 96 22 140 10" stroke="#a855f7" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M112 2 L144 9 L124 32" stroke="#a855f7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        </svg>
+      <div>
         <div class="eyebrow">Stay updated</div>
         <h2>Stay in the Loop</h2>
         <p>A monthly edit of AI movies, creator stories and film festival news.</p>
