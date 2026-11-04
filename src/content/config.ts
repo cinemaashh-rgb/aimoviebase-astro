@@ -138,6 +138,12 @@ const shortdrama = defineCollection({
     // Stable UUID v4, same rationale as movie_id.
     show_id: z.string().uuid(),
     title: z.string(),
+    // The title as originally released (e.g. the Chinese title for a
+    // Chinese-language microdrama), shown as a small line under the
+    // English display title on the detail page. Optional — only set for
+    // titles that are localized/English display names of a foreign
+    // original.
+    originalTitle: z.string().optional(),
     status: z.enum(['published', 'coming-soon']).default('published'),
     tagline: z.string().optional(),
     year: z.number().optional(),

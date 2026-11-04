@@ -46,6 +46,7 @@ const dash = d.qualityIndex ? (d.qualityIndex.score / 100) * RING_CIRC : 0;
     .sdPosterFallback { width: 200px; aspect-ratio: 2/3; border-radius: 5px; border: 1px solid var(--line); background: var(--soft); display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px; font-family: var(--serif); font-weight: 700; color: var(--muted2); font-size: .9rem; }
     .sdEyebrow { color: var(--muted2); font-size: .8rem; margin: 6px 0 2px; }
     h1.sdTitle { font-size: clamp(28px,3.6vw,44px); margin: 3px 0 6px; letter-spacing: -0.03em; line-height: 1.08; }
+    .sdOriginalTitle { color: var(--muted); font-size: .95rem; margin: -2px 0 10px; }
     .sdFacts { color: var(--muted); margin-bottom: 14px; }
     .sdFacts span { padding: 0 6px; color: var(--muted2); }
     .sdDesc { color: #566177; font-size: .96rem; line-height: 1.55; max-width: 540px; margin-bottom: 15px; }
@@ -154,6 +155,7 @@ const dash = d.qualityIndex ? (d.qualityIndex.score / 100) * RING_CIRC : 0;
           <div>
             <div class="sdEyebrow">AI Short Drama</div>
             <h1 class="sdTitle">{d.title}</h1>
+            {d.originalTitle && <p class="sdOriginalTitle">{d.originalTitle}</p>}
             <div class="sdFacts">
               {d.year && d.year}
               {d.episodes && <><span>·</span>{d.episodes} episodes</>}
