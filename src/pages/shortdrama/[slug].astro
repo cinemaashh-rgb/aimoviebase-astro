@@ -1,7 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getVerdict, metricColor } from '../../lib/qualityIndex';
+import { getVerdict, metricColor, QUALITY_VERDICTS } from '../../lib/qualityIndex';
 
 export async function getStaticPaths() {
   const entries = await getCollection('shortdrama');
@@ -107,6 +107,18 @@ const dash = d.qualityIndex ? (d.qualityIndex.score / 100) * RING_CIRC : 0;
     .sdQiTrack { height: 5px; background: var(--soft); border-radius: 9px; overflow: hidden; }
     .sdQiTrack span { height: 100%; display: block; border-radius: 9px; }
     .sdQiNote { margin: 12px 0 0; font-size: .7rem; line-height: 1.5; color: var(--muted2); font-style: italic; }
+
+    .sdQiVerdictsHead { font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 800; color: var(--muted2); margin: 20px 0 10px; padding-top: 16px; border-top: 1px solid var(--line); }
+    .sdQiVerdicts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+    .sdQiVerdicts li { display: flex; align-items: center; gap: 9px; padding: 7px 8px; margin: 0 -8px; border-radius: 4px; font-size: .78rem; color: var(--muted); }
+    .sdQiVerdicts li.is-active { background: #fbf0ef; color: #963e3e; font-weight: 700; }
+    .sdQiDot { flex: 0 0 8px; width: 8px; height: 8px; border-radius: 50%; }
+    .sdQiVerdictLabel { flex: 1; }
+    .sdQiVerdictRange { font-variant-numeric: tabular-nums; color: var(--muted2); font-size: .74rem; }
+    .sdQiVerdicts li.is-active .sdQiVerdictRange { color: #963e3e; }
+    .sdQiWeights { margin: 14px 0 0; font-size: .72rem; line-height: 1.5; color: var(--muted2); }
+    .sdQiMethodLink { display: block; margin-top: 7px; font-size: .78rem; font-weight: 700; color: #c56b49; }
+    .sdQiMethodLink:hover { text-decoration: underline; }
 
     @media (max-width: 860px) {
       .sdColumns { grid-template-columns: 1fr; }
@@ -254,6 +266,19 @@ const dash = d.qualityIndex ? (d.qualityIndex.score / 100) * RING_CIRC : 0;
               </div>
             ))}
             {d.qualityIndex.note && <p class="sdQiNote">{d.qualityIndex.note}</p>}
+
+            <div class="sdQiVerdictsHead">The Five Verdicts</div>
+            <ul class="sdQiVerdicts">
+              {QUALITY_VERDICTS.map((v) => (
+                <li class={v.label === verdict.label ? 'is-active' : ''}>
+                  <span class="sdQiDot" style={`background:${v.color}`}></span>
+                  <span class="sdQiVerdictLabel">{v.label}</span>
+                  <span class="sdQiVerdictRange">{v.min}–{v.max}</span>
+                </li>
+              ))}
+            </ul>
+            <p class="sdQiWeights">Scores are weighted: {d.qualityIndex.breakdown.map((m, i) => <>{i > 0 && ', '}{`${m.label} ${m.weight}%`}</>)}.</p>
+            <a class="sdQiMethodLink" href="/quality-index">How we rate AI Short Dramas <span aria-hidden="true">↗</span></a>
           </>
         ) : (
           <>
