@@ -291,6 +291,10 @@ function isActive(prefix: string) {
       .mobileSearchPanel { display: flex; }
       .submitBtn { padding: 7px 10px; font-size: 10px; }
       main { padding: 1.25rem; }
+      /* .footInner's padding was still the desktop 2rem here, 12px wider
+         than main's 1.25rem above, so "AIMB" sat 12px to the right of
+         content like "You might also like" directly above the footer. */
+      .footInner { padding-left: 1.25rem; padding-right: 1.25rem; }
     }
   </style>
 </head>

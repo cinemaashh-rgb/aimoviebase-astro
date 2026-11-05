@@ -155,6 +155,7 @@ const mobileCredits = [
     }
 
     .related { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 14px; }
+    .related picture { display: block; }
     /* 16/9 matches the real -wide.webp crops on disk (960x540/1200x675);
        the previous 2/1 ratio forced them into a shape they aren't, cropping
        off real image content on every poster that has a wide version. */
@@ -393,7 +394,18 @@ const mobileCredits = [
             {related.map((f) => (
               <a href={`/movies/${f.id}`} style="display:block;">
                 {f.data.poster ? (
-                  <img src={widePoster(f.data.poster)} alt={f.data.title} loading="lazy" />
+                  <picture>
+                    {/* Below 680px .related img switches to a 2/3 portrait
+                        box (see that breakpoint further down), but the
+                        default src here is widePoster()'s 16/9 landscape
+                        crop — object-fit: cover was cropping away most of
+                        each poster's width to force it into the taller
+                        box, cutting off titles. This source swaps back to
+                        the real, correctly-proportioned poster at that
+                        same breakpoint so nothing gets cropped. */}
+                    <source media="(max-width: 680px)" srcset={f.data.poster} />
+                    <img src={widePoster(f.data.poster)} alt={f.data.title} loading="lazy" />
+                  </picture>
                 ) : (
                   <div class="posterFallback">{f.data.title}</div>
                 )}
