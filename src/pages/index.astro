@@ -76,6 +76,13 @@ function taxonomy(movie: CollectionEntry<'movies'>) {
   return parts.join(' · ');
 }
 
+// Same "platform · first badge" line used on /short-drama's own card grid
+// (see shortDramaMeta there), so this homepage teaser reads consistently
+// with the full listing.
+function shortDramaTaxonomy(entry: CollectionEntry<'shortdrama'>) {
+  return [entry.data.platform, entry.data.badges[0]].filter(Boolean).join(' · ');
+}
+
 // Real journal content, shared with /news and /news/[slug] (the `articles`
 // content collection, src/content/articles) so the homepage teaser, the
 // listing and each article's own permalink never drift out of sync.
@@ -171,14 +178,18 @@ const journal = (await getCollection('articles'))
     .shortHeadingLink .arrow { font-weight: 900; font-size: 1.3rem; line-height: 1; color: var(--ink); transition: color .2s ease, transform .2s ease; }
     .shortHeadingLink:hover .arrow, .shortHeadingLink:focus-visible .arrow { color: #cf6246; transform: translateX(6px); }
     .shortCopy p { color: var(--muted); font-size: .88rem; line-height: 1.55; margin: 0; max-width: 480px; }
-    .shortGallery { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; background: var(--soft); border-radius: 8px; padding: 10px; }
-    /* Each poster lifts and scales up on hover; its neighbors ease back and
-       dim slightly so the hovered card reads as "coming forward" rather
-       than the whole row just sitting still. */
-    .shortGallery a { display: block; border-radius: 4px; transition: transform .35s cubic-bezier(.22,1,.36,1), opacity .35s ease, box-shadow .35s ease; }
-    .shortGallery a:hover, .shortGallery a:focus-visible { transform: translateY(-10px) scale(1.06); box-shadow: 0 20px 36px rgba(0,0,0,.25); position: relative; z-index: 2; }
-    .shortGallery:hover a:not(:hover) { transform: scale(.96); opacity: .7; }
-    .shortGallery img, .shortGallery .dramaFallback { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 4px; background: #fff; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .68rem; font-weight: 600; text-align: center; padding: 8px; }
+    /* Same card execution as .filmGrid (Notable AI Movies & Series): poster,
+       title, taxonomy line, same hover lift — just a 3-column layout sized
+       for this section's narrower sidebar column instead of the 6-column
+       full-width grid. */
+    .shortGallery { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 15px; }
+    .shortGallery a { display: flex; flex-direction: column; min-width: 0; color: inherit; }
+    .shortGallery img, .shortGallery .dramaFallback { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 5px; border: 1px solid var(--line); background: var(--soft); display: block; transition: transform .2s ease, box-shadow .2s ease; }
+    .shortGallery .dramaFallback { display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .64rem; font-weight: 700; text-align: center; padding: 8px; }
+    .shortGallery a:hover img { transform: translateY(-3px); box-shadow: 0 8px 23px rgba(0,0,0,.1); }
+    .shortGallery a:hover strong, .shortGallery a:focus-visible strong { color: #cf6246; }
+    .shortGallery strong { font-family: var(--serif); font-size: .92rem; margin-top: 10px; line-height: 1.22; font-weight: 700; }
+    .shortGallery .taxonomy { display: block; margin-top: 5px; font-size: .72rem; color: var(--muted2); }
 
     /* ---- Festivals ---- */
     .festivalGrid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; }
@@ -358,8 +369,10 @@ const journal = (await getCollection('articles'))
         {Array.from({ length: 3 }).map((_, i) => {
           const d = shortdramaPublished[i];
           return d ? (
-            <a href={`/shortdrama/${d.id}`}>
+            <a href={`/shortdrama/${d.id}`} aria-label={`Read about ${d.data.title}`}>
               {d.data.poster ? <img src={d.data.poster} alt={d.data.title} loading="lazy" /> : <div class="dramaFallback">{d.data.title}</div>}
+              <strong>{d.data.title}</strong>
+              <span class="taxonomy">{shortDramaTaxonomy(d)}</span>
             </a>
           ) : (
             <a href="/short-drama"><div class="dramaFallback">Coming soon</div></a>
