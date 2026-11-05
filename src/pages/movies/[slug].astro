@@ -205,6 +205,13 @@ const mobileCredits = [
        right under the hero, and horizontal-scroll rows for reactions and
        related films instead of cramped grids. */
     .mobileInsert { display: none; }
+    /* Mobile reading order moves Awards right after the Credits carousel
+       and "You might also like"/Related down to the very bottom of the
+       page (below Awards, Lists and Episodes) — see the mobileInsert
+       Awards block and the .relatedMobileEnd section further down this
+       file. Each piece of data is rendered twice (once for desktop, once
+       for mobile) with only one copy visible at a time. */
+    .relatedMobileEnd { display: none; }
     @media (max-width: 680px) {
       body { overflow-x: hidden; }
       .crumb { display: none; }
@@ -246,13 +253,15 @@ const mobileCredits = [
       .related a { flex: 0 0 144px; scroll-snap-align: start; }
       .related img, .related .posterFallback { aspect-ratio: 2/3; }
 
-      /* Director/Crew/Production-tools/Studio now live in the carousels
-         above — hide just those sidebar rows so the same credits aren't
-         shown twice. Awards and Lists have no mobile carousel, so they
-         stay put, just as a full-width stacked block instead of a side
-         column. */
+      /* Director/Crew/Production-tools/Studio/Awards now live in the
+         blocks above (Awards right after the Credits carousel) — hide
+         just those sidebar rows so the same data isn't shown twice.
+         Lists has no mobile duplicate, so it stays put here, as a
+         full-width stacked block instead of a side column. */
       .columns .sidebar { border-radius: 0; border-left: 0; border-right: 0; padding: 0 0; margin-top: 4px; }
       .sideSection--mobileDup { display: none; }
+      .relatedDesktopOnly { display: none; }
+      .relatedMobileEnd { display: block; }
     }
     @media (max-width: 420px) {
       .heroPoster { width: min(61vw,242px); }
@@ -325,6 +334,13 @@ const mobileCredits = [
         </section>
       )}
 
+      {m.awards.length > 0 && (
+        <section class="mobileInsert">
+          <h3>Awards</h3>
+          {m.awards.map((a) => <div class="awardChip">{a}</div>)}
+        </section>
+      )}
+
       {m.audienceReactions && m.audienceReactions.length > 0 && (
         <section class="block">
           <h2>Audience reactions</h2>
@@ -371,7 +387,7 @@ const mobileCredits = [
       )}
 
       {related.length > 0 && (
-        <section class="block">
+        <section class="block relatedDesktopOnly">
           <h2>{isSeries ? 'Related' : 'You might also like'}</h2>
           <div class="related">
             {related.map((f) => (
@@ -441,7 +457,7 @@ const mobileCredits = [
       )}
 
       {m.awards.length > 0 && (
-        <div class="sideSection">
+        <div class="sideSection sideSection--mobileDup">
           <h3>Awards</h3>
           {m.awards.map((a) => <div class="awardChip">{a}</div>)}
         </div>
@@ -471,6 +487,30 @@ const mobileCredits = [
           </li>
         ))}
       </ul>
+    </section>
+  )}
+
+  {/* Mobile-only duplicate of "You might also like" / "Related", pinned to
+      the very bottom of the page (below Awards/Lists/Episodes) — on mobile
+      the desktop copy above (.relatedDesktopOnly) is hidden and this one
+      shows instead; on desktop it's the other way around. Same data, same
+      markup, just moved for the mobile reading order. */}
+  {related.length > 0 && (
+    <section class="block relatedMobileEnd">
+      <h2>{isSeries ? 'Related' : 'You might also like'}</h2>
+      <div class="related">
+        {related.map((f) => (
+          <a href={`/movies/${f.id}`} style="display:block;">
+            {f.data.poster ? (
+              <img src={widePoster(f.data.poster)} alt={f.data.title} loading="lazy" />
+            ) : (
+              <div class="posterFallback">{f.data.title}</div>
+            )}
+            <strong>{f.data.title}</strong>
+            <small>{f.data.year} · {f.data.type === 'series' ? 'AI Series' : 'AI Movie'}</small>
+          </a>
+        ))}
+      </div>
     </section>
   )}
 
