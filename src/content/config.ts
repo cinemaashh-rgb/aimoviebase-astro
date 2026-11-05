@@ -282,6 +282,11 @@ const articles = defineCollection({
     title: z.string(),
     excerpt: z.string(),
     image: z.string().optional(),
+    // Accessible alt text for `image` when it's more than a generic stand-in
+    // for the headline — e.g. a custom hero graphic rather than a movie
+    // poster. Falls back to `title` when unset, same as before this field
+    // existed.
+    imageAlt: z.string().optional(),
     // Caption under the hero image (photo credit, who/what is pictured) —
     // optional, only a handful of articles have a hero worth crediting.
     heroCaption: z.string().optional(),
