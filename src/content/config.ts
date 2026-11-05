@@ -282,7 +282,41 @@ const articles = defineCollection({
     title: z.string(),
     excerpt: z.string(),
     image: z.string().optional(),
+    // Caption under the hero image (photo credit, who/what is pictured) —
+    // optional, only a handful of articles have a hero worth crediting.
+    heroCaption: z.string().optional(),
     body: z.array(z.string()),
+    // Richer long-form layout: section headings (with an auto-built "On
+    // this page" sidebar), pull quotes, side-by-side character-consistency
+    // image pairs, and a small comparison table — for a feature piece that
+    // genuinely has that structure, rather than a short news item. When
+    // present, the page renders these instead of the plain `body`
+    // paragraphs; `body` stays required on every article so `excerpt`-style
+    // consumers (related-article cards, RSS, search) always have plain text
+    // to fall back on even for a contentBlocks article.
+    contentBlocks: z.array(z.discriminatedUnion('type', [
+      z.object({ type: z.literal('lead'), text: z.string() }),
+      z.object({ type: z.literal('paragraph'), text: z.string() }),
+      z.object({ type: z.literal('heading'), id: z.string(), text: z.string(), tocLabel: z.string().optional() }),
+      z.object({ type: z.literal('quote'), text: z.string(), author: z.string() }),
+      z.object({
+        type: z.literal('characterComparisons'),
+        characters: z.array(z.object({
+          name: z.string(),
+          subtitle: z.string(),
+          frames: z.array(z.object({ image: z.string(), alt: z.string() })).length(2),
+          caption: z.string(),
+        })),
+      }),
+      z.object({
+        type: z.literal('comparisonTable'),
+        label: z.string(),
+        columns: z.array(z.string()),
+        rows: z.array(z.array(z.string())),
+        note: z.string().optional(),
+      }),
+      z.object({ type: z.literal('note'), label: z.string().optional(), text: z.string() }),
+    ])).optional(),
     // The movie this article is about, when there is one in the catalog —
     // renders the "Featured film" aside linking to its real page/poster.
     featuredMovieSlug: z.string().optional(),
