@@ -10,12 +10,34 @@ import type { CollectionEntry } from 'astro:content';
 // studios/[slug].astro about which pages actually exist.
 export const MIN_FILMS_FOR_PAGE = 2;
 
-export function creatorHasPage(creator: Pick<CollectionEntry<'creators'>, 'data'> | undefined): boolean {
-  return !!creator && creator.data.films.length >= MIN_FILMS_FOR_PAGE;
+// Exception to the one-film rule above: studios/creators named in an AIMB
+// Journal article get a page even with just one film credited so far, so
+// the article's own links actually go somewhere instead of rendering as
+// plain text. Each of these was checked against the pre-redesign site
+// (aimoviebase.com), which already published a real profile page for it
+// before this threshold existed here — see "Most Popular AI Series in
+// 2026" (src/content/articles/most-popular-ai-series-2026.json).
+const ALWAYS_PAGE_STUDIOS = new Set<string>([
+  '630-motion',
+  'mythra',
+  'neon-ridge-media',
+  'reality-foundry',
+]);
+
+const ALWAYS_PAGE_CREATORS = new Set<string>([
+  'mike-j-mitch',
+]);
+
+export function creatorHasPage(creator: Pick<CollectionEntry<'creators'>, 'data' | 'id'> | undefined): boolean {
+  if (!creator) return false;
+  if (ALWAYS_PAGE_CREATORS.has(creator.id)) return true;
+  return creator.data.films.length >= MIN_FILMS_FOR_PAGE;
 }
 
-export function studioHasPage(studio: Pick<CollectionEntry<'studios'>, 'data'> | undefined): boolean {
-  return !!studio && studio.data.films.length >= MIN_FILMS_FOR_PAGE;
+export function studioHasPage(studio: Pick<CollectionEntry<'studios'>, 'data' | 'id'> | undefined): boolean {
+  if (!studio) return false;
+  if (ALWAYS_PAGE_STUDIOS.has(studio.id)) return true;
+  return studio.data.films.length >= MIN_FILMS_FOR_PAGE;
 }
 
 // Looks up an explicit slug already stored on a movie/crew record (e.g.
