@@ -46,8 +46,13 @@ const heroCreditFilm = g.heroCredit
        .full-bleed class (see BaseLayout.astro); this rule only owns the
        hero's own vertical/visual properties. */
     .genreHero { margin-top: -2rem; margin-bottom: 28px; background: var(--black); color: #fff; overflow: hidden; min-height: 280px; }
-    .genreHero .heroArt { position: absolute; inset: 0 0 0 33%; background-size: cover; background-position: center; }
-    .genreHero .heroOverlay { position: absolute; inset: 0; background: linear-gradient(90deg, var(--black) 0%, var(--black) 17%, rgba(8,11,13,.96) 31%, rgba(8,11,13,.65) 53%, rgba(8,11,13,.06) 100%); }
+    /* Full-bleed art (not clipped to the right 67%) with its own left edge
+       feathered via mask-image, so the image fades into the black panel
+       gradually instead of the hard rectangular cut a 33%-inset div leaves —
+       the heroOverlay gradient below still carries the extra darkening
+       needed for text contrast on top of this softer edge. */
+    .genreHero .heroArt { position: absolute; inset: 0; background-size: cover; background-position: center; -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 14%, #000 48%); mask-image: linear-gradient(90deg, transparent 0%, transparent 14%, #000 48%); }
+    .genreHero .heroOverlay { position: absolute; inset: 0; background: linear-gradient(90deg, var(--black) 0%, rgba(8,11,13,.85) 24%, rgba(8,11,13,.5) 42%, rgba(8,11,13,.12) 62%, rgba(8,11,13,0) 80%); }
     .genreHero .heroInner { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; min-height: 280px; display: flex; flex-direction: column; justify-content: center; padding: 32px 2rem; }
     .genreHero .eyebrow { color: #d8dce1; }
     .genreHero h1 { font-size: clamp(36px,5vw,58px); margin: 10px 0 14px; color: #fff; }
