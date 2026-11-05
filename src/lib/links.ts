@@ -13,10 +13,13 @@ export const MIN_FILMS_FOR_PAGE = 2;
 // Exception to the one-film rule above: studios/creators named in an AIMB
 // Journal article get a page even with just one film credited so far, so
 // the article's own links actually go somewhere instead of rendering as
-// plain text. Each of these was checked against the pre-redesign site
-// (aimoviebase.com), which already published a real profile page for it
-// before this threshold existed here — see "Most Popular AI Series in
-// 2026" (src/content/articles/most-popular-ai-series-2026.json).
+// plain text. 630-motion/mythra/neon-ridge-media/reality-foundry/
+// mike-j-mitch were each checked against the pre-redesign site
+// (aimoviebase.com), which already published a real profile page for them
+// before this threshold existed here. serge-karloff has no such
+// pre-redesign page (aimoviebase.com 404s for it) but was explicitly
+// requested — see "Most Popular AI Series in 2026"
+// (src/content/articles/most-popular-ai-series-2026.json).
 const ALWAYS_PAGE_STUDIOS = new Set<string>([
   '630-motion',
   'mythra',
@@ -26,6 +29,7 @@ const ALWAYS_PAGE_STUDIOS = new Set<string>([
 
 const ALWAYS_PAGE_CREATORS = new Set<string>([
   'mike-j-mitch',
+  'serge-karloff',
 ]);
 
 export function creatorHasPage(creator: Pick<CollectionEntry<'creators'>, 'data' | 'id'> | undefined): boolean {

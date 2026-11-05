@@ -2,8 +2,8 @@
   "movie_id": "b67d1f2e-1f2f-4495-ab15-0da0380a30bc",
   "title": "ARK-7",
   "year": 2026,
-  "type": "movie",
-  "duration": "8:30",
+  "type": "series",
+  "seasons": 1,
   "genres": [
     "Sci-Fi"
   ],
@@ -11,7 +11,8 @@
   "poster": "/images/posters/ark-7.webp",
   "youtubeId": "VCBFFRXw32A",
   "director": {
-    "name": "Serge Karloff"
+    "name": "Serge Karloff",
+    "slug": "serge-karloff"
   },
   "awards": [
     "Astana AI Film Festival 2026 — Open Competition entry"

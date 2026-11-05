@@ -136,13 +136,15 @@
       "rank": 7,
       "id": "ark",
       "title": "ARK-7",
-      "genre": "Sci-Fi, Survival, Mystery",
+      "href": "/movies/ark-7",
+      "genre": "Sci-Fi, Survival, Mystery — Season 1",
       "image": "/images/news/most-popular-ai-series-2026/ark-7.webp",
       "imageAlt": "ARK-7 still showing a frightened woman in close-up after surviving a dangerous event",
+      "imageHref": "/movies/ark-7",
       "paragraphs": [
         "<em>ARK-7</em> has attracted more than 4 million views with a story built around survival, discovery, and strange encounters on an unknown world.",
         "The series begins with Eva escaping a dying spacecraft and landing on a dangerous planet, where each clue about what happened only opens up bigger questions.",
-        "Created by Karloff AI, it combines survival stakes with mystery-driven storytelling, giving viewers reasons to stay invested beyond the initial sci-fi setup."
+        "Created by <a href=\"/name/serge-karloff\">Serge Karloff</a>, it combines survival stakes with mystery-driven storytelling, giving viewers reasons to stay invested beyond the initial sci-fi setup."
       ]
     },
     { "type": "note", "label": "Editor's note:", "text": "View counts are approximate and based on publicly visible figures available in November 2026. They may include cumulative views across multiple episodes, and the totals continue to change as new viewers discover the series." }
