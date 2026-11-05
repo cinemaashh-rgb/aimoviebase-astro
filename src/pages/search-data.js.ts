@@ -10,13 +10,12 @@ import { creatorHasPage, studioHasPage } from '../lib/links';
 // no runtime cost and no server — just one array built from the actual
 // content collections every time the site builds.
 export const GET: APIRoute = async () => {
-  const [movies, creators, studios, genres, awards, articles] = await Promise.all([
+  const [movies, creators, studios, genres, awards] = await Promise.all([
     getCollection('movies'),
     getCollection('creators'),
     getCollection('studios'),
     getCollection('genres'),
     getCollection('awards'),
-    getCollection('articles'),
   ]);
 
   type Item = { title: string; href: string; sub: string; img?: string };
@@ -65,11 +64,9 @@ export const GET: APIRoute = async () => {
     items.push({ title: a.data.name, href: `/awards/${a.id}`, sub: 'Award' });
   }
 
-  for (const article of articles) {
-    const item: Item = { title: article.data.title, href: `/news/${article.id}`, sub: `Journal · ${article.data.label}` };
-    if (article.data.image) item.img = article.data.image;
-    items.push(item);
-  }
+  // Journal articles are deliberately left out of the global search index —
+  // search is for the catalog (movies, series, creators, studios, genres,
+  // awards), not editorial content.
 
   const body = `var DATA = ${JSON.stringify(items)};\n`;
   return new Response(body, {

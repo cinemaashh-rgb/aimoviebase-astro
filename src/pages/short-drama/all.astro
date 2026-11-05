@@ -10,7 +10,7 @@ const films = entries.filter((e) => e.data.status === 'published');
 const englishFilms = films.filter((f) => !f.data.originalTitle);
 const chineseFilms = films.filter((f) => f.data.originalTitle);
 ---
-<BaseLayout title="All AI Short Dramas" description="Browse every AI short drama and vertical microdrama in the AIMB catalog, English-language and Chinese productions alike.">
+<BaseLayout title="All AI Short Dramas" description="Browse every AI short drama and vertical microdrama in the AIMB catalog, English-language and Chinese productions alike." hideSearch>
   <style>
     /* Ported from the genre-page format (/genre/[genre].astro) — same
        dark hero shell, tab/sort toolbar and paginated grid, minus the

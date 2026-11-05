@@ -2,8 +2,13 @@
 interface Props {
   title: string;
   description?: string;
+  // AI Short Drama pages run their own independent catalog (see
+  // search-data.js.ts) and are deliberately left out of the global
+  // search index, so the global search box is hidden on those pages
+  // rather than offered with results it can never actually return.
+  hideSearch?: boolean;
 }
-const { title, description = 'AI Movie Base — catalog of AI-generated films.' } = Astro.props;
+const { title, description = 'AI Movie Base — catalog of AI-generated films.', hideSearch = false } = Astro.props;
 
 // Canonical URL, derived automatically for every page that renders this layout.
 // Astro.site comes from astro.config.mjs ("https://aimoviebase.com", non-www —
@@ -300,31 +305,37 @@ function isActive(prefix: string) {
       <a href="/awards" class={isActive('/awards') ? 'active' : ''}>Awards</a>
     </nav>
     <div class="headerRight">
-      <div class="siteSearch">
-        <input class="searchInput" type="text" placeholder="Search films, creators…" />
-        <div class="searchResults"></div>
-      </div>
-      <a aria-controls="mobileSearchPanel" aria-expanded="false" aria-label="Open search" class="mobileSearchTrigger" href="#mobileSearchPanel" id="mobileSearchTrigger" role="button">
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.8" cy="10.8" r="7.3"></circle><path d="m16.2 16.2 5 5"></path></svg>
-      </a>
+      {!hideSearch && (
+        <Fragment>
+          <div class="siteSearch">
+            <input class="searchInput" type="text" placeholder="Search films, creators…" />
+            <div class="searchResults"></div>
+          </div>
+          <a aria-controls="mobileSearchPanel" aria-expanded="false" aria-label="Open search" class="mobileSearchTrigger" href="#mobileSearchPanel" id="mobileSearchTrigger" role="button">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.8" cy="10.8" r="7.3"></circle><path d="m16.2 16.2 5 5"></path></svg>
+          </a>
+        </Fragment>
+      )}
       <a class="submitBtn" href="/submit-film">Submit a Film</a>
     </div>
   </header>
 
-  <div aria-hidden="true" aria-label="Search AIMB" aria-modal="true" class="mobileSearchPanel" id="mobileSearchPanel" role="dialog">
-    <div class="mobileSearchTop">
-      <div class="mobileSearchInputWrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.8" cy="10.8" r="7.2"></circle><path d="m16.2 16.2 5.1 5.1"></path></svg>
-        <input aria-label="Search films and lists" autocomplete="off" id="mobileSearchInput" inputmode="search" placeholder="Search films, creators, studios…" spellcheck="false" type="search" />
-        <button aria-label="Clear search" id="mobileSearchClear" type="button">×</button>
+  {!hideSearch && (
+    <div aria-hidden="true" aria-label="Search AIMB" aria-modal="true" class="mobileSearchPanel" id="mobileSearchPanel" role="dialog">
+      <div class="mobileSearchTop">
+        <div class="mobileSearchInputWrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.8" cy="10.8" r="7.2"></circle><path d="m16.2 16.2 5.1 5.1"></path></svg>
+          <input aria-label="Search films and lists" autocomplete="off" id="mobileSearchInput" inputmode="search" placeholder="Search films, creators, studios…" spellcheck="false" type="search" />
+          <button aria-label="Clear search" id="mobileSearchClear" type="button">×</button>
+        </div>
+        <a aria-label="Close search" class="mobileSearchClose" href="#aimb-page-top" id="mobileSearchClose" role="button">Cancel</a>
       </div>
-      <a aria-label="Close search" class="mobileSearchClose" href="#aimb-page-top" id="mobileSearchClose" role="button">Cancel</a>
+      <div class="mobileSearchScroll">
+        <div class="mobileSearchLabel" hidden id="mobileSearchStatus">SEARCH RESULTS</div>
+        <div class="mobileSearchResults" id="mobileSearchResults"></div>
+      </div>
     </div>
-    <div class="mobileSearchScroll">
-      <div class="mobileSearchLabel" hidden id="mobileSearchStatus">SEARCH RESULTS</div>
-      <div class="mobileSearchResults" id="mobileSearchResults"></div>
-    </div>
-  </div>
+  )}
 
   <main>
     <slot />

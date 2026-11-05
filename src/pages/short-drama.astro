@@ -39,7 +39,7 @@ const articles = await getCollection('articles');
 const journalSlugs = ['the-rise-of-chinese-ai-short-drama', 'five-ai-short-drama-trends-to-watch'];
 const journal = journalSlugs.map((id) => articles.find((a) => a.id === id)).filter((a): a is NonNullable<typeof a> => Boolean(a));
 ---
-<BaseLayout title="AI Short Drama" description="Explore AI short dramas and vertical microdramas, including Chinese AI series. AIMB editorial picks and the Slop or Cinema? Quality Index.">
+<BaseLayout title="AI Short Drama" description="Explore AI short dramas and vertical microdramas, including Chinese AI series. AIMB editorial picks and the Slop or Cinema? Quality Index." hideSearch>
   <style>
     /* ---- Hero ---- */
     /* Horizontal full-bleed comes from the shared .full-bleed class (see

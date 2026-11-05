@@ -34,7 +34,7 @@ const verdict = d.qualityIndex ? getVerdict(d.qualityIndex.score) : null;
 const RING_CIRC = 2 * Math.PI * 46;
 const dash = d.qualityIndex ? (d.qualityIndex.score / 100) * RING_CIRC : 0;
 ---
-<BaseLayout title={d.title} description={d.description ?? d.tagline}>
+<BaseLayout title={d.title} description={d.description ?? d.tagline} hideSearch>
   <style>
     .sdCrumb { font-size: .78rem; color: var(--muted); margin: 0 0 20px; }
     .sdCrumb a:hover { color: var(--blue); }
