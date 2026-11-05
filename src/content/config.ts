@@ -124,6 +124,14 @@ const genres = defineCollection({
     // Optional hero banner background for the genre page; most genres have
     // none and fall back to the plain dark hero.
     heroImage: z.string().optional(),
+    // Attribution for heroImage when it's an actual still from a catalog
+    // film (rather than generic mood art) — movieSlug must match an id in
+    // the `movies` collection so the credit always reflects real, current
+    // catalog data (title/year) instead of a hand-typed copy that can go
+    // stale. Only meaningful alongside heroImage.
+    heroCredit: z.object({
+      movieSlug: z.string(),
+    }).optional(),
   }),
 });
 

@@ -1,5 +1,7 @@
 {
   "name": "Experimental",
   "description": "Work exploring the limits of what current video models can do — often without a traditional narrative.",
-  "films": ["total-pixel-space", "do-the-evolution", "unprompted", "whats-the-job", "distance-between-two-points-of-me", "fragments-of-nowhere", "little-mes", "between-before-and-after", "website"]
+  "films": ["total-pixel-space", "do-the-evolution", "unprompted", "whats-the-job", "distance-between-two-points-of-me", "fragments-of-nowhere", "little-mes", "between-before-and-after", "website"],
+  "heroImage": "/images/genres/experimental-hero.webp",
+  "heroCredit": { "movieSlug": "total-pixel-space" }
 }

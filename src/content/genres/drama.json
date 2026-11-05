@@ -1,5 +1,7 @@
 {
   "name": "Drama",
   "description": "Character-driven AI films that lean on performance and emotional nuance — the hardest register for generative video to pull off convincingly.",
-  "films": ["a-face-only-a-mother-could-love", "still", "costa-verde", "hold-your-breath", "sinuca-de-bico", "fukushima", "ballast", "fix", "morek", "soulless", "centenarian-kindergarten", "the-fracture", "good-boy", "distance-between-two-points-of-me", "le-drip", "little-mes", "between-before-and-after", "postman", "simiyu-lies-and-happiness"]
+  "films": ["a-face-only-a-mother-could-love", "still", "costa-verde", "hold-your-breath", "sinuca-de-bico", "fukushima", "ballast", "fix", "morek", "soulless", "centenarian-kindergarten", "the-fracture", "good-boy", "distance-between-two-points-of-me", "le-drip", "little-mes", "between-before-and-after", "postman", "simiyu-lies-and-happiness"],
+  "heroImage": "/images/genres/drama-hero.webp",
+  "heroCredit": { "movieSlug": "a-face-only-a-mother-could-love" }
 }
