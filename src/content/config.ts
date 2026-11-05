@@ -316,6 +316,33 @@ const articles = defineCollection({
         note: z.string().optional(),
       }),
       z.object({ type: z.literal('note'), label: z.string().optional(), text: z.string() }),
+      // "Inside this list" sidebar card for a ranked-list feature (see
+      // rankedEntry below) — a short numbered table of contents plus an
+      // optional note about how the ranking/figures work.
+      z.object({
+        type: z.literal('listSummary'),
+        title: z.string(),
+        items: z.array(z.string()),
+        note: z.string().optional(),
+      }),
+      // One entry of a ranked list ("most popular AI series", etc.):
+      // rank, title (optionally linking to the real movie/series page),
+      // genre line, optional studio credit, a still, and its own
+      // paragraphs. Rendered with alternating image-left/image-right
+      // layout by position, same as the source design.
+      z.object({
+        type: z.literal('rankedEntry'),
+        rank: z.number(),
+        id: z.string().optional(),
+        title: z.string(),
+        href: z.string().optional(),
+        genre: z.string(),
+        studio: z.object({ name: z.string(), href: z.string().optional() }).optional(),
+        image: z.string(),
+        imageAlt: z.string(),
+        imageHref: z.string().optional(),
+        paragraphs: z.array(z.string()),
+      }),
     ])).optional(),
     // The movie this article is about, when there is one in the catalog —
     // renders the "Featured film" aside linking to its real page/poster.

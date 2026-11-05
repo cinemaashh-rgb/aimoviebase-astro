@@ -1,19 +1,149 @@
 {
   "label": "Lists",
-  "date": "Nov 2, 2026",
-  "datetime": "2026-11-02",
-  "title": "The most popular AI series of 2026, ranked by views",
-  "excerpt": "From a dragon birth that broke out on TikTok to a monthly fantasy-action saga with 40+ characters, these are the AI series pulling the biggest audiences this year.",
+  "date": "Nov 5, 2026",
+  "datetime": "2026-11-05",
+  "title": "Most Popular AI Series in 2026",
+  "excerpt": "AIMB editorial list of the most popular AI series in 2026, featuring The Mother's Monster, The Chronicles of Bone, Kade Voss, The Sky-Fallen Legacy, Annunaki, The Sage, and ARK-7.",
   "image": "/images/posters/the-mothers-monster-wide.webp",
   "body": [
-    "AI series stopped being a novelty somewhere in 2026, and the view counts finally back that up. Below is this year's ranking by views — alongside two single-installment entries in ongoing AI story-universes that are already pulling series-sized audiences on their own, flagged as such rather than counted as true multi-episode shows.",
-    "1. The Mother's Monster — roughly 86 million views. Technically a standalone short, not a serialized show, but its premise carried it past every true series on this list: a mother gives birth to a dragon her village brands a monster, and must protect him from the superstition that surrounds them both. The version published through the MYTHRA channel is the one driving those numbers.",
-    "2. The Chronicles of Bone — roughly 34.5 million views. Kavan Cardoza's ongoing monthly fantasy-action series, built around a cast of 40+ characters across five planned seasons, made with Freepik and Magnific.",
-    "3. Kade Voss | Bounty Hunter — roughly 9.3 million views. A 7-episode AI-generated sci-fi action series.",
-    "4. The Sky-Fallen Legacy — roughly 9 million views. A 13-episode sci-fi series from The Reality Foundry, made with Dreamina and Pippit AI, released July through October 2026.",
-    "5. Annunaki: The Nibiru Legacy — roughly 7.5 million views. A 2-episode AI-generated sci-fi series.",
-    "6. The Sage: Homecoming — roughly 7 million views. A 7-episode horror series from Phantom X, directed by Mike J Mitch and made with Invideo AI, released March through September 2026.",
-    "7. ARK-7 — roughly 4.2 million views. The pilot episode of Serge Karloff's AI sci-fi series, built on a hybrid model of real identity and AI-native production — including Sofia, a young girl whose likeness (used with her mother's permission) makes her the youngest inhabitant of the ARK-7 universe.",
-    "Worth noting: these figures are view-count snapshots, not an AIMB-verified leaderboard — we'll revisit the list as 2026 closes out and new episodes land."
+    "AI series are finding a real audience on YouTube. Some projects have already reached tens of millions of views, while others are building dedicated followings through recurring characters, stronger worldbuilding, and stories that keep viewers coming back. Here are seven AI series and franchises that stood out in 2026.",
+    "1. The Mother's Monster — over 90 million views. The story follows a mother who gives birth to a dragon-like creature in a remote, snow-covered village. When the villagers turn against her child, she must decide how far she is willing to go to protect it. Created by Zahid Iqbal, the original film found a large audience thanks to its emotional core and striking fantasy imagery, later expanding into a growing franchise.",
+    "2. The Chronicles of Bone — tens of millions of views. Created by Kavan the Kid, the series throws legendary figures into a brutal fantasy world shaped by war, ancient powers, and supernatural threats. Its appeal comes from a mix of stylized action, memorable character designs, and the sense that the story is building toward something much larger.",
+    "3. Kade Voss | Bounty Hunter — more than 9 million views. The series follows a lone bounty hunter moving across dangerous worlds, taking on armed targets and navigating the lawless edges of a futuristic galaxy. Created by Neon Ridge Media, it stands out for its clear central character, cinematic action, and a world that feels built for repeat adventures.",
+    "4. The Sky-Fallen Legacy — around 9 million views. The series follows Ethan, a human engineer who crash-lands on an alien world and becomes entangled in a wider conflict involving unfamiliar civilizations and shifting loyalties. What makes the project especially interesting is the audience response: viewers discuss the characters, speculate about future twists, and treat it like an ongoing sci-fi drama.",
+    "5. ANNUNAKI: The Nibiru Legacy — more than 7 million views. Produced by 630 Motion, the project explores ancient secrets, hidden histories, and the possibility that humanity's origins are connected to forces beyond Earth. Its appeal lies in the fusion of conspiracy-laced mystery, futuristic imagery, and a premise large enough to support an expanding series universe.",
+    "6. The Sage — about 7 million views. The series follows Elijah Kelly as he returns to Mill Ford after years of war, only to discover a town shaped by fear, mystery, and something far more unsettling hiding beneath the surface. Created by Mike J Mitch and Phantom X, it builds its audience through eerie atmosphere, gradual revelations, and the promise that each episode will deepen the mystery.",
+    "7. ARK-7 — more than 4 million views. The series begins with Eva escaping a dying spacecraft and landing on a dangerous planet, where each clue about what happened only opens up bigger questions. Created by Karloff AI, it combines survival stakes with mystery-driven storytelling, giving viewers reasons to stay invested beyond the initial sci-fi setup.",
+    "Editor's note: View counts are approximate and based on publicly visible figures available in November 2026. They may include cumulative views across multiple episodes, and the totals continue to change as new viewers discover the series."
+  ],
+  "contentBlocks": [
+    { "type": "lead", "text": "AI series are finding a real audience on YouTube. Some projects have already reached tens of millions of views, while others are building dedicated followings through recurring characters, stronger worldbuilding, and stories that keep viewers coming back. Here are seven AI series and franchises that stood out in 2026." },
+    {
+      "type": "listSummary",
+      "title": "Inside this list",
+      "items": [
+        "The Mother's Monster",
+        "The Chronicles of Bone",
+        "Kade Voss | Bounty Hunter",
+        "The Sky-Fallen Legacy",
+        "ANNUNAKI: The Nibiru Legacy",
+        "The Sage",
+        "ARK-7"
+      ],
+      "note": "View counts are written inside the text rather than the headings, since these numbers continue to grow over time."
+    },
+    {
+      "type": "rankedEntry",
+      "rank": 1,
+      "id": "mothers",
+      "title": "The Mother's Monster",
+      "href": "/movies/the-mothers-monster",
+      "genre": "Dark Fantasy, Drama",
+      "studio": { "name": "MYTHRA", "href": "/studios/mythra" },
+      "image": "/images/news/most-popular-ai-series-2026/mothers-monster.webp",
+      "imageAlt": "The Mother's Monster still showing a young woman touching the face of a pale dragon",
+      "imageHref": "/movies/the-mothers-monster",
+      "paragraphs": [
+        "With over 90 million views on YouTube, <em>The Mother's Monster</em> has become one of the biggest viral hits in AI filmmaking.",
+        "The story follows a mother who gives birth to a dragon-like creature in a remote, snow-covered village. When the villagers turn against her child, she must decide how far she is willing to go to protect it.",
+        "Created by Zahid Iqbal, the original film found a large audience thanks to its emotional core and striking fantasy imagery, later expanding into a growing franchise."
+      ]
+    },
+    {
+      "type": "rankedEntry",
+      "rank": 2,
+      "id": "chronicles",
+      "title": "The Chronicles of Bone",
+      "href": "/movies/the-chronicles-of-bone",
+      "genre": "Dark Fantasy, Action, Adventure",
+      "image": "/images/news/most-popular-ai-series-2026/chronicles-of-bone.webp",
+      "imageAlt": "The Chronicles of Bone still showing a man in a hat with white bandages over his face",
+      "imageHref": "/movies/the-chronicles-of-bone",
+      "paragraphs": [
+        "<em>The Chronicles of Bone</em> has attracted tens of millions of views and become one of the most recognizable AI fantasy series on YouTube.",
+        "Created by <a href=\"/name/kavan-cardoza\">Kavan the Kid</a>, the series throws legendary figures into a brutal fantasy world shaped by war, ancient powers, and supernatural threats.",
+        "Its appeal comes from a mix of stylized action, memorable character designs, and the sense that the story is building toward something much larger."
+      ]
+    },
+    {
+      "type": "rankedEntry",
+      "rank": 3,
+      "id": "kade",
+      "title": "Kade Voss | Bounty Hunter",
+      "href": "/movies/kade-voss",
+      "genre": "Sci-Fi, Action, Space Western",
+      "image": "/images/news/most-popular-ai-series-2026/kade-voss.webp",
+      "imageAlt": "Kade Voss still showing a futuristic bounty hunter aiming a rifle in the desert",
+      "imageHref": "/movies/kade-voss",
+      "paragraphs": [
+        "With more than 9 million views, <em>Kade Voss | Bounty Hunter</em> shows how well the space-western format fits AI series storytelling.",
+        "The series follows a lone bounty hunter moving across dangerous worlds, taking on armed targets and navigating the lawless edges of a futuristic galaxy.",
+        "Created by <a href=\"/studios/neon-ridge-media\">Neon Ridge Media</a>, it stands out for its clear central character, cinematic action, and a world that feels built for repeat adventures."
+      ]
+    },
+    {
+      "type": "rankedEntry",
+      "rank": 4,
+      "id": "sky",
+      "title": "The Sky-Fallen Legacy",
+      "href": "/movies/the-sky-fallen-legacy",
+      "genre": "Sci-Fi, Adventure, Drama",
+      "studio": { "name": "The Reality Foundry", "href": "/studios/reality-foundry" },
+      "image": "/images/news/most-popular-ai-series-2026/sky-fallen-legacy.webp",
+      "imageAlt": "The Sky-Fallen Legacy — an armored figure and a woman with blades outside a futuristic spacecraft",
+      "imageHref": "/movies/the-sky-fallen-legacy",
+      "paragraphs": [
+        "With around 9 million views, <em>The Sky-Fallen Legacy</em> is one of the AI series proving that audiences return for the story as much as the visuals.",
+        "The series follows Ethan, a human engineer who crash-lands on an alien world and becomes entangled in a wider conflict involving unfamiliar civilizations and shifting loyalties.",
+        "What makes the project especially interesting is the audience response: viewers discuss the characters, speculate about future twists, and treat it like an ongoing sci-fi drama."
+      ]
+    },
+    {
+      "type": "rankedEntry",
+      "rank": 5,
+      "id": "annunaki",
+      "title": "ANNUNAKI: The Nibiru Legacy",
+      "href": "/movies/annunaki-the-nibiru-legacy",
+      "genre": "Sci-Fi, Mystery, Adventure",
+      "image": "/images/news/most-popular-ai-series-2026/annunaki.webp",
+      "imageAlt": "Annunaki still showing a man on a throne flanked by two armored figures with falcon heads",
+      "imageHref": "/movies/annunaki-the-nibiru-legacy",
+      "paragraphs": [
+        "<em>ANNUNAKI: The Nibiru Legacy</em> has drawn more than 7 million views with its blend of extraterrestrial mythology and cinematic sci-fi spectacle.",
+        "Produced by <a href=\"/studios/630-motion\">630 Motion</a>, the project explores ancient secrets, hidden histories, and the possibility that humanity's origins are connected to forces beyond Earth.",
+        "Its appeal lies in the fusion of conspiracy-laced mystery, futuristic imagery, and a premise large enough to support an expanding series universe."
+      ]
+    },
+    {
+      "type": "rankedEntry",
+      "rank": 6,
+      "id": "sage",
+      "title": "The Sage",
+      "href": "/movies/the-sage-homecoming",
+      "genre": "Horror, Mystery, Supernatural",
+      "image": "/images/news/most-popular-ai-series-2026/sage.webp",
+      "imageAlt": "The Sage still showing a stern man in a hat standing on a salt flat with riders in the distance",
+      "imageHref": "/movies/the-sage-homecoming",
+      "paragraphs": [
+        "With about 7 million views, <em>The Sage</em> stands out by taking AI storytelling into darker supernatural territory.",
+        "The series follows Elijah Kelly as he returns to Mill Ford after years of war, only to discover a town shaped by fear, mystery, and something far more unsettling hiding beneath the surface.",
+        "Created by <a href=\"/name/mike-j-mitch\">Mike J Mitch</a> and <a href=\"/studios/phantom-x\">Phantom X</a>, it builds its audience through eerie atmosphere, gradual revelations, and the promise that each episode will deepen the mystery."
+      ]
+    },
+    {
+      "type": "rankedEntry",
+      "rank": 7,
+      "id": "ark",
+      "title": "ARK-7",
+      "genre": "Sci-Fi, Survival, Mystery",
+      "image": "/images/news/most-popular-ai-series-2026/ark-7.webp",
+      "imageAlt": "ARK-7 still showing a frightened woman in close-up after surviving a dangerous event",
+      "paragraphs": [
+        "<em>ARK-7</em> has attracted more than 4 million views with a story built around survival, discovery, and strange encounters on an unknown world.",
+        "The series begins with Eva escaping a dying spacecraft and landing on a dangerous planet, where each clue about what happened only opens up bigger questions.",
+        "Created by Karloff AI, it combines survival stakes with mystery-driven storytelling, giving viewers reasons to stay invested beyond the initial sci-fi setup."
+      ]
+    },
+    { "type": "note", "label": "Editor's note:", "text": "View counts are approximate and based on publicly visible figures available in November 2026. They may include cumulative views across multiple episodes, and the totals continue to change as new viewers discover the series." }
   ]
 }

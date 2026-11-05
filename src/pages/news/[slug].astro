@@ -62,6 +62,7 @@ const headings = ((a.contentBlocks ?? []).filter((b) => b.type === 'heading')) a
       .articleWithToc { grid-template-columns: minmax(0,700px); gap: 0; }
       .articleToc { display: none; }
     }
+    .articleWithToc.noToc { grid-template-columns: minmax(0,700px); }
 
     .articleContent { width: min(100%,700px); margin: 40px 0 0; font: 18px/1.8 var(--serif); color: #2c333c; }
     .articleContent p { margin: 0 0 24px; }
@@ -93,6 +94,24 @@ const headings = ((a.contentBlocks ?? []).filter((b) => b.type === 'heading')) a
 
     .articleNote { font: .75rem/1.7 Arial, sans-serif; color: var(--muted2); border-top: 1px solid var(--line); padding-top: 15px; margin: 30px 0; }
     .articleNote strong { color: var(--ink); }
+
+    .listSummary { margin: 22px 0 32px; padding: 18px 20px; background: var(--soft); border: 1px solid var(--line); border-radius: 6px; font-family: Arial, sans-serif; }
+    .listSummaryTitle { font: 700 .72rem Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--muted2); margin-bottom: 11px; }
+    .listSummary ol { margin: 0; padding-left: 20px; font-size: .86rem; line-height: 1.85; color: #2c333c; }
+    .listSummaryNote { font: .72rem/1.6 Arial, sans-serif; color: var(--muted2); margin: 13px 0 0; }
+
+    .rankedEntry { margin: 0 0 30px; padding-bottom: 26px; border-bottom: 1px solid var(--line); scroll-margin-top: 28px; }
+    .rankedEntry:last-of-type { border-bottom: 0; margin-bottom: 0; }
+    .rankedMedia { border-radius: 6px; overflow: hidden; background: var(--soft); margin-bottom: 16px; }
+    .rankedMedia img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+    .rankBadge { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; height: 32px; padding: 0 4px; border-radius: 999px; background: #f4e5cc; color: #8b5810; font: 700 .9rem Arial, sans-serif; margin-bottom: 10px; }
+    .rankedEntry h3 { font: 400 1.5rem/1.2 var(--serif); margin: 0 0 7px; color: var(--ink); }
+    .rankedEntry h3 a:hover { color: #cf6246; }
+    .rankedGenre, .rankedStudio { font: .78rem Arial, sans-serif; color: var(--muted2); margin: 0 0 4px; }
+    .rankedGenre strong, .rankedStudio strong { color: var(--muted); font-weight: 700; }
+    .rankedBody p { font-size: 1rem; line-height: 1.7; }
+    .rankedBody em { font-style: italic; }
+    .rankedBody a { color: #b74e34; border-bottom: 1px solid #dba58f; }
 
     .featuredFilm { display: grid; grid-template-columns: 110px minmax(0,1fr) auto; gap: 20px; align-items: center; margin: 32px 0 36px; padding: 16px; background: var(--soft); border: 1px solid var(--line); border-radius: 5px; width: min(100%,700px); }
     .featuredFilm img { display: block; aspect-ratio: 2/3; width: 110px; height: 165px; object-fit: cover; border-radius: 3px; }
@@ -152,7 +171,7 @@ const headings = ((a.contentBlocks ?? []).filter((b) => b.type === 'heading')) a
     </figure>
 
     {a.contentBlocks && a.contentBlocks.length > 0 ? (
-      <div class="articleWithToc">
+      <div class={headings.length > 0 ? "articleWithToc" : "articleWithToc noToc"}>
         <div class="articleContent">
           {a.contentBlocks.map((block) => {
             switch (block.type) {
@@ -210,6 +229,37 @@ const headings = ((a.contentBlocks ?? []).filter((b) => b.type === 'heading')) a
                     {block.label && <strong>{block.label} </strong>}
                     {block.text}
                   </p>
+                );
+              case 'listSummary':
+                return (
+                  <aside class="listSummary">
+                    <div class="listSummaryTitle">{block.title}</div>
+                    <ol>{block.items.map((item) => <li>{item}</li>)}</ol>
+                    {block.note && <p class="listSummaryNote">{block.note}</p>}
+                  </aside>
+                );
+              case 'rankedEntry':
+                return (
+                  <article class="rankedEntry" id={block.id}>
+                    <div class="rankedMedia">
+                      {block.imageHref ? (
+                        <a href={block.imageHref}><img src={block.image} alt={block.imageAlt} loading="lazy" /></a>
+                      ) : (
+                        <img src={block.image} alt={block.imageAlt} loading="lazy" />
+                      )}
+                    </div>
+                    <div class="rankedBody">
+                      <div class="rankBadge">{block.rank}</div>
+                      <h3>{block.href ? <a href={block.href}>{block.title}</a> : block.title}</h3>
+                      <p class="rankedGenre"><strong>Genre:</strong> {block.genre}</p>
+                      {block.studio && (
+                        <p class="rankedStudio">
+                          Studio: {block.studio.href ? <a href={block.studio.href}>{block.studio.name}</a> : block.studio.name}
+                        </p>
+                      )}
+                      {block.paragraphs.map((p) => <p set:html={p} />)}
+                    </div>
+                  </article>
                 );
               default:
                 return null;
