@@ -1,0 +1,16 @@
+{
+  "movie_id": "f48d5a2c-3b30-4d16-bc27-70cc792f7244",
+  "title": "THE COAT",
+  "year": 2026,
+  "type": "movie",
+  "genres": ["Animation"],
+  "synopsis": "A mother's love, knitted into a coat for her son Theo, grows from tender care into a suffocating overprotection — one he must learn to free himself from.",
+  "poster": "/images/posters/the-coat.webp",
+  "director": {
+    "name": "Daniel & David Carvajal"
+  },
+  "studio": "AORUM Creative Studio",
+  "awards": [
+    "Honorable Mention ($10,000) — Higgsfield Global Film Festival 2026"
+  ]
+}

@@ -108,7 +108,9 @@
         {
           "place": "Honorable Mention",
           "title": "THE COAT",
+          "movieSlug": "the-coat",
           "director": "Davidacfilm",
+          "poster": "/images/posters/the-coat.webp",
           "prize": "$10,000",
           "notes": []
         },
