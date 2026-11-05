@@ -40,7 +40,16 @@ const awardRest = awardPool
 const awardWinners = [...awardPinned, ...awardRest].slice(0, 6);
 
 const shortdramaAll = await getCollection('shortdrama');
-const shortdramaPublished = shortdramaAll.filter((e) => e.data.status === 'published').slice(0, 3);
+// Curated rather than "first 3 published": several published entries have
+// Chinese-text poster art (vertical shorts translated from Chinese
+// platforms), which looked out of place as the only 3 posters shown on the
+// homepage. These three are English-language titles with English poster
+// art, picked for tonal variety (paranormal romance, fantasy romance,
+// family drama).
+const SHORTDRAMA_HOME_PICKS = ['the-alpha-and-his-nanny-luna', 'the-great-and-powerful-genie', 'the-mechanic-prince'];
+const shortdramaPublished = SHORTDRAMA_HOME_PICKS
+  .map((slug) => shortdramaAll.find((e) => e.id === slug && e.data.status === 'published'))
+  .filter((e): e is NonNullable<typeof e> => Boolean(e));
 
 const awards = await getCollection('awards');
 
@@ -163,7 +172,12 @@ const journal = (await getCollection('articles'))
     .shortHeadingLink:hover .arrow, .shortHeadingLink:focus-visible .arrow { color: #cf6246; transform: translateX(6px); }
     .shortCopy p { color: var(--muted); font-size: .88rem; line-height: 1.55; margin: 0; max-width: 480px; }
     .shortGallery { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; background: var(--soft); border-radius: 8px; padding: 10px; }
-    .shortGallery a { display: block; }
+    /* Each poster lifts and scales up on hover; its neighbors ease back and
+       dim slightly so the hovered card reads as "coming forward" rather
+       than the whole row just sitting still. */
+    .shortGallery a { display: block; border-radius: 4px; transition: transform .35s cubic-bezier(.22,1,.36,1), opacity .35s ease, box-shadow .35s ease; }
+    .shortGallery a:hover, .shortGallery a:focus-visible { transform: translateY(-10px) scale(1.06); box-shadow: 0 20px 36px rgba(0,0,0,.25); position: relative; z-index: 2; }
+    .shortGallery:hover a:not(:hover) { transform: scale(.96); opacity: .7; }
     .shortGallery img, .shortGallery .dramaFallback { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 4px; background: #fff; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .68rem; font-weight: 600; text-align: center; padding: 8px; }
 
     /* ---- Festivals ---- */
