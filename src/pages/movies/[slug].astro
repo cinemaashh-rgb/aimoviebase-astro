@@ -514,7 +514,15 @@ const mobileCredits = [
         {related.map((f) => (
           <a href={`/movies/${f.id}`} style="display:block;">
             {f.data.poster ? (
-              <img src={widePoster(f.data.poster)} alt={f.data.title} loading="lazy" />
+              <picture>
+                {/* Same fix as the desktop copy above: this block only ever
+                    renders on mobile, where .related img is a 2/3 portrait
+                    box — feed it the real poster instead of widePoster()'s
+                    16/9 crop so object-fit: cover doesn't crop off most of
+                    each poster's width and cut off titles. */}
+                <source media="(max-width: 680px)" srcset={f.data.poster} />
+                <img src={widePoster(f.data.poster)} alt={f.data.title} loading="lazy" />
+              </picture>
             ) : (
               <div class="posterFallback">{f.data.title}</div>
             )}
