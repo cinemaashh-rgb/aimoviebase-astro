@@ -301,6 +301,10 @@ const articles = defineCollection({
     // to fall back on even for a contentBlocks article.
     contentBlocks: z.array(z.discriminatedUnion('type', [
       z.object({ type: z.literal('lead'), text: z.string() }),
+      // Rendered with set:html (like rankedEntry paragraphs below) so a
+      // paragraph can carry an inline <a>/<em>/<strong> — e.g. linking the
+      // festival's own name straight to its AIMB awards page rather than
+      // leaving the whole line as plain text.
       z.object({ type: z.literal('paragraph'), text: z.string() }),
       z.object({ type: z.literal('heading'), id: z.string(), text: z.string(), tocLabel: z.string().optional() }),
       z.object({ type: z.literal('quote'), text: z.string(), author: z.string() }),
@@ -347,6 +351,66 @@ const articles = defineCollection({
         imageAlt: z.string(),
         imageHref: z.string().optional(),
         paragraphs: z.array(z.string()),
+      }),
+      // A row of headline figures (prize fund, submissions, countries) for
+      // a festival-results piece — plain numbers, no commentary.
+      z.object({
+        type: z.literal('stats'),
+        items: z.array(z.object({ value: z.string(), label: z.string() })),
+      }),
+      // The single top-prize film, called out on its own above the rest of
+      // the winners grid. `href`/`image` always point at the real AIMB
+      // movie page and catalog poster when the film is in the catalog —
+      // never an external video-host thumbnail — so the card is a genuine
+      // internal link rather than a dead end off the site.
+      z.object({
+        type: z.literal('filmSpotlight'),
+        href: z.string(),
+        image: z.string(),
+        imageAlt: z.string(),
+        awardLabel: z.string(),
+        role: z.string(),
+        title: z.string(),
+        text: z.string(),
+        linkLabel: z.string(),
+      }),
+      // The runner-up prizes, as a small grid of the same card shape as
+      // filmSpotlight above.
+      z.object({
+        type: z.literal('filmGrid'),
+        cards: z.array(z.object({
+          href: z.string(),
+          image: z.string(),
+          imageAlt: z.string(),
+          awardLabel: z.string(),
+          role: z.string(),
+          title: z.string(),
+          text: z.string(),
+          linkLabel: z.string(),
+        })),
+      }),
+      // A lighter-weight grid for films mentioned in passing (e.g.
+      // Honorable Mentions called out by name) rather than given a full
+      // spotlight/grid card.
+      z.object({
+        type: z.literal('mentions'),
+        items: z.array(z.object({
+          href: z.string(),
+          image: z.string(),
+          imageAlt: z.string(),
+          label: z.string(),
+          title: z.string(),
+          text: z.string(),
+        })),
+      }),
+      // A single divider-styled link line (e.g. "see the rest of the
+      // winners on AIMB's own awards page").
+      z.object({ type: z.literal('linkBanner'), text: z.string(), href: z.string() }),
+      // Closing call-to-action links (the external official results page,
+      // AIMB's own awards directory, etc.).
+      z.object({
+        type: z.literal('cta'),
+        links: z.array(z.object({ text: z.string(), href: z.string() })),
       }),
     ])).optional(),
     // The movie this article is about, when there is one in the catalog —

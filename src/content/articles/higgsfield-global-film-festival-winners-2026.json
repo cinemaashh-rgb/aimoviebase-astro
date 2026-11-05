@@ -1,15 +1,109 @@
 {
   "label": "News",
-  "date": "Nov 1, 2026",
-  "datetime": "2026-11-01",
-  "title": "Higgsfield Global Film Festival announces its 2026 winners",
-  "excerpt": "Higgsfield handed out its $1,000,000 prize pool: \"Listen to Meh\" takes the $500,000 top prize, with Fukushima and The Field Agent placing second and third, and ten more films earning Honorable Mentions.",
-  "image": "/images/posters/listen-to-meh-wide.webp",
+  "date": "Nov 5, 2026",
+  "datetime": "2026-11-05",
+  "title": "Higgsfield Global Film Festival 2026: $500,000 Grand Prize Goes to Listen to Meh",
+  "excerpt": "Higgsfield Global Film Festival 2026 announces its $1 million winners: Listen to Meh, Fukushima, The Field Agent, and The Tortoise and the Hare.",
+  "image": "/images/news/higgsfield-global-film-festival-winners-2026/hero.webp",
+  "imageAlt": "Listen to Meh, winner of the Higgsfield Global Film Festival 2026",
+  "heroCaption": "Listen to Meh — Higgsfield Global Film Festival 2026 Grand Prize winner.",
   "body": [
-    "Higgsfield has announced the results of its 2026 Global Film Festival, a competition that invited filmmakers around the world to make original short films using the platform's generative AI tools. Fourteen films in total were awarded out of a $1,000,000 prize pool, split across three jury-ranked prizes, an Audience Choice Award, and ten Honorable Mentions.",
-    "The $500,000 first prize went to \"Listen to Meh\", by creator @rococo_table_radical. Second place and $200,000 went to \"Fukushima\" (@aist), and third place with $100,000 went to \"The Field Agent\" (@zackmmurray). The Audience Choice Award — also carrying a $100,000 prize — went to \"The Tortoise and the Hare\" (@benhamin), a fable about a group of adventurous rabbits hunting for a legendary golden tortoise.",
-    "Ten further films received Honorable Mentions worth $10,000 each: BALLAST (@lejardinier), FIX (@production_pi_korea), ROAR (@vermeer_ice_9000), Soulless (@yoav_yariv), THE COAT (@davidacfilm), Morek (@zezumre), Lullaby (@keigo_matsumaru), GIRLS / DEMONS (@tambv), The Elevator (@curious_media_2026), and HUNGER (@sssacccade).",
-    "The full results, with posters and director credits for every winning film, are up on AIMB's Higgsfield Global Film Festival page."
+    "Higgsfield has announced the results of its 2026 Global Film Festival, a competition for original AI-generated short films. Fourteen films were awarded out of a $1,000,000 prize pool, split across three jury-ranked prizes, an Audience Choice Award, and ten Honorable Mentions. The festival drew 5,000 final film submissions from 176 countries.",
+    "The $500,000 first prize went to Listen to Meh, by Argentina's Purga Studio — a story about a gaucho whose routine is repeatedly interrupted by a sheep that keeps returning to his roof. Filmmaker Alex Proyas, serving on the jury, called the film \"funny, moving, thoughtful and visually inventive.\"",
+    "Second place and $200,000 went to Fukushima, about a veteran nuclear engineer confronting an unfolding disaster. Third place and $100,000 went to The Field Agent, and the $100,000 Audience Choice Award went to The Tortoise and the Hare, an animated tale about a group of rabbits hunting for a legendary golden tortoise.",
+    "Ten further films received Honorable Mentions worth $10,000 each, including FIX, ROAR and The Elevator.",
+    "The full list of winners and Honorable Mentions, with posters and director credits, is on AIMB's Higgsfield Global Film Festival page."
   ],
-  "featuredMovieSlug": "listen-to-meh"
+  "featuredMovieSlug": "listen-to-meh",
+  "contentBlocks": [
+    { "type": "lead", "text": "On November 1, 2026, the <a href=\"/awards/higgsfield\">Higgsfield Global Film Festival</a> announced its winners, concluding an international competition dedicated to AI-generated filmmaking. The festival distributed a total prize pool of <strong>$1 million</strong> across fourteen recognized films, from three jury-ranked prizes and an Audience Choice Award to ten Honorable Mentions." },
+    { "type": "stats", "items": [
+      { "value": "$1M", "label": "Total prize fund" },
+      { "value": "5,000", "label": "Final films submitted" },
+      { "value": "176", "label": "Countries represented" }
+    ] },
+    { "type": "heading", "id": "grand-prize", "text": "Listen to Meh Wins the $500,000 Grand Prize" },
+    { "type": "paragraph", "text": "The festival's biggest award went to <a href=\"/movies/listen-to-meh\">Listen to Meh</a>, created by Argentina's Purga Studio. The film follows a gaucho whose ordinary routine is repeatedly interrupted by a sheep that mysteriously returns to his roof. Its combination of humor, thoughtful storytelling and distinctive visual direction impressed the jury. Filmmaker Alex Proyas described the film as “funny, moving, thoughtful and visually inventive.”" },
+    { "type": "filmSpotlight",
+      "href": "/movies/listen-to-meh",
+      "image": "/images/posters/listen-to-meh-wide.webp",
+      "imageAlt": "Still from Listen to Meh, the Higgsfield Global Film Festival 2026 Grand Prize winner",
+      "awardLabel": "1st Place · $500,000",
+      "role": "Purga Studio · Argentina",
+      "title": "Listen to Meh",
+      "text": "A gaucho's daily routine is repeatedly disrupted by a sheep that keeps returning to his roof.",
+      "linkLabel": "Explore film"
+    },
+    { "type": "heading", "id": "other-winners", "text": "Fukushima, The Field Agent and Audience Choice" },
+    { "type": "paragraph", "text": "<em>Fukushima</em> received the $200,000 second-place prize. Its story follows a veteran engineer confronting an impending disaster at the Fukushima Daiichi nuclear plant. Third place and $100,000 went to <em>The Field Agent</em>, an offbeat story about a drive-in cinema devotee who finds himself with a mission. South Korea's <em>The Tortoise and the Hare</em> won the $100,000 Audience Choice Award for its animated rabbit adventure." },
+    { "type": "filmGrid", "cards": [
+      {
+        "href": "/movies/fukushima",
+        "image": "/images/posters/fukushima-wide.webp",
+        "imageAlt": "Still from Fukushima, 2nd place winner at the Higgsfield Global Film Festival 2026",
+        "awardLabel": "2nd Place · $200,000",
+        "role": "Ivan Basov, Ivan Kovalev, Nikolay Lesovsky and Yevhen Kunpan",
+        "title": "Fukushima",
+        "text": "A veteran engineer at Fukushima Daiichi faces the consequences of an approaching catastrophe.",
+        "linkLabel": "Explore film"
+      },
+      {
+        "href": "/movies/the-field-agent",
+        "image": "/images/posters/the-field-agent-wide.webp",
+        "imageAlt": "Still from The Field Agent, 3rd place winner at the Higgsfield Global Film Festival 2026",
+        "awardLabel": "3rd Place · $100,000",
+        "role": "Zack Murray · United States",
+        "title": "The Field Agent",
+        "text": "An enthusiastic drive-in movie fan unexpectedly finds himself with a mission of his own.",
+        "linkLabel": "Explore film"
+      },
+      {
+        "href": "/movies/the-tortoise-and-the-hare",
+        "image": "/images/posters/the-tortoise-and-the-hare-wide.webp",
+        "imageAlt": "Still from The Tortoise and the Hare, Audience Choice winner at the Higgsfield Global Film Festival 2026",
+        "awardLabel": "Audience Choice · $100,000",
+        "role": "Dae Hyeong Kang · South Korea",
+        "title": "The Tortoise and the Hare",
+        "text": "A rabbit expedition enters a forbidden tomb in search of the legendary Golden Tortoise.",
+        "linkLabel": "Explore film"
+      }
+    ] },
+    { "type": "heading", "id": "mentions", "text": "Ten More Films Receive Honorable Mentions" },
+    { "type": "paragraph", "text": "The festival also awarded ten Honorable Mentions, each worth $10,000. Among the standout entries are <em>FIX</em>, with its imaginative paper-crafted world; <em>ROAR</em>, a visually striking dinosaur story; and <em>The Elevator</em>, an increasingly surreal journey through unexpected worlds. Together, the selected films show how widely AI filmmakers are experimenting with visual style, genre and storytelling." },
+    { "type": "mentions", "items": [
+      {
+        "href": "/movies/fix",
+        "image": "/images/posters/fix-wide.webp",
+        "imageAlt": "Still from FIX, a Higgsfield Global Film Festival 2026 Honorable Mention",
+        "label": "Honorable Mention · $10,000",
+        "title": "FIX",
+        "text": "Production Pi Korea — in a world made entirely of folded paper, an anxious middle-school singer discovers a real pushpin with the power to hold anything in place."
+      },
+      {
+        "href": "/movies/roar",
+        "image": "/images/posters/roar-wide.webp",
+        "imageAlt": "Still from ROAR, a Higgsfield Global Film Festival 2026 Honorable Mention",
+        "label": "Honorable Mention · $10,000",
+        "title": "ROAR",
+        "text": "Vermeer Ice 9000 — a father and daughter explore a breathtaking dinosaur park, sharing moments of wonder that become lasting memories."
+      },
+      {
+        "href": "/movies/the-elevator",
+        "image": "/images/posters/the-elevator-wide.webp",
+        "imageAlt": "Still from The Elevator, a Higgsfield Global Film Festival 2026 Honorable Mention",
+        "label": "Honorable Mention · $10,000",
+        "title": "The Elevator",
+        "text": "Curious Media 2026 — an ordinary elevator ride becomes a descent into the impossible, across nine increasingly surreal floors."
+      }
+    ] },
+    { "type": "linkBanner", "text": "Explore all Higgsfield festival winners and Honorable Mentions on AIMB →", "href": "/awards/higgsfield" },
+    { "type": "heading", "id": "significance", "text": "What the Festival Means for AI Filmmaking" },
+    { "type": "paragraph", "text": "The festival reported 55,628 participants, more than 67,000 projects started, and 5,000 final films submitted from 176 countries. Its winners demonstrate the range of creative directions available to filmmakers working with generative tools, from understated comedy to carefully built fantasy worlds." },
+    { "type": "paragraph", "text": "Beyond the prize money, the competition places emphasis on the people behind the films: their ideas, editorial decisions, sound design and ability to build an engaging story. As the medium develops, that balance between technology and authorship becomes increasingly important." },
+    { "type": "cta", "links": [
+      { "text": "Explore the full Higgsfield Global Film Festival 2026 results ↗", "href": "https://higgsfield.ai/contests/higgsfield-global-film-festival?tab=winners" },
+      { "text": "Browse festivals & awards on AIMB →", "href": "/awards" }
+    ] },
+    { "type": "note", "label": "Editorial note:", "text": "Every winning film named above already has its own AIMB movie page — official trailer, AI tools used, and real audience reactions pulled from YouTube — so every link here leads into the catalog rather than off the site." }
+  ]
 }
