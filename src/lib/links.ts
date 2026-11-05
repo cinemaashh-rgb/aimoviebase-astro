@@ -14,7 +14,7 @@ export const MIN_FILMS_FOR_PAGE = 2;
 // Journal article get a page even with just one film credited so far, so
 // the article's own links actually go somewhere instead of rendering as
 // plain text. 630-motion/mythra/neon-ridge-media/reality-foundry/
-// mike-j-mitch were each checked against the pre-redesign site
+// mike-j-mitch/aze-alter were each checked against the pre-redesign site
 // (aimoviebase.com), which already published a real profile page for them
 // before this threshold existed here. serge-karloff has no such
 // pre-redesign page (aimoviebase.com 404s for it) but was explicitly
@@ -30,6 +30,7 @@ const ALWAYS_PAGE_STUDIOS = new Set<string>([
 const ALWAYS_PAGE_CREATORS = new Set<string>([
   'mike-j-mitch',
   'serge-karloff',
+  'aze-alter',
 ]);
 
 export function creatorHasPage(creator: Pick<CollectionEntry<'creators'>, 'data' | 'id'> | undefined): boolean {
