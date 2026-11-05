@@ -8,6 +8,7 @@ import { resolveCreatorSlug, resolveStudioSlug, verifyCreatorSlug } from '../../
 export async function getStaticPaths() {
   const movies = await getCollection('movies');
   const lists = await getCollection('lists');
+  const articles = await getCollection('articles');
 
   return movies.map((movie) => {
     // "More like this" / "Related" — picked at build time from other
@@ -21,9 +22,15 @@ export async function getStaticPaths() {
 
     const inLists = lists.filter((l) => l.data.movies.includes(movie.id));
 
+    // Any Journal article that names this film as its featuredMovieSlug —
+    // the reverse of the article page's own lookup (see
+    // src/pages/news/[slug].astro) — so a feature written about this film
+    // shows up here too, rather than only being reachable from /news.
+    const featuredArticles = articles.filter((a) => a.data.featuredMovieSlug === movie.id);
+
     return {
       params: { slug: movie.id },
-      props: { movie, related, inLists },
+      props: { movie, related, inLists, featuredArticles },
     };
   });
 }
@@ -32,8 +39,9 @@ interface Props {
   movie: CollectionEntry<'movies'>;
   related: CollectionEntry<'movies'>[];
   inLists: CollectionEntry<'lists'>[];
+  featuredArticles: CollectionEntry<'articles'>[];
 }
-const { movie, related, inLists } = Astro.props;
+const { movie, related, inLists, featuredArticles } = Astro.props;
 const m = movie.data;
 const isSeries = m.type === 'series';
 
@@ -133,6 +141,18 @@ const mobileCredits = [
     .verdict { display: grid; grid-template-columns: 105px 1fr; gap: 20px; align-items: center; background: var(--soft); border-radius: 5px; padding: 17px 19px; margin-top: 16px; max-width: 680px; }
     .verdict strong { font-weight: 600; border-right: 1px solid var(--line); padding-right: 20px; }
     .verdict p { color: var(--ink); margin: 0; font-size: .92rem; }
+
+    .journalCard { display: grid; grid-template-columns: 220px minmax(0,1fr); gap: 22px; align-items: center; max-width: 680px; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+    .journalCard img, .journalCard .posterFallback { width: 100%; height: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; background: var(--soft); }
+    .journalCard .journalBody { padding: 16px 18px 16px 0; min-width: 0; }
+    .journalCard .journalKicker { color: #cf6246; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 800; margin-bottom: 8px; }
+    .journalCard h3 { font-family: var(--serif); font-size: 1.2rem; line-height: 1.25; margin: 0 0 7px; color: var(--ink); }
+    .journalCard:hover h3 { color: #cf6246; }
+    .journalCard p { color: var(--muted); font-size: .84rem; line-height: 1.5; margin: 0; }
+    @media (max-width: 560px) {
+      .journalCard { grid-template-columns: 1fr; }
+      .journalCard .journalBody { padding: 0 16px 16px; }
+    }
 
     .related { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 14px; }
     /* 16/9 matches the real -wide.webp crops on disk (960x540/1200x675);
@@ -327,6 +347,26 @@ const mobileCredits = [
           <h2><span class="seal" aria-hidden="true">★</span>AIMB editorial review</h2>
           {m.editorialReview.paragraphs.map((p) => <p>{p}</p>)}
           <div class="verdict"><strong>Verdict</strong><p>{m.editorialReview.verdict}</p></div>
+        </section>
+      )}
+
+      {featuredArticles.length > 0 && (
+        <section class="block">
+          <h2>From the AIMB Journal</h2>
+          {featuredArticles.map((a) => (
+            <a class="journalCard" href={`/news/${a.id}`}>
+              {a.data.image ? (
+                <img src={a.data.image} alt={a.data.title} loading="lazy" />
+              ) : (
+                <div class="posterFallback">{a.data.title}</div>
+              )}
+              <div class="journalBody">
+                <div class="journalKicker">{a.data.label}</div>
+                <h3>{a.data.title}</h3>
+                <p>{a.data.excerpt}</p>
+              </div>
+            </a>
+          ))}
         </section>
       )}
 
