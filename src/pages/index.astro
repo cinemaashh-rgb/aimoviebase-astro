@@ -40,13 +40,13 @@ const awardRest = awardPool
 const awardWinners = [...awardPinned, ...awardRest].slice(0, 6);
 
 const shortdramaAll = await getCollection('shortdrama');
-// Curated rather than "first 3 published": several published entries have
+// Curated rather than "first N published": several published entries have
 // Chinese-text poster art (vertical shorts translated from Chinese
-// platforms), which looked out of place as the only 3 posters shown on the
-// homepage. These three are English-language titles with English poster
-// art, picked for tonal variety (paranormal romance, fantasy romance,
-// family drama).
-const SHORTDRAMA_HOME_PICKS = ['the-alpha-and-his-nanny-luna', 'the-great-and-powerful-genie', 'the-mechanic-prince'];
+// platforms), which looked out of place among the handful of posters shown
+// on the homepage. These are English-language titles with English poster
+// art, picked for tonal variety (paranormal romance, fantasy romance).
+// The Mechanic Prince was dropped from this row by explicit request.
+const SHORTDRAMA_HOME_PICKS = ['the-alpha-and-his-nanny-luna', 'the-great-and-powerful-genie'];
 const shortdramaPublished = SHORTDRAMA_HOME_PICKS
   .map((slug) => shortdramaAll.find((e) => e.id === slug && e.data.status === 'published'))
   .filter((e): e is NonNullable<typeof e> => Boolean(e));
@@ -171,7 +171,7 @@ const journal = (await getCollection('articles'))
     .story time { font-size: .7rem; color: var(--muted2); }
 
     /* ---- Short drama ---- */
-    .shortLayout { display: grid; grid-template-columns: minmax(0,1fr) 350px; gap: 40px; align-items: center; }
+    .shortLayout { display: grid; grid-template-columns: minmax(0,1fr) 460px; gap: 40px; align-items: center; }
     .shortCopy h2 { font-size: clamp(30px,3vw,40px); margin: 0 0 11px; }
     .shortHeadingLink { display: inline-flex; align-items: center; gap: 13px; text-decoration: none; }
     .shortHeadingLink .label { color: var(--ink); }
@@ -182,14 +182,14 @@ const journal = (await getCollection('articles'))
        title, taxonomy line, same hover lift — just a 3-column layout sized
        for this section's narrower sidebar column instead of the 6-column
        full-width grid. */
-    .shortGallery { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 15px; }
+    .shortGallery { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 22px; }
     .shortGallery a { display: flex; flex-direction: column; min-width: 0; color: inherit; }
-    .shortGallery img, .shortGallery .dramaFallback { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 5px; border: 1px solid var(--line); background: var(--soft); display: block; transition: transform .2s ease, box-shadow .2s ease; }
-    .shortGallery .dramaFallback { display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .64rem; font-weight: 700; text-align: center; padding: 8px; }
-    .shortGallery a:hover img { transform: translateY(-3px); box-shadow: 0 8px 23px rgba(0,0,0,.1); }
+    .shortGallery img, .shortGallery .dramaFallback { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 6px; border: 1px solid var(--line); background: var(--soft); display: block; transition: transform .2s ease, box-shadow .2s ease; }
+    .shortGallery .dramaFallback { display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .72rem; font-weight: 700; text-align: center; padding: 8px; }
+    .shortGallery a:hover img { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(0,0,0,.12); }
     .shortGallery a:hover strong, .shortGallery a:focus-visible strong { color: #cf6246; }
-    .shortGallery strong { font-family: var(--serif); font-size: .92rem; margin-top: 10px; line-height: 1.22; font-weight: 700; }
-    .shortGallery .taxonomy { display: block; margin-top: 5px; font-size: .72rem; color: var(--muted2); }
+    .shortGallery strong { font-family: var(--serif); font-size: 1.15rem; margin-top: 13px; line-height: 1.22; font-weight: 700; }
+    .shortGallery .taxonomy { display: block; margin-top: 6px; font-size: .8rem; color: var(--muted2); }
 
     /* ---- Festivals ---- */
     .festivalGrid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; }
@@ -234,7 +234,7 @@ const journal = (await getCollection('articles'))
       .filmGrid { grid-template-columns: repeat(3,minmax(0,1fr)); }
       .journalGrid { grid-template-columns: 1fr; }
       .shortLayout { grid-template-columns: 1fr; }
-      .shortGallery { max-width: 420px; }
+      .shortGallery { max-width: 480px; }
       .festivalGrid { grid-template-columns: repeat(3,minmax(0,1fr)); }
       .newsletterIn { grid-template-columns: 1fr; }
       .listsGrid { grid-template-columns: repeat(2,minmax(0,1fr)); }
@@ -366,7 +366,7 @@ const journal = (await getCollection('articles'))
         <p>Explore a new form of vertical, episodic storytelling. AI short dramas combine compact stories, new production techniques and emerging creative voices.</p>
       </div>
       <div class="shortGallery">
-        {Array.from({ length: 3 }).map((_, i) => {
+        {Array.from({ length: SHORTDRAMA_HOME_PICKS.length }).map((_, i) => {
           const d = shortdramaPublished[i];
           return d ? (
             <a href={`/shortdrama/${d.id}`} aria-label={`Read about ${d.data.title}`}>
