@@ -1,0 +1,152 @@
+{
+  "label": "Lists",
+  "date": "Nov 6, 2026",
+  "datetime": "2026-11-06",
+  "title": "Best AI Movies of 2026: Films Worth Watching",
+  "excerpt": "Discover the best AI movies of 2026, from award-winning shorts to independent sci-fi, drama and comedy. An evolving selection curated by AIMB.",
+  "image": "/images/news/best-ai-movies-2026/hero.webp",
+  "imageAlt": "Best AI Movies of 2026 — AIMB editorial picks, featuring three cinematic film stills",
+  "body": [
+    "Whether it's a festival winner or an indie release on YouTube, here are some AI films we loved in 2026. AI films have grown significantly this year. The quality of the images is impressive, but that's not what caught our attention. We've seen comedy, horror, romance, and sci-fi made with little more than a computer and imagination. Of course, not all of them are good. Some feel like a bunch of cool shots put together. But others have done something special. Here are some of our favorite AI films from 2026. We'll keep adding new discoveries as the year goes on.",
+    "1. A Face Only a Mother Could Love — Drama, Romance. A peculiar man named Marcel lives alone in Paris, believing himself to be beautiful even though others see him differently. His life becomes more interesting when he meets a woman who can see what others cannot. Directed by Robert Gaudette, it won the 2026 Reply AI Film Festival and the Runway AIFF Grand Prix.",
+    "2. Listen to Meh — Comedy, Drama. There's this gaucho with a sheep that keeps climbing onto his roof. Every time he brings the sheep down, it climbs right back up. Made by PURGA Studio, it won first place and the $500,000 grand prize at the Higgsfield Global Film Festival.",
+    "3. What's the Job? — Experimental, Surrealism. Italian director Jacopo Zanetti pushes the boundaries of surrealism with AI-generated imagery, using unusual visuals and techniques to show what AI can do. The film won Best Visual and a $50,000 prize at the Astana AI Film Festival 2026.",
+    "4. The Elevator — Comedy, Thriller, Sci-Fi. A man gets on an elevator. Every floor gets weirder than the last. Created by Marvs AI, it's a wild ride that seems silly at first but turns into a nightmare.",
+    "5. Last Recall — Sci-Fi, Horror, Mystery. Two federal agents are tasked with finding out what destroyed a small town in Virginia, using cutting-edge memory-recall technology to piece together what happened. Directed by Kavan the Kid for Wonder Studios' Beyond the Loop series.",
+    "6. Website — Sci-Fi, Experimental. What if you could experience what you see on websites in real life? Directed by Jiaze Li, it won the Reply AI Studios Grand Prix and the Community Award at the 2026 Reply AI Film Festival.",
+    "7. RESET — Sci-Fi, Drama. Earth's final two leaders meet on the Moon to discuss the fate of the human race. Made by Ukrainian musician Max Barskih using Higgsfield AI, it's an 11-minute sci-fi film built mostly around dialogue and cinematography.",
+    "Editor's note: This is an editorial selection, not a ranking by views or prize money. Film availability, credits, and festival information may change."
+  ],
+  "contentBlocks": [
+    { "type": "lead", "text": "Whether it's a festival winner or an indie release on YouTube, here are some AI films we loved in 2026." },
+    { "type": "paragraph", "text": "AI films have grown significantly this year. The quality of the images is impressive, but that's not what caught our attention. We've seen comedy, horror, romance, and sci-fi made with little more than a computer and imagination. Of course, not all of them are good. Some feel like a bunch of cool shots put together. But others have done something special." },
+    { "type": "paragraph", "text": "Here are some of our favorite AI films from 2026. We'll keep adding new discoveries as the year goes on." },
+    {
+      "type": "listSummary",
+      "title": "In this selection",
+      "items": [
+        "A Face Only a Mother Could Love",
+        "Listen to Meh",
+        "What's the Job?",
+        "The Elevator",
+        "Last Recall",
+        "Website",
+        "RESET"
+      ],
+      "note": "An editorial selection, not a ranking. New titles can be added without changing the order or URL."
+    },
+    {
+      "type": "rankedEntry",
+      "rank": 1,
+      "id": "a-face-only-a-mother-could-love",
+      "title": "A Face Only a Mother Could Love",
+      "href": "/movies/a-face-only-a-mother-could-love",
+      "genre": "Drama, Romance",
+      "image": "/images/news/best-ai-movies-2026/a-face-only-a-mother-could-love.webp",
+      "imageAlt": "Film still from A Face Only a Mother Could Love",
+      "imageHref": "/movies/a-face-only-a-mother-could-love",
+      "paragraphs": [
+        "Directed by Robert Gaudette, <em>A Face Only a Mother Could Love</em> follows a peculiar man named Marcel who lives alone in Paris, believing himself to be beautiful even though others see him differently. His life becomes more interesting when he meets a woman who can see what others cannot.",
+        "The film has that unmistakable French charm, reminiscent of <em>Amélie</em>. It also brings to mind <em>Edward Scissorhands</em> and <em>The Shape of Water</em>, with their affection for unusual people.",
+        "Winner of the 2026 Reply AI Film Festival and the Runway AIFF Grand Prix, it's a great film made with AI that tells a very human story."
+      ]
+    },
+    {
+      "type": "rankedEntry",
+      "rank": 2,
+      "id": "listen-to-meh",
+      "title": "Listen to Meh",
+      "href": "/movies/listen-to-meh",
+      "genre": "Comedy, Drama",
+      "studio": { "name": "PURGA Studio" },
+      "image": "/images/news/best-ai-movies-2026/listen-to-meh.webp",
+      "imageAlt": "Film still from Listen to Meh",
+      "imageHref": "/movies/listen-to-meh",
+      "paragraphs": [
+        "There's this gaucho with a sheep that keeps climbing onto his roof. Every time he brings the sheep down, it climbs right back up.",
+        "It's a funny little film about how sometimes you just have to let things go. <em>Listen to Meh</em> won first place and took home the $500,000 grand prize at the Higgsfield Global Film Festival. Sometimes all you need is a great idea."
+      ]
+    },
+    {
+      "type": "rankedEntry",
+      "rank": 3,
+      "id": "whats-the-job",
+      "title": "What's the Job?",
+      "href": "/movies/whats-the-job",
+      "genre": "Experimental, Surrealism",
+      "image": "/images/news/best-ai-movies-2026/whats-the-job.webp",
+      "imageAlt": "Film still from What's the Job?",
+      "imageHref": "/movies/whats-the-job",
+      "paragraphs": [
+        "Italian director Jacopo Zanetti pushes the boundaries of surrealism with AI-generated imagery. In <em>What's the Job?</em>, he doesn't try to mimic what you'd normally see in a film. Instead, he uses unusual visuals and techniques to show what AI can do.",
+        "The film won Best Visual at the Astana AI Film Festival 2026, taking home a $50,000 prize. A great watch if you're interested in AI films that don't follow conventional filmmaking rules."
+      ]
+    },
+    {
+      "type": "rankedEntry",
+      "rank": 4,
+      "id": "the-elevator",
+      "title": "The Elevator",
+      "href": "/movies/the-elevator",
+      "genre": "Comedy, Thriller, Sci-Fi",
+      "studio": { "name": "Marvs AI" },
+      "image": "/images/news/best-ai-movies-2026/the-elevator.webp",
+      "imageAlt": "Film still from The Elevator",
+      "imageHref": "/movies/the-elevator",
+      "paragraphs": [
+        "A man gets on an elevator. Every floor gets weirder than the last. <em>The Elevator</em> takes you on a wild ride that seems silly at first but turns into a nightmare.",
+        "There are some great visuals, a funny conversation on the ninth floor, and an ending that makes the whole movie more interesting. At times, it felt more about the spectacle than what was actually happening. But it's funny, and the ride is worth it."
+      ]
+    },
+    {
+      "type": "rankedEntry",
+      "rank": 5,
+      "id": "last-recall",
+      "title": "Last Recall",
+      "href": "/movies/last-recall",
+      "genre": "Sci-Fi, Horror, Mystery",
+      "studio": { "name": "Wonder Studios" },
+      "image": "/images/news/best-ai-movies-2026/last-recall.webp",
+      "imageAlt": "Film still from Last Recall",
+      "imageHref": "/movies/last-recall",
+      "paragraphs": [
+        "Directed by <a href=\"/name/kavan-cardoza\">Kavan the Kid</a>, two federal agents are tasked with finding out what destroyed a small town in Virginia. To piece together what happened, they have to use cutting-edge memory-recall technology.",
+        "It's a good sci-fi concept with the feel of a classic horror movie. Another project from Kavan the Kid for Wonder Studios' <em>Beyond the Loop</em> series, with some great AI worldbuilding."
+      ]
+    },
+    {
+      "type": "rankedEntry",
+      "rank": 6,
+      "id": "website",
+      "title": "Website",
+      "href": "/movies/website",
+      "genre": "Sci-Fi, Experimental",
+      "image": "/images/news/best-ai-movies-2026/website.webp",
+      "imageAlt": "Film still from Website",
+      "imageHref": "/movies/website",
+      "paragraphs": [
+        "What if you could experience what you see on websites in real life? <em>Website</em> takes us into other dimensions broadcast through a mysterious site. Every time someone watches, those worlds begin to intertwine with our own.",
+        "Director Jiaze Li explores our habit of consuming online content nonstop and what that might mean for reality. <em>Website</em> won the Reply AI Studios Grand Prix and the Community Award at the 2026 Reply AI Film Festival."
+      ]
+    },
+    {
+      "type": "rankedEntry",
+      "rank": 7,
+      "id": "reset",
+      "title": "RESET",
+      "href": "/movies/reset",
+      "genre": "Sci-Fi, Drama",
+      "image": "/images/news/best-ai-movies-2026/reset.webp",
+      "imageAlt": "Film still from RESET",
+      "imageHref": "/movies/reset",
+      "paragraphs": [
+        "Earth's final two leaders meet on the Moon to discuss their fate. The decision has already been made, and it will determine the future of the human race. The Queen of Light and the King of Fire are left to confront what comes next.",
+        "Made by Ukrainian musician Max Barskih using Higgsfield AI, <em>RESET</em> is an 11-minute sci-fi film built mostly around dialogue and beautiful cinematography. It doesn't need action in every shot. It gives its characters time to talk about their predicament as humans."
+      ]
+    },
+    { "type": "paragraph", "text": "They all used AI to make their films, but that's about where the similarities end. Some will make you laugh; others might leave you uneasy or moved. Some are experimental, while others are simply fun to watch. Some won big festival prizes, and some were discovered on YouTube." },
+    { "type": "paragraph", "text": "AI-made films still have flaws, but these are some of our favorites from 2026. The conversation should start shifting away from which software generated the images and toward a more important question: is this a good movie? That's what we're here for at AIMB. This is an editor's picks list, not a ranking based on views or prize money." },
+    { "type": "paragraph", "text": "AIMB looks at storytelling, direction, originality, visual craft and how well the finished film holds together. Festival awards can bring a film to our attention, but they are not a requirement for inclusion. We revisit this selection as new work appears." },
+    { "type": "note", "label": "Editor's note:", "text": "This is an editorial selection, not a ranking by views or prize money. Film availability, credits, and festival information may change." }
+  ]
+}
