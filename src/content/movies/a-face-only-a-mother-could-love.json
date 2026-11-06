@@ -15,6 +15,13 @@
   "director": {
     "name": "Robert Gaudette"
   },
+  "editorialReview": {
+    "paragraphs": [
+      "From the very first moments, you become completely immersed in the French atmosphere. The visuals of Paris inevitably bring Amélie to mind, while the French accent adds a distinctive charm to the storytelling — something rarely found in most AI-generated films.",
+      "In just eight minutes, Robert Gaudette draws us into a captivating story that's almost impossible to look away from. It's reminiscent of other unforgettable tales about extraordinary outsiders and their unconventional lives. Tim Burton's Edward Scissorhands, starring Johnny Depp, comes to mind, as does Guillermo del Toro's Oscar-winning The Shape of Water."
+    ],
+    "verdict": "If you want to see what an Oscar-worthy AI film could look like, A Face Only a Mother Could Love is an absolute must-watch."
+  },
   "aiTools": [
     "Grok",
     "Nano Banana",
