@@ -20,17 +20,48 @@ export const MIN_FILMS_FOR_PAGE = 2;
 // pre-redesign page (aimoviebase.com 404s for it) but was explicitly
 // requested — see "Most Popular AI Series in 2026"
 // (src/content/articles/most-popular-ai-series-2026.json).
+//
+// history-reforged/jeonjo-index/penalver-universe/the-blue-horizon-ai
+// (studios) and the 20 creators below were added for the same
+// pre-redesign-page reason, as part of the aimoviebase.com -> Astro
+// domain-cutover page-parity pass: every one of these had a real,
+// published /studios/<slug> or /name/<slug> page on the old static site,
+// each currently sitting on exactly one film in the new catalog.
 const ALWAYS_PAGE_STUDIOS = new Set<string>([
   '630-motion',
   'mythra',
   'neon-ridge-media',
   'reality-foundry',
+  'history-reforged',
+  'jeonjo-index',
+  'penalver-universe',
+  'the-blue-horizon-ai',
 ]);
 
 const ALWAYS_PAGE_CREATORS = new Set<string>([
   'mike-j-mitch',
   'serge-karloff',
   'aze-alter',
+  'alexandre-tissier',
+  'andrew-salter',
+  'ben-griffin',
+  'edward-saatchi',
+  'gabriel-bosisio',
+  'gregory-ivanets',
+  'herinarivo-rakotomanana',
+  'ishan-devare-modi',
+  'jacob-adler',
+  'kevin-mendiboure',
+  'leo-cannone',
+  'max-barskih',
+  'montlouis-mane',
+  'myrzakhan-zhumakhan',
+  'qiu-sheng',
+  'rafa-pedroso',
+  'robert-gaudette',
+  'sav',
+  'shal-ngo',
+  'vallee-duhamel',
 ]);
 
 export function creatorHasPage(creator: Pick<CollectionEntry<'creators'>, 'data' | 'id'> | undefined): boolean {
