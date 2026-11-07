@@ -1,6 +1,7 @@
 {
   "name": "Made with Seedance",
-  "description": "Some of the best AI generated video right now. Seedance 2.0 and 2.5 can produce very photorealistic results. With human like movement. Lighting, texture and camera angles that rival real life film. Some would argue its still just AI slop. But when you have all of those qualities and a story being told its hard to argue with. Most people that we've polled could not tell the difference between some clips made with Seedance 2.5 and real footage.",
+  "description": "Seedance 2.0 and 2.5 are among the most photorealistic AI video models out right now — human-like movement, lighting, texture and camera work that rivals real footage. These are some of the best examples in the catalog.",
+  "blurb": "Photorealistic AI video made with Seedance 2.0/2.5.",
   "placeholder": true,
   "movies": [
     "a-face-only-a-mother-could-love",
