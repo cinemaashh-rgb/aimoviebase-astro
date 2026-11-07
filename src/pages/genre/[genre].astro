@@ -64,7 +64,13 @@ const heroCreditFilm = g.heroCredit
     .tabs { display: flex; gap: 8px; }
     .tab { border: 1px solid var(--line); background: #fff; border-radius: 20px; padding: 7px 16px; font-size: .82rem; font-weight: 600; cursor: pointer; color: var(--muted); }
     .tab[aria-pressed="true"] { background: var(--black); color: #fff; border-color: var(--black); }
-    .sortSelect { height: 36px; border: 1px solid var(--line); background: #fff; border-radius: 6px; color: var(--ink); font-size: .82rem; padding: 0 10px; }
+    .sortSelect {
+      height: 36px; border: 1px solid var(--line); background: #fff; color: var(--ink); font-size: .82rem;
+      border-radius: 6px; padding: 0 28px 0 10px; cursor: pointer;
+      appearance: none; -webkit-appearance: none; -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%235d6776' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 10px center; background-size: 10px 6px;
+    }
     .movie-card { display: block; }
     .movie-card[hidden] { display: none; }
     .movie-card img, .movie-card .posterFallback { aspect-ratio: 2/3; width: 100%; object-fit: cover; border-radius: 6px; background: var(--soft); }
