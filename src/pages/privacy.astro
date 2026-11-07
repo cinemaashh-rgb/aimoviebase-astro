@@ -1,13 +1,158 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Privacy Policy" description="Privacy policy for AI Movie Base.">
-  <h1 style="margin-top:34px">Privacy Policy</h1>
-  <p class="lede" style="color:var(--muted); max-width:700px; line-height:1.6; font-size:1.05rem; margin-bottom:16px;">This page describes what data the AI Movie Base website collects about visitors and how it is used.</p>
+<BaseLayout title="Privacy Policy" description="What AI Movie Base collects when you visit aimoviebase.com, how it's used, and how to reach us about it.">
+  <style>
+    /* Legal pages (Privacy, Terms) — same visual system as /contact, minus
+       the contact form: a serif editorial hero, numbered prose sections,
+       and a sticky side column (here used for an on-page jump list and a
+       "questions" card instead of the submission-related cards). Shares
+       the site's ink/accent tokens; class names are prefixed "legal" to
+       keep this page's scoped styles independent of contact.astro's. */
+    .legalPage { color: var(--ink); font-family: var(--sans); max-width: 1120px; margin: 0 auto; }
+    .legalPage * { box-sizing: border-box; }
 
-  <h2>What data is collected</h2>
-  <p class="lede" style="color:var(--muted); max-width:700px; line-height:1.6; margin-bottom:16px;">The site may use standard web analytics (page views, referral source, device type) to understand what content interests our audience.</p>
+    .legalBreadcrumb { font: 12px/1.5 var(--sans); color: var(--muted2); margin-bottom: 28px; }
+    .legalBreadcrumb a:hover { color: #cf6246; }
+    .legalBreadcrumb span { padding: 0 10px; }
 
-  <h2>Cookies</h2>
-  <p class="lede" style="color:var(--muted); max-width:700px; line-height:1.6;">The site may use cookies for basic analytics and to remember user preferences. Data is not shared with third parties for advertising purposes.</p>
+    .legalHero { padding: 15px 0 46px; border-bottom: 1px solid var(--line); }
+    .legalKicker { font: 700 11px/1.5 var(--sans); letter-spacing: .14em; color: #cf6246; text-transform: uppercase; }
+    .legalHero h1 { font: 400 clamp(44px,7.7vw,96px)/1.02 var(--serif); letter-spacing: -.055em; margin: 21px 0 22px; color: var(--ink); }
+    .legalHero h1 em { font-style: normal; color: #cf6246; }
+    .legalLead { max-width: 650px; font: 400 clamp(19px,2.2vw,26px)/1.5 var(--serif); color: var(--muted); margin: 0; }
+    .legalAttribution { font: 700 11px var(--sans); letter-spacing: .08em; color: var(--muted2); display: flex; align-items: center; gap: 9px; margin-top: 28px; }
+    .legalDot { height: 7px; width: 7px; border-radius: 50%; background: #cf6246; }
+
+    .legalMainGrid { display: grid; grid-template-columns: minmax(0,1fr) 272px; gap: 64px; align-items: start; padding-top: 47px; }
+    .legalProse { min-width: 0; }
+    .legalProseSection { margin: 0 0 33px; padding-bottom: 29px; border-bottom: 1px solid var(--line); scroll-margin-top: 24px; }
+    .legalProseSection:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+    .legalSectionKicker { font: 700 11px/1.5 var(--sans); letter-spacing: .14em; color: #cf6246; }
+    .legalProseSection h2 { font: 400 clamp(26px,3vw,36px)/1.16 var(--serif); letter-spacing: -.03em; margin: 17px 0 17px; }
+    .legalProseSection > p { font: 16px/1.85 var(--serif); color: #4e5866; margin: 0 0 14px; max-width: 640px; }
+    .legalProseSection ul { margin: 0 0 14px; padding-left: 20px; max-width: 620px; }
+    .legalProseSection li { font: 16px/1.75 var(--serif); color: #4e5866; margin-bottom: 8px; }
+    .legalProseSection li strong { color: #20262c; font-weight: 700; }
+    .legalProseSection a { color: #ba4e38; text-decoration: underline; text-underline-offset: 2px; }
+    .legalProseSection a:hover { color: #a84730; }
+
+    .legalSide { border-left: 1px solid var(--line); padding-left: 26px; position: sticky; top: 24px; }
+    .legalSideKicker { font: 700 11px/1.5 var(--sans); letter-spacing: .14em; color: #b8533c; margin-bottom: 14px; }
+    .legalToc { list-style: none; margin: 0 0 26px; padding: 0; }
+    .legalToc li { margin-bottom: 9px; }
+    .legalToc a { display: block; font: 13px/1.5 var(--sans); color: var(--muted); padding: 2px 0; }
+    .legalToc a:hover { color: #cf6246; }
+    .legalCard { padding-top: 19px; margin-top: 19px; border-top: 1px solid var(--line); }
+    .legalCard h3 { font: 400 22px/1.2 var(--serif); margin: 0 0 8px; color: var(--ink); }
+    .legalCard p { font: 13px/1.65 var(--sans); color: var(--muted); margin: 0 0 10px; }
+    .legalCard a.legalCardLink { color: #ba4e38; font: 700 12px var(--sans); text-decoration: none; }
+    .legalCard a.legalCardLink:hover { color: #a84730; }
+    .legalSmallnote { font: 11px/1.7 var(--sans); color: var(--muted2); margin: 18px 0 0; }
+
+    @media (max-width: 950px) {
+      .legalMainGrid { gap: 34px; grid-template-columns: minmax(0,1fr) 230px; }
+      .legalSide { padding-left: 20px; }
+    }
+    @media (max-width: 720px) {
+      .legalPage { width: calc(100% - 36px); }
+      .legalHero { padding: 0 0 33px; }
+      .legalHero h1 { font-size: clamp(42px,10vw,70px); line-height: 1.05; margin: 15px 0 17px; }
+      .legalLead { font-size: 19px; }
+      .legalMainGrid { display: block; padding-top: 34px; }
+      .legalSide { margin-top: 37px; border-left: 0; border-top: 1px solid var(--line); padding: 26px 0 0; position: static; }
+    }
+  </style>
+
+  <div class="legalPage">
+    <nav class="legalBreadcrumb"><a href="/">Home</a><span>/</span>Privacy Policy</nav>
+
+    <section class="legalHero">
+      <div class="legalKicker">Legal / AI Movie Base</div>
+      <h1>Your data,<br /><em>plainly explained</em></h1>
+      <p class="legalLead">What we collect when you visit aimoviebase.com, why, and how to reach us about it.</p>
+      <div class="legalAttribution"><span class="legalDot"></span> Updated November 7, 2026</div>
+    </section>
+
+    <div class="legalMainGrid">
+      <div class="legalProse">
+        <section class="legalProseSection" id="overview">
+          <div class="legalSectionKicker">01 / Overview</div>
+          <h2>Who we are.</h2>
+          <p>AI Movie Base ("AIMB", "we", "us") is an independent editorial and discovery platform for AI-generated movies and series. This policy covers the information aimoviebase.com collects from visitors, how it's used, and the choices you have about it. We're a small, independently run project — not a large company with an advertising business, and we don't sell your data to anyone.</p>
+        </section>
+
+        <section class="legalProseSection" id="information">
+          <div class="legalSectionKicker">02 / Information we collect</div>
+          <h2>What the site actually collects.</h2>
+          <ul>
+            <li><strong>Usage analytics.</strong> We use Google Analytics to understand which films and pages people visit — page views, approximate location (country/city level, derived from your IP address), device and browser type, and the site that referred you. This is aggregate traffic data, not your name or identity.</li>
+            <li><strong>Newsletter subscriptions.</strong> If you subscribe through the "Stay in the Loop" form, your email address is sent to our email newsletter provider (Brevo) and kept there until you unsubscribe.</li>
+            <li><strong>Contact form.</strong> The Contact page drafts an email in your own email application. Your name, email address and message go straight to us through your email provider — the form itself doesn't store anything on our servers.</li>
+            <li><strong>Film submissions.</strong> The Submit a Film page works the same way: it opens a pre-filled email in your mail app rather than posting to a database we run.</li>
+            <li><strong>Embedded trailers.</strong> Clicking "Watch" on a film page opens an embedded YouTube player. Once you play a trailer, YouTube/Google may set its own cookies and collect data under their own privacy policy, outside our control.</li>
+          </ul>
+          <p>We don't run user accounts, logins or a comment system today, so there's no password or profile data to collect.</p>
+        </section>
+
+        <section class="legalProseSection" id="cookies">
+          <div class="legalSectionKicker">03 / Cookies</div>
+          <h2>Cookies we use.</h2>
+          <p>Google Analytics sets its own cookies to tell repeat visits apart from new ones. We don't run advertising or cross-site tracking cookies, and we don't share analytics data with ad networks. If you play an embedded trailer, YouTube may set additional cookies of its own.</p>
+        </section>
+
+        <section class="legalProseSection" id="use">
+          <div class="legalSectionKicker">04 / How we use this information</div>
+          <h2>Why we collect it.</h2>
+          <ul>
+            <li>Understand which films, lists and festival stories resonate with visitors, so we can keep building the catalog in that direction.</li>
+            <li>Keep the site working well across devices and connections.</li>
+            <li>Send the newsletter to people who asked for it — nothing more.</li>
+          </ul>
+          <p>We don't sell personal data, and we don't share it with third parties for advertising purposes.</p>
+        </section>
+
+        <section class="legalProseSection" id="choices">
+          <div class="legalSectionKicker">05 / Your choices</div>
+          <h2>Opting out.</h2>
+          <ul>
+            <li><strong>Analytics</strong> — use a browser privacy setting, extension or ad blocker that blocks Google Analytics; we don't currently gate the site behind a cookie-consent banner that would offer a separate toggle.</li>
+            <li><strong>Newsletter</strong> — every email includes an unsubscribe link, or email us and we'll remove you.</li>
+            <li><strong>Access or deletion</strong> — email <a href="mailto:contact@aimoviebase.com">contact@aimoviebase.com</a> if you'd like to know what we hold about you (realistically: an email address in our newsletter list, if you subscribed) or want it deleted.</li>
+          </ul>
+        </section>
+
+        <section class="legalProseSection" id="children">
+          <div class="legalSectionKicker">06 / Children</div>
+          <h2>Not directed at children.</h2>
+          <p>AIMB is not directed at children under 13, and we don't knowingly collect personal information from them.</p>
+        </section>
+
+        <section class="legalProseSection" id="changes">
+          <div class="legalSectionKicker">07 / Changes to this policy</div>
+          <h2>Keeping this page current.</h2>
+          <p>We may update this policy as the site changes — for example, if we add a new analytics tool or a feature that collects information differently. The date above reflects the latest revision.</p>
+        </section>
+      </div>
+
+      <aside class="legalSide" aria-label="On this page">
+        <div class="legalSideKicker">On this page</div>
+        <ul class="legalToc">
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#information">Information we collect</a></li>
+          <li><a href="#cookies">Cookies</a></li>
+          <li><a href="#use">How we use it</a></li>
+          <li><a href="#choices">Your choices</a></li>
+          <li><a href="#children">Children</a></li>
+          <li><a href="#changes">Changes</a></li>
+        </ul>
+        <div class="legalCard">
+          <h3>Questions?</h3>
+          <p>Anything here unclear, or want to request your data? Reach out directly.</p>
+          <a class="legalCardLink" href="/contact">Contact AIMB →</a>
+        </div>
+        <p class="legalSmallnote">See also our <a href="/terms" style="color:inherit; text-decoration:underline;">Terms of Service</a>.</p>
+      </aside>
+    </div>
+  </div>
 </BaseLayout>

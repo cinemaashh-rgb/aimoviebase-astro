@@ -1,13 +1,156 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Terms of Use" description="Terms of use for AI Movie Base.">
-  <h1 style="margin-top:34px">Terms of Use</h1>
-  <p class="lede" style="color:var(--muted); max-width:700px; line-height:1.6; font-size:1.05rem; margin-bottom:16px;">By using the AI Movie Base website, you agree to the following terms.</p>
+<BaseLayout title="Terms of Service" description="The terms that govern using aimoviebase.com — what AIMB is, how its catalog is compiled, and the rules for using the site.">
+  <style>
+    /* Same shared "legal page" visual system as privacy.astro (and, in
+       spirit, /contact): serif editorial hero, numbered prose sections,
+       sticky side column with an on-page jump list. Styles are
+       intentionally duplicated per page rather than shared from a single
+       file — see the project's own convention for why. */
+    .legalPage { color: var(--ink); font-family: var(--sans); max-width: 1120px; margin: 0 auto; }
+    .legalPage * { box-sizing: border-box; }
 
-  <h2>Content</h2>
-  <p class="lede" style="color:var(--muted); max-width:700px; line-height:1.6; margin-bottom:16px;">Descriptions, ratings, and reviews on the site are provided for informational purposes. Rights to the films themselves belong to their creators.</p>
+    .legalBreadcrumb { font: 12px/1.5 var(--sans); color: var(--muted2); margin-bottom: 28px; }
+    .legalBreadcrumb a:hover { color: #cf6246; }
+    .legalBreadcrumb span { padding: 0 10px; }
 
-  <h2>User Reviews</h2>
-  <p class="lede" style="color:var(--muted); max-width:700px; line-height:1.6;">By posting a review, you confirm that it reflects your own opinion and does not infringe on the rights of third parties.</p>
+    .legalHero { padding: 15px 0 46px; border-bottom: 1px solid var(--line); }
+    .legalKicker { font: 700 11px/1.5 var(--sans); letter-spacing: .14em; color: #cf6246; text-transform: uppercase; }
+    .legalHero h1 { font: 400 clamp(44px,7.7vw,96px)/1.02 var(--serif); letter-spacing: -.055em; margin: 21px 0 22px; color: var(--ink); }
+    .legalHero h1 em { font-style: normal; color: #cf6246; }
+    .legalLead { max-width: 650px; font: 400 clamp(19px,2.2vw,26px)/1.5 var(--serif); color: var(--muted); margin: 0; }
+    .legalAttribution { font: 700 11px var(--sans); letter-spacing: .08em; color: var(--muted2); display: flex; align-items: center; gap: 9px; margin-top: 28px; }
+    .legalDot { height: 7px; width: 7px; border-radius: 50%; background: #cf6246; }
+
+    .legalMainGrid { display: grid; grid-template-columns: minmax(0,1fr) 272px; gap: 64px; align-items: start; padding-top: 47px; }
+    .legalProse { min-width: 0; }
+    .legalProseSection { margin: 0 0 33px; padding-bottom: 29px; border-bottom: 1px solid var(--line); scroll-margin-top: 24px; }
+    .legalProseSection:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+    .legalSectionKicker { font: 700 11px/1.5 var(--sans); letter-spacing: .14em; color: #cf6246; }
+    .legalProseSection h2 { font: 400 clamp(26px,3vw,36px)/1.16 var(--serif); letter-spacing: -.03em; margin: 17px 0 17px; }
+    .legalProseSection > p { font: 16px/1.85 var(--serif); color: #4e5866; margin: 0 0 14px; max-width: 640px; }
+    .legalProseSection ul { margin: 0 0 14px; padding-left: 20px; max-width: 620px; }
+    .legalProseSection li { font: 16px/1.75 var(--serif); color: #4e5866; margin-bottom: 8px; }
+    .legalProseSection li strong { color: #20262c; font-weight: 700; }
+    .legalProseSection a { color: #ba4e38; text-decoration: underline; text-underline-offset: 2px; }
+    .legalProseSection a:hover { color: #a84730; }
+
+    .legalSide { border-left: 1px solid var(--line); padding-left: 26px; position: sticky; top: 24px; }
+    .legalSideKicker { font: 700 11px/1.5 var(--sans); letter-spacing: .14em; color: #b8533c; margin-bottom: 14px; }
+    .legalToc { list-style: none; margin: 0 0 26px; padding: 0; }
+    .legalToc li { margin-bottom: 9px; }
+    .legalToc a { display: block; font: 13px/1.5 var(--sans); color: var(--muted); padding: 2px 0; }
+    .legalToc a:hover { color: #cf6246; }
+    .legalCard { padding-top: 19px; margin-top: 19px; border-top: 1px solid var(--line); }
+    .legalCard h3 { font: 400 22px/1.2 var(--serif); margin: 0 0 8px; color: var(--ink); }
+    .legalCard p { font: 13px/1.65 var(--sans); color: var(--muted); margin: 0 0 10px; }
+    .legalCard a.legalCardLink { color: #ba4e38; font: 700 12px var(--sans); text-decoration: none; }
+    .legalCard a.legalCardLink:hover { color: #a84730; }
+    .legalSmallnote { font: 11px/1.7 var(--sans); color: var(--muted2); margin: 18px 0 0; }
+
+    @media (max-width: 950px) {
+      .legalMainGrid { gap: 34px; grid-template-columns: minmax(0,1fr) 230px; }
+      .legalSide { padding-left: 20px; }
+    }
+    @media (max-width: 720px) {
+      .legalPage { width: calc(100% - 36px); }
+      .legalHero { padding: 0 0 33px; }
+      .legalHero h1 { font-size: clamp(42px,10vw,70px); line-height: 1.05; margin: 15px 0 17px; }
+      .legalLead { font-size: 19px; }
+      .legalMainGrid { display: block; padding-top: 34px; }
+      .legalSide { margin-top: 37px; border-left: 0; border-top: 1px solid var(--line); padding: 26px 0 0; position: static; }
+    }
+  </style>
+
+  <div class="legalPage">
+    <nav class="legalBreadcrumb"><a href="/">Home</a><span>/</span>Terms of Service</nav>
+
+    <section class="legalHero">
+      <div class="legalKicker">Legal / AI Movie Base</div>
+      <h1>The ground rules<br /><em>for using AIMB</em></h1>
+      <p class="legalLead">What AIMB is, how the catalog is put together, and what using aimoviebase.com means for you.</p>
+      <div class="legalAttribution"><span class="legalDot"></span> Updated November 7, 2026</div>
+    </section>
+
+    <div class="legalMainGrid">
+      <div class="legalProse">
+        <section class="legalProseSection" id="acceptance">
+          <div class="legalSectionKicker">01 / Acceptance</div>
+          <h2>By using the site, you agree.</h2>
+          <p>By visiting or using aimoviebase.com, you agree to these terms. If you don't agree with them, please don't use the site. We may update these terms from time to time — the date above reflects the latest revision, and continuing to use the site after a change means you accept the updated terms.</p>
+        </section>
+
+        <section class="legalProseSection" id="what-we-are">
+          <div class="legalSectionKicker">02 / What AIMB is</div>
+          <h2>An independent catalog, not a studio.</h2>
+          <p>AI Movie Base is an independent editorial and discovery platform that catalogs AI-generated and AI-assisted movies and series — synopses, credits, production notes, and festival recognition, compiled from public sources, official channels, and submissions from filmmakers and studios. Unless a page says otherwise, AIMB is not affiliated with, endorsed by, or acting on behalf of the films, directors, studios or festivals it covers.</p>
+        </section>
+
+        <section class="legalProseSection" id="content">
+          <div class="legalSectionKicker">03 / Content &amp; accuracy</div>
+          <h2>We try to get it right — and fix it when we don't.</h2>
+          <ul>
+            <li>Catalog information is compiled in good faith from the best sources we can find, but we can't guarantee it's always complete or error-free. If you spot something wrong, missing, or outdated, please <a href="/contact">let us know</a>.</li>
+            <li>The films, posters, trailers, stills and any other media referenced or embedded on AIMB belong to their respective creators and studios. We don't claim ownership of that material — it's used here for identification and editorial commentary about works already made public.</li>
+            <li>If you're a rights holder and want something removed or corrected, email <a href="mailto:contact@aimoviebase.com">contact@aimoviebase.com</a> and we'll address it.</li>
+          </ul>
+        </section>
+
+        <section class="legalProseSection" id="submissions">
+          <div class="legalSectionKicker">04 / Film submissions</div>
+          <h2>Submitting a film.</h2>
+          <p>If you submit a film through the <a href="/submit-film">Submit a Film</a> page, you're confirming that you have the right to share the information you provide and that it's accurate to the best of your knowledge. Submitting a film doesn't guarantee it will be added to the catalog — inclusion, placement and editorial framing are at AIMB's discretion.</p>
+        </section>
+
+        <section class="legalProseSection" id="acceptable-use">
+          <div class="legalSectionKicker">05 / Acceptable use</div>
+          <h2>Using the site in good faith.</h2>
+          <ul>
+            <li>Don't scrape, mirror or republish the catalog at scale without asking first.</li>
+            <li>Don't attempt to disrupt, overload or gain unauthorized access to the site or its infrastructure.</li>
+            <li>Don't use the contact or submission forms to send unlawful, infringing, or abusive content.</li>
+          </ul>
+        </section>
+
+        <section class="legalProseSection" id="third-party">
+          <div class="legalSectionKicker">06 / Third-party links &amp; embeds</div>
+          <h2>Links and embedded players.</h2>
+          <p>AIMB links out to third-party sites — YouTube, festival pages, studio and creator sites — and embeds YouTube players for trailers. Those destinations are outside our control and governed by their own terms and privacy policies, not this one.</p>
+        </section>
+
+        <section class="legalProseSection" id="warranty">
+          <div class="legalSectionKicker">07 / No warranty</div>
+          <h2>Provided as is.</h2>
+          <p>AIMB is provided "as is," without warranty of any kind. We don't guarantee the site will be uninterrupted, error-free, or permanently available. To the extent the law allows, AIMB isn't liable for damages arising from your use of, or reliance on, the site or its content.</p>
+        </section>
+
+        <section class="legalProseSection" id="contact">
+          <div class="legalSectionKicker">08 / Contact</div>
+          <h2>Questions about these terms.</h2>
+          <p>Email <a href="mailto:contact@aimoviebase.com">contact@aimoviebase.com</a> with any questions about these terms.</p>
+        </section>
+      </div>
+
+      <aside class="legalSide" aria-label="On this page">
+        <div class="legalSideKicker">On this page</div>
+        <ul class="legalToc">
+          <li><a href="#acceptance">Acceptance</a></li>
+          <li><a href="#what-we-are">What AIMB is</a></li>
+          <li><a href="#content">Content &amp; accuracy</a></li>
+          <li><a href="#submissions">Film submissions</a></li>
+          <li><a href="#acceptable-use">Acceptable use</a></li>
+          <li><a href="#third-party">Third-party links</a></li>
+          <li><a href="#warranty">No warranty</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="legalCard">
+          <h3>Questions?</h3>
+          <p>Something here unclear, or need to report an issue?</p>
+          <a class="legalCardLink" href="/contact">Contact AIMB →</a>
+        </div>
+        <p class="legalSmallnote">See also our <a href="/privacy" style="color:inherit; text-decoration:underline;">Privacy Policy</a>.</p>
+      </aside>
+    </div>
+  </div>
 </BaseLayout>
