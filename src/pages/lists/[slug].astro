@@ -140,9 +140,9 @@ function meta(f: CollectionEntry<'movies'>) {
       <h1>{l.name}</h1>
       <p class="lead">{l.description}</p>
       <div class="byline">
-        <b>AIMB{l.placeholder ? '' : ' Editorial'}</b>
+        <b>AIMB</b>
         <span>{films.length} film{films.length === 1 ? '' : 's'}</span>
-        <span>{l.placeholder ? 'Starter collection' : 'Editorial collection'}</span>
+        <span>Collection</span>
       </div>
     </div>
     {stackPosters.length >= 3 && (

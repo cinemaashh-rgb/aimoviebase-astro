@@ -37,7 +37,6 @@ function posters(list: CollectionEntry<'lists'>, max = 3) {
     .listCard:hover h2 { color: #cf6246; }
     .count { font-size: .76rem; color: #a26a56; font-weight: 700; letter-spacing: .02em; margin: 0 0 6px; }
     .summary { font-size: .82rem; color: var(--muted); line-height: 1.55; margin: 0; max-width: 340px; }
-    .placeholderTag { display: inline-block; font-size: .62rem; text-transform: uppercase; letter-spacing: .04em; background: var(--soft); color: var(--muted2); border-radius: 4px; padding: 2px 7px; margin-left: 6px; vertical-align: middle; }
 
     @media (max-width: 760px) { .listGrid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 26px 15px; } .listCard h2 { font-size: 1.3rem; } }
     @media (max-width: 460px) { .listGrid { grid-template-columns: 1fr; } }
@@ -66,7 +65,7 @@ function posters(list: CollectionEntry<'lists'>, max = 3) {
                 <div class="posterFallback" style="width:100%;height:100%;">{list.data.name}</div>
               )}
             </div>
-            <h2>{list.data.name}{list.data.placeholder && <span class="placeholderTag">starter list</span>}</h2>
+            <h2>{list.data.name}</h2>
           </a>
           <p class="count">{list.data.movies.length} film{list.data.movies.length === 1 ? '' : 's'}</p>
           <p class="summary">{list.data.description}</p>
@@ -74,6 +73,4 @@ function posters(list: CollectionEntry<'lists'>, max = 3) {
       );
     })}
   </section>
-
-  <p class="pageLede" style="margin-top:32px; font-size:.82rem;">More lists are on the way. Lists marked "starter list" are mechanically grouped by genre for now rather than hand-curated — see the README for details.</p>
 </BaseLayout>

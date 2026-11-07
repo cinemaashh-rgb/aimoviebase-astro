@@ -167,7 +167,6 @@ const journal = (await getCollection('articles'))
     .listsGrid h3 { font-family: var(--serif); font-size: .96rem; line-height: 1.2; margin: 10px 0 0; font-weight: 700; }
     .listsGrid .listCard:hover h3 { color: #cf6246; }
     .listsGrid .count { font-size: .68rem; color: var(--muted2); margin: 4px 0 0; }
-    .listsGrid .placeholderTag { display: inline-block; font-size: .56rem; text-transform: uppercase; letter-spacing: .04em; background: var(--soft); color: var(--muted2); border-radius: 4px; padding: 2px 5px; margin-left: 4px; vertical-align: middle; }
 
     /* ---- Journal ---- */
     .journalGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 22px; }
@@ -372,7 +371,7 @@ const journal = (await getCollection('articles'))
                   );
                 }) : <div class="posterFallback">{list.data.name}</div>}
               </div>
-              <h3>{list.data.name}{list.data.placeholder && <span class="placeholderTag">starter list</span>}</h3>
+              <h3>{list.data.name}</h3>
               <p class="count">{list.data.movies.length} films{list.data.placeholder ? '' : ' · ' + list.data.description}</p>
             </a>
           );
