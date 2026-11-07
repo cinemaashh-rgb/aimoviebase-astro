@@ -211,7 +211,7 @@ const journal = journalSlugs.map((id) => articles.find((a) => a.id === id)).filt
         </div>
         <div class="sdhScorecard">
           <div class="sdhScoreTop">
-            <div class="sdhRing" role="img" aria-label={`Illustrative quality score: ${qi.score} out of 100`}>
+            <div class="sdhRing" role="img" aria-label={`Quality score: ${qi.score} out of 100`}>
               <svg viewBox="0 0 112 112" aria-hidden="true">
                 <circle cx="56" cy="56" r="46" fill="none" stroke="var(--line)" stroke-width="8"></circle>
                 <circle cx="56" cy="56" r="46" fill="none" stroke={verdict.color} stroke-width="8" stroke-linecap="round" stroke-dasharray={`${dash} ${RING_CIRC - dash}`} transform="rotate(-90 56 56)"></circle>

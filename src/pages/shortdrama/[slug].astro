@@ -248,7 +248,7 @@ const dash = d.qualityIndex ? (d.qualityIndex.score / 100) * RING_CIRC : 0;
               <p class="sdQiSub">AIMB Quality Index <span aria-hidden="true">›</span></p>
             </a>
             <div class="sdQiMain">
-              <div class="sdQiRing" role="img" aria-label={`Illustrative quality score: ${d.qualityIndex.score} out of 100`}>
+              <div class="sdQiRing" role="img" aria-label={`Quality score: ${d.qualityIndex.score} out of 100`}>
                 <svg viewBox="0 0 112 112" aria-hidden="true">
                   <circle cx="56" cy="56" r="46" fill="none" stroke="var(--soft)" stroke-width="8"></circle>
                   <circle cx="56" cy="56" r="46" fill="none" stroke={verdict.color} stroke-width="8" stroke-linecap="round" stroke-dasharray={`${dash} ${RING_CIRC - dash}`} transform="rotate(-90 56 56)"></circle>
@@ -257,7 +257,7 @@ const dash = d.qualityIndex ? (d.qualityIndex.score / 100) * RING_CIRC : 0;
               </div>
               <div class="sdQiMainCopy">
                 <strong style={`color:${verdict.color}`}>{verdict.label}</strong>
-                <span>Illustrative editorial score</span>
+                <span>Editorial score</span>
               </div>
             </div>
             <div class="sdQiBreakHead">Quality Breakdown <span>WEIGHT</span></div>

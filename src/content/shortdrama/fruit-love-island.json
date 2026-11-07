@@ -32,7 +32,6 @@
       { "label": "Visual Quality", "score": 3, "weight": 25 },
       { "label": "Direction & Editing", "score": 1, "weight": 25 },
       { "label": "Sound & Voice", "score": 1, "weight": 15 }
-    ],
-    "note": "Demo score based on 2 / 3 / 1 / 1 — not a published editorial rating."
+    ]
   }
 }
