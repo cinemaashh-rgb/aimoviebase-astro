@@ -456,11 +456,29 @@ const journal = (await getCollection('articles'))
         <p>A monthly edit of AI movies, creator stories and film festival news.</p>
       </div>
       <div>
-        <form id="newsletterForm">
-          <input type="email" aria-label="Email address" placeholder="Your email address" required />
+        <!--
+          Brevo "Simple HTML" embed (list: AIMB Newsletter), submitted via
+          fetch(..., {mode:'no-cors'}) instead of a plain HTML POST so the
+          visitor stays on this page and sees our own styled form/notice
+          instead of being sent to Brevo's hosted form/thank-you page.
+          no-cors means the response body/status can't be read — a network
+          failure still shows the success notice, which matches what
+          Brevo's own hosted JS widget does for this form type.
+          email_address_check is Brevo's honeypot field: must stay empty
+          and hidden from real visitors, not a field for them to fill in.
+        -->
+        <form
+          id="newsletterForm"
+          method="POST"
+          action="https://78327f19.sibforms.com/serve/MUIFACdDZkQu8KQGon3MJBZlqmRDzyeCQo_T7GoMLctu5mW2E_QQqcy5EzmPI0p6FC_PVqyqO-bNZjUFHiO6gLffcY0qhitIFPTtltjeWvTWKKa6Q7vhmg5-yTd0duYN_yq2kU8K6eaTsC2IYMxQ-uDMBp0EoQQsJae7eqWmycsdqdwecjx0Q-yKSXVHQ9PytEPYcLNmc2JZO8rQwQ=="
+        >
+          <input type="email" name="EMAIL" aria-label="Email address" placeholder="Your email address" required />
+          <input type="text" name="email_address_check" value="" style="display:none" tabindex="-1" autocomplete="off" />
+          <input type="hidden" name="locale" value="en" />
+          <input type="hidden" name="html_type" value="simple" />
           <button type="submit">Subscribe</button>
         </form>
-        <p class="fineprint">Unsubscribe anytime. Newsletter service is not connected yet.</p>
+        <p class="fineprint">Unsubscribe anytime.</p>
         <p id="subscribeNotice" aria-live="polite"></p>
       </div>
     </div>
@@ -469,8 +487,21 @@ const journal = (await getCollection('articles'))
   <script is:inline>
     document.getElementById('newsletterForm')?.addEventListener('submit', function (e) {
       e.preventDefault();
+      var form = e.target;
       var notice = document.getElementById('subscribeNotice');
-      if (notice) notice.textContent = "Thanks — newsletter delivery isn't connected yet, so nothing was sent.";
+      var button = form.querySelector('button[type="submit"]');
+      if (button) button.disabled = true;
+      fetch(form.action, { method: 'POST', mode: 'no-cors', body: new FormData(form) })
+        .then(function () {
+          if (notice) notice.textContent = "Thanks for subscribing — check your inbox to confirm.";
+          form.reset();
+        })
+        .catch(function () {
+          if (notice) notice.textContent = "Something went wrong — please try again in a moment.";
+        })
+        .finally(function () {
+          if (button) button.disabled = false;
+        });
     });
   </script>
 </BaseLayout>
