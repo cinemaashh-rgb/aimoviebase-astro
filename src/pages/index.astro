@@ -372,7 +372,7 @@ const journal = (await getCollection('articles'))
                 }) : <div class="posterFallback">{list.data.name}</div>}
               </div>
               <h3>{list.data.name}</h3>
-              <p class="count">{list.data.movies.length} films{list.data.placeholder ? '' : ' · ' + list.data.description}</p>
+              <p class="count">{list.data.movies.length} films{list.data.blurb ? ' · ' + list.data.blurb : ''}</p>
             </a>
           );
         })}

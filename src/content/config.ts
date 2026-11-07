@@ -258,6 +258,11 @@ const lists = defineCollection({
   schema: z.object({
     name: z.string(),
     description: z.string(),
+    // Short, one-line version of `description` for the homepage's "AI Film
+    // Lists" card grid, which has no room for the full lead paragraph used
+    // on the list's own /lists/[slug] page. Optional — a list without one
+    // just shows its film count there, same as before this field existed.
+    blurb: z.string().optional(),
     // Flags a list as a temporary, mechanically-generated stand-in (e.g.
     // "every movie in genre X") rather than real editorial curation.
     placeholder: z.boolean().default(false),

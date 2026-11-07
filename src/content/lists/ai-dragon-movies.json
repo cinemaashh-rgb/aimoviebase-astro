@@ -1,6 +1,7 @@
 {
   "name": "AI Dragon Movies",
   "description": "AI-generated fantasy films and series built around dragons — from origin myths to kingdoms at war, across several different studios.",
+  "blurb": "Fantasy films and series built around dragons.",
   "placeholder": true,
   "movies": [
     "dragonbone-continent",
