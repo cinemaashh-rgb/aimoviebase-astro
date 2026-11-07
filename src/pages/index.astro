@@ -52,6 +52,15 @@ const shortdramaPublished = SHORTDRAMA_HOME_PICKS
   .filter((e): e is NonNullable<typeof e> => Boolean(e));
 
 const awards = await getCollection('awards');
+// The homepage festival-grid card has very little room, so it shows a
+// short city-only location rather than each award's full `location`
+// field (which can carry venue detail, e.g. Runway AIFF's "New York &
+// Los Angeles, USA (Alice Tully Hall at Lincoln Center; Eli and Edythe
+// Broad Stage)") — the full text still shows on each festival's own
+// /awards/<slug> detail page, this only trims the homepage card.
+const HOME_FESTIVAL_LOCATION: Record<string, string> = {
+  'runway-aiff': 'New York & Los Angeles',
+};
 
 // AI Film Lists: the real /lists collection (all four exist today — two
 // hand-curated, two mechanically grouped "starter lists", see
@@ -441,7 +450,7 @@ const journal = (await getCollection('articles'))
         {awards.map((a) => (
           <a class="festivalCard" href={`/awards/${a.id}`}>
             <b class="fmark">{a.data.name.charAt(0)}</b>
-            <div><strong>{a.data.name}</strong><span>{a.data.location ?? ''}</span></div>
+            <div><strong>{a.data.name}</strong><span>{HOME_FESTIVAL_LOCATION[a.id] ?? a.data.location ?? ''}</span></div>
           </a>
         ))}
       </div>
@@ -478,7 +487,6 @@ const journal = (await getCollection('articles'))
           <input type="hidden" name="html_type" value="simple" />
           <button type="submit">Subscribe</button>
         </form>
-        <p class="fineprint">Unsubscribe anytime.</p>
         <p id="subscribeNotice" aria-live="polite"></p>
       </div>
     </div>
