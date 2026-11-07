@@ -1,0 +1,13 @@
+{
+  "name": "Experimental & Arthouse AI Films",
+  "description": "Form-breaking, art-house AI films that push the medium past straightforward narrative — generative filmmaking used as an experimental tool rather than a camera replacement.",
+  "placeholder": true,
+  "movies": [
+    "do-the-evolution",
+    "total-pixel-space",
+    "unprompted",
+    "more-tears-than-harm",
+    "jailbird",
+    "website"
+  ]
+}
