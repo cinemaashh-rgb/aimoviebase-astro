@@ -10,9 +10,17 @@ export default defineConfig({
   trailingSlash: 'never',
   integrations: [
     sitemap({
-      // /genre/funny is a 301 redirect to /genre/comedy (duplicate genre
-      // page from the original site), not a real indexable page.
-      filter: (page) => page !== 'https://aimoviebase.com/genre/funny',
+      // Pages that are permanent 301 redirects, not real indexable content:
+      // /genre/funny -> /genre/comedy (duplicate genre page from the
+      // original site); the three /news/* paths below are articles removed
+      // from the AIMB Journal, kept only so old inbound links/bookmarks
+      // land on the Journal index instead of a 404.
+      filter: (page) => ![
+        'https://aimoviebase.com/genre/funny',
+        'https://aimoviebase.com/news/toys-r-us-sora',
+        'https://aimoviebase.com/news/echo-hunter-sag-aftra',
+        'https://aimoviebase.com/news/reset-solo-crew',
+      ].includes(page),
     }),
   ],
 });
