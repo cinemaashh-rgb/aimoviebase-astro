@@ -1,0 +1,21 @@
+{
+  "movie_id": "1116bf8f-02fb-4837-ad70-c8a12db6da27",
+  "title": "INFECTED",
+  "year": 2026,
+  "type": "movie",
+  "duration": "1:01:00",
+  "genres": [
+    "Horror",
+    "Sci-Fi"
+  ],
+  "synopsis": "After 365 days of silence, survivor John drives a fortified bus from Louisiana swamps toward a Montana safe haven through infected and hostile living.",
+  "youtubeId": "sawu4Jv6AYY",
+  "director": {
+    "name": "Alex Petrisor",
+    "slug": "alex-petrisor"
+  },
+  "studio": "Epic AI Films",
+  "aiTools": [
+    "ImagineArt"
+  ]
+}

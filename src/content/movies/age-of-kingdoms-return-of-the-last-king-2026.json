@@ -1,0 +1,22 @@
+{
+  "movie_id": "e0824aa4-faf0-4366-9d44-13760f8dae71",
+  "title": "The Return Of The Last King — His Brother Stole The Crown",
+  "year": 2026,
+  "type": "movie",
+  "duration": "1:05:22",
+  "genres": [
+    "Fantasy",
+    "Action"
+  ],
+  "synopsis": "Varic returns toward the capital to reclaim the crown from his brother Corvin while orc forces, elves, dwarves and an awakening dragon converge on war.",
+  "youtubeId": "l-k5bZK1kS0",
+  "director": {
+    "name": "Alex Petrisor",
+    "slug": "alex-petrisor"
+  },
+  "studio": "Epic AI Films",
+  "aiTools": [
+    "Seedance 2.5",
+    "Pippit"
+  ]
+}

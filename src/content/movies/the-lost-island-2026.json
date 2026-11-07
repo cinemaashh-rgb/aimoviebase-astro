@@ -1,0 +1,18 @@
+{
+  "movie_id": "35a43292-475c-4a72-9fd3-80dfb084670b",
+  "title": "THE LOST ISLAND",
+  "year": 2026,
+  "type": "movie",
+  "duration": "59:46",
+  "genres": [
+    "Sci-Fi",
+    "Action"
+  ],
+  "synopsis": "A raft survivor lands on a prehistoric island ruled by apex predators, then must outrun a volcanic eruption back to the ocean.",
+  "youtubeId": "O20qG9legZA",
+  "director": {
+    "name": "Alex Petrisor",
+    "slug": "alex-petrisor"
+  },
+  "studio": "Epic AI Films"
+}

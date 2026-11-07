@@ -1,7 +1,46 @@
 {
   "name": "Sci-Fi",
   "description": "Science fiction is the genre where generative video shines brightest: worlds that could never be built on a real set.",
-  "films": ["9091", "last-recall", "echo-hunter", "red-rainbow", "reset", "the-sky-fallen-legacy", "annunaki-the-nibiru-legacy", "charlie-boy", "oneiric", "hydrocide", "alien-invasion-ep3-total-war-begins", "kade-voss", "oda", "memory-world", "jackpot", "soulless", "black-horizon-remastered", "invasion-battle-for-new-york", "atlas-i3", "echoes-of-the-silent-planet", "wilderness-heart-vii", "ark-7", "centenarian-kindergarten", "pomegranate", "one", "website", "tairell-isnt-real", "postman"],
+  "films": [
+    "9091",
+    "last-recall",
+    "echo-hunter",
+    "red-rainbow",
+    "reset",
+    "the-sky-fallen-legacy",
+    "annunaki-the-nibiru-legacy",
+    "charlie-boy",
+    "oneiric",
+    "hydrocide",
+    "alien-invasion-ep3-total-war-begins",
+    "kade-voss",
+    "oda",
+    "memory-world",
+    "jackpot",
+    "soulless",
+    "black-horizon-remastered",
+    "invasion-battle-for-new-york",
+    "atlas-i3",
+    "echoes-of-the-silent-planet",
+    "wilderness-heart-vii",
+    "ark-7",
+    "centenarian-kindergarten",
+    "pomegranate",
+    "one",
+    "website",
+    "tairell-isnt-real",
+    "postman",
+    "day-world-ended-part1-2025",
+    "earthquake-last-day-2026",
+    "end-of-the-world-2026",
+    "infected-2026",
+    "last-life-on-earth-seed-bearer-2026",
+    "legion-dawn-of-empire-2026",
+    "lost-planet-talis-nobody-alive-landed-2026",
+    "the-lost-island-2026"
+  ],
   "heroImage": "/images/genres/scifi-hero.webp",
-  "heroCredit": { "movieSlug": "kade-voss" }
+  "heroCredit": {
+    "movieSlug": "kade-voss"
+  }
 }

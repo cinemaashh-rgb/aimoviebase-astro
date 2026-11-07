@@ -2,10 +2,28 @@
   "studio_id": "0c5252fa-c844-43d6-9877-b13ddd22db6d",
   "name": "Epic AI Films",
   "description": "An AI film studio behind the ongoing Age of Kingdoms and Age of Dragons fantasy sagas.",
-  "descriptionMore": "Alongside its dragon-and-kingdom sagas, the studio has also released the sci-fi disaster feature INVASION: Battle for New York.",
+  "descriptionMore": "Alongside its dragon-and-kingdom sagas, the studio has also released the sci-fi disaster feature INVASION: Battle for New York and a run of standalone survival, war and disaster features.",
   "films": [
     "nobody-was-coming-to-save-the-last-king",
     "invasion-battle-for-new-york",
-    "her-own-dragons-turned-against-her"
+    "her-own-dragons-turned-against-her",
+    "age-of-dragons-mother-of-dragons-2026",
+    "age-of-kingdoms-blood-of-kings-2026",
+    "age-of-kingdoms-last-king-of-men-forest-2026",
+    "age-of-kingdoms-north-wall-2026",
+    "age-of-kingdoms-return-of-the-last-king-2026",
+    "age-of-kingdoms-trial-by-combat-2026",
+    "age-of-kingdoms-wrath-of-the-horde-2026",
+    "brothers-of-war-last-stand-2026",
+    "day-world-ended-part1-2025",
+    "earthquake-last-day-2026",
+    "end-of-the-world-2026",
+    "infected-2026",
+    "last-life-on-earth-seed-bearer-2026",
+    "legion-dawn-of-empire-2026",
+    "lost-beyond-horizon-2026",
+    "lost-planet-talis-nobody-alive-landed-2026",
+    "pirates-dead-mans-island-2026",
+    "the-lost-island-2026"
   ]
 }

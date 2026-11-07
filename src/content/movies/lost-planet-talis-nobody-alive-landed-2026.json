@@ -1,0 +1,18 @@
+{
+  "movie_id": "274ca71b-4903-4709-9371-64513cb46f84",
+  "title": "Nobody Was Alive When We Landed",
+  "year": 2026,
+  "type": "movie",
+  "duration": "1:10:24",
+  "genres": [
+    "Sci-Fi",
+    "Horror"
+  ],
+  "synopsis": "Captain Tiggs leads a third expedition to colony Meridian Station on Talis to investigate a 12-year-old HELP signal and finds a mining operation, not a massacre.",
+  "youtubeId": "UH-xxHm-I9o",
+  "studio": "Epic AI Films",
+  "aiTools": [
+    "Seedance 2.5",
+    "Dreamina"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "movie_id": "fefe19f7-fe1a-4ef0-a5ef-35c1dd8308db",
+  "title": "LEGION: Dawn of Empire",
+  "year": 2026,
+  "type": "movie",
+  "duration": "1:01:44",
+  "genres": [
+    "Sci-Fi",
+    "Action"
+  ],
+  "synopsis": "After an orbital strike on Creos VII, a lone armored Spartan trapped behind enemy lines must complete a mission that could decide an empire's fate.",
+  "youtubeId": "G-G51TQBHzE",
+  "director": {
+    "name": "Alex Petrisor",
+    "slug": "alex-petrisor"
+  },
+  "studio": "Epic AI Films"
+}

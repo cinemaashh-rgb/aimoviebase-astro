@@ -1,7 +1,19 @@
 {
   "name": "Horror",
   "description": "AI horror turns the \"uncanny valley\" of generative models into an artistic device rather than a flaw.",
-  "films": ["the-sage-homecoming", "alucard", "last-recall", "girls-demons", "last-siren", "legacy-of-kain-soul-reaver-reimagining", "sal-divine-retribution"],
+  "films": [
+    "the-sage-homecoming",
+    "alucard",
+    "last-recall",
+    "girls-demons",
+    "last-siren",
+    "legacy-of-kain-soul-reaver-reimagining",
+    "sal-divine-retribution",
+    "infected-2026",
+    "lost-planet-talis-nobody-alive-landed-2026"
+  ],
   "heroImage": "/images/genres/horror-hero.webp",
-  "heroCredit": { "movieSlug": "sal-divine-retribution" }
+  "heroCredit": {
+    "movieSlug": "sal-divine-retribution"
+  }
 }
