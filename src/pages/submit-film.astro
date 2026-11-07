@@ -62,6 +62,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .submissionEnd span { font: 700 10px var(--sans); letter-spacing: .13em; color: #cf6246; }
     .submissionEnd p { font: 20px var(--serif); margin: 0; }
 
+    .submitSuccess { display: flex; gap: 14px; align-items: flex-start; background: #f2f8f4; border: 1px solid #bfe0cb; border-radius: 5px; padding: 18px 20px; margin: 13px 0; }
+    .submitSuccess .dot { flex: none; width: 9px; height: 9px; border-radius: 100%; background: #27704b; margin-top: 6px; }
+    .submitSuccess strong { display: block; font: 700 14px var(--sans); color: #1d4b32; margin-bottom: 3px; }
+    .submitSuccess span { font: 13px/1.5 var(--sans); color: #3e5a49; }
+
     @media (max-width: 650px) {
       .submitIntro { margin-bottom: 28px; padding-bottom: 25px; }
       .partHeading h2 { font-size: 27px; }
@@ -168,6 +173,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <button type="submit" id="submitFilm">Submit Film for Review <span>↗</span></button>
         </div>
         <div class="submitFormError" id="submitError" role="alert" hidden></div>
+        <div class="submitSuccess" id="submitSuccess" role="status" hidden>
+          <span class="dot"></span>
+          <div><strong>Submission sent</strong><span>Thanks — the AIMB editorial team will review your film and follow up by email if needed.</span></div>
+        </div>
       </section>
     </form>
 
@@ -241,7 +250,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       urlField.addEventListener('input', () => updateUrl(false));
       urlField.addEventListener('blur', () => updateUrl(true));
 
-      form.addEventListener('submit', function (e) {
+      const submitBtn = document.getElementById('submitFilm');
+      const submitError = document.getElementById('submitError');
+      const submitSuccess = document.getElementById('submitSuccess');
+
+      form.addEventListener('submit', async function (e) {
         e.preventDefault();
         const parsed = updateUrl(true);
         if (!parsed) { urlField.focus(); return; }
@@ -249,23 +262,52 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         if (invalid) { invalid.reportValidity(); invalid.focus(); return; }
         if (!document.getElementById('rights').checked) { document.getElementById('rights').reportValidity(); return; }
 
+        submitError.hidden = true;
+        submitSuccess.hidden = true;
+
         const data = new FormData(form);
-        const items = [
-          ['Film title', data.get('filmTitle')],
-          ['Video URL', data.get('videoUrl')],
-          ['Director / Creator', data.get('creator')],
-          ['Format', data.get('format')],
-          ['Synopsis', data.get('description')],
-          ['AI tools used', data.get('tools')],
-          ['Genres / Keywords', data.get('genres')],
-          ['Submitted by', data.get('contactName')],
-          ['Contact email', data.get('contactEmail')],
-        ];
-        const body = items.map(([k, v]) => k + ': ' + (v || '—')).join('\n\n');
-        // Static site, no submission backend: this opens a pre-filled email
-        // to AIMB's real contact address rather than pretending to submit
-        // to a server that doesn't exist yet.
-        location.href = 'mailto:contact@aimoviebase.com?subject=' + encodeURIComponent('AIMB film submission: ' + data.get('filmTitle')) + '&body=' + encodeURIComponent(body);
+        const payload = new FormData();
+        payload.append('access_key', '9f9f604b-3e9e-4026-baa3-14e8389d5ef8');
+        payload.append('subject', 'AIMB film submission: ' + data.get('filmTitle'));
+        payload.append('from_name', 'AIMB Submit a Film');
+        payload.append('Film title', data.get('filmTitle'));
+        payload.append('Video URL', data.get('videoUrl'));
+        payload.append('Director / Creator', data.get('creator'));
+        payload.append('Format', data.get('format'));
+        payload.append('Synopsis', data.get('description'));
+        payload.append('AI tools used', data.get('tools') || '—');
+        payload.append('Genres / Keywords', data.get('genres') || '—');
+        payload.append('Submitted by', data.get('contactName') || '—');
+        payload.append('email', data.get('contactEmail'));
+
+        const originalText = submitBtn.innerHTML;
+        submitBtn.textContent = 'Sending…';
+        submitBtn.disabled = true;
+
+        try {
+          const response = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            body: payload,
+          });
+          const result = await response.json();
+
+          if (response.ok && result.success) {
+            submitSuccess.hidden = false;
+            form.reset();
+            preview.hidden = true;
+            frame.replaceChildren();
+            delete frame.dataset.src;
+          } else {
+            submitError.textContent = result.message || 'Something went wrong. Please try again or email contact@aimoviebase.com.';
+            submitError.hidden = false;
+          }
+        } catch (err) {
+          submitError.textContent = 'Could not reach the submission service. Please try again or email contact@aimoviebase.com.';
+          submitError.hidden = false;
+        } finally {
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }
       });
     })();
   </script>
