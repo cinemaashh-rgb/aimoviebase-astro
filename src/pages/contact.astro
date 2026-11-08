@@ -37,6 +37,10 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
     .contactSend { display: inline-flex; justify-content: center; align-items: center; gap: 18px; border: 0; border-radius: 5px; padding: 13px 20px; background: linear-gradient(115deg,#ec8b50,#dd4d39 75%,#b93332); color: #fff; font: 700 13px var(--sans); cursor: pointer; }
     .contactSend:hover { filter: brightness(1.07); }
     .contactActions p { margin: 0; flex: 1; min-width: 180px; font: 400 11px/1.55 var(--sans); color: var(--muted2); }
+    .contactSend:disabled { opacity: .6; cursor: default; filter: none; }
+    .contactFormResult { margin: 14px 0 0; font: 700 13px/1.5 var(--sans); min-height: 1em; }
+    .contactFormResult[data-state="success"] { color: #2a7a4f; }
+    .contactFormResult[data-state="error"] { color: #c0392b; }
 
     .contactSide { border-left: 1px solid var(--line); padding-left: 26px; }
     .contactSideKicker { font: 700 11px/1.5 var(--sans); letter-spacing: .14em; color: #b8533c; margin-bottom: 14px; }
@@ -92,9 +96,12 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
         <section class="contactProseSection" aria-labelledby="contact-form-title">
           <div class="contactSectionKicker">02 / Send a message</div>
           <h2 id="contact-form-title">Send us a message.</h2>
-          <p>Use the form below to prepare an email to our team. Your mail application will open so you can review and send it.</p>
+          <p>Use the form below to send your message directly to our team.</p>
 
           <form id="contactForm">
+            <input type="hidden" name="access_key" value="9f9f604b-3e9e-4026-baa3-14e8389d5ef8" />
+            <input type="hidden" name="subject" value="New message from AIMB contact form" />
+            <input type="checkbox" name="botcheck" class="contactHoneypot" style="display:none" tabindex="-1" autocomplete="off" />
             <div class="contactFields">
               <div class="contactField">
                 <label for="contactName">Your name <span aria-hidden="true">*</span></label>
@@ -121,8 +128,9 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
             </div>
             <div class="contactActions">
               <button class="contactSend" type="submit">Send message <span aria-hidden="true">↗</span></button>
-              <p>This form opens your email app; messages are not sent directly from this page.</p>
+              <p id="contactFormNote">We'll reply to the email address you provide, usually within a few days.</p>
             </div>
+            <p id="contactFormResult" class="contactFormResult" role="status" aria-live="polite"></p>
           </form>
         </section>
       </div>
@@ -157,14 +165,48 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
   <script is:inline>
     document.getElementById('contactForm')?.addEventListener('submit', function (event) {
       event.preventDefault();
+      var form = event.target;
       var name = document.getElementById('contactName').value.trim();
       var email = document.getElementById('contactEmail').value.trim();
       var topic = document.getElementById('contactTopic').value;
       var message = document.getElementById('contactMessage').value.trim();
-      if (!name || !email || !message) { this.reportValidity(); return; }
-      var subject = 'AIMB Contact — ' + topic;
-      var body = 'Name: ' + name + '\nEmail: ' + email + '\nTopic: ' + topic + '\n\n' + message;
-      window.location.href = 'mailto:contact@aimoviebase.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      if (!name || !email || !message) { form.reportValidity(); return; }
+
+      var button = form.querySelector('.contactSend');
+      var result = document.getElementById('contactFormResult');
+      var originalButtonHtml = button.innerHTML;
+      button.disabled = true;
+      button.textContent = 'Sending…';
+      result.removeAttribute('data-state');
+      result.textContent = '';
+
+      var formData = new FormData(form);
+      formData.set('subject', 'AIMB Contact — ' + topic);
+
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: formData,
+      })
+        .then(function (response) { return response.json(); })
+        .then(function (json) {
+          if (json.success) {
+            result.setAttribute('data-state', 'success');
+            result.textContent = 'Thanks — your message has been sent. We\'ll get back to you soon.';
+            form.reset();
+          } else {
+            result.setAttribute('data-state', 'error');
+            result.textContent = json.message || 'Something went wrong. Please try again or email contact@aimoviebase.com.';
+          }
+        })
+        .catch(function () {
+          result.setAttribute('data-state', 'error');
+          result.textContent = 'Could not send your message. Please try again or email contact@aimoviebase.com.';
+        })
+        .finally(function () {
+          button.disabled = false;
+          button.innerHTML = originalButtonHtml;
+        });
     });
     document.querySelectorAll('a[data-contact-topic]').forEach(function (link) {
       link.addEventListener('click', function () {
