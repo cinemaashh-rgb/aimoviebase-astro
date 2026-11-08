@@ -42,7 +42,7 @@ function meta(e: CollectionEntry<'shortdrama'>) {
 // "coming soon" placeholders) — pulled live from the shared `articles`
 // collection so this teaser and their real /news/[slug] pages can't drift.
 const articles = await getCollection('articles');
-const journalSlugs = ['the-rise-of-chinese-ai-short-drama', 'five-ai-short-drama-trends-to-watch'];
+const journalSlugs = ['the-rise-of-chinese-ai-short-drama', '10-most-popular-ai-short-dramas-youtube-2026'];
 const journal = journalSlugs.map((id) => articles.find((a) => a.id === id)).filter((a): a is NonNullable<typeof a> => Boolean(a));
 ---
 <BaseLayout title="AI Short Drama" description="Explore AI short dramas and vertical microdramas, including Chinese AI series. AIMB editorial picks and the Slop or Cinema? Quality Index." hideSearch>
