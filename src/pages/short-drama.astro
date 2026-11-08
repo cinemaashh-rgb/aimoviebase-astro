@@ -17,8 +17,13 @@ const popular = published
   .slice(0, 6);
 
 // "Chinese AI Short Dramas": every published title that carries a native
-// originalTitle, shown with its original-language title underneath.
+// originalTitle, shown with its original-language title underneath. The
+// grid itself is capped to 6, newest first — same "Discover the Format"
+// treatment as Popular above — with the full set living on its own list
+// page (see src/content/lists/chinese-ai-short-dramas.json), linked from
+// the section heading the same way Popular links to /short-drama/all.
 const chinese = published.filter((e) => e.data.originalTitle);
+const chineseGrid = [...chinese].sort((a, b) => (b.data.year ?? 0) - (a.data.year ?? 0)).slice(0, 6);
 
 // Quality Index feature: the one real editorial score currently in the
 // catalog, read live from its own content entry (not duplicated/hardcoded)
@@ -102,15 +107,6 @@ const journal = journalSlugs.map((id) => articles.find((a) => a.id === id)).filt
     .sdhPosterFallback { display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .72rem; font-weight: 700; text-align: center; padding: 10px; }
     .sdhGrid a:hover img { transform: translateY(-3px); box-shadow: 0 8px 23px rgba(0,0,0,.1); }
     .sdhGrid a:hover strong { color: #cf6246; }
-    /* "View all" tile — same card footprint as a poster (2/3 ratio, same
-       border/radius) but holds an arrow instead of art, linking through to
-       the matching /lists/[slug] collection. Arrow starts black (var(--ink),
-       matching every other section-link arrow on this site) and turns the
-       same orange (#cf6246) on hover, same transition as .sdhHeadLink span. */
-    .sdhViewAllTile { display: flex; align-items: center; justify-content: center; }
-    .sdhViewAllTile .arrow { font-size: 1.9rem; font-weight: 900; line-height: 1; color: var(--ink); transition: color .2s ease, transform .2s ease; }
-    .sdhGrid a:hover .sdhViewAllTile { border-color: #e9c6b6; background: #fff0e7; }
-    .sdhGrid a:hover .sdhViewAllTile .arrow { color: #cf6246; transform: translateX(4px); }
     .sdhGrid strong { font-family: var(--serif); font-size: .9rem; margin-top: 10px; line-height: 1.2; font-weight: 700; }
     .sdhOriginal { display: block; font-family: var(--serif); font-size: .76rem; color: var(--muted2); margin-top: 2px; }
     .sdhGridMeta { display: block; margin-top: 4px; font-size: .7rem; color: var(--muted2); }
@@ -251,17 +247,17 @@ const journal = journalSlugs.map((id) => articles.find((a) => a.id === id)).filt
     </section>
   )}
 
-  {chinese.length > 0 && (
+  {chineseGrid.length > 0 && (
     <section class="sdhSection" id="chinese">
       <div class="sdhSectionHead">
         <div>
           <span class="sdhKicker">Global AI Storytelling</span>
-          <h2>Chinese AI Short Dramas</h2>
+          <h2><a class="sdhHeadLink" href="/lists/chinese-ai-short-dramas">Chinese AI Short Dramas <span aria-hidden="true">❯</span></a></h2>
           <p class="intro">Discover the fast-evolving Chinese microdrama scene, with original-language titles.</p>
         </div>
       </div>
       <div class="sdhGrid">
-        {chinese.map((e) => (
+        {chineseGrid.map((e) => (
           <a href={`/shortdrama/${e.id}`} aria-label={`View ${e.data.title}`}>
             {e.data.poster ? <img src={e.data.poster} alt={e.data.title} loading="lazy" /> : <div class="sdhPosterFallback">{e.data.title}</div>}
             <strong>{e.data.title}</strong>
@@ -269,11 +265,6 @@ const journal = journalSlugs.map((id) => articles.find((a) => a.id === id)).filt
             <span class="sdhGridMeta">{meta(e)}</span>
           </a>
         ))}
-        <a href="/lists/chinese-ai-short-dramas" aria-label="View the full Chinese AI Short Dramas list">
-          <div class="sdhPosterFallback sdhViewAllTile"><span class="arrow" aria-hidden="true">→</span></div>
-          <strong>View All</strong>
-          <span class="sdhGridMeta">Full collection</span>
-        </a>
       </div>
     </section>
   )}
