@@ -5,12 +5,23 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 
 const lists = await getCollection('lists');
 const movies = await getCollection('movies');
+const shortdramas = await getCollection('shortdrama');
 
+// A list's items can come from `movies`, `shortdrama`, or both — this just
+// needs each one's real poster path for the fanned cover art, so both
+// collections are resolved down to plain poster URLs.
 function posters(list: CollectionEntry<'lists'>, max = 3) {
-  return list.data.movies
-    .map((slug) => movies.find((m) => m.id === slug))
-    .filter((m): m is CollectionEntry<'movies'> => Boolean(m?.data.poster))
-    .slice(0, max);
+  const moviePosters = list.data.movies
+    .map((slug) => movies.find((m) => m.id === slug)?.data.poster)
+    .filter((p): p is string => Boolean(p));
+  const shortdramaPosters = list.data.shortdramas
+    .map((slug) => shortdramas.find((s) => s.id === slug)?.data.poster)
+    .filter((p): p is string => Boolean(p));
+  return [...moviePosters, ...shortdramaPosters].slice(0, max);
+}
+
+function itemCount(list: CollectionEntry<'lists'>) {
+  return list.data.movies.length + list.data.shortdramas.length;
 }
 ---
 <BaseLayout title="Lists" description="Curated lists of AI-made films — by theme, by model, by festival selection.">
@@ -61,7 +72,7 @@ function posters(list: CollectionEntry<'lists'>, max = 3) {
             <div class="posterStrip">
               {covers.length >= 2 ? (
                 <div class="posterGrid">
-                  {covers.map((m) => <img src={m.data.poster} alt="" loading="lazy" />)}
+                  {covers.map((p) => <img src={p} alt="" loading="lazy" />)}
                 </div>
               ) : (
                 <div class="posterFallback" style="width:100%;height:100%;">{list.data.name}</div>
@@ -69,7 +80,7 @@ function posters(list: CollectionEntry<'lists'>, max = 3) {
             </div>
             <h2>{list.data.name}</h2>
           </a>
-          <p class="count">{list.data.movies.length} film{list.data.movies.length === 1 ? '' : 's'}</p>
+          <p class="count">{itemCount(list)} film{itemCount(list) === 1 ? '' : 's'}</p>
           <p class="summary">{list.data.description}</p>
         </article>
       );

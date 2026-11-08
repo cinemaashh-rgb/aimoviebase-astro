@@ -267,6 +267,13 @@ const lists = defineCollection({
     // "every movie in genre X") rather than real editorial curation.
     placeholder: z.boolean().default(false),
     movies: z.array(z.string()).default([]), // movie slugs (content ids)
+    // Short-drama slugs (content ids into the `shortdrama` collection).
+    // Separate from `movies` because the two collections have different
+    // schemas (episodes/platform vs. director/duration) — a list can mix
+    // both, and /lists/[slug] resolves each kind from its own collection
+    // and renders them with a shared set of fields rather than forcing
+    // shortdrama entries into the movie schema.
+    shortdramas: z.array(z.string()).default([]),
   }),
 });
 

@@ -3,13 +3,70 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 
+// A list can mix the `movies` and `shortdrama` collections (they have
+// different schemas — episodes/platform vs. director/duration), so each
+// resolved entry is normalized to this shared shape before rendering,
+// rather than the template branching on collection type everywhere.
+interface ListFilm {
+  id: string;
+  href: string;
+  title: string;
+  originalTitle?: string;
+  poster?: string;
+  meta: string;
+  year: number;
+}
+
+// Astro builds `getStaticPaths` as an isolated module — helper functions
+// declared alongside it in the frontmatter aren't reliably in scope there
+// (seen as a build-time "X is not defined"), so the movies/shortdrama
+// resolution logic lives *inside* getStaticPaths itself rather than as
+// top-level frontmatter functions.
 export async function getStaticPaths() {
   const lists = await getCollection('lists');
   const movies = await getCollection('movies');
-  return lists.map((list) => {
-    const films = list.data.movies
+  const shortdramas = await getCollection('shortdrama');
+
+  function movieMeta(f: CollectionEntry<'movies'>) {
+    const parts = [String(f.data.year)];
+    if (f.data.duration) parts.push(f.data.duration);
+    const line = parts.join(' · ');
+    return f.data.director ? `${line} · By ${f.data.director.name}` : line;
+  }
+
+  function shortdramaMeta(f: CollectionEntry<'shortdrama'>) {
+    return [f.data.platform, f.data.badges[0]].filter(Boolean).join(' · ');
+  }
+
+  function resolveListFilms(list: CollectionEntry<'lists'>): ListFilm[] {
+    const fromMovies = list.data.movies
       .map((slug) => movies.find((m) => m.id === slug))
-      .filter((m): m is CollectionEntry<'movies'> => Boolean(m));
+      .filter((m): m is CollectionEntry<'movies'> => Boolean(m))
+      .map((m): ListFilm => ({
+        id: m.id,
+        href: `/movies/${m.id}`,
+        title: m.data.title,
+        poster: m.data.poster,
+        meta: movieMeta(m),
+        year: m.data.year,
+      }));
+    const fromShortdramas = list.data.shortdramas
+      .map((slug) => shortdramas.find((s) => s.id === slug))
+      .filter((s): s is CollectionEntry<'shortdrama'> => Boolean(s))
+      .map((s): ListFilm => ({
+        id: s.id,
+        href: `/shortdrama/${s.id}`,
+        title: s.data.title,
+        originalTitle: s.data.originalTitle,
+        poster: s.data.poster,
+        meta: shortdramaMeta(s),
+        year: s.data.year ?? 0,
+      }));
+    return [...fromMovies, ...fromShortdramas];
+  }
+
+  return lists.map((list) => {
+    const films = resolveListFilms(list);
     // "Keep exploring" — up to 3 of the catalog's other real lists, so the
     // page always ends with somewhere real to go next rather than the
     // mockup's invented slugs for collections we don't have. Each one also
@@ -20,14 +77,12 @@ export async function getStaticPaths() {
       .filter((l) => l.id !== list.id)
       .slice(0, 3)
       .map((r) => {
-        const rFilms = r.data.movies
-          .map((slug) => movies.find((m) => m.id === slug))
-          .filter((m): m is CollectionEntry<'movies'> => Boolean(m));
+        const rFilms = resolveListFilms(r);
         const posters = rFilms
-          .map((f) => f.data.poster)
+          .map((f) => f.poster)
           .filter((p): p is string => Boolean(p))
           .slice(0, 5);
-        return { entry: r, filmCount: r.data.movies.length, posters };
+        return { entry: r, filmCount: rFilms.length, posters };
       });
     return {
       params: { slug: list.id },
@@ -38,19 +93,12 @@ export async function getStaticPaths() {
 
 interface Props {
   list: CollectionEntry<'lists'>;
-  films: CollectionEntry<'movies'>[];
+  films: ListFilm[];
   related: { entry: CollectionEntry<'lists'>; filmCount: number; posters: string[] }[];
 }
 const { list, films, related } = Astro.props;
 const l = list.data;
-const stackPosters = films.filter((f) => f.data.poster).slice(0, 5);
-
-function meta(f: CollectionEntry<'movies'>) {
-  const parts = [String(f.data.year)];
-  if (f.data.duration) parts.push(f.data.duration);
-  const line = parts.join(' · ');
-  return f.data.director ? `${line} · By ${f.data.director.name}` : line;
-}
+const stackPosters = films.filter((f) => f.poster).slice(0, 5);
 ---
 <BaseLayout title={l.name} description={l.description}>
   <style>
@@ -92,6 +140,7 @@ function meta(f: CollectionEntry<'movies'>) {
     .rank { font-size: .68rem; letter-spacing: .1em; color: #cf6246; font-weight: 800; }
     .story h3 { font: 400 1.7rem/1.12 var(--serif); letter-spacing: -0.02em; margin: 8px 0 7px; }
     .story h3 a:hover { color: #cf6246; }
+    .storyOriginal { font: 400 .86rem var(--serif); color: var(--muted2); margin: -2px 0 7px; }
     .info { font-size: .8rem; color: var(--muted2); }
     .exploreLink { display: inline-block; font-size: .76rem; font-weight: 700; border-bottom: 1px solid #cf6246; padding-bottom: 3px; margin-top: 10px; }
 
@@ -157,7 +206,7 @@ function meta(f: CollectionEntry<'movies'>) {
     {stackPosters.length >= 3 && (
       <div class="featureArt">
         <div class="filmStack">
-          {stackPosters.map((f) => <img src={f.data.poster} alt="" loading="lazy" />)}
+          {stackPosters.map((f) => <img src={f.poster} alt="" loading="lazy" />)}
         </div>
         <span>{films.length} FILMS IN THIS COLLECTION</span>
       </div>
@@ -181,17 +230,18 @@ function meta(f: CollectionEntry<'movies'>) {
       </div>
       <div id="filmList">
         {films.map((f, i) => (
-          <article class="story" data-year={f.data.year} data-title={f.data.title} data-rank={i + 1}>
-            <a href={`/movies/${f.id}`} aria-label={f.data.title}>
+          <article class="story" data-year={f.year} data-title={f.title} data-rank={i + 1}>
+            <a href={f.href} aria-label={f.title}>
               <div class="image">
-                {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading={i < 4 ? 'eager' : 'lazy'} /> : <div class="posterFallback" style="width:100%;height:100%;">{f.data.title}</div>}
+                {f.poster ? <img src={f.poster} alt={f.title} loading={i < 4 ? 'eager' : 'lazy'} /> : <div class="posterFallback" style="width:100%;height:100%;">{f.title}</div>}
               </div>
             </a>
             <div>
               <span class="rank">SELECTION {String(i + 1).padStart(2, '0')} / {String(films.length).padStart(2, '0')}</span>
-              <h3><a href={`/movies/${f.id}`}>{f.data.title}</a></h3>
-              <p class="info">{meta(f)}</p>
-              <a class="exploreLink" href={`/movies/${f.id}`}>Explore film ↗</a>
+              <h3><a href={f.href}>{f.title}</a></h3>
+              {f.originalTitle && <p class="storyOriginal">{f.originalTitle}</p>}
+              <p class="info">{f.meta}</p>
+              <a class="exploreLink" href={f.href}>Explore film ↗</a>
             </div>
           </article>
         ))}

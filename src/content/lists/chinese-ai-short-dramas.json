@@ -1,0 +1,19 @@
+{
+  "name": "Chinese AI Short Dramas",
+  "description": "A curated collection of AI-generated vertical microdramas from China — live-action-style and AI-animated series shown with their original-language titles.",
+  "blurb": "AI-generated Chinese vertical microdramas.",
+  "placeholder": false,
+  "movies": [],
+  "shortdramas": [
+    "15-years-of-waiting-fiance-returns-pretending-poor",
+    "feng-shui-master",
+    "immortal-execution-platform-ai-live-action-version",
+    "listening-water-little-koi",
+    "the-heart-inside-the-steamed-bun",
+    "the-qinling-bronze-occult-chronicles",
+    "who-says-a-playboy-cant-be-the-top-scholar",
+    "my-year-end-bonus-dropped-from-800k-to-19k",
+    "a-wall-between-us-human-nature-revealed",
+    "armed-journey-to-the-song-dynasty"
+  ]
+}

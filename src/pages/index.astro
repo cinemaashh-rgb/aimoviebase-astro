@@ -70,11 +70,20 @@ const HOME_FESTIVAL_LOCATION: Record<string, string> = {
 // matching the homepage reference's list-card art without inventing
 // artwork for lists that don't have six real posters.
 const homeLists = (await getCollection('lists')).slice(0, 4);
+// A list can draw from `movies`, `shortdrama`, or both, so posters/counts
+// are resolved across both collections rather than just `movies` — see the
+// same split in src/pages/lists/[slug].astro and lists/index.astro.
 function listPosters(list: CollectionEntry<'lists'>, max = 6) {
-  return list.data.movies
-    .map((slug) => movies.find((m) => m.id === slug))
-    .filter((m): m is CollectionEntry<'movies'> => Boolean(m?.data.poster))
-    .slice(0, max);
+  const moviePosters = list.data.movies
+    .map((slug) => movies.find((m) => m.id === slug)?.data.poster)
+    .filter((p): p is string => Boolean(p));
+  const shortdramaPosters = list.data.shortdramas
+    .map((slug) => shortdramaAll.find((s) => s.id === slug)?.data.poster)
+    .filter((p): p is string => Boolean(p));
+  return [...moviePosters, ...shortdramaPosters].slice(0, max);
+}
+function listItemCount(list: CollectionEntry<'lists'>) {
+  return list.data.movies.length + list.data.shortdramas.length;
 }
 
 // "2026 · AI Movie · Sci-Fi" style single-line taxonomy, as in the homepage
@@ -363,16 +372,16 @@ const journal = (await getCollection('articles'))
           return (
             <a class="listCard" href={`/lists/${list.id}`}>
               <div class="listArt">
-                {n > 0 ? posters.map((m, i) => {
+                {n > 0 ? posters.map((p, i) => {
                   const w = i === 0 ? 50 : 50 / Math.max(n - 1, 1);
                   const left = i === 0 ? 0 : 50 + (i - 1) * (50 / Math.max(n - 1, 1));
                   return (
-                    <img class="listCover" src={m.data.poster} alt="" loading="lazy" style={`left:${left}%; width:${w}%; z-index:${i + 1};`} />
+                    <img class="listCover" src={p} alt="" loading="lazy" style={`left:${left}%; width:${w}%; z-index:${i + 1};`} />
                   );
                 }) : <div class="posterFallback">{list.data.name}</div>}
               </div>
               <h3>{list.data.name}</h3>
-              <p class="count">{list.data.movies.length} films{list.data.blurb ? ' · ' + list.data.blurb : ''}</p>
+              <p class="count">{listItemCount(list)} films{list.data.blurb ? ' · ' + list.data.blurb : ''}</p>
             </a>
           );
         })}
