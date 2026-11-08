@@ -118,6 +118,14 @@ const hasSideNav = headings.length > 0 || !!listSummary;
     .rankedEntry:last-of-type { border-bottom: 0; margin-bottom: 0; }
     .rankedMedia { border-radius: 6px; overflow: hidden; background: var(--soft); margin-bottom: 16px; }
     .rankedMedia img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+    /* Poster-media variant: a small 2:3 poster beside the text instead of
+       a full-width 16:9 still, for lists built from catalog poster art. */
+    .rankedEntryPoster { display: grid; grid-template-columns: 180px 1fr; gap: 24px; align-items: start; }
+    .rankedEntryPoster .rankedMedia { margin-bottom: 0; }
+    .rankedEntryPoster .rankedMedia img { aspect-ratio: 2/3; }
+    @media (max-width: 560px) {
+      .rankedEntryPoster { grid-template-columns: 110px 1fr; gap: 16px; }
+    }
     .rankBadge { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; height: 32px; padding: 0 4px; border-radius: 999px; background: #f4e5cc; color: #8b5810; font: 700 .9rem Arial, sans-serif; margin-bottom: 10px; }
     .rankedEntry h3 { font: 400 1.5rem/1.2 var(--serif); margin: 0 0 7px; color: var(--ink); }
     .rankedEntry h3 a:hover { color: #cf6246; }
@@ -302,7 +310,7 @@ const hasSideNav = headings.length > 0 || !!listSummary;
                 return null;
               case 'rankedEntry':
                 return (
-                  <article class="rankedEntry" id={block.id}>
+                  <article class={`rankedEntry ${block.mediaAspect === 'poster' ? 'rankedEntryPoster' : ''}`} id={block.id}>
                     <div class="rankedMedia">
                       {block.imageHref ? (
                         <a href={block.imageHref}><img src={block.image} alt={block.imageAlt} loading="lazy" /></a>

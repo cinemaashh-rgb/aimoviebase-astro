@@ -362,6 +362,12 @@ const articles = defineCollection({
         image: z.string(),
         imageAlt: z.string(),
         imageHref: z.string().optional(),
+        // 'landscape' (default) renders `image` full-width at 16:9, for a
+        // wide movie/series still. 'poster' renders it as a small 2:3
+        // poster beside the text instead — for lists built from catalog
+        // poster art (e.g. shortdrama entries) rather than dedicated
+        // landscape stills.
+        mediaAspect: z.enum(['landscape', 'poster']).optional(),
         paragraphs: z.array(z.string()),
       }),
       // A row of headline figures (prize fund, submissions, countries) for
