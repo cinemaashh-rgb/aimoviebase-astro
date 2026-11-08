@@ -62,14 +62,19 @@ const HOME_FESTIVAL_LOCATION: Record<string, string> = {
   'runway-aiff': 'New York & Los Angeles',
 };
 
-// AI Film Lists: the real /lists collection (all four exist today — two
-// hand-curated, two mechanically grouped "starter lists", see
-// src/content/lists and the README). Covers are a Letterboxd-style fanned
-// poster stack built from each list's own real movie posters (up to 6,
-// however many actually have one) rather than a single cropped cover —
-// matching the homepage reference's list-card art without inventing
-// artwork for lists that don't have six real posters.
-const homeLists = (await getCollection('lists')).slice(0, 4);
+// AI Film Lists: the real /lists collection, see src/content/lists and
+// the README. Covers are a Letterboxd-style fanned poster stack built
+// from each list's own real movie posters (up to 6, however many
+// actually have one) rather than a single cropped cover — matching the
+// homepage reference's list-card art without inventing artwork for
+// lists that don't have six real posters.
+// These 4 are hand-picked for the homepage rather than just the first 4
+// alphabetically — swap the slugs here to change which lists it promotes.
+const homepageListSlugs = ['ai-dragon-movies', 'award-winners-nominees', 'made-with-seedance', 'editors-picks'];
+const allLists = await getCollection('lists');
+const homeLists = homepageListSlugs
+  .map((id) => allLists.find((l) => l.id === id))
+  .filter((l): l is NonNullable<typeof l> => Boolean(l));
 // A list can draw from `movies`, `shortdrama`, or both, so posters/counts
 // are resolved across both collections rather than just `movies` — see the
 // same split in src/pages/lists/[slug].astro and lists/index.astro.
