@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { QUALITY_VERDICTS } from '../lib/qualityIndex';
 
 // Methodology page for the "AIMB Quality Index" / "Slop or Cinema?" widget
@@ -16,9 +17,6 @@ const criteria = [
 <BaseLayout title="AIMB Quality Index" description="How AIMB rates AI Short Dramas: four weighted criteria, a 100-point score and five editorial verdicts.">
   <style>
     .qiPage { color: var(--ink); font-family: var(--sans); max-width: 1030px; margin: 0 auto; }
-    .qiCrumb { font: 12px/1.5 var(--sans); color: var(--muted2); margin-bottom: 20px; }
-    .qiCrumb a:hover { color: #c56b49; }
-    .qiCrumb span { padding: 0 10px; }
 
     .qiHero { padding: 10px 0 40px; border-bottom: 1px solid var(--line); }
     .qiKicker { font: 800 10px/1.5 var(--sans); letter-spacing: .16em; text-transform: uppercase; color: #c56b49; }
@@ -71,7 +69,11 @@ const criteria = [
   </style>
 
   <div class="qiPage">
-    <p class="qiCrumb"><a href="/">Home</a><span>›</span><a href="/short-drama">AI Short Drama</a><span>›</span>Quality Index</p>
+    <Breadcrumbs items={[
+      { name: 'Home', url: '/' },
+      { name: 'AI Short Drama', url: '/short-drama' },
+      { name: 'Quality Index', url: '/quality-index' },
+    ]} />
 
     <section class="qiHero">
       <div class="qiKicker">AIMB Quality Index · AI Short Dramas</div>

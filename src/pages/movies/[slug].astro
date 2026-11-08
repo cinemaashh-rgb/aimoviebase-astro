@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getToolMeta } from '../../data/toolMeta';
 import { widePoster } from '../../lib/images';
 import { resolveCreatorSlug, resolveStudioSlug, verifyCreatorSlug } from '../../lib/links';
@@ -104,9 +105,7 @@ const mobileCredits = [
 ---
 <BaseLayout title={m.title} description={m.synopsis}>
   <style>
-    .crumb { font-size: .78rem; color: var(--muted); margin: 0 0 20px; }
-    .crumb a:hover { color: var(--blue); }
-    .crumb span { padding: 0 8px; color: var(--muted2); }
+    .crumbWrap { margin: 0 0 20px; }
     .columns { display: grid; grid-template-columns: minmax(0,1fr) 250px; gap: 32px; align-items: start; }
     .hero { display: grid; grid-template-columns: 200px minmax(0,1fr); gap: 26px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
     .heroPoster { width: 200px; aspect-ratio: 207/344; object-fit: cover; border-radius: 5px; border: 1px solid var(--line); box-shadow: 0 1px 3px rgba(0,0,0,.08); display: block; background: var(--soft); }
@@ -215,7 +214,7 @@ const mobileCredits = [
     .relatedMobileEnd { display: none; }
     @media (max-width: 680px) {
       body { overflow-x: hidden; }
-      .crumb { display: none; }
+      .crumbWrap { display: none; }
       .columns { display: block; }
       .hero { display: flex; flex-direction: column; align-items: center; text-align: center; border: 0; padding: 18px 0 22px; gap: 0; }
       .heroPoster { width: min(58vw,258px); max-width: 258px; border: 0; border-radius: 0; box-shadow: none; margin: 0 auto 20px; }
@@ -271,7 +270,13 @@ const mobileCredits = [
     }
   </style>
 
-  <p class="crumb"><a href="/">Home</a><span>›</span><a href="/movies">AI Movies</a><span>›</span>{m.title}</p>
+  <div class="crumbWrap">
+    <Breadcrumbs items={[
+      { name: 'Home', url: '/' },
+      { name: 'AI Movies & Series', url: '/movies' },
+      { name: m.title, url: `/movies/${movie.id}` },
+    ]} />
+  </div>
 
   <div class="columns">
     <div>

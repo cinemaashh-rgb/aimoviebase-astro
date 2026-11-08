@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getToolMeta } from '../../data/toolMeta';
 import Icon from '../../components/Icon.astro';
 import { studioHasPage, creatorHasPage } from '../../lib/links';
@@ -150,6 +151,12 @@ const awardEntries = films.flatMap((f) => (f.data.awards ?? []).map((text) => ({
       .arrowNav { display: none; }
     }
   </style>
+
+  <Breadcrumbs items={[
+    { name: 'Home', url: '/' },
+    { name: 'Studios', url: '/studios' },
+    { name: s.name, url: `/studios/${studio.id}` },
+  ]} />
 
   <section class="studioHero" aria-labelledby="studio-name">
     {s.logo ? <div class="logoTile"><img src={s.logo} alt={`${s.name} logo`} /></div> : <div class="logoTile"><div class="logoMark">{initials}</div><div class="logoWord">{s.name}</div></div>}

@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { resolveCreatorSlug, verifyCreatorSlug } from '../../lib/links';
 
 // Dedicated page for this one festival, built to the layout in the
@@ -38,8 +39,6 @@ const years = a.sections
 ---
 <BaseLayout title={a.name} description={a.description}>
   <style>
-    .crumb { font-size: .78rem; color: var(--muted2); margin: 18px 0 0; }
-    .crumb a:hover { color: #cf6246; }
 
     .intro { display: grid; grid-template-columns: minmax(0,1.5fr) minmax(250px,320px); gap: 44px; align-items: start; padding: 28px 0 32px; border-bottom: 1px solid var(--line); }
     .eyebrow { font-size: .68rem; text-transform: uppercase; font-weight: 800; letter-spacing: .16em; color: #cf6246; }
@@ -113,7 +112,11 @@ const years = a.sections
     }
   </style>
 
-  <p class="crumb"><a href="/awards">Festivals &amp; Awards</a> › {a.name}</p>
+  <Breadcrumbs items={[
+    { name: 'Home', url: '/' },
+    { name: 'Awards & Festivals', url: '/awards' },
+    { name: a.name, url: `/awards/${entry.id}` },
+  ]} />
 
   <section class="intro">
     <div>

@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 
 // Real articles only — the reference mockup (aimb_journal_main.html) is an
 // explicit noindex,nofollow prototype with 9 cards, 6 of which have no
@@ -38,6 +39,11 @@ const articles = (await getCollection('articles')).sort(
       .journalGrid { grid-template-columns: 1fr; }
     }
   </style>
+
+  <Breadcrumbs items={[
+    { name: 'Home', url: '/' },
+    { name: 'Journal', url: '/news' },
+  ]} />
 
   <section class="journalHeading">
     <div class="journalKicker">AIMB / Editorial</div>

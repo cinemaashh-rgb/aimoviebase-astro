@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 
 export async function getStaticPaths() {
   const movies = await getCollection('movies');
@@ -47,8 +48,6 @@ const hasSideNav = headings.length > 0 || !!listSummary;
 ---
 <BaseLayout title={a.title} description={a.excerpt}>
   <style>
-    .crumb { font-size: .78rem; color: var(--muted); margin: 18px 0 20px; }
-    .crumb span { padding: 0 8px; }
 
     .masthead { max-width: 820px; margin: 0 0 30px; }
     .masthead .kicker { color: #cf6246; font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 800; margin-bottom: 18px; }
@@ -209,7 +208,11 @@ const hasSideNav = headings.length > 0 || !!listSummary;
     }
   </style>
 
-  <nav class="crumb"><a href="/">Home</a><span>/</span><a href="/news">Journal</a><span>/</span>{a.title}</nav>
+  <Breadcrumbs items={[
+    { name: 'Home', url: '/' },
+    { name: 'Journal', url: '/news' },
+    { name: a.title, url: `/news/${article.id}` },
+  ]} />
 
   <article>
     <header class="masthead">

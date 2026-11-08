@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 
 export async function getStaticPaths() {
   const lists = await getCollection('lists');
@@ -53,8 +54,6 @@ function meta(f: CollectionEntry<'movies'>) {
 ---
 <BaseLayout title={l.name} description={l.description}>
   <style>
-    .crumb { font-size: .78rem; color: var(--muted2); margin: 0 0 22px; }
-    .crumb a:hover { color: #cf6246; }
     .eyebrow { font-size: .68rem; font-weight: 800; letter-spacing: .15em; color: #cf6246; text-transform: uppercase; margin: 0 0 14px; }
 
     .heading { display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 32px; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 36px; margin-bottom: 10px; }
@@ -138,7 +137,11 @@ function meta(f: CollectionEntry<'movies'>) {
     }
   </style>
 
-  <p class="crumb"><a href="/">Home</a> / <a href="/lists">Lists</a> / {l.name}</p>
+  <Breadcrumbs items={[
+    { name: 'Home', url: '/' },
+    { name: 'Lists', url: '/lists' },
+    { name: l.name, url: `/lists/${list.id}` },
+  ]} />
   <div class="eyebrow">AIMB · Curated Collection</div>
 
   <section class="heading">

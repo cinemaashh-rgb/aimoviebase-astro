@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 ---
 <BaseLayout title="Privacy Policy" description="What AI Movie Base collects when you visit aimoviebase.com, how it's used, and how to reach us about it.">
   <style>
@@ -12,9 +13,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .legalPage { color: var(--ink); font-family: var(--sans); max-width: 1120px; margin: 0 auto; }
     .legalPage * { box-sizing: border-box; }
 
-    .legalBreadcrumb { font: 12px/1.5 var(--sans); color: var(--muted2); margin-bottom: 28px; }
-    .legalBreadcrumb a:hover { color: #cf6246; }
-    .legalBreadcrumb span { padding: 0 10px; }
 
     .legalHero { padding: 15px 0 46px; border-bottom: 1px solid var(--line); }
     .legalKicker { font: 700 11px/1.5 var(--sans); letter-spacing: .14em; color: #cf6246; text-transform: uppercase; }
@@ -65,7 +63,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </style>
 
   <div class="legalPage">
-    <nav class="legalBreadcrumb"><a href="/">Home</a><span>/</span>Privacy Policy</nav>
+    <Breadcrumbs items={[
+      { name: 'Home', url: '/' },
+      { name: 'Privacy Policy', url: '/privacy' },
+    ]} />
 
     <section class="legalHero">
       <div class="legalKicker">Legal / AI Movie Base</div>

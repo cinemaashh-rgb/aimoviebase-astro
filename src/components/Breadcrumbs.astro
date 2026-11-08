@@ -1,0 +1,64 @@
+---
+// Shared breadcrumb trail: renders the visible nav AND the matching
+// BreadcrumbList JSON-LD from the same data, so the two can never drift
+// apart. `items` is the full chain from Home to the current page —
+// including the current page itself as the last entry (Google's
+// BreadcrumbList schema accepts an `item` URL on every position, including
+// the current one; only the trailing item renders as plain text instead
+// of a link).
+//
+// Deliberately NOT used to encode a movie's genre: a film can belong to
+// several genres (movies.genres is an array), so inserting "AI Movies &
+// Series > <Genre> > <Title>" would pick one genre arbitrarily and
+// misrepresent the film's place in the catalog. Movie pages use the
+// stable "Home > AI Movies & Series > <Title>" chain instead — genre
+// still gets its own crumb on genre pages, where it IS the page's actual,
+// single category.
+interface Crumb {
+  name: string;
+  url: string;
+}
+interface Props {
+  items: Crumb[];
+}
+const { items } = Astro.props;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((item, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: item.name,
+    item: new URL(item.url, Astro.site).href,
+  })),
+};
+---
+<nav class="crumb" aria-label="Breadcrumb">
+  {items.map((item, i) => (
+    <Fragment>
+      {i < items.length - 1 ? (
+        <a href={item.url}>{item.name}</a>
+      ) : (
+        <span aria-current="page">{item.name}</span>
+      )}
+      {i < items.length - 1 && <span class="sep">/</span>}
+    </Fragment>
+  ))}
+</nav>
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+<style>
+  .crumb {
+    font-size: .78rem;
+    color: var(--muted);
+    margin: 0 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .crumb a { color: var(--muted); }
+  .crumb a:hover { color: var(--blue); }
+  .crumb .sep { padding: 0 8px; color: var(--muted2); }
+  .crumb span[aria-current] { color: var(--ink); }
+</style>

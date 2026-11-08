@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 ---
 <BaseLayout title="Submit a Film" description="Submit your AI film, AI-assisted movie or short drama to the independent AI Movie Base catalog.">
   <style>
@@ -83,6 +84,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </style>
 
   <div class="submitPage">
+    <Breadcrumbs items={[
+      { name: 'Home', url: '/' },
+      { name: 'Submit a Film', url: '/submit-film' },
+    ]} />
     <div class="submitIntro">
       <div class="kicker">AIMB / Film submission</div>
       <h1>Submit <em>a Film</em></h1>

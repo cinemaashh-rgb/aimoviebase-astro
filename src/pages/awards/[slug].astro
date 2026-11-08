@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { verifyCreatorSlug } from '../../lib/links';
 
 export async function getStaticPaths() {
@@ -43,7 +44,6 @@ const notePoster = (slug: string | undefined) =>
        own <style> block, not approximated. Only the content differs: real
        catalog images instead of its illustrative stock art, and no
        "Finalists" section (see the note at the bottom of this page). */
-    .crumb { font-size: .78rem; color: var(--muted); margin: 18px 0 20px; }
     .intro { display: grid; grid-template-columns: minmax(0,1fr) 315px; gap: 44px; align-items: start; padding-bottom: 26px; border-bottom: 1px solid var(--line); margin-bottom: 28px; }
     .intro h1 { font-size: clamp(38px,5vw,60px); line-height: 1.04; letter-spacing: -0.03em; margin: 0 0 14px; }
     .intro .lead { color: var(--muted); font-size: 1rem; line-height: 1.6; max-width: 640px; }
@@ -106,7 +106,11 @@ const notePoster = (slug: string | undefined) =>
     }
   </style>
 
-  <p class="crumb"><a href="/awards">Festivals &amp; Awards</a> › {a.name}</p>
+  <Breadcrumbs items={[
+    { name: 'Home', url: '/' },
+    { name: 'Awards & Festivals', url: '/awards' },
+    { name: a.name, url: `/awards/${entry.id}` },
+  ]} />
 
   <div class="intro">
     <div>

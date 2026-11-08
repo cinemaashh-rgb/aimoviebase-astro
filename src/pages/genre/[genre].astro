@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 
 export async function getStaticPaths() {
   const genres = await getCollection('genres');
@@ -86,6 +87,12 @@ const heroCreditFilm = g.heroCredit
     @media (max-width: 900px) { .grid { grid-template-columns: repeat(3,minmax(0,1fr)); } }
     @media (max-width: 520px) { .grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
   </style>
+
+  <Breadcrumbs items={[
+    { name: 'Home', url: '/' },
+    { name: 'AI Movies & Series', url: '/movies' },
+    { name: g.name, url: `/genre/${genre.id}` },
+  ]} />
 
   <div class="genreHero full-bleed">
     {g.heroImage && <div class="heroArt" style={`background-image:url(${g.heroImage})`}></div>}

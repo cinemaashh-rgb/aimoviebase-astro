@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { getVerdict, metricColor } from '../lib/qualityIndex';
 
 const all = await getCollection('shortdrama');
@@ -157,6 +158,11 @@ const journal = journalSlugs.map((id) => articles.find((a) => a.id === id)).filt
       .sdhGrid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
     }
   </style>
+
+  <Breadcrumbs items={[
+    { name: 'Home', url: '/' },
+    { name: 'AI Short Drama', url: '/short-drama' },
+  ]} />
 
   <section class="sdhHero full-bleed">
     <div class="sdhHeroCopy">

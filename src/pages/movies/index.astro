@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { widePoster } from '../../lib/images';
 
 const movies = await getCollection('movies');
@@ -111,6 +112,11 @@ const sections = genres
       .film-card p { display: none; }
     }
   </style>
+
+  <Breadcrumbs items={[
+    { name: 'Home', url: '/' },
+    { name: 'AI Movies & Series', url: '/movies' },
+  ]} />
 
   <div class="moviesHero">
     <div class="moviesKicker">Discover / AIMB</div>

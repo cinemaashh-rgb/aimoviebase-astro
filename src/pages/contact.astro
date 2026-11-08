@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 ---
 <BaseLayout title="Contact" description="Contact the AIMB editorial team about AI movies, film submissions, corrections, collaborations and questions.">
   <style>
@@ -8,9 +9,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .contactPage { color: var(--ink); font-family: var(--sans); max-width: 1120px; margin: 0 auto; }
     .contactPage * { box-sizing: border-box; }
 
-    .contactBreadcrumb { font: 12px/1.5 var(--sans); color: var(--muted2); margin-bottom: 28px; }
-    .contactBreadcrumb a:hover { color: #cf6246; }
-    .contactBreadcrumb span { padding: 0 10px; }
 
     .contactHero { padding: 15px 0 46px; border-bottom: 1px solid var(--line); }
     .contactKicker { font: 700 11px/1.5 var(--sans); letter-spacing: .14em; color: #cf6246; text-transform: uppercase; }
@@ -70,7 +68,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </style>
 
   <div class="contactPage">
-    <nav class="contactBreadcrumb"><a href="/">Home</a><span>/</span>Contact Us</nav>
+    <Breadcrumbs items={[
+      { name: 'Home', url: '/' },
+      { name: 'Contact Us', url: '/contact' },
+    ]} />
 
     <section class="contactHero">
       <div class="contactKicker">Contact / AI Movie Base</div>

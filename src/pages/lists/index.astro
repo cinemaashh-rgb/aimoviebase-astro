@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 
 const lists = await getCollection('lists');
 const movies = await getCollection('movies');
@@ -14,8 +15,6 @@ function posters(list: CollectionEntry<'lists'>, max = 3) {
 ---
 <BaseLayout title="Lists" description="Curated lists of AI-made films — by theme, by model, by festival selection.">
   <style>
-    .crumb { font-size: .78rem; color: var(--muted2); margin: 0 0 22px; }
-    .crumb a:hover { color: #cf6246; }
     .eyebrow { font-size: .68rem; font-weight: 800; letter-spacing: .15em; color: #cf6246; text-transform: uppercase; margin: 0 0 12px; }
     .introHead { border-bottom: 1px solid var(--line); padding-bottom: 30px; margin-bottom: 30px; }
     .introHead h1 { font: 400 clamp(44px,6vw,72px)/.98 var(--serif); letter-spacing: -0.03em; margin: 0 0 14px; }
@@ -42,7 +41,10 @@ function posters(list: CollectionEntry<'lists'>, max = 3) {
     @media (max-width: 460px) { .listGrid { grid-template-columns: 1fr; } }
   </style>
 
-  <p class="crumb"><a href="/">Home</a> / Lists</p>
+  <Breadcrumbs items={[
+    { name: 'Home', url: '/' },
+    { name: 'Lists', url: '/lists' },
+  ]} />
   <div class="introHead">
     <div class="eyebrow">AIMB · Curated Collections</div>
     <h1>Film <em>Lists</em></h1>

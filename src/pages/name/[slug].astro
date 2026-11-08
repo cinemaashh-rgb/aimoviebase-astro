@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getToolMeta } from '../../data/toolMeta';
 import Icon from '../../components/Icon.astro';
 import { creatorHasPage, verifyStudioSlug } from '../../lib/links';
@@ -144,6 +145,11 @@ const awardsList = [
       .personHero { grid-template-columns: 130px 1fr; gap: 20px; }
     }
   </style>
+
+  <Breadcrumbs items={[
+    { name: 'Home', url: '/' },
+    { name: c.name, url: `/name/${creator.id}` },
+  ]} />
 
   <section class={`personHero ${(creativeStack.length > 0 || awardsList.length > 0) ? 'withPanel' : ''}`} aria-labelledby="person-name">
     <div class="personPhoto">
