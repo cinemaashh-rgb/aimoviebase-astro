@@ -34,6 +34,24 @@ const verdict = d.qualityIndex ? getVerdict(d.qualityIndex.score) : null;
 // SVG ring: r=46 → circumference ≈ 289.03; dash length is the score's share of it.
 const RING_CIRC = 2 * Math.PI * 46;
 const dash = d.qualityIndex ? (d.qualityIndex.score / 100) * RING_CIRC : 0;
+
+// No JSON-LD for a "coming-soon" stub — nothing's actually published yet,
+// so marking it up as a real CreativeWork would describe content that
+// doesn't exist. qualityIndex.score is AIMB's own editorial weighting, not
+// an aggregate of outside reviews/ratings, so it's deliberately left out
+// of this JSON-LD rather than mapped to aggregateRating (which Google's
+// guidelines reserve for genuine third-party or user ratings).
+const shortDramaJsonLd = d.status === 'published' ? {
+  '@context': 'https://schema.org',
+  '@type': 'TVSeries',
+  name: d.title,
+  url: new URL(Astro.url.pathname.replace(/\/+$/, '') || '/', Astro.site).href,
+  ...(d.description ?? d.tagline ? { description: d.description ?? d.tagline } : {}),
+  ...(d.poster ? { image: new URL(d.poster, Astro.site).href } : {}),
+  ...(d.episodes ? { numberOfEpisodes: d.episodes } : {}),
+  ...(d.year ? { datePublished: String(d.year) } : {}),
+  ...(d.creatorName ? { creator: { '@type': 'Person', name: d.creatorName } } : {}),
+} : null;
 ---
 <BaseLayout title={d.title} description={d.description ?? d.tagline} image={d.poster} imageAlt={d.title} ogType="article" hideSearch>
   <style>
@@ -303,4 +321,6 @@ const dash = d.qualityIndex ? (d.qualityIndex.score / 100) * RING_CIRC : 0;
       </aside>
     </div>
   )}
+
+  {shortDramaJsonLd && <script type="application/ld+json" set:html={JSON.stringify(shortDramaJsonLd)} />}
 </BaseLayout>

@@ -511,4 +511,35 @@ const journal = (await getCollection('articles'))
         });
     });
   </script>
+
+  <!-- Site-level JSON-LD: the only place these belong, since there's one
+       site and one publisher — every other page's JSON-LD describes that
+       page's own entity (Movie, Person, Article, BreadcrumbList…), not
+       the site as a whole. WebSite.publisher + Organization both point at
+       AIMB so either is enough for a crawler to resolve the relationship
+       either way. No SearchAction: the on-site search is a client-side
+       filter over a static JSON index with no real server-rendered
+       results URL to point a SearchAction at, so declaring one would be
+       describing a capability the site doesn't actually have. -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        '@id': 'https://aimoviebase.com/#website',
+        name: 'AI Movie Base',
+        url: 'https://aimoviebase.com/',
+        description: 'Discover AI-generated movies, AI films and series from filmmakers worldwide.',
+        publisher: { '@id': 'https://aimoviebase.com/#organization' },
+      },
+      {
+        '@type': 'Organization',
+        '@id': 'https://aimoviebase.com/#organization',
+        name: 'AIMB',
+        alternateName: 'AI Movie Base',
+        url: 'https://aimoviebase.com/',
+        logo: new URL('/images/brand/aimb-logo.webp', Astro.site).href,
+      },
+    ],
+  })} />
 </BaseLayout>

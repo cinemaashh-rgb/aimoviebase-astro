@@ -250,8 +250,11 @@ const awardsList = [
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: c.name,
+    url: new URL(Astro.url.pathname.replace(/\/+$/, '') || '/', Astro.site).href,
     ...(c.alias ? { alternateName: c.alias } : {}),
     ...(c.role ? { jobTitle: c.role } : {}),
+    ...(c.bio ? { description: c.bio } : {}),
+    ...(c.photo ? { image: new URL(c.photo, Astro.site).href } : {}),
   })} />
 
   <script is:inline>

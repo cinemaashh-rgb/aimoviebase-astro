@@ -102,6 +102,55 @@ const mobileCredits = [
   ...crewWithLinks.map((c) => ({ name: c.name, role: c.role, href: c.pageSlug ? `/name/${c.pageSlug}` : undefined })),
   ...(m.studio ? [{ name: m.studio, role: 'Studio', href: studioSlug ? `/studios/${studioSlug}` : undefined }] : []),
 ];
+
+// `duration` is free text, hand-entered per film ("10:31", "1:04:38",
+// "28m", or occasionally non-time text like "Short Film") — Schema.org's
+// Movie.duration wants a strict ISO 8601 duration (PT#H#M#S). Only
+// converted when it unambiguously parses as a time; anything else
+// (including "Short Film") is left out rather than guessed at.
+function toISODuration(raw: string | undefined): string | undefined {
+  if (!raw) return undefined;
+  const mins = raw.match(/^(\d+)\s*m$/i);
+  if (mins) return `PT${mins[1]}M`;
+  const hms = raw.match(/^(?:(\d+):)?(\d+):(\d+)$/);
+  if (hms) {
+    const [, h, mm, ss] = hms;
+    return `PT${h ? `${h}H` : ''}${mm}M${ss}S`;
+  }
+  return undefined;
+}
+
+const movieImage = widePoster(m.poster);
+// Breadcrumbs.astro already computes the canonical URL the same way
+// (Astro.url.pathname, trailing slash stripped, resolved against
+// Astro.site) — duplicated here rather than imported, since it's one line
+// and pulling in the component just for this constant would be backwards.
+const canonicalURLForJsonLd = new URL(Astro.url.pathname.replace(/\/+$/, '') || '/', Astro.site).href;
+const movieJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': isSeries ? 'TVSeries' : 'Movie',
+  name: m.title,
+  url: canonicalURLForJsonLd,
+  ...(m.synopsis ? { description: m.synopsis } : {}),
+  ...(movieImage ? { image: new URL(movieImage, Astro.site).href } : {}),
+  genre: m.genres,
+  dateCreated: String(m.year),
+  ...(m.country ? { countryOfOrigin: { '@type': 'Country', name: m.country } } : {}),
+  ...(m.director ? {
+    [isSeries ? 'creator' : 'director']: { '@type': 'Person', name: m.director.name },
+  } : {}),
+  ...(m.studio ? { productionCompany: { '@type': 'Organization', name: m.studio } } : {}),
+  ...(toISODuration(m.duration) ? { duration: toISODuration(m.duration) } : {}),
+  ...(m.youtubeId ? {
+    trailer: {
+      '@type': 'VideoObject',
+      name: `${m.title} — Trailer`,
+      embedUrl: `https://www.youtube.com/embed/${m.youtubeId}`,
+      ...(movieImage ? { thumbnailUrl: new URL(movieImage, Astro.site).href } : {}),
+      description: m.synopsis ?? m.title,
+    },
+  } : {}),
+};
 ---
 <BaseLayout title={m.title} description={m.synopsis} image={widePoster(m.poster)} imageAlt={m.title} ogType="article">
   <style>
@@ -538,6 +587,8 @@ const mobileCredits = [
       </div>
     </section>
   )}
+
+  <script type="application/ld+json" set:html={JSON.stringify(movieJsonLd)} />
 
   <script is:inline define:vars={{ title: m.title }}>
     document.addEventListener('DOMContentLoaded', function () {

@@ -35,6 +35,17 @@ interface Props {
 }
 const { studio, films, team } = Astro.props;
 const s = studio.data;
+const studioCanonicalURL = new URL(Astro.url.pathname.replace(/\/+$/, '') || '/', Astro.site).href;
+const studioJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: s.name,
+  url: studioCanonicalURL,
+  description: s.description,
+  ...(s.logo ? { logo: new URL(s.logo, Astro.site).href } : {}),
+  ...(s.basedIn ? { address: { '@type': 'PostalAddress', addressLocality: s.basedIn } } : {}),
+  ...(s.founded ? { foundingDate: String(s.founded) } : {}),
+};
 const movieCount = films.filter((f) => f.data.type !== 'series').length;
 const seriesCount = films.filter((f) => f.data.type === 'series').length;
 const contentType = movieCount > 0 && seriesCount > 0 ? 'AI Movies & Series' : seriesCount > 0 ? 'AI Series' : 'AI Movies';
@@ -326,4 +337,6 @@ const awardEntries = films.flatMap((f) => (f.data.awards ?? []).map((text) => ({
       });
     })();
   </script>
+
+  <script type="application/ld+json" set:html={JSON.stringify(studioJsonLd)} />
 </BaseLayout>
