@@ -4,14 +4,29 @@
   "status": "published",
   "year": 2026,
   "platform": "YouTube",
-  "badges": ["AI-generated", "Billionaire Romance", "Marriage of Convenience", "Vertical series"],
+  "badges": [
+    "AI-generated",
+    "Billionaire Romance",
+    "Marriage of Convenience",
+    "Vertical series"
+  ],
   "description": "To secure her inheritance, Evelyn marries a stranger who turns out to be a billionaire — and a far more protective husband than she expected. A roughly 73-minute YouTube upload with over 3.4 million views since its August 2026 release.",
   "creatorName": "Whisper of Romantic",
   "creatorRole": "Channel",
   "watchUrl": "https://www.youtube.com/watch?v=ke-CYDtfkYs",
   "audienceReactions": [
-    { "quote": "This is the only AI drama i appreciated, she has a fighter character. Worth to watch, not waste of time", "author": "@virginianoto9208" },
-    { "quote": "I love this drama. I admire the male lead for standing up for his wife", "author": "@AdelinaAsencio-w8z" },
-    { "quote": "Husband protected his wife so very well and love her so much and respect her.", "author": "@MalizaBravo-q3p" }
-  ]
+    {
+      "quote": "This is the only AI drama i appreciated, she has a fighter character. Worth to watch, not waste of time",
+      "author": "@virginianoto9208"
+    },
+    {
+      "quote": "I love this drama. I admire the male lead for standing up for his wife",
+      "author": "@AdelinaAsencio-w8z"
+    },
+    {
+      "quote": "Husband protected his wife so very well and love her so much and respect her.",
+      "author": "@MalizaBravo-q3p"
+    }
+  ],
+  "poster": "/images/posters/i-married-a-stranger-to-keep-my-inheritance.webp"
 }

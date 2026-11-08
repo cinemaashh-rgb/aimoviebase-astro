@@ -4,14 +4,29 @@
   "status": "published",
   "year": 2026,
   "platform": "YouTube",
-  "badges": ["AI-generated", "Mafia Romance", "Second-Chance Love", "Vertical series"],
+  "badges": [
+    "AI-generated",
+    "Mafia Romance",
+    "Second-Chance Love",
+    "Vertical series"
+  ],
   "description": "After a betrayal, Nina marries a ruthless Mafia don unaware that he has loved her all along. A roughly 72-minute YouTube upload with over 4.5 million views since its October 2026 release.",
   "creatorName": "DramaMuse",
   "creatorRole": "Channel",
   "watchUrl": "https://www.youtube.com/watch?v=rk7NTf836Ek",
   "audienceReactions": [
-    { "quote": "I don't know about anyone else, but Locke can guard me any time", "author": "@sandralee8855" },
-    { "quote": "I like when the FL clothes is different. Not as in some drama they're using the same outfit all the time.", "author": "@S.M_Yulianda" },
-    { "quote": "Love the storyline. Please no blurring. It's irritating. Michael Falcone is beyond handsome. We need him in more novels. Also, Locke, the bodyguard is handsome too.", "author": "@rantle450" }
-  ]
+    {
+      "quote": "I don't know about anyone else, but Locke can guard me any time",
+      "author": "@sandralee8855"
+    },
+    {
+      "quote": "I like when the FL clothes is different. Not as in some drama they're using the same outfit all the time.",
+      "author": "@S.M_Yulianda"
+    },
+    {
+      "quote": "Love the storyline. Please no blurring. It's irritating. Michael Falcone is beyond handsome. We need him in more novels. Also, Locke, the bodyguard is handsome too.",
+      "author": "@rantle450"
+    }
+  ],
+  "poster": "/images/posters/she-marries-a-ruthless-mafia-don.webp"
 }

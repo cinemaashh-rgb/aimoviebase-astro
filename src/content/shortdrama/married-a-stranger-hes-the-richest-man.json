@@ -4,14 +4,29 @@
   "status": "published",
   "year": 2026,
   "platform": "YouTube",
-  "badges": ["AI-generated", "Billionaire Romance", "Comedy", "Vertical series"],
+  "badges": [
+    "AI-generated",
+    "Billionaire Romance",
+    "Comedy",
+    "Vertical series"
+  ],
   "description": "Scarlet marries a stranger she takes for a poor old man, only to find out he's actually the richest man around. A roughly 126-minute YouTube upload with over 2.9 million views since its September 2026 release.",
   "creatorName": "Whisper of Romantic",
   "creatorRole": "Channel",
   "watchUrl": "https://www.youtube.com/watch?v=mrckflZBqS0",
   "audienceReactions": [
-    { "quote": "pitch of the year by Grandpa... i happen to have a single grandson.. he's 28, employed, has no criminal record... he still has all his teeth. Grandpa of the year.", "author": "@ThatWhiskeylovinAsianGuy" },
-    { "quote": "Wtf. She thinks he is a poor old man and yet she asked for 200k, which he gave her, and she didnt even ask.", "author": "@gvnthercentralperk8583" },
-    { "quote": "Why on earth did I watch this whole thing when half of it was just literal gibberish", "author": "@Latchin.Estate" }
-  ]
+    {
+      "quote": "pitch of the year by Grandpa... i happen to have a single grandson.. he's 28, employed, has no criminal record... he still has all his teeth. Grandpa of the year.",
+      "author": "@ThatWhiskeylovinAsianGuy"
+    },
+    {
+      "quote": "Wtf. She thinks he is a poor old man and yet she asked for 200k, which he gave her, and she didnt even ask.",
+      "author": "@gvnthercentralperk8583"
+    },
+    {
+      "quote": "Why on earth did I watch this whole thing when half of it was just literal gibberish",
+      "author": "@Latchin.Estate"
+    }
+  ],
+  "poster": "/images/posters/married-a-stranger-hes-the-richest-man.webp"
 }

@@ -4,14 +4,29 @@
   "status": "published",
   "year": 2026,
   "platform": "YouTube",
-  "badges": ["AI-generated", "Mafia Romance", "Revenge", "Vertical series"],
+  "badges": [
+    "AI-generated",
+    "Mafia Romance",
+    "Revenge",
+    "Vertical series"
+  ],
   "description": "Aurora, left behind by a Mafia don, rebuilds her confidence and fights her way back into his ruthless family on her own terms. A single roughly 142-minute YouTube upload, reportedly passed 13 million views within weeks of its September 2026 release.",
   "creatorName": "DramaMuse",
   "creatorRole": "Channel",
   "watchUrl": "https://www.youtube.com/watch?v=RTOkwoDJifo",
   "audienceReactions": [
-    { "quote": "Finally, I watched a drama where the heroine does not want love, all she wants is to keep herself and that she can defend herself and she is strong despite her excess weight, but she is strong and also when she decided to lose weight, it was only for herself and not for others", "author": "@aminatyna5884" },
-    { "quote": "I love a stepmom who rides up to the occasion to be a real mother to the children that she supposed to love and protect", "author": "@21loverose" },
-    { "quote": "How many different ways the name Demarco are pronounced is hilarious.", "author": "@hazelbickmore4228" }
-  ]
+    {
+      "quote": "Finally, I watched a drama where the heroine does not want love, all she wants is to keep herself and that she can defend herself and she is strong despite her excess weight, but she is strong and also when she decided to lose weight, it was only for herself and not for others",
+      "author": "@aminatyna5884"
+    },
+    {
+      "quote": "I love a stepmom who rides up to the occasion to be a real mother to the children that she supposed to love and protect",
+      "author": "@21loverose"
+    },
+    {
+      "quote": "How many different ways the name Demarco are pronounced is hilarious.",
+      "author": "@hazelbickmore4228"
+    }
+  ],
+  "poster": "/images/posters/the-plus-size-bride-abandoned-by-a-mafia-don.webp"
 }
