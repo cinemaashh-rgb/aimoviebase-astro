@@ -66,7 +66,7 @@ const awardsList = [
   ...films.flatMap((f) => (f.data.awards || []).map((a) => ({ title: a, note: `${f.data.title} · ${f.data.year}` }))),
 ];
 ---
-<BaseLayout title={c.alias ? `${c.name} (${c.alias})` : c.name} description={c.bio}>
+<BaseLayout title={c.alias ? `${c.name} (${c.alias})` : c.name} description={c.bio} image={c.photo} imageAlt={c.name} ogType="article">
   <style>
     /* ---- Hero ---- */
     .personHero { display: grid; grid-template-columns: 220px minmax(0,1fr); gap: 40px; align-items: start; padding: 10px 0 44px; border-bottom: 1px solid var(--line); }

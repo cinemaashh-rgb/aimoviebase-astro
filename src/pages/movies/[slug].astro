@@ -103,7 +103,7 @@ const mobileCredits = [
   ...(m.studio ? [{ name: m.studio, role: 'Studio', href: studioSlug ? `/studios/${studioSlug}` : undefined }] : []),
 ];
 ---
-<BaseLayout title={m.title} description={m.synopsis}>
+<BaseLayout title={m.title} description={m.synopsis} image={widePoster(m.poster)} imageAlt={m.title} ogType="article">
   <style>
     .crumbWrap { margin: 0 0 20px; }
     .columns { display: grid; grid-template-columns: minmax(0,1fr) 250px; gap: 32px; align-items: start; }

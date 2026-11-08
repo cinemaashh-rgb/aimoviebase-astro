@@ -35,7 +35,7 @@ const verdict = d.qualityIndex ? getVerdict(d.qualityIndex.score) : null;
 const RING_CIRC = 2 * Math.PI * 46;
 const dash = d.qualityIndex ? (d.qualityIndex.score / 100) * RING_CIRC : 0;
 ---
-<BaseLayout title={d.title} description={d.description ?? d.tagline} hideSearch>
+<BaseLayout title={d.title} description={d.description ?? d.tagline} image={d.poster} imageAlt={d.title} ogType="article" hideSearch>
   <style>
 
     .sdColumns { display: grid; grid-template-columns: minmax(0,1fr) 270px; gap: 32px; align-items: start; }

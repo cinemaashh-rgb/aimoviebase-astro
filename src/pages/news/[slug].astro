@@ -46,7 +46,7 @@ const listSummaryLinks = listSummary
   : [];
 const hasSideNav = headings.length > 0 || !!listSummary;
 ---
-<BaseLayout title={a.title} description={a.excerpt}>
+<BaseLayout title={a.title} description={a.excerpt} image={a.image} imageAlt={a.imageAlt ?? a.title} ogType="article">
   <style>
 
     .masthead { max-width: 820px; margin: 0 0 30px; }

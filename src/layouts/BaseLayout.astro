@@ -7,8 +7,33 @@ interface Props {
   // search index, so the global search box is hidden on those pages
   // rather than offered with results it can never actually return.
   hideSearch?: boolean;
+  // Open Graph preview image. Accepts a site-root-relative path (e.g. a
+  // catalog poster, "/images/posters/x-wide.webp") or an absolute URL.
+  // Falls back to the site-wide default below — every page gets a real
+  // OG image, not just the ones that pass one in. VK, Telegram and
+  // Facebook all read the same og:* tags (no separate VK/Telegram meta
+  // format needed); Telegram additionally wants an absolute image URL,
+  // which is why this is always resolved against Astro.site below rather
+  // than left relative.
+  image?: string;
+  imageAlt?: string;
+  // "article" for movie/news detail pages gives richer unfurls on
+  // platforms that branch on og:type (Telegram in particular shows a
+  // bigger preview card for "article" than for "website" in some
+  // clients); everything else stays "website".
+  ogType?: 'website' | 'article';
 }
-const { title, description = 'AI Movie Base — catalog of AI-generated films.', hideSearch = false } = Astro.props;
+const {
+  title,
+  description = 'AI Movie Base — catalog of AI-generated films.',
+  hideSearch = false,
+  image = '/images/og/default.jpg',
+  imageAlt = 'AI Movie Base',
+  ogType = 'website',
+} = Astro.props;
+
+const ogImageURL = new URL(image, Astro.site).href;
+const fullTitle = `${title} | AI Movie Base`;
 
 // Canonical URL, derived automatically for every page that renders this layout.
 // Astro.site comes from astro.config.mjs ("https://aimoviebase.com", non-www —
@@ -31,10 +56,28 @@ function isActive(prefix: string) {
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light" />
-  <title>{title} | AI Movie Base</title>
+  <title>{fullTitle}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonicalURL} />
   <link rel="icon" href="/favicon.ico" />
+
+  <!-- Open Graph: read by VK, Telegram, Facebook (and most other
+       unfurlers) off the same tag set, no platform-specific variants
+       needed. og:image is always an absolute URL (see ogImageURL above) —
+       Telegram in particular won't resolve a relative one. -->
+  <meta property="og:type" content={ogType} />
+  <meta property="og:site_name" content="AI Movie Base" />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:image" content={ogImageURL} />
+  <meta property="og:image:alt" content={imageAlt} />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter/X falls back to the og:* tags above for title/description/
+       image when summary_large_image is declared, so no duplicate
+       og:title-equivalent is needed here. -->
+  <meta name="twitter:card" content="summary_large_image" />
   <!-- Inter: the sans-serif the real mockups themselves specify in their own
        --sans token, swapped in for the Arial/Helvetica fallback stack. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
