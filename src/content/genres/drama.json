@@ -1,6 +1,6 @@
 {
   "name": "Drama",
-  "description": "Character-driven AI films that lean on performance and emotional nuance \u2014 the hardest register for generative video to pull off convincingly.",
+  "description": "Character-driven AI films that lean on performance and emotional nuance — the hardest register for generative video to pull off convincingly.",
   "films": [
     "a-face-only-a-mother-could-love",
     "still",
@@ -27,7 +27,10 @@
     "earthquake-last-day-2026",
     "end-of-the-world-2026",
     "last-life-on-earth-seed-bearer-2026",
-    "lost-beyond-horizon-2026"
+    "lost-beyond-horizon-2026",
+    "the-lost-kind-son-of-monsters",
+    "the-lost-kind-sins-of-men",
+    "the-lost-kind-heart-of-the-lost"
   ],
   "heroImage": "/images/genres/drama-hero.webp",
   "heroCredit": {

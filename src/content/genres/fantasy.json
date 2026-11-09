@@ -1,6 +1,6 @@
 {
   "name": "Fantasy",
-  "description": "AI fantasy films turn generative tools toward myth, legend and the impossible \u2014 dragons, monsters and whole worlds built frame by frame.",
+  "description": "AI fantasy films turn generative tools toward myth, legend and the impossible — dragons, monsters and whole worlds built frame by frame.",
   "heroImage": "/images/genres/fantasy-hero.webp",
   "films": [
     "the-mothers-monster",
@@ -37,6 +37,9 @@
     "age-of-kingdoms-return-of-the-last-king-2026",
     "age-of-kingdoms-trial-by-combat-2026",
     "age-of-kingdoms-wrath-of-the-horde-2026",
-    "pirates-dead-mans-island-2026"
+    "pirates-dead-mans-island-2026",
+    "the-lost-kind-son-of-monsters",
+    "the-lost-kind-sins-of-men",
+    "the-lost-kind-heart-of-the-lost"
   ]
 }
