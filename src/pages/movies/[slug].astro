@@ -151,8 +151,50 @@ const movieJsonLd = {
     },
   } : {}),
 };
+
+// --- SEO <title> / <meta description> --------------------------------
+// Two templates, picked by what the record actually has (checked against
+// the catalog: director is set on ~52% of movies, studio on ~57%, the
+// union covers 108/119 — only 11 records have neither):
+//  - director or studio known → Letterboxd-style: "{Title} (Year)
+//    directed by {Director}" (or "by {Studio}" when only the studio is
+//    known), synopsis used verbatim as the description, same as
+//    Letterboxd does for its own pages.
+//  - neither known (e.g. Ballast) → "{Title} (Year) — AI {Genre}
+//    {Movie|Series}" title, with a description that leads with the
+//    AI-generated/award framing (so it survives truncation) followed by
+//    as much of the synopsis as fits. Nothing here claims a rating or
+//    score system AIMB doesn't have — see BaseLayout's RT-vs-Letterboxd
+//    writeup for why.
+const primaryGenre = m.genres[0];
+const typeLabel = isSeries ? 'Series' : 'Movie';
+const awardTag = m.awards.length > 0 ? 'award-winning ' : '';
+
+function clampSnippet(s: string, max: number): string {
+  if (s.length <= max) return s;
+  const cut = s.slice(0, max - 1);
+  const lastSpace = cut.lastIndexOf(' ');
+  return `${lastSpace > 0 ? cut.slice(0, lastSpace) : cut}…`;
+}
+
+let seoTitle: string;
+let seoDescription: string;
+
+if (m.director) {
+  seoTitle = `${m.title} (${m.year}) directed by ${m.director.name} • Reviews, cast & where to watch • AIMB`;
+  seoDescription = m.synopsis ?? `Watch ${m.title} (${m.year}), an AI-generated ${typeLabel.toLowerCase()} directed by ${m.director.name}, on AIMB.`;
+} else if (m.studio) {
+  seoTitle = `${m.title} (${m.year}) by ${m.studio} • Reviews, cast & where to watch • AIMB`;
+  seoDescription = m.synopsis ?? `Watch ${m.title} (${m.year}), an AI-generated ${typeLabel.toLowerCase()} from ${m.studio}, on AIMB.`;
+} else {
+  seoTitle = `${m.title} (${m.year}) — AI ${primaryGenre ? `${primaryGenre} ` : ''}${typeLabel} | AIMB`;
+  const genrePart = primaryGenre ? `${primaryGenre.toLowerCase()} ` : '';
+  seoDescription = m.synopsis
+    ? clampSnippet(`An ${awardTag}AI-generated ${genrePart}${typeLabel.toLowerCase()} on AIMB — ${m.synopsis}`, 160)
+    : `${m.title} is an ${awardTag}AI-generated ${genrePart}${typeLabel.toLowerCase()} (${m.year}). See full details and where to watch on AIMB.`;
+}
 ---
-<BaseLayout title={m.title} description={m.synopsis} image={widePoster(m.poster)} imageAlt={m.title} ogType="article">
+<BaseLayout title={seoTitle} description={seoDescription} image={widePoster(m.poster)} imageAlt={m.title} ogType="article">
   <style>
     .crumbWrap { margin: 0 0 20px; }
     .columns { display: grid; grid-template-columns: minmax(0,1fr) 250px; gap: 32px; align-items: start; }
