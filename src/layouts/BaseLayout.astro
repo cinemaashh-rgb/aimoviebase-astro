@@ -33,7 +33,9 @@ const {
 } = Astro.props;
 
 const ogImageURL = new URL(image, Astro.site).href;
-const fullTitle = `${title} | AI Movie Base`;
+// Pages that already spell out "AI Movie Base" in their own title (the
+// homepage in particular) don't get the brand suffix appended a second time.
+const fullTitle = title.includes('AI Movie Base') ? title : `${title} | AI Movie Base`;
 
 // Canonical URL, derived automatically for every page that renders this layout.
 // Astro.site comes from astro.config.mjs ("https://aimoviebase.com", non-www —
