@@ -17,8 +17,13 @@ const chineseFilms = films.filter((f) => f.data.originalTitle);
        dark hero shell, tab/sort toolbar and paginated grid, minus the
        photographic hero art (no real backdrop image exists for this
        catalog-wide view) and with Movies/Series swapped for the
-       English/Chinese split this catalog actually has. */
-    .sdaHero { margin-top: -2rem; margin-bottom: 28px; background: var(--black); color: #fff; overflow: hidden; min-height: 240px; }
+       English/Chinese split this catalog actually has. No margin-top: it
+       used to cancel <main>'s own top padding back when this hero was
+       main's first child; <Breadcrumbs> is the first child now (see
+       below), so that negative margin just pulled the hero up over the
+       breadcrumb row instead — the breadcrumb's own bottom margin is
+       enough space on its own. */
+    .sdaHero { margin-bottom: 28px; background: var(--black); color: #fff; overflow: hidden; min-height: 240px; }
     .sdaHero .heroInner { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; min-height: 240px; display: flex; flex-direction: column; justify-content: center; padding: 32px 2rem; }
     .sdaHero .eyebrow { color: #d8dce1; font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
     .sdaHero h1 { font-family: var(--serif); font-size: clamp(36px,5vw,58px); margin: 10px 0 14px; color: #fff; line-height: 1.04; }

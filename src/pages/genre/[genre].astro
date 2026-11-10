@@ -45,8 +45,15 @@ const heroCreditFilm = g.heroCredit
        back to the shared 1200px column — our <main> wraps everything in
        that max-width. Horizontal full-bleed comes from the shared
        .full-bleed class (see BaseLayout.astro); this rule only owns the
-       hero's own vertical/visual properties. */
-    .genreHero { margin-top: -2rem; margin-bottom: 28px; background: var(--black); color: #fff; overflow: hidden; min-height: 280px; }
+       hero's own vertical/visual properties. No margin-top here: this used
+       to be -2rem to cancel <main>'s own top padding when the hero was
+       main's first child, but <Breadcrumbs> now renders above it (see
+       below) and is the first child instead, so that negative margin just
+       pulled the hero up over the breadcrumb row (or, depending on layout
+       timing, left a bare white gap where the canceled padding had nothing
+       left to show through) — a visible bug fixed by removing it; the
+       breadcrumb's own 20px bottom margin is enough space on its own. */
+    .genreHero { margin-bottom: 28px; background: var(--black); color: #fff; overflow: hidden; min-height: 280px; }
     /* Full-bleed art (not clipped to the right 67%) with its own left edge
        feathered via mask-image, so the image fades into the black panel
        gradually instead of the hard rectangular cut a 33%-inset div leaves —

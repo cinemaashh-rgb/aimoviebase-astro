@@ -49,13 +49,16 @@ const journal = journalSlugs.map((id) => articles.find((a) => a.id === id)).filt
   <style>
     /* ---- Hero ---- */
     /* Horizontal full-bleed comes from the shared .full-bleed class (see
-       BaseLayout.astro); margin-top cancels out <main>'s own top padding
-       so the hero sits flush under the dark header, same approach as
-       the genre page's .genreHero. Background color is matched exactly
-       to the poster artwork's own near-black backdrop (sampled from the
-       source image) so the image never shows a seam against the
-       section's fill. */
-    .sdhHero { overflow: hidden; margin-top: -2rem; margin-bottom: 32px; background: #050506; display: grid; grid-template-columns: minmax(300px,480px) 1fr; align-items: center; gap: 0; }
+       BaseLayout.astro). No margin-top: it used to cancel out <main>'s own
+       top padding so the hero sat flush under the dark header (same
+       approach as the genre page's .genreHero), back when this hero was
+       main's first child — <Breadcrumbs> is the first child now (see
+       below), so that negative margin just pulled the hero up over the
+       breadcrumb row instead; the breadcrumb's own bottom margin is
+       enough space on its own. Background color is matched exactly to the
+       poster artwork's own near-black backdrop (sampled from the source
+       image) so the image never shows a seam against the section's fill. */
+    .sdhHero { overflow: hidden; margin-bottom: 32px; background: #050506; display: grid; grid-template-columns: minmax(300px,480px) 1fr; align-items: center; gap: 0; }
     .sdhHeroCopy { position: relative; z-index: 1; padding: 52px 44px 52px 2rem; }
     .sdhHeroCopy h1 { font-family: var(--serif); color: #fff; font-size: clamp(38px,4.6vw,60px); line-height: .99; letter-spacing: -.03em; margin: 16px 0 16px; }
     .sdhHeroCopy p { font-size: .94rem; line-height: 1.65; color: #cfd3d8; max-width: 440px; margin: 0; }
