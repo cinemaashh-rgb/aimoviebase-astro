@@ -32,7 +32,7 @@ const heroCreditFilm = g.heroCredit
   ? films.find((f) => f.id === g.heroCredit!.movieSlug)
   : undefined;
 ---
-<BaseLayout title={g.name} description={g.description}>
+<BaseLayout title={g.seoTitle ?? g.name} description={g.seoDescription ?? g.description}>
   <style>
     /* Ported from the real mockup (aimb_action_genre_final.html): the art
        is its own absolutely-positioned layer starting at 33% from the left

@@ -1,5 +1,9 @@
 {
   "name": "Cyberpunk",
   "description": "AI cyberpunk films — dystopian technocracies, neon-lit underworlds and rebellion against corporate control.",
-  "films": ["tha-trenchez"]
+  "seoTitle": "AI Cyberpunk Movies | Watch & Review – AIMB",
+  "seoDescription": "AI-generated cyberpunk — dystopian megacities, neon-lit underworlds and rebellion against corporate control, built frame by frame. Watch and review on AIMB.",
+  "films": [
+    "tha-trenchez"
+  ]
 }

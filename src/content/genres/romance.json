@@ -1,7 +1,16 @@
 {
   "name": "Romance",
   "description": "AI films built around a relationship or love story, often compressed into just a minute or two of generated footage.",
-  "films": ["a-face-only-a-mother-could-love", "girls-demons", "where-knights-fall", "between-before-and-after"],
+  "seoTitle": "AI Romance Movies & Shorts | Watch & Review – AIMB",
+  "seoDescription": "AI romance films — love stories and relationships compressed into a minute or two of generated footage. Browse ratings, reviews and where to watch on AIMB.",
+  "films": [
+    "a-face-only-a-mother-could-love",
+    "girls-demons",
+    "where-knights-fall",
+    "between-before-and-after"
+  ],
   "heroImage": "/images/genres/romance-hero.webp",
-  "heroCredit": { "movieSlug": "between-before-and-after" }
+  "heroCredit": {
+    "movieSlug": "between-before-and-after"
+  }
 }

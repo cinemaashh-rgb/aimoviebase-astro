@@ -120,6 +120,12 @@ const genres = defineCollection({
   schema: z.object({
     name: z.string(),
     description: z.string(),
+    // Optional overrides for the <title>/<meta description> tags only —
+    // the on-page H1 and hero paragraph keep using name/description above.
+    // Lets the meta copy carry genre-specific SEO keywords (e.g. "dark
+    // fantasy") without changing the shorter, simpler on-page text.
+    seoTitle: z.string().optional(),
+    seoDescription: z.string().optional(),
     films: z.array(z.string()).default([]),
     // Optional hero banner background for the genre page; most genres have
     // none and fall back to the plain dark hero.

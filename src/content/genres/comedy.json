@@ -1,7 +1,17 @@
 {
   "name": "Comedy",
   "description": "AI comedy films — playful, absurd and sharply timed shorts that put generative video's quirks to good use.",
-  "films": ["tow-truck", "it-was-just-a-joke", "the-field-agent", "whats-the-job", "le-drip"],
+  "seoTitle": "AI Comedy Movies & Shorts | Watch & Review – AIMB",
+  "seoDescription": "Watch AI comedy — playful, absurd and sharply-timed shorts that lean into generative video's quirks for laughs. Browse ratings, reviews and where to watch on AIMB.",
+  "films": [
+    "tow-truck",
+    "it-was-just-a-joke",
+    "the-field-agent",
+    "whats-the-job",
+    "le-drip"
+  ],
   "heroImage": "/images/genres/comedy-hero.webp",
-  "heroCredit": { "movieSlug": "the-field-agent" }
+  "heroCredit": {
+    "movieSlug": "the-field-agent"
+  }
 }
