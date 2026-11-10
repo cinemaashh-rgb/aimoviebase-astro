@@ -20,8 +20,13 @@ interface Crumb {
 }
 interface Props {
   items: Crumb[];
+  // Light-on-dark variant for crumbs rendered inside a dark full-bleed
+  // hero (genre/awards/short-drama heroes) instead of on the page's own
+  // white background — same markup and JSON-LD, just a different color
+  // set, so there's one component either way rather than two near-dupes.
+  dark?: boolean;
 }
-const { items } = Astro.props;
+const { items, dark = false } = Astro.props;
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -34,7 +39,7 @@ const jsonLd = {
   })),
 };
 ---
-<nav class="crumb" aria-label="Breadcrumb">
+<nav class={`crumb ${dark ? 'crumb--dark' : ''}`} aria-label="Breadcrumb">
   {items.map((item, i) => (
     <Fragment>
       {i < items.length - 1 ? (
@@ -61,4 +66,12 @@ const jsonLd = {
   .crumb a:hover { color: var(--blue); }
   .crumb .sep { padding: 0 8px; color: var(--muted2); }
   .crumb span[aria-current] { color: var(--ink); }
+
+  /* dark variant: white-on-dark for crumbs sitting inside a hero banner
+     instead of on the page's white background. */
+  .crumb--dark { color: rgba(255,255,255,.7); }
+  .crumb--dark a { color: rgba(255,255,255,.7); }
+  .crumb--dark a:hover { color: #fff; }
+  .crumb--dark .sep { color: rgba(255,255,255,.35); }
+  .crumb--dark span[aria-current] { color: #fff; }
 </style>

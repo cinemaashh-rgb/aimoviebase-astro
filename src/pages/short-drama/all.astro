@@ -17,13 +17,13 @@ const chineseFilms = films.filter((f) => f.data.originalTitle);
        dark hero shell, tab/sort toolbar and paginated grid, minus the
        photographic hero art (no real backdrop image exists for this
        catalog-wide view) and with Movies/Series swapped for the
-       English/Chinese split this catalog actually has. No margin-top: it
-       used to cancel <main>'s own top padding back when this hero was
-       main's first child; <Breadcrumbs> is the first child now (see
-       below), so that negative margin just pulled the hero up over the
-       breadcrumb row instead — the breadcrumb's own bottom margin is
-       enough space on its own. */
-    .sdaHero { margin-bottom: 28px; background: var(--black); color: #fff; overflow: hidden; min-height: 240px; }
+       English/Chinese split this catalog actually has. margin-top cancels
+       out <main>'s own top padding so the hero sits flush under the dark
+       header with no white gap above it — this only works because
+       <Breadcrumbs> renders *inside* .heroInner (in white-on-dark `dark`
+       mode, see below) rather than above the hero as a separate
+       white-page element. */
+    .sdaHero { margin-top: -2rem; margin-bottom: 28px; background: var(--black); color: #fff; overflow: hidden; min-height: 240px; }
     .sdaHero .heroInner { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; min-height: 240px; display: flex; flex-direction: column; justify-content: center; padding: 32px 2rem; }
     .sdaHero .eyebrow { color: #d8dce1; font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
     .sdaHero h1 { font-family: var(--serif); font-size: clamp(36px,5vw,58px); margin: 10px 0 14px; color: #fff; line-height: 1.04; }
@@ -55,14 +55,13 @@ const chineseFilms = films.filter((f) => f.data.originalTitle);
     @media (max-width: 520px) { .sdaGrid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
   </style>
 
-  <Breadcrumbs items={[
-    { name: 'Home', url: '/' },
-    { name: 'AI Short Drama', url: '/short-drama' },
-    { name: 'All AI Short Dramas', url: '/short-drama/all' },
-  ]} />
-
   <div class="sdaHero full-bleed">
     <div class="heroInner">
+      <Breadcrumbs dark items={[
+        { name: 'Home', url: '/' },
+        { name: 'AI Short Drama', url: '/short-drama' },
+        { name: 'All AI Short Dramas', url: '/short-drama/all' },
+      ]} />
       <div class="eyebrow">AI Short Drama</div>
       <h1>All AI Short Dramas</h1>
       <p>Every vertical microdrama in the AIMB catalog, English-language and Chinese productions alike.</p>
