@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from './Breadcrumbs.astro';
 import { resolveCreatorSlug, verifyCreatorSlug } from '../lib/links';
+import { imageDims } from '../lib/images';
 
 // Shared page for a festival-detail page in the year-tabbed layout from
 // the supplied aimb_runway_aiff_white.html mockup, generalized so every
@@ -191,7 +192,7 @@ const tabs = a.sections.map((section) => {
           {g && (
             <article class="featured">
               <a class="fvisual" href={g.movieSlug ? `/movies/${g.movieSlug}` : '#'} aria-label={`View ${g.title}`}>
-                {gPoster ? <img src={gPoster} alt={g.title} loading="lazy" /> : <div class="fallback">{g.title}</div>}
+                {gPoster ? <img src={gPoster} alt={g.title} loading="lazy" width={imageDims(gPoster)?.width} height={imageDims(gPoster)?.height} /> : <div class="fallback">{g.title}</div>}
               </a>
               <div class="fdetail">
                 <div class="ftag">✦ {g.place} · {t.label}</div>
@@ -223,7 +224,7 @@ const tabs = a.sections.map((section) => {
                   return (
                     <div class="filmCard">
                       <a class="poster" href={n.movieSlug ? `/movies/${n.movieSlug}` : '#'} aria-label={`View ${n.title}`}>
-                        {nPoster ? <img src={nPoster} alt={n.title} loading="lazy" /> : <div class="fallback">{n.title}</div>}
+                        {nPoster ? <img src={nPoster} alt={n.title} loading="lazy" width={imageDims(nPoster)?.width} height={imageDims(nPoster)?.height} /> : <div class="fallback">{n.title}</div>}
                       </a>
                       <div class="cat">{n.place || n.category}</div>
                       <h4>{n.movieSlug ? <a href={`/movies/${n.movieSlug}`} style="color:inherit;">{n.title}</a> : n.title}</h4>

@@ -3,7 +3,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getToolMeta } from '../../data/toolMeta';
-import { widePoster } from '../../lib/images';
+import { widePoster, imageDims } from '../../lib/images';
 import { resolveCreatorSlug, resolveStudioSlug, verifyCreatorSlug } from '../../lib/links';
 
 export async function getStaticPaths() {
@@ -373,7 +373,7 @@ if (m.director) {
   <div class="columns">
     <div>
       <div class="hero">
-        {m.poster ? <img class="heroPoster" src={m.poster} alt={m.title} /> : <div class="heroPoster posterFallback">{m.title}</div>}
+        {m.poster ? <img class="heroPoster" src={m.poster} alt={m.title} width={imageDims(m.poster)?.width} height={imageDims(m.poster)?.height} /> : <div class="heroPoster posterFallback">{m.title}</div>}
         <div>
           <div class="eyebrow">{isSeries ? 'AI Series' : 'AI Movie'}</div>
           <h1 class="title">{m.title}</h1>
@@ -470,7 +470,7 @@ if (m.director) {
           {featuredArticles.map((a) => (
             <a class="journalCard" href={`/news/${a.id}`}>
               {a.data.image ? (
-                <img src={a.data.image} alt={a.data.title} loading="lazy" />
+                <img src={a.data.image} alt={a.data.title} loading="lazy" width={imageDims(a.data.image)?.width} height={imageDims(a.data.image)?.height} />
               ) : (
                 <div class="posterFallback">{a.data.title}</div>
               )}
@@ -501,7 +501,7 @@ if (m.director) {
                         the real, correctly-proportioned poster at that
                         same breakpoint so nothing gets cropped. */}
                     <source media="(max-width: 680px)" srcset={f.data.poster} />
-                    <img src={widePoster(f.data.poster)} alt={f.data.title} loading="lazy" />
+                    <img src={widePoster(f.data.poster)} alt={f.data.title} loading="lazy" width={imageDims(widePoster(f.data.poster))?.width} height={imageDims(widePoster(f.data.poster))?.height} />
                   </picture>
                 ) : (
                   <div class="posterFallback">{f.data.title}</div>
@@ -618,7 +618,7 @@ if (m.director) {
                     16/9 crop so object-fit: cover doesn't crop off most of
                     each poster's width and cut off titles. */}
                 <source media="(max-width: 680px)" srcset={f.data.poster} />
-                <img src={widePoster(f.data.poster)} alt={f.data.title} loading="lazy" />
+                <img src={widePoster(f.data.poster)} alt={f.data.title} loading="lazy" width={imageDims(widePoster(f.data.poster))?.width} height={imageDims(widePoster(f.data.poster))?.height} />
               </picture>
             ) : (
               <div class="posterFallback">{f.data.title}</div>

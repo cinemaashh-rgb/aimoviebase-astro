@@ -2,6 +2,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { imageDims } from '../../lib/images';
 
 export async function getStaticPaths() {
   const movies = await getCollection('movies');
@@ -240,7 +241,7 @@ const hasSideNav = headings.length > 0 || !!listSummary;
     </header>
 
     <figure class="heroFigure">
-      {a.image ? <img src={a.image} alt={a.imageAlt ?? a.title} /> : <div class="fallback">{a.title}</div>}
+      {a.image ? <img src={a.image} alt={a.imageAlt ?? a.title} width={imageDims(a.image)?.width} height={imageDims(a.image)?.height} /> : <div class="fallback">{a.title}</div>}
       {a.heroCaption && <figcaption>{a.heroCaption}</figcaption>}
     </figure>
 
@@ -271,7 +272,7 @@ const hasSideNav = headings.length > 0 || !!listSummary;
                         <div class="characterFramePair">
                           {c.frames.map((f) => (
                             <figure class="compareFrame">
-                              <img src={f.image} alt={f.alt} loading="lazy" />
+                              <img src={f.image} alt={f.alt} loading="lazy" width={imageDims(f.image)?.width} height={imageDims(f.image)?.height} />
                             </figure>
                           ))}
                         </div>
@@ -313,9 +314,9 @@ const hasSideNav = headings.length > 0 || !!listSummary;
                   <article class={`rankedEntry ${block.mediaAspect === 'poster' ? 'rankedEntryPoster' : ''}`} id={block.id}>
                     <div class="rankedMedia">
                       {block.imageHref ? (
-                        <a href={block.imageHref}><img src={block.image} alt={block.imageAlt} loading="lazy" /></a>
+                        <a href={block.imageHref}><img src={block.image} alt={block.imageAlt} loading="lazy" width={imageDims(block.image)?.width} height={imageDims(block.image)?.height} /></a>
                       ) : (
-                        <img src={block.image} alt={block.imageAlt} loading="lazy" />
+                        <img src={block.image} alt={block.imageAlt} loading="lazy" width={imageDims(block.image)?.width} height={imageDims(block.image)?.height} />
                       )}
                     </div>
                     <div class="rankedBody">
@@ -343,7 +344,7 @@ const hasSideNav = headings.length > 0 || !!listSummary;
                 return (
                   <article class="filmCard">
                     <a class="filmCardImage" href={block.href}>
-                      <img src={block.image} alt={block.imageAlt} loading="lazy" />
+                      <img src={block.image} alt={block.imageAlt} loading="lazy" width={imageDims(block.image)?.width} height={imageDims(block.image)?.height} />
                       <span class="awardLabel">{block.awardLabel}</span>
                     </a>
                     <div class="filmCardBody">
@@ -360,7 +361,7 @@ const hasSideNav = headings.length > 0 || !!listSummary;
                     {block.cards.map((c) => (
                       <article class="filmCard">
                         <a class="filmCardImage" href={c.href}>
-                          <img src={c.image} alt={c.imageAlt} loading="lazy" />
+                          <img src={c.image} alt={c.imageAlt} loading="lazy" width={imageDims(c.image)?.width} height={imageDims(c.image)?.height} />
                           <span class="awardLabel">{c.awardLabel}</span>
                         </a>
                         <div class="filmCardBody">
@@ -378,7 +379,7 @@ const hasSideNav = headings.length > 0 || !!listSummary;
                   <div class="mentionsGrid">
                     {block.items.map((m) => (
                       <article class="mention">
-                        <a class="mentionImage" href={m.href}><img src={m.image} alt={m.imageAlt} loading="lazy" /></a>
+                        <a class="mentionImage" href={m.href}><img src={m.image} alt={m.imageAlt} loading="lazy" width={imageDims(m.image)?.width} height={imageDims(m.image)?.height} /></a>
                         <div class="mentionBody">
                           <div class="mentionLabel">{m.label}</div>
                           <h3><a href={m.href}>{m.title}</a></h3>
@@ -436,7 +437,7 @@ const hasSideNav = headings.length > 0 || !!listSummary;
     {featured && (
       <aside class="featuredFilm" aria-label="Featured film">
         <a href={`/movies/${featured.id}`}>
-          {featured.data.poster ? <img src={featured.data.poster} alt={featured.data.title} /> : <div />}
+          {featured.data.poster ? <img src={featured.data.poster} alt={featured.data.title} width={imageDims(featured.data.poster)?.width} height={imageDims(featured.data.poster)?.height} /> : <div />}
         </a>
         <div>
           <small>Featured AI Film</small>
@@ -461,7 +462,7 @@ const hasSideNav = headings.length > 0 || !!listSummary;
         {related.map((r) => (
           <a class="relatedCard" href={`/news/${r.id}`}>
             <div class="relatedImage">
-              {r.data.image ? <img src={r.data.image} alt={r.data.title} loading="lazy" /> : <div class="fallback">{r.data.title}</div>}
+              {r.data.image ? <img src={r.data.image} alt={r.data.title} loading="lazy" width={imageDims(r.data.image)?.width} height={imageDims(r.data.image)?.height} /> : <div class="fallback">{r.data.title}</div>}
             </div>
             <h3>{r.data.title}</h3>
             <small>{r.data.label} · {r.data.date}</small>

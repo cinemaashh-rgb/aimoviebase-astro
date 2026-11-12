@@ -2,6 +2,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { imageDims } from '../../lib/images';
 
 // A list can mix the `movies` and `shortdrama` collections (they have
 // different schemas — episodes/platform vs. director/duration), so each
@@ -206,7 +207,7 @@ const stackPosters = films.filter((f) => f.poster).slice(0, 5);
     {stackPosters.length >= 3 && (
       <div class="featureArt">
         <div class="filmStack">
-          {stackPosters.map((f) => <img src={f.poster} alt="" loading="lazy" />)}
+          {stackPosters.map((f) => <img src={f.poster} alt="" loading="lazy" width={imageDims(f.poster)?.width} height={imageDims(f.poster)?.height} />)}
         </div>
         <span>{films.length} FILMS IN THIS COLLECTION</span>
       </div>
@@ -233,7 +234,7 @@ const stackPosters = films.filter((f) => f.poster).slice(0, 5);
           <article class="story" data-year={f.year} data-title={f.title} data-rank={i + 1}>
             <a href={f.href} aria-label={f.title}>
               <div class="image">
-                {f.poster ? <img src={f.poster} alt={f.title} loading={i < 4 ? 'eager' : 'lazy'} /> : <div class="posterFallback" style="width:100%;height:100%;">{f.title}</div>}
+                {f.poster ? <img src={f.poster} alt={f.title} loading={i < 4 ? 'eager' : 'lazy'} width={imageDims(f.poster)?.width} height={imageDims(f.poster)?.height} /> : <div class="posterFallback" style="width:100%;height:100%;">{f.title}</div>}
               </div>
             </a>
             <div>
@@ -264,7 +265,7 @@ const stackPosters = films.filter((f) => f.poster).slice(0, 5);
             </div>
             {posters.length >= 3 && (
               <div class="relStack">
-                {posters.map((p) => <img src={p} alt="" loading="lazy" />)}
+                {posters.map((p) => <img src={p} alt="" loading="lazy" width={imageDims(p)?.width} height={imageDims(p)?.height} />)}
               </div>
             )}
           </a>
