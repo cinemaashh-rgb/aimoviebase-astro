@@ -60,7 +60,7 @@ const tabs = a.sections.map((section) => {
   };
 });
 ---
-<BaseLayout title={a.name} description={a.description}>
+<BaseLayout title={a.name} description={a.metaDescription || a.description}>
   <style>
 
     .intro { display: grid; grid-template-columns: minmax(0,1.5fr) minmax(250px,320px); gap: 44px; align-items: start; padding: 28px 0 32px; border-bottom: 1px solid var(--line); }

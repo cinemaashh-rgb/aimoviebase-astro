@@ -1,6 +1,8 @@
 {
   "name": "Sci-Fi Essentials",
   "description": "Every AI-made sci-fi title currently in the catalog, gathered in one place.",
+  "metaTitle": "AI Sci-Fi Movies & Series | AIMB",
+  "metaDescription": "Browse AI-generated science fiction films and series, from alien worlds and future societies to robots and space adventures.",
   "placeholder": true,
   "movies": [
     "9091",

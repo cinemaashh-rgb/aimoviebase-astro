@@ -2,6 +2,8 @@
   "name": "AIMB Editor's Picks",
   "description": "Our handpicked selection of standout AI films that everyone should see — spanning genres, studios and production tools.",
   "blurb": "Standout AI films everyone should see.",
+  "metaTitle": "Best AI Movies – Editor’s Picks | AIMB",
+  "metaDescription": "Explore the AIMB editors’ picks: standout AI-generated films selected for storytelling, originality and visual craft across different genres.",
   "placeholder": false,
   "movies": [
     "9091",

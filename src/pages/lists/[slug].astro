@@ -100,7 +100,7 @@ const { list, films, related } = Astro.props;
 const l = list.data;
 const stackPosters = films.filter((f) => f.poster).slice(0, 5);
 ---
-<BaseLayout title={l.name} description={l.description}>
+<BaseLayout title={l.metaTitle || l.name} description={l.metaDescription || l.description}>
   <style>
     .eyebrow { font-size: .68rem; font-weight: 800; letter-spacing: .15em; color: #cf6246; text-transform: uppercase; margin: 0 0 14px; }
 

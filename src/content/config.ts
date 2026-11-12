@@ -223,6 +223,11 @@ const awards = defineCollection({
     // lead line for still render the same as before.
     lead: z.string().optional(),
     description: z.string(),
+    // SEO-only <meta description> override (and OG/Twitter description).
+    // The on-page "About" paragraph and the `lead` fallback above keep
+    // using `description` verbatim — this field never renders in the
+    // page body, only in <head>. Falls back to `description` when unset.
+    metaDescription: z.string().optional(),
     stats: z.array(z.object({ label: z.string(), value: z.string() })).default([]),
     sections: z.array(z.object({
       label: z.string(),
@@ -269,6 +274,12 @@ const lists = defineCollection({
     // on the list's own /lists/[slug] page. Optional — a list without one
     // just shows its film count there, same as before this field existed.
     blurb: z.string().optional(),
+    // SEO-only overrides for <title>/<meta description> (and OG/Twitter).
+    // The visible h1 keeps using `name`, and the visible lead paragraph
+    // keeps using `description` — these two fields only ever reach
+    // <head>. Each falls back to its non-meta counterpart when unset.
+    metaTitle: z.string().optional(),
+    metaDescription: z.string().optional(),
     // Flags a list as a temporary, mechanically-generated stand-in (e.g.
     // "every movie in genre X") rather than real editorial curation.
     placeholder: z.boolean().default(false),
