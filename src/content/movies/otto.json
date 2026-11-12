@@ -1,0 +1,35 @@
+{
+  "movie_id": "334af732-ceed-4f76-a5ad-755e6687806d",
+  "title": "OTTO",
+  "year": 2026,
+  "type": "movie",
+  "duration": "6:25",
+  "genres": [
+    "Sci-Fi",
+    "Drama"
+  ],
+  "synopsis": "A household robot begins asking a question he was never designed to ask: what does it mean to be human? Otto's longing for a family leads him to OtherLife®, a program that promises robots a real human experience through simulation — childhood, first love, a family of his own, every feeling, every touch.",
+  "poster": "/images/posters/otto.webp",
+  "youtubeId": "KQ9BvfMwXYQ",
+  "director": {
+    "name": "Luis Romero Rubio"
+  },
+  "aiTools": [
+    "Higgsfield"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "That was extremely well done. Excellent job.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Great script. What if consciousness really lived in the past? Otto return and seek his family.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "This is one of the best, and sooooo underrated. Loved the writing — it made me care for Otto. Very emotive.",
+      "author": "YouTube viewer"
+    }
+  ],
+  "uploadDate": "2026-09-14"
+}
