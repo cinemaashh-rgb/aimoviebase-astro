@@ -301,6 +301,9 @@ function isActive(prefix: string) {
     .footGrid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; }
     .footGrid .footBrand { font-family: var(--serif); font-size: 1.4rem; font-weight: 800; color: #fff; }
     .footGrid p { color: #a3aab5; font-size: .82rem; max-width: 230px; line-height: 1.55; }
+    .footSocial { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; margin-top: 14px; color: #bec3ca; }
+    .footSocial svg { width: 18px; height: 18px; fill: currentColor; }
+    .footSocial:hover { color: #fff; }
     .footGrid h4 { font-size: .74rem; letter-spacing: .05em; text-transform: uppercase; color: #fff; margin: 0 0 10px; font-family: var(--sans); }
     .footGrid a { display: block; font-size: .82rem; margin: 6px 0; color: #bec3ca; }
     .footGrid a:hover { color: #fff; }
@@ -422,6 +425,9 @@ function isActive(prefix: string) {
       <div>
         <a class="footBrand" href="/">AIMB</a>
         <p>AI Movie Base — an independent platform to discover AI-generated movies, AI series and the people behind them.</p>
+        <a class="footSocial" href="https://x.com/aimoviebase" target="_blank" rel="noopener noreferrer" aria-label="AIMB on X">
+          <svg viewBox="0 0 1024 1024" aria-hidden="true"><path fill-rule="evenodd" d="M823.111 912H200.89C151.8 912 112 872.2 112 823.111V200.89C112 151.8 151.8 112 200.889 112H823.11C872.2 112 912 151.8 912 200.889V823.11C912 872.2 872.2 912 823.111 912M286 291L457.772805 536.277658L286 735H331.296885L477.865892 564.968959L596.942 735H740L555.891306 472.107691L715 289H670.330417L535.793156 443.40916L429.058 291zm69.053 37.65 258.935 368.699h56.96L412.013 328.65h-56.96z"/></svg>
+        </a>
       </div>
       <div>
         <h4>Explore</h4>
