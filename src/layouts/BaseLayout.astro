@@ -308,6 +308,14 @@ function isActive(prefix: string) {
     .footGrid h4 { font-size: .74rem; letter-spacing: .05em; text-transform: uppercase; color: #fff; margin: 0 0 10px; font-family: var(--sans); }
     .footGrid a { display: block; font-size: .82rem; margin: 6px 0; color: #bec3ca; }
     .footGrid a:hover { color: #fff; }
+    /* .footSocial is itself an <a> inside .footGrid, so the generic
+       ".footGrid a" rule above (higher specificity, and it comes later)
+       was winning and painting the X icon's fill the dim link-gray
+       instead of the near-black set on .footSocial — on the white
+       circle badge that made the glyph nearly invisible. Re-assert it
+       here with matching specificity, after the rule it needs to beat. */
+    .footGrid a.footSocial { display: inline-flex; color: var(--black); }
+    .footGrid a.footSocial:hover { color: var(--black); }
     .copyrightBar { color: #9ca2ab; font-size: .74rem; margin-top: 26px; border-top: 1px solid #262a2e; padding-top: 16px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 
     /* Shared catalog card styles reused across homepage, movies index, genre
