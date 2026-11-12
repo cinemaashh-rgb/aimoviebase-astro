@@ -1,0 +1,18 @@
+{
+  "creator_id": "319c1bf2-a289-44f2-a5cd-f4693a834517",
+  "name": "Zack London",
+  "role": "Director, Writer",
+  "studio": {
+    "name": "Gossip Goblin",
+    "slug": "gossip-goblin"
+  },
+  "knownFor": [
+    "Sci-Fi",
+    "Horror"
+  ],
+  "bio": "Director credited on Gossip Goblin's AI sci-fi shorts Pomegranate and Woodnuts, co-writing the latter with Jacob Batchelor as part of the studio's Thirteen Cycles of Humanity series.",
+  "films": [
+    "pomegranate",
+    "woodnuts"
+  ]
+}

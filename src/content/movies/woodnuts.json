@@ -1,0 +1,39 @@
+{
+  "movie_id": "9122c433-4409-4a87-946a-dcaa90a63948",
+  "title": "Woodnuts",
+  "year": 2025,
+  "type": "movie",
+  "duration": "10:42",
+  "genres": [
+    "Sci-Fi",
+    "Horror"
+  ],
+  "synopsis": "Desperate for credits, a punch-burn laborer joins a hazard crew harvesting psychoactive sap from the forests of Jatar. Seduced by whispers from the ancient trees, he's lured into the deep woods and consumed by the forest's memories — witnessing the terraforming of the planet by ancient humans, the rise of a paradise on a once-barren world, and humanity's destruction by the very ecosystem it engineered.",
+  "poster": "/images/posters/woodnuts.webp",
+  "youtubeId": "NLAZubEa6X4",
+  "director": {
+    "name": "Zack London"
+  },
+  "crew": [
+    {
+      "name": "Jacob Batchelor",
+      "role": "Writer"
+    }
+  ],
+  "studio": "Gossip Goblin",
+  "audienceReactions": [
+    {
+      "quote": "The idea of being consumed by memories instead of something physical… that's next level.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "\"The closer to the edge you get, the more you want to taste it.\" Excellent quote.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Gripped my attention from start to finish. Really well done.",
+      "author": "YouTube viewer"
+    }
+  ],
+  "uploadDate": "2025-12-26"
+}

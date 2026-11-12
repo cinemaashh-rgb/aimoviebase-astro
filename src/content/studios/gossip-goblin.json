@@ -1,0 +1,9 @@
+{
+  "studio_id": "79734570-aeeb-4051-8d11-59cacb05a389",
+  "name": "Gossip Goblin",
+  "description": "Independent AI film studio behind the sci-fi shorts Pomegranate and Woodnuts, the latter part of its ongoing Thirteen Cycles of Humanity series.",
+  "films": [
+    "pomegranate",
+    "woodnuts"
+  ]
+}
