@@ -3,7 +3,7 @@
   "title": "Listen to Meh",
   "year": 2026,
   "type": "movie",
-  "genres": [],
+  "genres": ["Comedy"],
   "synopsis": "A gaucho's routine is repeatedly interrupted by a sheep that keeps returning to his roof.",
   "poster": "/images/posters/listen-to-meh.webp",
   "studio": "Purga Studio",
