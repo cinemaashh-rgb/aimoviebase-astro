@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import { imageDims } from '../../lib/images';
 
 const awards = await getCollection('awards');
 const movies = await getCollection('movies');
@@ -367,7 +366,7 @@ const initialCount = 6;
               {!f.winner.pending && f.winner.movieSlug && movieExists(f.winner.movieSlug) ? (
                 <>
                   {moviePoster(f.winner.movieSlug) && (
-                    <img class="winner-thumb" src={moviePoster(f.winner.movieSlug)} alt={f.winner.title} loading="lazy" width={imageDims(moviePoster(f.winner.movieSlug))?.width} height={imageDims(moviePoster(f.winner.movieSlug))?.height} />
+                    <img class="winner-thumb" src={moviePoster(f.winner.movieSlug)} alt={f.winner.title} loading="lazy" />
                   )}
                   <div>
                     <a href={`/movies/${f.winner.movieSlug}`}><strong>{f.winner.title}</strong></a>

@@ -3,7 +3,6 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { getVerdict, metricColor } from '../lib/qualityIndex';
-import { imageDims } from '../lib/images';
 
 const all = await getCollection('shortdrama');
 const published = all.filter((e) => e.data.status === 'published');
@@ -203,7 +202,7 @@ const journal = journalSlugs.map((id) => articles.find((a) => a.id === id)).filt
       <div class="sdhGrid">
         {popular.map((e) => (
           <a href={`/shortdrama/${e.id}`} aria-label={`View ${e.data.title}`}>
-            {e.data.poster ? <img src={e.data.poster} alt={e.data.title} loading="lazy" width={imageDims(e.data.poster)?.width} height={imageDims(e.data.poster)?.height} /> : <div class="sdhPosterFallback">{e.data.title}</div>}
+            {e.data.poster ? <img src={e.data.poster} alt={e.data.title} loading="lazy" /> : <div class="sdhPosterFallback">{e.data.title}</div>}
             <strong>{e.data.title}</strong>
             <span class="sdhGridMeta">{meta(e)}</span>
           </a>
@@ -261,7 +260,7 @@ const journal = journalSlugs.map((id) => articles.find((a) => a.id === id)).filt
       <div class="sdhGrid">
         {chineseGrid.map((e) => (
           <a href={`/shortdrama/${e.id}`} aria-label={`View ${e.data.title}`}>
-            {e.data.poster ? <img src={e.data.poster} alt={e.data.title} loading="lazy" width={imageDims(e.data.poster)?.width} height={imageDims(e.data.poster)?.height} /> : <div class="sdhPosterFallback">{e.data.title}</div>}
+            {e.data.poster ? <img src={e.data.poster} alt={e.data.title} loading="lazy" /> : <div class="sdhPosterFallback">{e.data.title}</div>}
             <strong>{e.data.title}</strong>
             {e.data.originalTitle && <span class="sdhOriginal">{e.data.originalTitle}</span>}
             <span class="sdhGridMeta">{meta(e)}</span>
@@ -282,7 +281,7 @@ const journal = journalSlugs.map((id) => articles.find((a) => a.id === id)).filt
     <div class="sdhJournalGrid">
       {journal.map((a) => (
         <a class="sdhStory" href={`/news/${a.id}`}>
-          {a.data.image ? <img src={a.data.image} alt={a.data.title} loading="lazy" width={imageDims(a.data.image)?.width} height={imageDims(a.data.image)?.height} /> : <div class="sdhStoryFallback">{a.data.title}</div>}
+          {a.data.image ? <img src={a.data.image} alt={a.data.title} loading="lazy" /> : <div class="sdhStoryFallback">{a.data.title}</div>}
           <div class="sdhStoryBody">
             <span class="sdhKicker">{a.data.label}</span>
             <h3>{a.data.title}</h3>

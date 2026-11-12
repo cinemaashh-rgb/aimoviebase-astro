@@ -2,7 +2,6 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import { imageDims } from '../../lib/images';
 
 export async function getStaticPaths() {
   const genres = await getCollection('genres');
@@ -135,7 +134,7 @@ const heroCreditFilm = g.heroCredit
       <div class="grid" id="filmGrid">
         {films.map((f) => (
           <a class="movie-card" href={`/movies/${f.id}`} data-kind={f.data.type} data-year={f.data.year} data-title={f.data.title}>
-            {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" width={imageDims(f.data.poster)?.width} height={imageDims(f.data.poster)?.height} /> : <div class="posterFallback">{f.data.title}</div>}
+            {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" /> : <div class="posterFallback">{f.data.title}</div>}
             <h3>{f.data.title}</h3>
             <div class="year">{f.data.year}</div>
           </a>

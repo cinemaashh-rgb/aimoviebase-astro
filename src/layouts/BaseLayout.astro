@@ -491,7 +491,7 @@ function isActive(prefix: string) {
             box.innerHTML = '<div class="searchEmpty">No results found</div>';
           } else {
             box.innerHTML = res.map(function (d) {
-              var thumb = d.img ? '<img src="' + d.img + '" alt="" width="42" height="58">' : initials(d.title);
+              var thumb = d.img ? '<img src="' + d.img + '" alt="">' : initials(d.title);
               return '<a class="searchItem" href="' + d.href + '"><div class="searchThumb">' + thumb + '</div><div class="searchInfo"><div class="searchTitle">' + d.title + '</div><div class="searchSub">' + d.sub + '</div></div></a>';
             }).join('');
           }
@@ -544,7 +544,7 @@ function isActive(prefix: string) {
         a.href = item.href;
         var thumb = document.createElement('div');
         thumb.className = 'searchThumb';
-        if (item.img) { var img = document.createElement('img'); img.src = item.img; img.alt = ''; img.width = 42; img.height = 58; thumb.appendChild(img); }
+        if (item.img) { var img = document.createElement('img'); img.src = item.img; img.alt = ''; thumb.appendChild(img); }
         else { thumb.textContent = initials(item.title); }
         var label = document.createElement('div');
         label.className = 'searchInfo';

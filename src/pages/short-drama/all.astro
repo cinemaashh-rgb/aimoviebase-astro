@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import { imageDims } from '../../lib/images';
 
 const entries = await getCollection('shortdrama');
 const films = entries.filter((e) => e.data.status === 'published');
@@ -94,7 +93,7 @@ const chineseFilms = films.filter((f) => f.data.originalTitle);
             data-year={f.data.year ?? 0}
             data-title={f.data.title}
           >
-            {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" width={imageDims(f.data.poster)?.width} height={imageDims(f.data.poster)?.height} /> : <div class="sdaPosterFallback">{f.data.title}</div>}
+            {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" /> : <div class="sdaPosterFallback">{f.data.title}</div>}
             <h3>{f.data.title}</h3>
             {f.data.originalTitle && <span class="sdaOriginal">{f.data.originalTitle}</span>}
             <div class="sdaMeta">{[f.data.platform, f.data.year].filter(Boolean).join(' · ')}</div>

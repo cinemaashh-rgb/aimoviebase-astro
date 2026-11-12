@@ -1,7 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { imageDims } from '../lib/images';
 const movies = await getCollection('movies');
 // Notable is otherwise fully computed (newest first, no hand-picked
 // slugs — see the comment below), but "1001 Aladdin and The Lamp" only
@@ -313,7 +312,7 @@ const journal = homepageJournalSlugs
       {notable.map((movie) => (
         <a href={`/movies/${movie.id}`} aria-label={`Read about ${movie.data.title}`}>
           {movie.data.poster ? (
-            <img src={movie.data.poster} alt={movie.data.title} loading="lazy" width={imageDims(movie.data.poster)?.width} height={imageDims(movie.data.poster)?.height} />
+            <img src={movie.data.poster} alt={movie.data.title} loading="lazy" />
           ) : (
             <div class="posterFallback">{movie.data.title}</div>
           )}
@@ -337,7 +336,7 @@ const journal = homepageJournalSlugs
         {awardWinners.map((movie) => (
           <a href={`/movies/${movie.id}`} aria-label={`Read about ${movie.data.title}`}>
             {movie.data.poster ? (
-              <img src={movie.data.poster} alt={movie.data.title} loading="lazy" width={imageDims(movie.data.poster)?.width} height={imageDims(movie.data.poster)?.height} />
+              <img src={movie.data.poster} alt={movie.data.title} loading="lazy" />
             ) : (
               <div class="posterFallback">{movie.data.title}</div>
             )}
@@ -360,7 +359,7 @@ const journal = homepageJournalSlugs
     <div class="journalGrid">
       {journal.map((j) => (
         <a class="story" href={`/news/${j.id}`}>
-          {j.data.image ? <img src={j.data.image} alt={j.data.title} loading="lazy" width={imageDims(j.data.image)?.width} height={imageDims(j.data.image)?.height} /> : <div class="storyFallback">{j.data.title}</div>}
+          {j.data.image ? <img src={j.data.image} alt={j.data.title} loading="lazy" /> : <div class="storyFallback">{j.data.title}</div>}
           <small>{j.data.label}</small>
           <strong>{j.data.title}</strong>
           <p>{j.data.excerpt}</p>
@@ -390,7 +389,7 @@ const journal = homepageJournalSlugs
                   const w = i === 0 ? 50 : 50 / Math.max(n - 1, 1);
                   const left = i === 0 ? 0 : 50 + (i - 1) * (50 / Math.max(n - 1, 1));
                   return (
-                    <img class="listCover" src={p} alt="" loading="lazy" width={imageDims(p)?.width} height={imageDims(p)?.height} style={`left:${left}%; width:${w}%; z-index:${i + 1};`} />
+                    <img class="listCover" src={p} alt="" loading="lazy" style={`left:${left}%; width:${w}%; z-index:${i + 1};`} />
                   );
                 }) : <div class="posterFallback">{list.data.name}</div>}
               </div>
@@ -447,7 +446,7 @@ const journal = homepageJournalSlugs
           const d = shortdramaPublished[i];
           return d ? (
             <a href={`/shortdrama/${d.id}`} aria-label={`Read about ${d.data.title}`}>
-              {d.data.poster ? <img src={d.data.poster} alt={d.data.title} loading="lazy" width={imageDims(d.data.poster)?.width} height={imageDims(d.data.poster)?.height} /> : <div class="dramaFallback">{d.data.title}</div>}
+              {d.data.poster ? <img src={d.data.poster} alt={d.data.title} loading="lazy" /> : <div class="dramaFallback">{d.data.title}</div>}
               <strong>{d.data.title}</strong>
               <span class="taxonomy">{shortDramaTaxonomy(d)}</span>
             </a>

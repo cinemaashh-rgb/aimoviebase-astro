@@ -2,7 +2,6 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import { imageDims } from '../../lib/images';
 
 const lists = await getCollection('lists');
 const movies = await getCollection('movies');
@@ -73,7 +72,7 @@ function itemCount(list: CollectionEntry<'lists'>) {
             <div class="posterStrip">
               {covers.length >= 2 ? (
                 <div class="posterGrid">
-                  {covers.map((p) => <img src={p} alt="" loading="lazy" width={imageDims(p)?.width} height={imageDims(p)?.height} />)}
+                  {covers.map((p) => <img src={p} alt="" loading="lazy" />)}
                 </div>
               ) : (
                 <div class="posterFallback" style="width:100%;height:100%;">{list.data.name}</div>

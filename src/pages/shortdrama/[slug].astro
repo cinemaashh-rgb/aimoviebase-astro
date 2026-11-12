@@ -3,7 +3,6 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getVerdict, metricColor, QUALITY_VERDICTS } from '../../lib/qualityIndex';
-import { imageDims } from '../../lib/images';
 
 export async function getStaticPaths() {
   const entries = await getCollection('shortdrama');
@@ -172,7 +171,7 @@ const shortDramaJsonLd = d.status === 'published' ? {
     <div class="sdColumns">
       <div>
         <div class="sdHero">
-          {d.poster ? <img class="sdPoster" src={d.poster} alt={d.title} width={imageDims(d.poster)?.width} height={imageDims(d.poster)?.height} /> : <div class="sdPosterFallback">{d.title}</div>}
+          {d.poster ? <img class="sdPoster" src={d.poster} alt={d.title} /> : <div class="sdPosterFallback">{d.title}</div>}
           <div>
             <div class="sdEyebrow">AI Short Drama</div>
             <h1 class="sdTitle">{d.title}</h1>
@@ -241,7 +240,7 @@ const shortDramaJsonLd = d.status === 'published' ? {
               {related.map((r) => (
                 <a href={`/shortdrama/${r.id}`} style="display:block;">
                   {r.data.poster ? (
-                    <img src={r.data.poster} alt={r.data.title} loading="lazy" width={imageDims(r.data.poster)?.width} height={imageDims(r.data.poster)?.height} />
+                    <img src={r.data.poster} alt={r.data.title} loading="lazy" />
                   ) : (
                     <div class="sdRelatedFallback">{r.data.title}</div>
                   )}

@@ -5,7 +5,6 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getToolMeta } from '../../data/toolMeta';
 import Icon from '../../components/Icon.astro';
 import { creatorHasPage, verifyStudioSlug } from '../../lib/links';
-import { imageDims } from '../../lib/images';
 
 export async function getStaticPaths() {
   // A creator with only one film in the catalog doesn't get a page — see
@@ -154,7 +153,7 @@ const awardsList = [
 
   <section class={`personHero ${(creativeStack.length > 0 || awardsList.length > 0) ? 'withPanel' : ''}`} aria-labelledby="person-name">
     <div class="personPhoto">
-      {c.photo ? <img src={c.photo} alt={c.name} width={imageDims(c.photo)?.width} height={imageDims(c.photo)?.height} /> : initials(c.name)}
+      {c.photo ? <img src={c.photo} alt={c.name} /> : initials(c.name)}
     </div>
     <div>
       <div class="personEyebrow">AIMB · Creator Profile</div>
@@ -231,7 +230,7 @@ const awardsList = [
           {films.map((f) => (
             <a class="filmCard" href={`/movies/${f.id}`} data-kind={f.data.type} data-year={f.data.year} data-title={f.data.title}>
               <div class="thumb">
-                {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" width={imageDims(f.data.poster)?.width} height={imageDims(f.data.poster)?.height} /> : <div class="posterFallback" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-weight:700;">{f.data.title}</div>}
+                {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" /> : <div class="posterFallback" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-weight:700;">{f.data.title}</div>}
               </div>
               <h3>{f.data.title}</h3>
               <p class="filmMeta">{f.data.year}<span>·</span>{f.data.type === 'series' ? 'Series' : 'Movie'}</p>

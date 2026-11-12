@@ -5,7 +5,6 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getToolMeta } from '../../data/toolMeta';
 import Icon from '../../components/Icon.astro';
 import { studioHasPage, creatorHasPage } from '../../lib/links';
-import { imageDims } from '../../lib/images';
 
 export async function getStaticPaths() {
   // A studio with only one film in the catalog doesn't get a page — see
@@ -171,7 +170,7 @@ const awardEntries = films.flatMap((f) => (f.data.awards ?? []).map((text) => ({
   ]} />
 
   <section class="studioHero" aria-labelledby="studio-name">
-    {s.logo ? <div class="logoTile"><img src={s.logo} alt={`${s.name} logo`} width={imageDims(s.logo)?.width} height={imageDims(s.logo)?.height} /></div> : <div class="logoTile"><div class="logoMark">{initials}</div><div class="logoWord">{s.name}</div></div>}
+    {s.logo ? <div class="logoTile"><img src={s.logo} alt={`${s.name} logo`} /></div> : <div class="logoTile"><div class="logoMark">{initials}</div><div class="logoWord">{s.name}</div></div>}
     <div>
       <div class="studioEyebrow">AI Film Studio</div>
       <h1 id="studio-name">{s.name}</h1>
@@ -229,7 +228,7 @@ const awardEntries = films.flatMap((f) => (f.data.awards ?? []).map((text) => ({
             <a class="filmCard" href={`/movies/${f.id}`} data-kind={f.data.type} data-year={f.data.year} data-title={f.data.title}>
               <div class="thumb">
                 {f.data.duration && <span class="durationBadge">▶ {f.data.duration}</span>}
-                {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" width={imageDims(f.data.poster)?.width} height={imageDims(f.data.poster)?.height} /> : <div class="posterFallback" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-weight:700;">{f.data.title}</div>}
+                {f.data.poster ? <img src={f.data.poster} alt={f.data.title} loading="lazy" /> : <div class="posterFallback" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-weight:700;">{f.data.title}</div>}
               </div>
               <h3>{f.data.title}</h3>
               <p class="filmMeta">{f.data.year}<span>·</span>{f.data.type === 'series' ? 'Series' : 'Movie'}</p>
@@ -285,7 +284,7 @@ const awardEntries = films.flatMap((f) => (f.data.awards ?? []).map((text) => ({
           return (
             <Tag class="personCard" {...(creatorHasPage(c) ? { href: `/name/${c.id}` } : {})}>
               <div class="avatar">
-                {c.data.photo ? <img src={c.data.photo} alt={c.data.name} loading="lazy" width={imageDims(c.data.photo)?.width} height={imageDims(c.data.photo)?.height} /> : initialsOf(c.data.name)}
+                {c.data.photo ? <img src={c.data.photo} alt={c.data.name} loading="lazy" /> : initialsOf(c.data.name)}
               </div>
               <h3>{c.data.alias || c.data.name}</h3>
               {c.data.role && <p>{c.data.role}</p>}

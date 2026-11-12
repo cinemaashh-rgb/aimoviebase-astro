@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import { imageDims } from '../lib/images';
 
 // Real articles only — the reference mockup (aimb_journal_main.html) is an
 // explicit noindex,nofollow prototype with 9 cards, 6 of which have no
@@ -56,7 +55,7 @@ const articles = (await getCollection('articles')).sort(
     {articles.map((a) => (
       <a class="journalCard" href={`/news/${a.id}`}>
         <div class="journalCover">
-          {a.data.image ? <img src={a.data.image} alt={a.data.title} loading="lazy" width={imageDims(a.data.image)?.width} height={imageDims(a.data.image)?.height} /> : <div class="fallback">{a.data.title}</div>}
+          {a.data.image ? <img src={a.data.image} alt={a.data.title} loading="lazy" /> : <div class="fallback">{a.data.title}</div>}
         </div>
         <div class="journalMeta">{a.data.label} • {a.data.date}</div>
         <h2>{a.data.title}</h2>

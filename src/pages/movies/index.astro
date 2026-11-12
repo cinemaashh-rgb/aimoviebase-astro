@@ -2,7 +2,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import { widePoster, imageDims } from '../../lib/images';
+import { widePoster } from '../../lib/images';
 
 const movies = await getCollection('movies');
 const genres = await getCollection('genres');
@@ -162,7 +162,7 @@ const sections = genres
               {s.preview.map((f) => (
                 <a class="film-card" href={`/movies/${f.id}`} data-title={f.data.title} data-year={f.data.year}>
                   <span class="film-visual">
-                    {f.data.poster ? <img src={widePoster(f.data.poster)} alt={f.data.title} loading="lazy" width={imageDims(widePoster(f.data.poster))?.width} height={imageDims(widePoster(f.data.poster))?.height} /> : <span class="posterFallback">{f.data.title}</span>}
+                    {f.data.poster ? <img src={widePoster(f.data.poster)} alt={f.data.title} loading="lazy" /> : <span class="posterFallback">{f.data.title}</span>}
                   </span>
                   <h3>{f.data.title}</h3>
                   <div class="film-meta">
