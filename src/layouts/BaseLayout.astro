@@ -302,20 +302,20 @@ function isActive(prefix: string) {
     .footGrid .footBrand { font-family: var(--serif); font-size: 1.4rem; font-weight: 800; color: #fff; }
     .footGrid p { color: #a3aab5; font-size: .82rem; max-width: 230px; line-height: 1.55; }
     .footFollow { display: flex; flex-direction: column; }
-    .footSocial { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: #fff; color: var(--black); }
-    .footSocial svg { width: 22px; height: 22px; fill: currentColor; }
-    .footSocial:hover { background: #d2d5d9; }
+    .footSocial { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: #fff; }
+    .footSocial svg { width: 24px; height: 24px; fill: currentColor; }
+    .footSocial:hover { color: #bec3ca; }
     .footGrid h4 { font-size: .74rem; letter-spacing: .05em; text-transform: uppercase; color: #fff; margin: 0 0 10px; font-family: var(--sans); }
     .footGrid a { display: block; font-size: .82rem; margin: 6px 0; color: #bec3ca; }
     .footGrid a:hover { color: #fff; }
     /* .footSocial is itself an <a> inside .footGrid, so the generic
        ".footGrid a" rule above (higher specificity, and it comes later)
-       was winning and painting the X icon's fill the dim link-gray
-       instead of the near-black set on .footSocial — on the white
-       circle badge that made the glyph nearly invisible. Re-assert it
-       here with matching specificity, after the rule it needs to beat. */
-    .footGrid a.footSocial { display: inline-flex; color: var(--black); }
-    .footGrid a.footSocial:hover { color: var(--black); }
+       would otherwise win and paint the X icon the dim footer-link
+       gray/white instead of .footSocial's own (opposite) default/hover
+       colors. Re-assert them here with matching specificity, after the
+       rule they need to beat. */
+    .footGrid a.footSocial { display: inline-flex; color: #fff; }
+    .footGrid a.footSocial:hover { color: #bec3ca; }
     .copyrightBar { color: #9ca2ab; font-size: .74rem; margin-top: 26px; border-top: 1px solid #262a2e; padding-top: 16px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 
     /* Shared catalog card styles reused across homepage, movies index, genre
