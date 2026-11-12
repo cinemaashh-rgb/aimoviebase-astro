@@ -11,7 +11,18 @@
   // frontmatter, since those can't be bundled for the Workers runtime.
   "name": "aimoviebase-astro",
   "compatibility_date": "2026-10-23",
+  // html_handling defaults to "auto-trailing-slash", which makes Cloudflare
+  // itself 301-redirect folder-index pages (every route here builds as
+  // dist/<path>/index.html) to ADD a trailing slash on the way out. That's
+  // the opposite of astro.config.mjs's trailingSlash:'never' and of
+  // vercel.json's trailingSlash:false — canonical tags, the sitemap and
+  // internal links all assume the no-slash form. "drop-trailing-slash"
+  // makes Cloudflare's asset layer itself redirect the slash variant to the
+  // no-slash one, matching the rest of the site's config, with no separate
+  // zone-level Redirect Rule needed (a same-purpose Redirect Rule was tried
+  // and removed — it fought this default and caused an infinite 301 loop).
   "assets": {
-    "directory": "dist"
+    "directory": "dist",
+    "html_handling": "drop-trailing-slash"
   }
 }
