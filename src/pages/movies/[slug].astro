@@ -148,6 +148,7 @@ const movieJsonLd = {
       embedUrl: `https://www.youtube.com/embed/${m.youtubeId}`,
       ...(movieImage ? { thumbnailUrl: new URL(movieImage, Astro.site).href } : {}),
       description: m.synopsis ?? m.title,
+      ...(m.uploadDate ? { uploadDate: m.uploadDate } : {}),
     },
   } : {}),
 };

@@ -24,6 +24,12 @@ const movies = defineCollection({
     // the Watch button links out directly instead of opening the YouTube
     // embed modal. Only used when youtubeId is unset.
     watchUrl: z.string().optional(),
+    // Real upload date of the YouTube trailer (ISO 8601 date, e.g.
+    // "2026-05-26"), sourced from YouTube's own video metadata — never
+    // fabricated. Used as the required `uploadDate` field on the
+    // VideoObject JSON-LD so the trailer is eligible for Google's video
+    // rich results. Left unset when the real date isn't available.
+    uploadDate: z.string().optional(),
     director: z.object({
       name: z.string(),
       slug: z.string().optional(),
