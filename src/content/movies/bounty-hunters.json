@@ -1,0 +1,33 @@
+{
+  "movie_id": "0663b7fe-d7bf-45f5-af40-6b80d458cbed",
+  "title": "Bounty Hunters",
+  "year": 2026,
+  "type": "movie",
+  "duration": "9:45",
+  "genres": [
+    "Sci-Fi"
+  ],
+  "synopsis": "On a lawless alien planet where the Wild West meets science fiction, bounty hunters Bublik and Tubik are chased across the desert by a gang of outlaws on hoverbikes — only to find gigantic sandworms waiting beneath the sand.",
+  "poster": "/images/posters/bounty-hunters.webp",
+  "youtubeId": "-FbFhsy6DCQ",
+  "studio": "VORON PICTURES",
+  "aiTools": [
+    "Nano Banana 2",
+    "Kling 4.0"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "Absolutely brilliant! A wild mix of Mad Max, Dune, A-Team, Tremors, and Doomsday making for a wonderful blend of humor and satire.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "I love the work and the concept, the action has some holes, but good stuff.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Like the idea and concept, but it would've been better if it was actually animated instead of using AI.",
+      "author": "YouTube viewer"
+    }
+  ],
+  "uploadDate": "2026-10-31"
+}
