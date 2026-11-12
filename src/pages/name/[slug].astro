@@ -191,7 +191,7 @@ const awardsList = [
             <h3>Production tools</h3>
             {creativeStack.map((t) => (
               <div class="toolRow">
-                <span class="toolIcon" style={`background:${t.meta.bg};color:${t.meta.fg};${t.meta.border ? `border:1px solid ${t.meta.border};` : ''}`}>{t.meta.image ? <img src={t.meta.image} alt="" width="20" height="20" style="border-radius:5px;" /> : t.meta.icon}</span>
+                <span class="toolIcon" style={`background:${t.meta.bg};color:${t.meta.fg};${t.meta.border ? `border:1px solid ${t.meta.border};` : ''}`}>{t.meta.image ? <img src={t.meta.image} alt={`${t.name} logo`} width="20" height="20" style="border-radius:5px;" /> : t.meta.icon}</span>
                 <span><strong>{t.name}</strong><small>{t.meta.category}</small></span>
               </div>
             ))}

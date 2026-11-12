@@ -171,7 +171,7 @@ const notePoster = (slug: string | undefined) =>
               <div class={`winnerCard ${chipClass(w.place) === 'grand' ? 'grandPrize' : ''}`}>
                 {w.poster && (
                   <a class="cardImage" href={w.movieSlug ? `/movies/${w.movieSlug}` : '#'}>
-                    <img src={w.poster} alt="" loading="lazy" />
+                    <img src={w.poster} alt={w.title} loading="lazy" />
                   </a>
                 )}
                 <div class="winnerBody">
@@ -194,7 +194,7 @@ const notePoster = (slug: string | undefined) =>
               <div class="awardRow">
                 {w.poster && (
                   <a class="rowThumb" href={w.movieSlug ? `/movies/${w.movieSlug}` : '#'}>
-                    <img src={w.poster} alt="" loading="lazy" />
+                    <img src={w.poster} alt={w.title} loading="lazy" />
                   </a>
                 )}
                 <div>
@@ -215,7 +215,7 @@ const notePoster = (slug: string | undefined) =>
                 {n.movieSlug && (
                   <a class="poster" href={`/movies/${n.movieSlug}`}>
                     {notePoster(n.movieSlug) ? (
-                      <img src={notePoster(n.movieSlug)} alt="" loading="lazy" />
+                      <img src={notePoster(n.movieSlug)} alt={n.title} loading="lazy" />
                     ) : (
                       <div style="width:100%;height:100%;background:var(--soft);"></div>
                     )}
