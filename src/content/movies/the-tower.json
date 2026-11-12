@@ -1,0 +1,38 @@
+{
+  "movie_id": "7a4ce4f8-6790-44ef-b86a-a76daa8c2f42",
+  "title": "The Tower",
+  "year": 2026,
+  "type": "movie",
+  "duration": "10:56",
+  "genres": [
+    "Sci-Fi",
+    "Drama"
+  ],
+  "synopsis": "In a barren, resource-depleted world, a solitary tower stands alone across the wasteland. Inside, an old man and a young boy live a quiet, ritualistic life, sustained by a single well and the daily act of nurturing the last traces of green in a dying world — until a wounded stranger stumbles into their world.",
+  "poster": "/images/posters/the-tower.webp",
+  "youtubeId": "RjvldlyPhLg",
+  "director": {
+    "name": "Danny Tseng"
+  },
+  "aiTools": [
+    "Kling",
+    "Magnific",
+    "Seedance 2.0",
+    "Topaz"
+  ],
+  "audienceReactions": [
+    {
+      "quote": "No need for words. The story was so thought provoking. Survival through being resourceful, kind and knowing an unknown universal truth. Just beautiful!",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "This was a great short, the detail of the boy's day gets me on the beast part and I enjoyed it.",
+      "author": "YouTube viewer"
+    },
+    {
+      "quote": "Wow! That was better than most 90 minute movies I've seen.",
+      "author": "YouTube viewer"
+    }
+  ],
+  "uploadDate": "2026-05-23"
+}
