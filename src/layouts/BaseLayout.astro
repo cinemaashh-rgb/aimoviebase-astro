@@ -103,6 +103,24 @@ function isActive(prefix: string) {
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-P7NMTTEBQ6');
+
+    // Site-search tracking: fed by both the desktop dropdown and the mobile
+    // full-screen panel (see search scripts below). Debounced by the caller
+    // (fires ~800ms after the user stops typing, not on every keystroke) and
+    // de-duplicated here so refocusing/re-rendering the same term doesn't
+    // double-count. 'search' is a GA4-recommended event; 'search_no_results'
+    // is custom and needs its 'search_term' parameter registered as a custom
+    // dimension in GA4 Admin to show up outside Realtime.
+    window.__aimbLastSearchTerm = '';
+    window.aimbSendSearchEvent = function (term, resultCount) {
+      var q = (term || '').trim();
+      if (!q || q === window.__aimbLastSearchTerm) return;
+      window.__aimbLastSearchTerm = q;
+      gtag('event', 'search', { search_term: q });
+      if (resultCount === 0) {
+        gtag('event', 'search_no_results', { search_term: q });
+      }
+    };
   </script>
   <!-- Microsoft Clarity -->
   <script is:inline>
@@ -460,6 +478,10 @@ function isActive(prefix: string) {
             }).join('');
           }
           box.style.display = 'block';
+          clearTimeout(input._aimbSearchTimer);
+          input._aimbSearchTimer = setTimeout(function () {
+            window.aimbSendSearchEvent(q, res.length);
+          }, 800);
         }
         input.addEventListener('input', render);
         input.addEventListener('focus', render);
@@ -533,6 +555,12 @@ function isActive(prefix: string) {
           results.append(msg);
         } else {
           matches.forEach(function (d) { results.append(row(d)); });
+        }
+        if (q.length >= 2) {
+          clearTimeout(input._aimbSearchTimer);
+          input._aimbSearchTimer = setTimeout(function () {
+            window.aimbSendSearchEvent(q, matches.length);
+          }, 800);
         }
       }
       function sync() {
