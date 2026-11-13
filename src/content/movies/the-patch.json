@@ -1,0 +1,16 @@
+{
+  "movie_id": "802b701a-a9b0-4189-be07-0b748ec622f0",
+  "title": "The Patch",
+  "year": 2026,
+  "type": "movie",
+  "duration": "5:50",
+  "genres": ["Sci-Fi", "Dystopian", "Psychological Drama"],
+  "synopsis": "In a future where corporate success demands linking into a biological management network and erasing your memories for it, an elderly engineer walks into a job interview with a paper resume, a dead neural patch, and no intention of trading his family for the role.",
+  "poster": "/images/posters/the-patch.webp",
+  "youtubeId": "2mUirTgWH2E",
+  "uploadDate": "2026-09-13",
+  "director": {
+    "name": "Vasily Zhitlov"
+  },
+  "aiTools": ["Higgsfield Cinema Studio"]
+}
