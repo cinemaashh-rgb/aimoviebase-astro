@@ -1,0 +1,20 @@
+{
+  "movie_id": "e7bed006-8eb1-4b52-9021-135c30b621a7",
+  "title": "What Remains",
+  "year": 2026,
+  "type": "movie",
+  "duration": "20:21",
+  "genres": ["Sci-Fi", "Drama", "Philosophical"],
+  "synopsis": "108 days after a gigantic biomechanical object appears in Earth's orbit, the international crew of the ship Erebus launches a first-contact mission and opens a dialogue with an ancient silicon intelligence — about what separates living matter from its simulation, and what remains after the end.",
+  "poster": "/images/posters/what-remains.webp",
+  "youtubeId": "EaTvBF1I6ZQ",
+  "uploadDate": "2026-05-24",
+  "director": {
+    "name": "Lucas M. Kern"
+  },
+  "studio": "Lucas Cinematic Studio",
+  "awards": [
+    "Winner — K-Culture AI International Film Festival (KCAIF) 2026",
+    "Finalist — Seoul International AI Film Festival 2026"
+  ]
+}
