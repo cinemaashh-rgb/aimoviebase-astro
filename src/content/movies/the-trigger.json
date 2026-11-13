@@ -1,0 +1,19 @@
+{
+  "movie_id": "af8e34f9-a58a-4426-a400-ea140474161a",
+  "title": "The Trigger",
+  "year": 2026,
+  "type": "movie",
+  "duration": "8:35",
+  "genres": ["Thriller", "Crime", "Drama"],
+  "synopsis": "A former army sniper known only by his callsign Reaper picks up his next kill order hidden inside a diner receipt. A string of hits across New York leads to an urgent contract in Queens — but through his scope, Jack finds his target is a devoted father just home with his young daughter.",
+  "poster": "/images/posters/the-trigger.webp",
+  "youtubeId": "IAl240xpSGM",
+  "director": {
+    "name": "Aldiyar Bairakimov"
+  },
+  "crew": [
+    { "name": "Iliyas Baktygul", "role": "Generative Director" }
+  ],
+  "studio": "Higgsfield Originals",
+  "aiTools": ["Higgsfield AI", "Seedance 2.5"]
+}
